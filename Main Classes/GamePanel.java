@@ -81,7 +81,10 @@ class GamePanel extends JPanel implements KeyListener {
     }
 
     public void checkInputs(){
-        if(keysPressed[KeyEvent.VK_D]){
+        if(keysPressed[KeyEvent.VK_D] && keysPressed[KeyEvent.VK_A]){
+            // Stop movement
+        }
+        else if(keysPressed[KeyEvent.VK_D]){
             System.out.println("right");
             player.move(Player.RIGHT);
         }

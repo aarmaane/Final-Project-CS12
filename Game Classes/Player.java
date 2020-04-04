@@ -13,20 +13,25 @@ public class Player {
     // Player's movement-related fields
     private double x, y;
     private double velocityX, velocityY;
+    private double acceleration, maxSpeed, gravity;
     private int direction;
-    private double acceleration, gravity;
     private double spriteCount = 0;
     // Image Arrays holding Player's Sprites
     private Image[] idleSprites = new Image[4];
-
+    private Image[] runSprites = new Image[6];
     // Constructor
     public Player(){
         // Setting up fields
         direction = RIGHT;
+        acceleration = 0.2;
+        maxSpeed = 5;
         // Loading Images
         try{
             for(int i = 0; i < 4; i++){
                 idleSprites[i] = ImageIO.read(new File("Assets/Images/Player/idle" + i + ".png"));
+            }
+            for(int i = 0; i < 6; i++){
+                runSprites[i] = ImageIO.read(new File("Assets/Images/Player/run" + i + ".png"));
             }
         }
         catch (IOException e) {
@@ -35,26 +40,81 @@ public class Player {
     }
 
     public void move(int type){
+        // Handling sudden movements
+        if(type != direction){ // Change in direction
+            velocityX = 0;
+        }
+        if(velocityX == 0){ // Start of movement
+            spriteCount = 0; // Resetting the sprite counter
+        }
+        // Applying the actual velocity
         if(type == RIGHT){
             direction = RIGHT;
-            x += 1;
+            velocityX += acceleration;
         }
         else{
             direction = LEFT;
-            x -= 1;
+            velocityX -= acceleration;
         }
+        // Maintaining speed limit
+        if(Math.abs(velocityX) > maxSpeed){
+            if(velocityX > maxSpeed){ // Speed limit in positive direction (Right)
+                velocityX = maxSpeed;
+            }
+            else{                     // Speed limit in negative direction (Left)
+                velocityX = -maxSpeed;
+            }
+        }
+        // Maintaining screen bounds
+
     }
     public void tick(){
-        spriteCount += 0.05;
-        if(spriteCount > 3){
-            spriteCount = 0;
+        // Updating position from velocities
+        x += velocityX;
+        y += velocityY;
+        // Applying friction force
+        if(velocityX > 0){
+            velocityX -= acceleration/2;
+            if(velocityX < 0){ // Stopping motion when friction forces movement backwards
+                velocityX = 0;
+            }
+        }
+        else if(velocityX < 0){ // Same as above but for the other direction
+            velocityX += acceleration/2;
+            if(velocityX > 0){
+                velocityX = 0;
+            }
+        }
+        // Updating the sprite
+        if(velocityY != 0){ // Jumping/falling sprites
+            // Nothing yet
+        }
+        else if(velocityX != 0){
+            spriteCount += 0.05 + (Math.abs(velocityX)/100);
+            if(spriteCount > 5){
+                spriteCount = 0;
+            }
+        }
+        else{
+            spriteCount += 0.05;
+            if(spriteCount > 3){
+                spriteCount = 0;
+            }
         }
     }
     // Method that returns the player's current sprite by looking at various fields
     public Image getSprite(){
-        Image sprite;
-        sprite = idleSprites[(int)Math.floor(spriteCount)];
-        // Flipping the image since the sprites are right-facing
+        Image sprite = null;
+        if(velocityY != 0){
+            // Jumping/falling sprites
+        }
+        else if(velocityX != 0){
+            sprite = runSprites[(int)Math.floor(spriteCount)];
+        }
+        else{
+            sprite = idleSprites[(int)Math.floor(spriteCount)];
+        }
+        // Flipping the image since the sprites are all right-facing
         if(direction == LEFT){
             // Using AffineTransform with Nearest-Neighbour to apply flip while keeping 8-bit style
             AffineTransform flip = AffineTransform.getScaleInstance(-1, 1);
@@ -65,11 +125,9 @@ public class Player {
         return sprite;
     }
     // Getter methods
-
     public double getX() {
         return x;
     }
-
     public double getY() {
         return y;
     }
