@@ -1,7 +1,10 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.IOException;
 
 
 class GamePanel extends JPanel implements KeyListener {
@@ -9,30 +12,47 @@ class GamePanel extends JPanel implements KeyListener {
     public boolean ready = true;
     private boolean[] keysPressed; // Array that keeps track of keys that are pressed down
     private MainGame gameFrame;
+
+    // Game related Objects
+    private Player player = new Player();
+    private Image[] backgroundLayers = new Image[3];
+
     // Constructor for GamePanel
     public GamePanel(MainGame game){
         // Setting up the GamePanel
         gameFrame = game;
-        setSize(680,750);
+        setSize(960,590);
         keysPressed = new boolean[KeyEvent.KEY_LAST+1];
         addKeyListener(this);
+        try{
+            for(int i = 0; i < 3; i++){
+                backgroundLayers[i] = ImageIO.read(new File("Assets/Images/Background/BG" + (i+1) + ".png"));
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
     // All window related methods
     public void addNotify() {
         super.addNotify();
         requestFocus();
         ready = true;
     }
-
     public void removeNotify(){
         super.removeNotify();
         ready = false;
     }
     public void paintComponent(Graphics g){
         g.setColor(new Color(0,255,0));
-        g.fillRect(0, 0, 680, 750);
-        System.out.println("GAME ACTIVE");
+        g.fillRect(0, 0, 960, 590);
+        for(int i = 0; i < 3; i ++){
+            g.drawImage(backgroundLayers[i], 0, 0, this);
+        }
+        g.drawImage(player.getSprite(), 400, 400, this);
     }
+
     // Keyboard related methods
     @Override
     public void keyPressed(KeyEvent e) {
@@ -44,4 +64,9 @@ class GamePanel extends JPanel implements KeyListener {
     }
     @Override
     public void keyTyped(KeyEvent e) {}
+
+    // Game related methods
+    public void tick(){
+        player.tick();
+    }
 }

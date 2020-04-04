@@ -8,14 +8,13 @@ public class MainMenu extends JPanel implements MouseListener {
     private MainGame gameFrame;
     public MainMenu(MainGame game){
         gameFrame = game;
-        setSize(680,750);
+        setSize(960,590);
         addMouseListener(this);
     }
     // Window related methods
     public void paintComponent(Graphics g){
         g.setColor(new Color(255,0,0));
-        g.fillRect(0, 0, 680, 750);
-        System.out.println("MENU ACTIVE");
+        g.fillRect(0, 0, 960, 590);
     }
     // Mouse related methods
     @Override

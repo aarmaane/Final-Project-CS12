@@ -26,7 +26,7 @@ public class MainGame extends JFrame {
         CardLayout cardLayout = (CardLayout) panelManager.getLayout();
         cardLayout.show(panelManager, MENUPANEL);
         // Creating the JFrame and JPanels
-        setSize(680,750);
+        setSize(960,590);
         setResizable(false);
         setLocationRelativeTo(null);
         add(panelManager);
@@ -46,6 +46,7 @@ public class MainGame extends JFrame {
         public void actionPerformed(ActionEvent evt){
             if(game != null && activePanel.equals(GAMEPANEL) && game.ready){
                 // Main game loop
+                game.tick();
                 game.repaint();
             }
             else if(menu != null && activePanel.equals(MENUPANEL)){
