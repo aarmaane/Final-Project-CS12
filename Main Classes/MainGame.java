@@ -40,12 +40,14 @@ public class MainGame extends JFrame {
         CardLayout cardLayout = (CardLayout) panelManager.getLayout();
         cardLayout.show(panelManager, GAMEPANEL);
         activePanel = GAMEPANEL;
+        game.addNotify(); // Getting the focus of the game
     }
     // TickListener Class
     class TickListener implements ActionListener {
         public void actionPerformed(ActionEvent evt){
             if(game != null && activePanel.equals(GAMEPANEL) && game.ready){
                 // Main game loop
+                game.checkInputs();
                 game.tick();
                 game.repaint();
             }

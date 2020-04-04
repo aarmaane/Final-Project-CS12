@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
+import java.security.Key;
 
 
 class GamePanel extends JPanel implements KeyListener {
@@ -39,10 +40,12 @@ class GamePanel extends JPanel implements KeyListener {
         super.addNotify();
         requestFocus();
         ready = true;
+        System.out.println("add notfiy");
     }
     public void removeNotify(){
         super.removeNotify();
         ready = false;
+        System.out.println("remove notify");
     }
     public void paintComponent(Graphics g){
         g.setColor(new Color(0,255,0));
@@ -50,17 +53,24 @@ class GamePanel extends JPanel implements KeyListener {
         for(int i = 0; i < 3; i ++){
             g.drawImage(backgroundLayers[i], 0, 0, this);
         }
-        g.drawImage(player.getSprite(), 400, 400, this);
+        g.drawImage(player.getSprite(), (int)player.getX(), (int)player.getY(), this);
     }
 
     // Keyboard related methods
     @Override
     public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        // Running code for initially clicked keys
+        if(e.getKeyCode() == KeyEvent.VK_SPACE && !keysPressed[KeyEvent.VK_SPACE]){
+            System.out.println("jump");
+        }
         // Keeping track of whether or not the key is pressed down
-        keysPressed[e.getKeyCode()] = true;
+        keysPressed[keyCode] = true;
+
     }
     @Override
     public void keyReleased(KeyEvent e) {
+        keysPressed[e.getKeyCode()] = false;
     }
     @Override
     public void keyTyped(KeyEvent e) {}
@@ -68,5 +78,16 @@ class GamePanel extends JPanel implements KeyListener {
     // Game related methods
     public void tick(){
         player.tick();
+    }
+
+    public void checkInputs(){
+        if(keysPressed[KeyEvent.VK_D]){
+            System.out.println("right");
+            player.move(Player.RIGHT);
+        }
+        else if(keysPressed[KeyEvent.VK_A]){
+            System.out.println("left");
+            player.move(Player.LEFT);
+        }
     }
 }
