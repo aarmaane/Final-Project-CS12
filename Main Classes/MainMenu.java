@@ -15,6 +15,7 @@ public class MainMenu extends JPanel implements MouseListener {
     public void paintComponent(Graphics g){
         g.setColor(new Color(255,0,0));
         g.fillRect(0, 0, 960, 590);
+        gameFrame.switchPanel(); // SKIPPING MENU, REMOVE LATER
     }
     // Mouse related methods
     @Override

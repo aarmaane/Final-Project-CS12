@@ -5,7 +5,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
-import java.security.Key;
 
 
 class GamePanel extends JPanel implements KeyListener {
@@ -17,7 +16,7 @@ class GamePanel extends JPanel implements KeyListener {
     // Game related Objects
     private Player player = new Player();
     private Image[] backgroundLayers = new Image[3];
-
+    private Platform test = new Platform("0,475,platformMiddle.png");
     // Constructor for GamePanel
     public GamePanel(MainGame game){
         // Setting up the GamePanel
@@ -48,12 +47,17 @@ class GamePanel extends JPanel implements KeyListener {
         System.out.println("remove notify");
     }
     public void paintComponent(Graphics g){
-        g.setColor(new Color(0,255,0));
+        g.setColor(new Color(0,0,0));
         g.fillRect(0, 0, 960, 590);
         for(int i = 0; i < 3; i ++){
             g.drawImage(backgroundLayers[i], 0, 0, this);
         }
         g.drawImage(player.getSprite(), (int)player.getX(), (int)player.getY(), this);
+        g.drawRect(player.getHitBox().x, player.getHitBox().y, player.getHitBox().width, player.getHitBox().height);
+        for(int i = 0; i < 5; i++){
+            g.drawImage(test.getPlatformImage(), test.getRect().x +(i*test.getRect().width), test.getRect().y, this);
+
+        }
     }
 
     // Keyboard related methods
@@ -66,6 +70,10 @@ class GamePanel extends JPanel implements KeyListener {
         }
         // Keeping track of whether or not the key is pressed down
         keysPressed[keyCode] = true;
+        // DEBUG KEYS
+        if(e.getKeyCode() == KeyEvent.VK_BACK_SLASH){
+            System.out.println(getMousePosition());
+        }
 
     }
     @Override
@@ -85,11 +93,9 @@ class GamePanel extends JPanel implements KeyListener {
             // Stop movement
         }
         else if(keysPressed[KeyEvent.VK_D]){
-            System.out.println("right");
             player.move(Player.RIGHT);
         }
         else if(keysPressed[KeyEvent.VK_A]){
-            System.out.println("left");
             player.move(Player.LEFT);
         }
     }

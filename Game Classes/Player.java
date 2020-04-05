@@ -15,6 +15,7 @@ public class Player {
     private double velocityX, velocityY;
     private double acceleration, maxSpeed, gravity;
     private int direction;
+    private boolean onGround;
     private double spriteCount = 0;
     // Image Arrays holding Player's Sprites
     private Image[] idleSprites = new Image[4];
@@ -22,9 +23,11 @@ public class Player {
     // Constructor
     public Player(){
         // Setting up fields
+        y = 366;
         direction = RIGHT;
         acceleration = 0.2;
-        maxSpeed = 5;
+        gravity = 0.8;
+        maxSpeed = 6;
         // Loading Images
         try{
             for(int i = 0; i < 4; i++){
@@ -35,6 +38,7 @@ public class Player {
             }
         }
         catch (IOException e) {
+            System.out.println("Player image missing!");
             e.printStackTrace();
         }
     }
@@ -65,8 +69,6 @@ public class Player {
                 velocityX = -maxSpeed;
             }
         }
-        // Maintaining screen bounds
-
     }
     public void tick(){
         // Updating position from velocities
@@ -84,6 +86,16 @@ public class Player {
             if(velocityX > 0){
                 velocityX = 0;
             }
+        }
+        // Maintaining Player-Screen bounds (Using the hitbox for true X coordinate values)
+        Rectangle hitBox = getHitBox();
+        if(hitBox.x < 0){ // Player moves offscreen
+            int extraMovement = hitBox.x;
+            x -= extraMovement; // Shifting the player back into the correct position
+        }
+        else if(hitBox.x + hitBox.width > 480){ // Player moves to the middle of the screen
+            int extraMovement = (hitBox.x + hitBox.width) - 480;
+            x -= extraMovement; // Shifting the player back into the correct position
         }
         // Updating the sprite
         if(velocityY != 0){ // Jumping/falling sprites
@@ -130,5 +142,9 @@ public class Player {
     }
     public double getY() {
         return y;
+    }
+    public Rectangle getHitBox(){
+        // Since the sprite images are much larger than the actual Player, offsets must be applied
+        return new Rectangle((int)x + 50, (int)y + 15, 50, 95);
     }
 }
