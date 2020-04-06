@@ -21,6 +21,10 @@ public class Platform {
         width = platformImage.getWidth(null);
         height = platformImage.getHeight(null);
     }
+    public void translateX(double offset){
+        x += offset;
+    }
+    // Getter methods
     public Image getPlatformImage(){
         return platformImage;
     }

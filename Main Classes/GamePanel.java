@@ -14,9 +14,13 @@ class GamePanel extends JPanel implements KeyListener {
     private MainGame gameFrame;
 
     // Game related Objects
-    private Player player = new Player();
+    private Player player = new Player(this);
     private Image[] backgroundLayers = new Image[3];
     private Platform test = new Platform("0,475,platformMiddle.png");
+
+    // Game fields
+    private double levelOffset = 0;
+
     // Constructor for GamePanel
     public GamePanel(MainGame game){
         // Setting up the GamePanel
@@ -66,7 +70,8 @@ class GamePanel extends JPanel implements KeyListener {
         int keyCode = e.getKeyCode();
         // Running code for initially clicked keys
         if(e.getKeyCode() == KeyEvent.VK_SPACE && !keysPressed[KeyEvent.VK_SPACE]){
-            System.out.println("jump");
+            System.out.println("jump initial");
+            player.jump(Player.INITIAL);
         }
         // Keeping track of whether or not the key is pressed down
         keysPressed[keyCode] = true;
@@ -89,6 +94,7 @@ class GamePanel extends JPanel implements KeyListener {
     }
 
     public void checkInputs(){
+        // Side-to-side movement inputs
         if(keysPressed[KeyEvent.VK_D] && keysPressed[KeyEvent.VK_A]){
             // Stop movement
         }
@@ -98,5 +104,19 @@ class GamePanel extends JPanel implements KeyListener {
         else if(keysPressed[KeyEvent.VK_A]){
             player.move(Player.LEFT);
         }
+        // Jumping input
+        if(keysPressed[KeyEvent.VK_SPACE]){
+            player.jump(Player.NORMAL);
+        }
+    }
+
+    public void moveScreen(double offset){
+        levelOffset += offset;
+        test.translateX(offset);
+    }
+
+    // Getter methods
+    public double getLevelOffset(){
+        return levelOffset;
     }
 }
