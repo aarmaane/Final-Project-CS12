@@ -3,8 +3,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 
 class GamePanel extends JPanel implements KeyListener {
@@ -16,7 +17,7 @@ class GamePanel extends JPanel implements KeyListener {
     // Game related Objects
     private Player player = new Player(this);
     private Image[] backgroundLayers = new Image[3];
-    private Platform test = new Platform("0,475,platformMiddle.png");
+    private ArrayList<Platform> platforms = new ArrayList<Platform>();
 
     // Game fields
     private double levelOffset = 0;
@@ -36,6 +37,21 @@ class GamePanel extends JPanel implements KeyListener {
         catch (IOException e) {
             e.printStackTrace();
         }
+        loadLevel(1);
+    }
+
+    // Method to load up all level Objects from the corresponding text files
+    public void loadLevel(int levelNum){
+        try{
+            Scanner platformFile = new Scanner(new BufferedReader(new FileReader("Data/Level " + levelNum+ "/platforms.txt")));
+            while(platformFile.hasNextLine()){
+                platforms.add(new Platform(platformFile.nextLine()));
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Level " + levelNum + " data not found!");
+            e.printStackTrace();
+        }
     }
 
     // All window related methods
@@ -51,16 +67,19 @@ class GamePanel extends JPanel implements KeyListener {
         System.out.println("remove notify");
     }
     public void paintComponent(Graphics g){
+        // Drawing the background
         g.setColor(new Color(0,0,0));
         g.fillRect(0, 0, 960, 590);
         for(int i = 0; i < 3; i ++){
             g.drawImage(backgroundLayers[i], 0, 0, this);
         }
+        // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX(), (int)player.getY(), this);
         g.drawRect(player.getHitBox().x, player.getHitBox().y, player.getHitBox().width, player.getHitBox().height);
-        for(int i = 0; i < 5; i++){
-            g.drawImage(test.getPlatformImage(), test.getRect().x +(i*test.getRect().width), test.getRect().y, this);
-
+        // Drawing the level
+        for(Platform platform: platforms){
+            Rectangle platformRect = platform.getRect();
+            g.drawImage(platform.getPlatformImage(), platformRect.x, platformRect.y, this);
         }
     }
 
@@ -112,7 +131,9 @@ class GamePanel extends JPanel implements KeyListener {
 
     public void moveScreen(double offset){
         levelOffset += offset;
-        test.translateX(offset);
+        for(Platform platform: platforms){
+            platform.translateX(offset);
+        }
     }
 
     // Getter methods
