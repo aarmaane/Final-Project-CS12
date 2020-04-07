@@ -1,0 +1,6 @@
+TO DO List (Next 5 Objectives):
+-Platforms
+-Collisions with environment
+    -Collide with every side of a rectangle (like the question blocks)
+    -The player should only collide with the tops of platforms and land on them
+-Setup basic enemies
