@@ -61,7 +61,10 @@ class GamePanel extends JPanel implements KeyListener {
         Scanner inFile = new Scanner(new BufferedReader(new FileReader("Data/Level " + levelNum + "/" + fileName)));
         ArrayList<String> fileContents = new ArrayList<String>();
         while(inFile.hasNextLine()){
-            fileContents.add(inFile.nextLine());
+            String line = inFile.nextLine();
+            if(!line.substring(0,2).equals("//")){ // Making sure that the line is not a comment
+                fileContents.add(line);
+            }
         }
         inFile.close();
         return fileContents;
