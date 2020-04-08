@@ -18,6 +18,7 @@ class GamePanel extends JPanel implements KeyListener {
     private Player player = new Player(this);
     private Image[] backgroundLayers = new Image[3];
     private ArrayList<Platform> platforms = new ArrayList<Platform>();
+    private ArrayList<Platform> noCollidePlatforms = new ArrayList<Platform>();
 
     // Game fields
     private double levelOffset = 0;
@@ -43,17 +44,28 @@ class GamePanel extends JPanel implements KeyListener {
     // Method to load up all level Objects from the corresponding text files
     public void loadLevel(int levelNum){
         try{
-            Scanner platformFile = new Scanner(new BufferedReader(new FileReader("Data/Level " + levelNum+ "/platforms.txt")));
-            while(platformFile.hasNextLine()){
-                platforms.add(new Platform(platformFile.nextLine()));
+            for(String data: loadFile("Platforms.txt", levelNum)){
+                platforms.add(new Platform(data));
+            }
+            for(String data: loadFile("NoCollidePlatforms.txt", levelNum)){
+                noCollidePlatforms.add(new Platform(data));
             }
         }
         catch (IOException e) {
-            System.out.println("Level " + levelNum + " data not found!");
+            System.out.println("Level " + levelNum + " data incomplete!");
             e.printStackTrace();
         }
     }
-
+    // Helper method to load up individual files into ArrayLists with their lines as Strings
+    public ArrayList<String> loadFile(String fileName, int levelNum) throws IOException{
+        Scanner inFile = new Scanner(new BufferedReader(new FileReader("Data/Level " + levelNum + "/" + fileName)));
+        ArrayList<String> fileContents = new ArrayList<String>();
+        while(inFile.hasNextLine()){
+            fileContents.add(inFile.nextLine());
+        }
+        inFile.close();
+        return fileContents;
+    }
     // All window related methods
     public void addNotify() {
         super.addNotify();
@@ -75,6 +87,10 @@ class GamePanel extends JPanel implements KeyListener {
         }
         // Drawing the level
         for(Platform platform: platforms){
+            Rectangle platformRect = platform.getRect();
+            g.drawImage(platform.getPlatformImage(), platformRect.x, platformRect.y, this);
+        }
+        for(Platform platform: noCollidePlatforms){
             Rectangle platformRect = platform.getRect();
             g.drawImage(platform.getPlatformImage(), platformRect.x, platformRect.y, this);
         }
@@ -142,6 +158,9 @@ class GamePanel extends JPanel implements KeyListener {
         }
         levelOffset += offset;
         for(Platform platform: platforms){
+            platform.translateX(offset);
+        }
+        for(Platform platform: noCollidePlatforms){
             platform.translateX(offset);
         }
     }

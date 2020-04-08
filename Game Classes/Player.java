@@ -21,12 +21,15 @@ public class Player {
     private int direction;
     private boolean onGround, holdingJump;
     private double spriteCount = 0;
+    // Players' gameplay-related fields
+    private int health, maxHealth;
+    private int stamina, maxStamina;
+    private int swordDamage, spellDamage;
     // Image Arrays holding Player's Sprites
     private Image[] idleSprites = new Image[4];
     private Image[] runSprites = new Image[6];
     private Image[] jumpingSprites = new Image[2];
     private Image[] fallingSprites = new Image[2];
-
     // Other fields
     GamePanel game;
     // Constructor

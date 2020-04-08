@@ -1,8 +1,8 @@
-0,475,platformMiddle.png
-144,475,platformMiddle.png
-400,300,platformMiddle.png
-288,475,platformMiddle.png
-432,475,platformMiddle.png
-576,475,platformMiddle.png
-720,475,platformMiddle.png
-864,475,platformMiddle.png
+0,475,grassMiddle.png
+144,475,grassMiddle.png
+288,475,grassMiddle.png
+432,475,grassMiddle.png
+576,475,grassMiddle.png
+576,283,pillarTop.png
+720,475,grassMiddle.png
+864,475,grassMiddle.png
