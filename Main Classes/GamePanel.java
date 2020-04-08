@@ -1,3 +1,5 @@
+import org.w3c.dom.css.Rect;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -112,6 +114,11 @@ class GamePanel extends JPanel implements KeyListener {
         player.tick();
     }
 
+    public void checkCollision(){
+        for(Platform platform: platforms){
+            player.checkCollision(platform.getRect());
+        }
+    }
     public void checkInputs(){
         // Side-to-side movement inputs
         if(keysPressed[KeyEvent.VK_D] && keysPressed[KeyEvent.VK_A]){
@@ -130,6 +137,9 @@ class GamePanel extends JPanel implements KeyListener {
     }
 
     public void moveScreen(double offset){
+        if(levelOffset + offset > 0){ // Making sure that the offset won't overshoot 0
+            offset -= levelOffset + offset; // Adjusting the offset
+        }
         levelOffset += offset;
         for(Platform platform: platforms){
             platform.translateX(offset);

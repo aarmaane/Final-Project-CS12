@@ -1,3 +1,5 @@
+import org.w3c.dom.css.Rect;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -108,7 +110,7 @@ public class Player {
     // Method to calculate and apply the physics of the Player
     public void updateMotion(){
         // Updating position from velocities
-        if(getHitBox().x == 430 && (game.getLevelOffset() - velocityX) < 0){ // Only moving screen if the player is in the middle and level boundries will be respected
+        if(getHitBox().x == 430 && (game.getLevelOffset() - velocityX) < 0){ // Only moving screen if the player is in the middle and level boundaries will be respected
             game.moveScreen(-velocityX); // The environment should move opposite to the velocity to simulate movement
         }
         else{ // Otherwise moving the player around the screen
@@ -139,12 +141,15 @@ public class Player {
             else{ // Otherwise use normal gravity values
                 velocityY += gravity;
             }
+            /*
             // TEMPORARY GROUND COLLISION
             if(y > 366){
                 y = 366;
                 onGround = true;
                 velocityY = 0;
             }
+
+             */
         }
     }
     // Method to keep the Player within the confines of the game
@@ -183,6 +188,16 @@ public class Player {
             spriteCount += 0.05;
             if(spriteCount > 4){
                 spriteCount = 0;
+            }
+        }
+    }
+    public void checkCollision(Rectangle rect){
+        Rectangle hitBox = getHitBox();
+        if(hitBox.intersects(rect)){
+            if((hitBox.y + hitBox.height) - velocityY > rect.y){
+                y = (rect.y - hitBox.height) - (hitBox.y - y); //
+                velocityY = 0;
+                onGround = true;
             }
         }
     }

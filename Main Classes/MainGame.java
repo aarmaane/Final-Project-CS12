@@ -49,6 +49,7 @@ public class MainGame extends JFrame {
                 // Main game loop
                 game.checkInputs();
                 game.tick();
+                game.checkCollision();
                 game.repaint();
             }
             else if(menu != null && activePanel.equals(MENUPANEL)){
