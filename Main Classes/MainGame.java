@@ -15,7 +15,7 @@ public class MainGame extends JFrame {
     private Timer myTimer; // Timer to call the game functions each frame
     private int runTime; // Variable to keep track of the miliseconds that have passed since the start of the game
     public MainGame(){
-        super("Frogger"); // Setting the title
+        super("Game"); // Setting the title
         // Creating the JPanels for the game
         game = new GamePanel(this);
         menu = new MainMenu(this);
