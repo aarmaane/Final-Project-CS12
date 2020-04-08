@@ -70,7 +70,7 @@ public class Player {
         }
         // Applying the actual velocity
         int midAirOffset = 1; // By default, the offset divides by one and does nothing
-        if(velocityY != 0){  // Slowing down acceleration when mid-air
+        if(!onGround){  // Slowing down acceleration when mid-air
             midAirOffset = 4;
         }
         if(type == RIGHT){
@@ -118,7 +118,7 @@ public class Player {
         }
         y += velocityY;
         // Applying friction force
-        if(onGround){ // Friction only applys when the Player is on the ground
+        if(onGround){ // Friction only applies when the Player is on the ground
             if(velocityX > 0){
                 velocityX -= acceleration/2;
                 if(velocityX < 0){ // Stopping motion when friction forces movement backwards
@@ -133,23 +133,12 @@ public class Player {
             }
         }
         // Applying gravity
-        if(!onGround){
-            if(velocityY < 0 && holdingJump){ // If the player is jumping and holding the jump key, use lower gravity to allow for a variable jump height
-                velocityY += gravity/3;
-                holdingJump = false; // Resetting the variable so it doesn't get applied next frame without input
-            }
-            else{ // Otherwise use normal gravity values
-                velocityY += gravity;
-            }
-            /*
-            // TEMPORARY GROUND COLLISION
-            if(y > 366){
-                y = 366;
-                onGround = true;
-                velocityY = 0;
-            }
-
-             */
+        if(velocityY < 0 && holdingJump){ // If the player is jumping and holding the jump key, use lower gravity to allow for a variable jump height
+            velocityY += gravity/3;
+           holdingJump = false; // Resetting the variable so it doesn't get applied next frame without input
+        }
+        else{ // Otherwise use normal gravity values
+            velocityY += gravity;
         }
     }
     // Method to keep the Player within the confines of the game
@@ -172,7 +161,7 @@ public class Player {
                 spriteCount += 0.1;
             }
         }
-        else if(velocityY > 0){ // Falling sprites
+        else if(velocityY > 0 && !onGround){ // Falling sprites
             spriteCount += 0.05 + (Math.pow(velocityY,1.5)/100);
             if(spriteCount > 2){
                 spriteCount = 0;
@@ -194,7 +183,7 @@ public class Player {
     public void checkCollision(Rectangle rect){
         Rectangle hitBox = getHitBox();
         if(hitBox.intersects(rect)){
-            if((hitBox.y + hitBox.height) - velocityY > rect.y){
+            if((int)((hitBox.y + hitBox.height) - velocityY) <= rect.y){
                 y = (rect.y - hitBox.height) - (hitBox.y - y); //
                 velocityY = 0;
                 onGround = true;
@@ -208,7 +197,7 @@ public class Player {
         if(velocityY < 0){
             sprite = jumpingSprites[(int)Math.floor(spriteCount)];
         }
-        else if(velocityY > 0)  {
+        else if(velocityY > 0 && !onGround)  {
             sprite = fallingSprites[(int)Math.floor(spriteCount)];
         }
         else if(velocityX != 0){

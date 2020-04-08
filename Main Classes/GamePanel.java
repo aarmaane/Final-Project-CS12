@@ -1,5 +1,3 @@
-import org.w3c.dom.css.Rect;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -119,6 +117,7 @@ class GamePanel extends JPanel implements KeyListener {
             player.checkCollision(platform.getRect());
         }
     }
+
     public void checkInputs(){
         // Side-to-side movement inputs
         if(keysPressed[KeyEvent.VK_D] && keysPressed[KeyEvent.VK_A]){

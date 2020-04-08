@@ -17,6 +17,7 @@ public class Platform {
         catch (IOException e) {
             System.out.println("Platform picture missing!");
             e.printStackTrace();
+            System.exit(1);
         }
         width = platformImage.getWidth(null);
         height = platformImage.getHeight(null);
