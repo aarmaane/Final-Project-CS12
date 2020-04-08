@@ -73,14 +73,14 @@ class GamePanel extends JPanel implements KeyListener {
         for(int i = 0; i < 3; i ++){
             g.drawImage(backgroundLayers[i], 0, 0, this);
         }
-        // Drawing the Player
-        g.drawImage(player.getSprite(), (int)player.getX(), (int)player.getY(), this);
-        g.drawRect(player.getHitBox().x, player.getHitBox().y, player.getHitBox().width, player.getHitBox().height);
         // Drawing the level
         for(Platform platform: platforms){
             Rectangle platformRect = platform.getRect();
             g.drawImage(platform.getPlatformImage(), platformRect.x, platformRect.y, this);
         }
+        // Drawing the Player
+        g.drawImage(player.getSprite(), (int)player.getX(), (int)player.getY(), this);
+        g.drawRect(player.getHitBox().x, player.getHitBox().y, player.getHitBox().width, player.getHitBox().height);
     }
 
     // Keyboard related methods
@@ -89,14 +89,15 @@ class GamePanel extends JPanel implements KeyListener {
         int keyCode = e.getKeyCode();
         // Running code for initially clicked keys
         if(e.getKeyCode() == KeyEvent.VK_SPACE && !keysPressed[KeyEvent.VK_SPACE]){
-            System.out.println("jump initial");
             player.jump(Player.INITIAL);
         }
         // Keeping track of whether or not the key is pressed down
         keysPressed[keyCode] = true;
         // DEBUG KEYS
         if(e.getKeyCode() == KeyEvent.VK_BACK_SLASH){
-            System.out.println(getMousePosition());
+            if(getMousePosition() != null){
+                System.out.println(getMousePosition() + " True x = " + (getMousePosition().x - levelOffset));
+            }
         }
 
     }

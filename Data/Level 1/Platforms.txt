@@ -1,5 +1,6 @@
 0,475,platformMiddle.png
 144,475,platformMiddle.png
+400,300,platformMiddle.png
 288,475,platformMiddle.png
 432,475,platformMiddle.png
 576,475,platformMiddle.png

@@ -140,6 +140,10 @@ public class Player {
         else{ // Otherwise use normal gravity values
             velocityY += gravity;
         }
+        // Checking if the Player is falling (This will update onGround when the Player leaves a platform without jumping)
+        if(onGround && velocityY > 1){
+            onGround = false;
+        }
     }
     // Method to keep the Player within the confines of the game
     public void checkOutOfBounds(){
@@ -224,6 +228,6 @@ public class Player {
     }
     public Rectangle getHitBox(){
         // Since the sprite images are much larger than the actual Player, offsets must be applied
-        return new Rectangle((int)x + 50, (int)y + 15, 50, 95);
+        return new Rectangle((int)x + 50, (int)y + 15, 50, 93);
     }
 }
