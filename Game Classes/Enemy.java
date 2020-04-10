@@ -1,8 +1,7 @@
 
 public class Enemy {
     //Fields
-    private double x;
-    private double y;
+    private double x, y;
     private int health;
     private boolean active;
     //Get methods
