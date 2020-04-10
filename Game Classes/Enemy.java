@@ -4,7 +4,7 @@ public class Enemy {
     private double x, y;
     private int health;
     private boolean active;
-    //Get methods
+    // Getter methods
     public double getX(){return x;}
     public double getY(){return y;}
 }
