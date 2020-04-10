@@ -2,17 +2,27 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class Platform {
+    private static HashMap<String, Image> imageMap = new HashMap<>();
     private double x, y;
     private int width, height;
-    private Image platformImage;
+    private String imageName;
     public Platform(String data){
         String[] dataSplit = data.split(",");
         x = Integer.parseInt(dataSplit[0]);
         y = Integer.parseInt(dataSplit[1]);
+        imageName = dataSplit[2];
+        Image platformImage = null;
         try{
-            platformImage = ImageIO.read(new File("Assets/Images/Platforms/" + dataSplit[2]));
+            if(!imageMap.containsKey(imageName)){
+                platformImage = ImageIO.read(new File("Assets/Images/Platforms/" + imageName));
+                imageMap.put(imageName, platformImage);
+            }
+            else{
+                platformImage = imageMap.get(imageName);
+            }
         }
         catch (IOException e) {
             System.out.println("Platform picture missing!");
@@ -27,13 +37,9 @@ public class Platform {
     }
     // Getter methods
     public Image getPlatformImage(){
-        return platformImage;
+        return imageMap.get(imageName);
     }
     public Rectangle getRect(){
         return new Rectangle((int)Math.round(x), (int)Math.round(y), width, height);
-    }
-
-    public double getX() {
-        return x;
     }
 }

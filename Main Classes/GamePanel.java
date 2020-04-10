@@ -19,7 +19,7 @@ class GamePanel extends JPanel implements KeyListener {
     private Image[] backgroundLayers = new Image[3];
     private ArrayList<Platform> platforms = new ArrayList<Platform>();
     private ArrayList<Platform> noCollidePlatforms = new ArrayList<Platform>();
-
+    private Slime test = new Slime();
     // Game fields
     private int levelOffset = 0;
 
@@ -38,6 +38,9 @@ class GamePanel extends JPanel implements KeyListener {
         catch (IOException e) {
             e.printStackTrace();
         }
+        // Initalizing the enemy Classes
+        Slime.init();
+
         loadLevel(1);
     }
 
