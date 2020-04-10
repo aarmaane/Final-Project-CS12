@@ -40,7 +40,6 @@ class GamePanel extends JPanel implements KeyListener {
         }
         // Initalizing the enemy Classes
         Slime.init();
-
         loadLevel(1);
     }
 
