@@ -19,7 +19,6 @@ class GamePanel extends JPanel implements KeyListener {
     private Image[] backgroundLayers = new Image[3];
     private ArrayList<Platform> platforms = new ArrayList<Platform>();
     private ArrayList<Platform> noCollidePlatforms = new ArrayList<Platform>();
-    private Slime test = new Slime();
     // Game fields
     private int levelOffset = 0;
 
@@ -130,8 +129,8 @@ class GamePanel extends JPanel implements KeyListener {
     public void keyTyped(KeyEvent e) {}
 
     // Game related methods
-    public void tick(){
-        player.tick();
+    public void update(){
+        player.update();
         calculateOffset();
     }
     public void calculateOffset(){

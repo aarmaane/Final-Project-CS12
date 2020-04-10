@@ -105,7 +105,7 @@ public class Player {
         }
     }
     // Method to update the Player Object each frame
-    public void tick(){
+    public void update(){
         updateMotion();
         checkOutOfBounds();
         updateSprites();

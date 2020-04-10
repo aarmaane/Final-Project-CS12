@@ -1,10 +1,12 @@
 import java.awt.*;
 
-public class Enemy {
+public abstract class Enemy {
     //Fields
-    private double x, y;
-    private int health;
-    private boolean active;
+    protected double x, y;
+    protected int health, damage;
+    protected int difficulty;
+    protected boolean active;
+    public abstract Image getSprite();
     // Getter methods
     public double getX(){return x;}
     public double getY(){return y;}
