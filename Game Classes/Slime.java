@@ -6,6 +6,7 @@ import java.io.IOException;
 public class Slime extends Enemy {
     private static Image[] movingSprites = new Image[4];
     private static Image[] attackSprites;
+    private static Image[] idleSprites;
     private static Image[] deathSprites;
     //Fields
     public Slime(){
@@ -14,7 +15,7 @@ public class Slime extends Enemy {
     // Method to initialize the Class by loading sprites
     public static void init(){
         try{
-            for(int i = 0; i > 4; i++){
+            for(int i = 0; i < 4; i++){
                 movingSprites[i] = ImageIO.read(new File("Assets/Images/Enemies/Slime/move" + i + ".png"));
             }
         }
