@@ -21,7 +21,7 @@ class GamePanel extends JPanel implements KeyListener {
     private ArrayList<Platform> noCollidePlatforms = new ArrayList<Platform>();
 
     // Game fields
-    private double levelOffset = 0;
+    private int levelOffset = 0;
 
     // Constructor for GamePanel
     public GamePanel(MainGame game){
@@ -91,15 +91,15 @@ class GamePanel extends JPanel implements KeyListener {
         // Drawing the level
         for(Platform platform: platforms){
             Rectangle platformRect = platform.getRect();
-            g.drawImage(platform.getPlatformImage(), platformRect.x, platformRect.y, this);
+            g.drawImage(platform.getPlatformImage(), platformRect.x - levelOffset, platformRect.y, this);
         }
         for(Platform platform: noCollidePlatforms){
             Rectangle platformRect = platform.getRect();
-            g.drawImage(platform.getPlatformImage(), platformRect.x, platformRect.y, this);
+            g.drawImage(platform.getPlatformImage(), platformRect.x - levelOffset, platformRect.y, this);
         }
         // Drawing the Player
-        g.drawImage(player.getSprite(), (int)player.getX(), (int)player.getY(), this);
-        g.drawRect(player.getHitBox().x, player.getHitBox().y, player.getHitBox().width, player.getHitBox().height);
+        g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
+        g.drawRect(player.getHitBox().x - levelOffset, player.getHitBox().y, player.getHitBox().width, player.getHitBox().height);
     }
 
     // Keyboard related methods
@@ -130,8 +130,14 @@ class GamePanel extends JPanel implements KeyListener {
     // Game related methods
     public void tick(){
         player.tick();
+        calculateOffset();
     }
-
+    public void calculateOffset(){
+        Rectangle hitbox = player.getHitBox();
+        if(hitbox.x + hitbox.width > 480){
+            levelOffset = (hitbox.x + hitbox.width) - 480;
+        }
+    }
     public void checkCollision(){
         for(Platform platform: platforms){
             player.checkCollision(platform.getRect());
@@ -152,19 +158,6 @@ class GamePanel extends JPanel implements KeyListener {
         // Jumping input
         if(keysPressed[KeyEvent.VK_SPACE]){
             player.jump(Player.NORMAL);
-        }
-    }
-
-    public void moveScreen(double offset){
-        if(levelOffset + offset > 0){ // Making sure that the offset won't overshoot 0
-            offset -= levelOffset + offset; // Adjusting the offset
-        }
-        levelOffset += offset;
-        for(Platform platform: platforms){
-            platform.translateX(offset);
-        }
-        for(Platform platform: noCollidePlatforms){
-            platform.translateX(offset);
         }
     }
 

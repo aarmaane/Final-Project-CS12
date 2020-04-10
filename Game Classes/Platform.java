@@ -30,6 +30,10 @@ public class Platform {
         return platformImage;
     }
     public Rectangle getRect(){
-        return new Rectangle((int)x, (int)y, width, height);
+        return new Rectangle((int)Math.round(x), (int)Math.round(y), width, height);
+    }
+
+    public double getX() {
+        return x;
     }
 }
