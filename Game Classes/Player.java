@@ -113,12 +113,7 @@ public class Player {
     // Method to calculate and apply the physics of the Player
     public void updateMotion(){
         // Updating position from velocities
-        if(getHitBox().x == 430 && (game.getLevelOffset() - velocityX) < 0){ // Only moving screen if the player is in the middle and level boundaries will be respected
-            game.moveScreen(-velocityX); // The environment should move opposite to the velocity to simulate movement
-        }
-        else{ // Otherwise moving the player around the screen
-            x += velocityX;
-        }
+        x += velocityX;
         y += velocityY;
         // Applying friction force
         if(onGround){ // Friction only applies when the Player is on the ground
@@ -154,10 +149,6 @@ public class Player {
         Rectangle hitBox = getHitBox();
         if(hitBox.x < 0){ // Player moves offscreen (from the left side)
             int extraMovement = hitBox.x;
-            x -= extraMovement; // Shifting the player back into the correct position
-        }
-        else if(hitBox.x + hitBox.width > 480){ // Player moves to the middle of the screen
-            int extraMovement = (hitBox.x + hitBox.width) - 480;
             x -= extraMovement; // Shifting the player back into the correct position
         }
     }
