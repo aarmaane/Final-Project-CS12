@@ -11,9 +11,6 @@ public class Slime extends Enemy {
     private static Image[] deathSprites;
     //Fields
     private int spriteCount = 0;
-    //Constructor
-    public Slime(String data){
-    }
     // Method to initialize the Class by loading sprites
     public static void init(){
         try{
@@ -25,5 +22,27 @@ public class Slime extends Enemy {
             System.out.println("Slime sprites not found!");
             e.printStackTrace();
         }
+    }
+    //Constructor
+    public Slime(String data){
+        String[] dataSplit = data.split(",");
+        x = Integer.parseInt(dataSplit[0]);
+        y = Integer.parseInt(dataSplit[1]);
+        difficulty = Integer.parseInt(dataSplit[2]);
+    }
+    // General methods
+    @Override
+    public void update(){
+
+    }
+    // Getter methods
+    @Override
+    public Image getSprite() {
+        return movingSprites[0];
+    }
+
+    @Override
+    public Rectangle getHitbox() {
+        return new Rectangle((int)x, (int)y, 100, 100);
     }
 }

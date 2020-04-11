@@ -19,6 +19,7 @@ class GamePanel extends JPanel implements KeyListener {
     private Image[] backgroundLayers = new Image[3];
     private ArrayList<Platform> platforms = new ArrayList<Platform>();
     private ArrayList<Platform> noCollidePlatforms = new ArrayList<Platform>();
+    private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     // Game fields
     private int levelOffset = 0;
 
@@ -50,6 +51,9 @@ class GamePanel extends JPanel implements KeyListener {
             }
             for(String data: loadFile("NoCollidePlatforms.txt", levelNum)){
                 noCollidePlatforms.add(new Platform(data));
+            }
+            for(String data: loadFile("Slimes.txt", levelNum)){
+                enemies.add(new Slime(data));
             }
         }
         catch (IOException e) {
@@ -98,9 +102,13 @@ class GamePanel extends JPanel implements KeyListener {
             Rectangle platformRect = platform.getRect();
             g.drawImage(platform.getPlatformImage(), platformRect.x - levelOffset, platformRect.y, this);
         }
+        // Drawing enemies
+        for(Enemy enemy: enemies){
+            g.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
+        }
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
-        g.drawRect(player.getHitBox().x - levelOffset, player.getHitBox().y, player.getHitBox().width, player.getHitBox().height);
+        g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
     }
 
     // Keyboard related methods
@@ -134,7 +142,7 @@ class GamePanel extends JPanel implements KeyListener {
         calculateOffset();
     }
     public void calculateOffset(){
-        Rectangle hitbox = player.getHitBox();
+        Rectangle hitbox = player.getHitbox();
         if(hitbox.x + hitbox.width > 480){
             levelOffset = (hitbox.x + hitbox.width) - 480;
         }

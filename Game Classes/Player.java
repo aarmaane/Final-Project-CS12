@@ -146,9 +146,9 @@ public class Player {
     // Method to keep the Player within the confines of the game
     public void checkOutOfBounds(){
         // Using the hitbox for true X coordinate values since the sprite pictures are larger than the actual player
-        Rectangle hitBox = getHitBox();
-        if(hitBox.x < 0){ // Player moves offscreen (from the left side)
-            int extraMovement = hitBox.x;
+        Rectangle hitbox = getHitbox();
+        if(hitbox.x < 0){ // Player moves offscreen (from the left side)
+            int extraMovement = hitbox.x;
             x -= extraMovement; // Shifting the player back into the correct position
         }
     }
@@ -179,10 +179,10 @@ public class Player {
         }
     }
     public void checkCollision(Rectangle rect){
-        Rectangle hitBox = getHitBox();
-        if(hitBox.intersects(rect)){
-            if((int)((hitBox.y + hitBox.height) - velocityY) <= rect.y){
-                y = (rect.y - hitBox.height) - (hitBox.y - y); //
+        Rectangle hitbox = getHitbox();
+        if(hitbox.intersects(rect)){
+            if((int)((hitbox.y + hitbox.height) - velocityY) <= rect.y){
+                y = (rect.y - hitbox.height) - (hitbox.y - y); //
                 velocityY = 0;
                 onGround = true;
             }
@@ -220,7 +220,7 @@ public class Player {
     public double getY() {
         return y;
     }
-    public Rectangle getHitBox(){
+    public Rectangle getHitbox(){
         // Since the sprite images are much larger than the actual Player, offsets must be applied
         return new Rectangle((int)x + 50, (int)y + 15, 50, 93);
     }

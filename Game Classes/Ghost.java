@@ -16,13 +16,29 @@ public class Ghost extends Enemy {
     public static void init(){
         try{
             for(int i = 0; i < 5; i++){
+                // MOVE THE PICTURE OUT OF THE UNUSED ASSET FOLDER
                 movingSprites[i] = ImageIO.read(new File("Unused assets/Enemies/Ghost/ghost" + (10+i) + ".png"));
             }
 
         }
         catch (IOException e) {
-            System.out.println("Player image missing!");
+            System.out.println("Ghost image missing!");
             e.printStackTrace();
         }
+    }
+    // General methods
+    @Override
+    public void update(){
+
+    }
+    // Getter methods
+    @Override
+    public Image getSprite() {
+        return null;
+    }
+
+    @Override
+    public Rectangle getHitbox() {
+        return null;
     }
 }
