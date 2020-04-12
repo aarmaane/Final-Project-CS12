@@ -114,11 +114,11 @@ class GamePanel extends JPanel implements KeyListener {
         for(Enemy enemy: enemies){
             g.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
             drawHealth(g, enemy);
-            //g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
+            g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
         }
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
-        //g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
+        g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
         // Drawing game stats
         g.setColor(new Color(255,255,255));
         g.setFont(gameFont);
