@@ -14,10 +14,11 @@ public class Player {
     public static final int LEFT = 1;
     public static final int INITIAL = 0;
     public static final int NORMAL = 1;
+    private static final double GRAVITY = 0.25;
     // Player's movement-related fields
     private double x, y;
     private double velocityX, velocityY;
-    private double acceleration, maxSpeed, gravity;
+    private double acceleration, maxSpeed;
     private int direction;
     private boolean onGround, holdingJump;
     private double spriteCount = 0;
@@ -39,7 +40,6 @@ public class Player {
         y = 366;
         direction = RIGHT;
         acceleration = 0.2;
-        gravity = 0.25;
         maxSpeed = 6;
         onGround = true;
         // Loading Images
@@ -108,7 +108,7 @@ public class Player {
     public void update(){
         updateMotion();
         checkOutOfBounds();
-        updateSprites();
+        updateSprite();
     }
     // Method to calculate and apply the physics of the Player
     public void updateMotion(){
@@ -132,11 +132,11 @@ public class Player {
         }
         // Applying gravity
         if(velocityY < 0 && holdingJump){ // If the player is jumping and holding the jump key, use lower gravity to allow for a variable jump height
-            velocityY += gravity/3;
+            velocityY += GRAVITY/3;
            holdingJump = false; // Resetting the variable so it doesn't get applied next frame without input
         }
         else{ // Otherwise use normal gravity values
-            velocityY += gravity;
+            velocityY += GRAVITY;
         }
         // Checking if the Player is falling (This will update onGround when the Player leaves a platform without jumping)
         if(onGround && velocityY > 1){
@@ -153,7 +153,7 @@ public class Player {
         }
     }
     // Method to smoothly update the sprite counter and produce realistic animation of the Player
-    public void updateSprites(){
+    public void updateSprite(){
         if(velocityY < 0){ // Jumping sprites
             if(spriteCount < 1){ // Only playing the animation once through (no repetition)
                 spriteCount += 0.1;
@@ -187,6 +187,12 @@ public class Player {
                 onGround = true;
             }
         }
+    }
+    public void resetPos(){
+        x = 0;
+        y = 366;
+        velocityX = 0;
+        velocityY = 0;
     }
     // Getter methods
     // Method that returns the player's current sprite by looking at various fields

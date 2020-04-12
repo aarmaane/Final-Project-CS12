@@ -10,7 +10,7 @@ public class Slime extends Enemy {
     private static Image[] idleSprites;
     private static Image[] deathSprites;
     //Fields
-    private int spriteCount = 0;
+
     // Method to initialize the Class by loading sprites
     public static void init(){
         try{
@@ -29,11 +29,33 @@ public class Slime extends Enemy {
         x = Integer.parseInt(dataSplit[0]);
         y = Integer.parseInt(dataSplit[1]);
         difficulty = Integer.parseInt(dataSplit[2]);
+        health = 100 * difficulty;
     }
     // General methods
     @Override
-    public void update(){
-
+    public void update(Player player){
+        updateMotion();
+        updateSprite();
+    }
+    public void updateMotion(){
+        // Applying velocity values to position
+        x += 1;
+        y += velocityY;
+        // Adding gravity value
+        velocityY += GRAVITY;
+    }
+    public void updateSprite(){
+        spriteCount += 0.25;
+    }
+    @Override
+    public void checkCollision(Rectangle rect){
+        Rectangle hitbox = getHitbox();
+        if(hitbox.intersects(rect)){
+            if((int)((hitbox.y + hitbox.height) - velocityY) <= rect.y){
+                y = (rect.y - hitbox.height) - (hitbox.y - y); //
+                velocityY = 0;
+            }
+        }
     }
     // Getter methods
     @Override
@@ -43,6 +65,6 @@ public class Slime extends Enemy {
 
     @Override
     public Rectangle getHitbox() {
-        return new Rectangle((int)x, (int)y, 100, 100);
+        return new Rectangle((int)x + 10, (int)y + 25, 80, 45);
     }
 }

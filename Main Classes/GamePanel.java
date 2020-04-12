@@ -105,12 +105,16 @@ class GamePanel extends JPanel implements KeyListener {
         // Drawing enemies
         for(Enemy enemy: enemies){
             g.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
+            drawHealth(g, enemy);
+            g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
         }
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
         g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
     }
-
+    public void drawHealth(Graphics g, Enemy enemy){
+        int health = enemy.getHealth();
+    }
     // Keyboard related methods
     @Override
     public void keyPressed(KeyEvent e) {
@@ -127,6 +131,9 @@ class GamePanel extends JPanel implements KeyListener {
                 System.out.println(getMousePosition() + " True x = " + (getMousePosition().x - levelOffset));
             }
         }
+        else if(e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET){
+            player.resetPos();
+        }
 
     }
     @Override
@@ -139,6 +146,9 @@ class GamePanel extends JPanel implements KeyListener {
     // Game related methods
     public void update(){
         player.update();
+        for(Enemy enemy: enemies){
+            enemy.update(player);
+        }
         calculateOffset();
     }
     public void calculateOffset(){
@@ -146,10 +156,16 @@ class GamePanel extends JPanel implements KeyListener {
         if(hitbox.x + hitbox.width > 480){
             levelOffset = (hitbox.x + hitbox.width) - 480;
         }
+        else{
+            levelOffset = 0;
+        }
     }
     public void checkCollision(){
         for(Platform platform: platforms){
             player.checkCollision(platform.getRect());
+            for(Enemy enemy: enemies){
+                enemy.checkCollision(platform.getRect());
+            }
         }
     }
 

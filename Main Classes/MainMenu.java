@@ -20,6 +20,7 @@ public class MainMenu extends JPanel implements MouseListener {
     // Mouse related methods
     @Override
     public void mouseClicked(MouseEvent e) {
+        System.out.println("test");
         gameFrame.switchPanel();
     }
     @Override

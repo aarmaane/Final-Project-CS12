@@ -28,9 +28,15 @@ public class Ghost extends Enemy {
     }
     // General methods
     @Override
-    public void update(){
+    public void update(Player player){
 
     }
+
+    @Override
+    public void checkCollision(Rectangle rect) {
+
+    }
+
     // Getter methods
     @Override
     public Image getSprite() {
