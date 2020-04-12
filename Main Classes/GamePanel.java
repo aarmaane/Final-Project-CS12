@@ -134,16 +134,16 @@ class GamePanel extends JPanel implements KeyListener {
         }
     }
     public void drawHealth(Graphics g, Enemy enemy){
-        double health = enemy.getHealth()-50;
+        double health = enemy.getHealth()-100;
         double maxHealth = enemy.getMaxHealth();
         Rectangle hitBox = enemy.getHitbox();
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(new Color(255,0,0));
 
-        g2d.fillRect(hitBox.x-levelOffset,hitBox.y-10,(int)((health/maxHealth)*100),10);
+        g2d.fillRect(hitBox.x-levelOffset,hitBox.y-10,(int)((health/maxHealth)*88),13);
 
-        g2d.drawImage(enemyHealthBar,hitBox.x-levelOffset,hitBox.y,this);
+        g2d.drawImage(enemyHealthBar,hitBox.x-levelOffset-10,hitBox.y-15,this);
 
     }
     // Keyboard related methods
