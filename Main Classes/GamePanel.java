@@ -10,15 +10,15 @@ import java.util.Scanner;
 
 class GamePanel extends JPanel implements KeyListener {
     // Window related Objects
-    public boolean ready = true;
+    public boolean paused = false;
     private boolean[] keysPressed; // Array that keeps track of keys that are pressed down
     private MainGame gameFrame;
 
     // Game related Objects
     private Player player = new Player(this);
     private Image[] backgroundLayers = new Image[3];
-    private ArrayList<Platform> platforms = new ArrayList<Platform>();
-    private ArrayList<Platform> noCollidePlatforms = new ArrayList<Platform>();
+    private ArrayList<LevelProp> platforms = new ArrayList<LevelProp>();
+    private ArrayList<LevelProp> noCollideProps = new ArrayList<LevelProp>();
     private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     // Game fields
     private int levelOffset = 0;
@@ -47,10 +47,10 @@ class GamePanel extends JPanel implements KeyListener {
     public void loadLevel(int levelNum){
         try{
             for(String data: loadFile("Platforms.txt", levelNum)){
-                platforms.add(new Platform(data));
+                platforms.add(new LevelProp(data));
             }
-            for(String data: loadFile("NoCollidePlatforms.txt", levelNum)){
-                noCollidePlatforms.add(new Platform(data));
+            for(String data: loadFile("NoCollideProps.txt", levelNum)){
+                noCollideProps.add(new LevelProp(data));
             }
             for(String data: loadFile("Slimes.txt", levelNum)){
                 enemies.add(new Slime(data));
@@ -78,12 +78,11 @@ class GamePanel extends JPanel implements KeyListener {
     public void addNotify() {
         super.addNotify();
         requestFocus();
-        ready = true;
         System.out.println("add notfiy");
     }
     public void removeNotify(){
         super.removeNotify();
-        ready = false;
+        paused = true;
         System.out.println("remove notify");
     }
     public void paintComponent(Graphics g){
@@ -94,11 +93,11 @@ class GamePanel extends JPanel implements KeyListener {
             g.drawImage(backgroundLayers[i], 0, 0, this);
         }
         // Drawing the level
-        for(Platform platform: platforms){
+        for(LevelProp platform: platforms){
             Rectangle platformRect = platform.getRect();
             g.drawImage(platform.getPlatformImage(), platformRect.x - levelOffset, platformRect.y, this);
         }
-        for(Platform platform: noCollidePlatforms){
+        for(LevelProp platform: noCollideProps){
             Rectangle platformRect = platform.getRect();
             g.drawImage(platform.getPlatformImage(), platformRect.x - levelOffset, platformRect.y, this);
         }
@@ -111,6 +110,11 @@ class GamePanel extends JPanel implements KeyListener {
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
         g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
+        // Drawing pause screen
+        if(paused){
+            g.setColor(new Color(0,0,0, 100));
+            g.fillRect(0, 0, getWidth(), getHeight());
+        }
     }
     public void drawHealth(Graphics g, Enemy enemy){
         int health = enemy.getHealth();
@@ -120,15 +124,19 @@ class GamePanel extends JPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         // Running code for initially clicked keys
-        if(e.getKeyCode() == KeyEvent.VK_SPACE && !keysPressed[KeyEvent.VK_SPACE]){
+        if(e.getKeyCode() == KeyEvent.VK_SPACE && !keysPressed[KeyEvent.VK_SPACE] && !paused){
             player.jump(Player.INITIAL);
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_ESCAPE && !keysPressed[KeyEvent.VK_ESCAPE]){
+            paused = !paused;
+            repaint();
         }
         // Keeping track of whether or not the key is pressed down
         keysPressed[keyCode] = true;
         // DEBUG KEYS
         if(e.getKeyCode() == KeyEvent.VK_BACK_SLASH){
             if(getMousePosition() != null){
-                System.out.println(getMousePosition() + " True x = " + (getMousePosition().x - levelOffset));
+                System.out.println(getMousePosition() + " True x = " + (getMousePosition().x + levelOffset));
             }
         }
         else if(e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET){
@@ -161,7 +169,7 @@ class GamePanel extends JPanel implements KeyListener {
         }
     }
     public void checkCollision(){
-        for(Platform platform: platforms){
+        for(LevelProp platform: platforms){
             player.checkCollision(platform.getRect());
             for(Enemy enemy: enemies){
                 enemy.checkCollision(platform.getRect());

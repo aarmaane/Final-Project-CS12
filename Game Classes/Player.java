@@ -216,7 +216,7 @@ public class Player {
             AffineTransform flip = AffineTransform.getScaleInstance(-1, 1);
             flip.translate(-sprite.getWidth(null), 0);
             AffineTransformOp flipOp = new AffineTransformOp(flip, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-            sprite = flipOp.filter((BufferedImage) sprite, null);
+            sprite = flipOp.filter((BufferedImage)sprite, null);
         }
         return sprite;
     }

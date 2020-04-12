@@ -45,7 +45,7 @@ public class MainGame extends JFrame {
     // TickListener Class
     class TickListener implements ActionListener {
         public void actionPerformed(ActionEvent evt){
-            if(game != null && activePanel.equals(GAMEPANEL) && game.ready){
+            if(game != null && activePanel.equals(GAMEPANEL) && !game.paused){
                 // Main game loop
                 game.checkInputs();
                 game.update();

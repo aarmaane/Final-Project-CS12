@@ -4,33 +4,33 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class Platform {
+public class LevelProp {
     private static HashMap<String, Image> imageMap = new HashMap<>();
     private double x, y;
     private int width, height;
     private String imageName;
-    public Platform(String data){
+    public LevelProp(String data){
         String[] dataSplit = data.split(",");
         x = Integer.parseInt(dataSplit[0]);
         y = Integer.parseInt(dataSplit[1]);
         imageName = dataSplit[2];
-        Image platformImage = null;
+        Image propImage = null;
         try{
             if(!imageMap.containsKey(imageName)){
-                platformImage = ImageIO.read(new File("Assets/Images/Platforms/" + imageName));
-                imageMap.put(imageName, platformImage);
+                propImage = ImageIO.read(new File("Assets/Images/Level Props/" + imageName));
+                imageMap.put(imageName, propImage);
             }
             else{
-                platformImage = imageMap.get(imageName);
+                propImage = imageMap.get(imageName);
             }
         }
         catch (IOException e) {
-            System.out.println("Platform picture missing!");
+            System.out.println("Level prop picture missing!");
             e.printStackTrace();
             System.exit(1);
         }
-        width = platformImage.getWidth(null);
-        height = platformImage.getHeight(null);
+        width = propImage.getWidth(null);
+        height = propImage.getHeight(null);
     }
     // Getter methods
     public Image getPlatformImage(){

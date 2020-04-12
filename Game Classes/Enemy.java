@@ -1,4 +1,7 @@
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 
 public abstract class Enemy {
     // Constants
@@ -7,11 +10,11 @@ public abstract class Enemy {
     protected static final double GRAVITY = 0.25;
     //Fields
     protected double x, y, velocityX, velocityY;
-    protected int direction, spriteCount;
-    protected int health, damage;
-    protected int difficulty;
+    protected double spriteCount;
+    protected int direction;
+    protected int health, damage, difficulty;
     protected boolean isActive;
-    // Declaring methods
+    // Declaring methods that subclasses need to implement
     public abstract void update(Player player);
     public abstract void checkCollision(Rectangle rect);
     public abstract Image getSprite();
@@ -25,5 +28,14 @@ public abstract class Enemy {
     }
     public int getHealth(){
         return health;
+    }
+    // Helper methods for subclasses
+    protected Image flipImage(Image image){
+        // Using AffineTransform with Nearest-Neighbour to apply flip while keeping 8-bit style
+        AffineTransform flip = AffineTransform.getScaleInstance(-1, 1);
+        flip.translate(-image.getWidth(null), 0);
+        AffineTransformOp flipOp = new AffineTransformOp(flip, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        image = flipOp.filter((BufferedImage)image, null);
+        return image;
     }
 }

@@ -1,3 +1,0 @@
-// Comment test
-576,379,pillarMiddle.png
-576,427,pillarMiddle.png
