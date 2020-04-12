@@ -11,7 +11,7 @@ public abstract class Enemy {
     protected double x, y, velocityX, velocityY;
     protected double spriteCount;
     protected int direction;
-    protected int health, damage, difficulty;
+    protected int health, maxHealth, damage, difficulty;
     protected boolean isActive;
     // Declaring methods that subclasses need to implement
     public abstract void update(Player player);
@@ -27,6 +27,12 @@ public abstract class Enemy {
     }
     public int getHealth(){
         return health;
+    }
+    public int getMaxHealth(){
+        return maxHealth;
+    }
+    public int getHealthPercent(){
+        return (health/maxHealth)*100;
     }
     // Helper methods for subclasses
     protected Image flipImage(Image image){

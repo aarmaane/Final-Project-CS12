@@ -31,6 +31,7 @@ public class Slime extends Enemy {
         y = Integer.parseInt(dataSplit[1]);
         difficulty = Integer.parseInt(dataSplit[2]);
         health = 100 * difficulty;
+        maxHealth=health;
     }
     // General methods
     @Override

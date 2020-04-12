@@ -16,6 +16,7 @@ class GamePanel extends JPanel implements KeyListener {
 
     // Game related Objects
     private Player player = new Player(this);
+    private Image enemyHealthBar;
     private Image[] backgroundLayers = new Image[3];
     private ArrayList<LevelProp> platforms = new ArrayList<LevelProp>();
     private ArrayList<LevelProp> noCollideProps = new ArrayList<LevelProp>();
@@ -34,6 +35,7 @@ class GamePanel extends JPanel implements KeyListener {
         addKeyListener(this);
         try{
             // Loading Images
+            enemyHealthBar=ImageIO.read(new File("Assets/Images/Enemies/healthBar.png"));
             for(int i = 0; i < 3; i++){
                 backgroundLayers[i] = ImageIO.read(new File("Assets/Images/Background/BG" + (i+1) + ".png"));
             }
@@ -112,11 +114,11 @@ class GamePanel extends JPanel implements KeyListener {
         for(Enemy enemy: enemies){
             g.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
             drawHealth(g, enemy);
-            g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
+            //g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
         }
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
-        g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
+        //g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
         // Drawing game stats
         g.setColor(new Color(255,255,255));
         g.setFont(gameFont);
@@ -133,7 +135,17 @@ class GamePanel extends JPanel implements KeyListener {
         }
     }
     public void drawHealth(Graphics g, Enemy enemy){
-        int health = enemy.getHealth();
+        double health = enemy.getHealth()-50;
+        double maxHealth = enemy.getMaxHealth();
+        Rectangle hitBox = enemy.getHitbox();
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(new Color(255,0,0));
+
+        g2d.fillRect(hitBox.x-levelOffset,hitBox.y-10,(int)((health/maxHealth)*100),10);
+
+        g2d.drawImage(enemyHealthBar,hitBox.x-levelOffset,hitBox.y,this);
+
     }
     // Keyboard related methods
     @Override
