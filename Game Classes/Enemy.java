@@ -5,8 +5,7 @@ import java.awt.image.BufferedImage;
 
 public abstract class Enemy {
     // Constants
-    public static final int RIGHT = 0;
-    public static final int LEFT = 1;
+    public static final int RIGHT = 0, LEFT = 1;
     protected static final double GRAVITY = 0.25;
     //Fields
     protected double x, y, velocityX, velocityY;

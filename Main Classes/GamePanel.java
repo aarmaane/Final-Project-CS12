@@ -22,7 +22,9 @@ class GamePanel extends JPanel implements KeyListener {
     private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     // Game fields
     private int levelOffset = 0;
-
+    // Fonts
+    Font gameFont;
+    Font gameFontBig;
     // Constructor for GamePanel
     public GamePanel(MainGame game){
         // Setting up the GamePanel
@@ -31,11 +33,16 @@ class GamePanel extends JPanel implements KeyListener {
         keysPressed = new boolean[KeyEvent.KEY_LAST+1];
         addKeyListener(this);
         try{
+            // Loading Images
             for(int i = 0; i < 3; i++){
                 backgroundLayers[i] = ImageIO.read(new File("Assets/Images/Background/BG" + (i+1) + ".png"));
             }
+            // Loading fonts
+            gameFont = Font.createFont(Font.TRUETYPE_FONT, new File("Assets/Fonts/8BitFont.ttf"));
+            gameFont = gameFont.deriveFont(30f);
+            gameFontBig = gameFont.deriveFont(50f);
         }
-        catch (IOException e) {
+        catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
         // Initalizing the enemy Classes
@@ -110,10 +117,19 @@ class GamePanel extends JPanel implements KeyListener {
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
         g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
+        // Drawing game stats
+        g.setColor(new Color(255,255,255));
+        g.setFont(gameFont);
+        g.drawString("Stamina:" + player.getStamina(),10,20);
         // Drawing pause screen
         if(paused){
             g.setColor(new Color(0,0,0, 100));
             g.fillRect(0, 0, getWidth(), getHeight());
+            g.setColor(new Color(255,255,255));
+            g.drawString("Press ESC to unpause", 335, 330);
+            g.setFont(gameFontBig);
+            g.drawString("Paused", 400, 300);
+
         }
     }
     public void drawHealth(Graphics g, Enemy enemy){

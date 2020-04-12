@@ -1,6 +1,8 @@
 TO DO List (Next 5 Objectives):
--Platforms
--Collisions with environment
-    -Collide with every side of a rectangle (like the question blocks)
-    -The player should only collide with the tops of platforms and land on them
--Setup basic enemies
+- Setup attacking system
+- Setup basic enemies
+- Draw health, stamina, score, and timer on screen
+- Expand level 1 (More Platform pictures needed)
+
+Future Ideas:
+- Ability to save progress

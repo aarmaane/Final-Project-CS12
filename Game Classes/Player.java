@@ -10,10 +10,8 @@ import java.io.IOException;
 
 public class Player {
     // Constants
-    public static final int RIGHT = 0;
-    public static final int LEFT = 1;
-    public static final int INITIAL = 0;
-    public static final int NORMAL = 1;
+    public static final int RIGHT = 0, LEFT = 1;
+    public static final int INITIAL = 0, NORMAL = 1;
     private static final double GRAVITY = 0.25;
     // Player's movement-related fields
     private double x, y;
@@ -35,13 +33,16 @@ public class Player {
     GamePanel game;
     // Constructor
     public Player(GamePanel gamePanel){
-        // Setting up fields
         game = gamePanel;
+        // Setting up movement fields
         y = 366;
         direction = RIGHT;
         acceleration = 0.2;
         maxSpeed = 6;
         onGround = true;
+        // Setting gameplay fields
+        maxStamina = 50;
+        stamina = maxStamina;
         // Loading Images
         try{
             for(int i = 0; i < 2; i++){
@@ -229,5 +230,8 @@ public class Player {
     public Rectangle getHitbox(){
         // Since the sprite images are much larger than the actual Player, offsets must be applied
         return new Rectangle((int)x + 50, (int)y + 15, 50, 93);
+    }
+    public int getStamina() {
+        return stamina;
     }
 }
