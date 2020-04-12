@@ -76,7 +76,7 @@ class GamePanel extends JPanel implements KeyListener {
         ArrayList<String> fileContents = new ArrayList<String>();
         while(inFile.hasNextLine()){
             String line = inFile.nextLine();
-            if(!line.substring(0,2).equals("//")){ // Making sure that the line is not a comment
+            if(!line.startsWith("//")){ // Making sure that the line is not a comment
                 fileContents.add(line);
             }
         }
@@ -131,7 +131,6 @@ class GamePanel extends JPanel implements KeyListener {
             g.drawString("Press ESC to unpause", 335, 330);
             g.setFont(gameFontBig);
             g.drawString("Paused", 400, 300);
-
         }
     }
     public void drawHealth(Graphics g, Enemy enemy){
