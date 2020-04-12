@@ -7,7 +7,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 class GamePanel extends JPanel implements KeyListener {
     // Window related Objects
     public boolean paused = false;
@@ -21,6 +20,8 @@ class GamePanel extends JPanel implements KeyListener {
     private ArrayList<LevelProp> platforms = new ArrayList<LevelProp>();
     private ArrayList<LevelProp> noCollideProps = new ArrayList<LevelProp>();
     private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+    private Sound test = new Sound("Assets/Sounds/Music/level1.wav");
+    private Sound testEffect = new Sound("Assets/Sounds/Effects/coin5.wav");
     // Game fields
     private int levelOffset = 0;
     // Fonts
@@ -151,25 +152,42 @@ class GamePanel extends JPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         // Running code for initially clicked keys
-        if(e.getKeyCode() == KeyEvent.VK_SPACE && !keysPressed[KeyEvent.VK_SPACE] && !paused){
+        if(keyCode == KeyEvent.VK_SPACE && !keysPressed[KeyEvent.VK_SPACE] && !paused){
             player.jump(Player.INITIAL);
         }
-        else if(e.getKeyCode() == KeyEvent.VK_ESCAPE && !keysPressed[KeyEvent.VK_ESCAPE]){
+        else if(keyCode == KeyEvent.VK_P && !keysPressed[KeyEvent.VK_P]){
+            player.attack();
+        }
+        else if(keyCode == KeyEvent.VK_ESCAPE && !keysPressed[KeyEvent.VK_ESCAPE]){
             paused = !paused;
             repaint();
         }
+        // SOUND TEST
+        if(keyCode == KeyEvent.VK_0){
+            if(!test.hasStarted()){
+                test.play();
+            }
+            else if(test.isPlaying()) {
+                test.pause();
+            }
+            else{
+                test.resume();
+            }
+        }
+        if(keyCode == KeyEvent.VK_8 && !keysPressed[KeyEvent.VK_8]){
+            testEffect.play();
+        }
         // Keeping track of whether or not the key is pressed down
         keysPressed[keyCode] = true;
-        // DEBUG KEYS
-        if(e.getKeyCode() == KeyEvent.VK_BACK_SLASH){
+        // DEBUG KEYS (REMOVE THESE AFTER)
+        if(keyCode == KeyEvent.VK_BACK_SLASH){
             if(getMousePosition() != null){
                 System.out.println(getMousePosition() + " True x = " + (getMousePosition().x + levelOffset));
             }
         }
-        else if(e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET){
+        else if(keyCode == KeyEvent.VK_CLOSE_BRACKET){
             player.resetPos();
         }
-
     }
     @Override
     public void keyReleased(KeyEvent e) {

@@ -1,5 +1,3 @@
-import org.w3c.dom.css.Rect;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -18,7 +16,7 @@ public class Player {
     private double velocityX, velocityY;
     private double acceleration, maxSpeed;
     private int direction;
-    private boolean onGround, holdingJump;
+    private boolean onGround, holdingJump, attacking;
     private double spriteCount = 0;
     // Players' gameplay-related fields
     private int health, maxHealth;
@@ -29,6 +27,7 @@ public class Player {
     private Image[] runSprites = new Image[6];
     private Image[] jumpingSprites = new Image[2];
     private Image[] fallingSprites = new Image[2];
+    private Image[] attackSprites = new Image[2];
     // Other fields
     GamePanel game;
     // Constructor
@@ -104,6 +103,9 @@ public class Player {
         else if(type == NORMAL){
             holdingJump = true;
         }
+    }
+    public void attack(){
+        System.out.println("attack");
     }
     // Method to update the Player Object each frame
     public void update(){
