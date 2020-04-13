@@ -18,6 +18,8 @@ class GamePanel extends JPanel implements KeyListener {
     private Player player = new Player(this);
     private Image enemyHealthBar;
     private Image staminaBar;
+    private Image healthBar;
+    private Image statsBar;
     private Image[] backgroundLayers = new Image[3];
     private ArrayList<LevelProp> platforms = new ArrayList<LevelProp>();
     private ArrayList<LevelProp> noCollideProps = new ArrayList<LevelProp>();
@@ -40,7 +42,9 @@ class GamePanel extends JPanel implements KeyListener {
         try{
             // Loading Images
             enemyHealthBar = ImageIO.read(new File("Assets/Images/Enemies/healthBar.png"));
-            staminaBar = ImageIO.read(new File("Assets/Images/Player/staminaBar2.png"));
+            staminaBar = ImageIO.read(new File("Assets/Images/Player/staminaBar.png"));
+            healthBar = ImageIO.read(new File("Assets/Images/Player/healthBar.png"));
+            statsBar = ImageIO.read(new File("Assets/Images/Player/statsBar.png"));
             for(int i = 0; i < 3; i++){
                 backgroundLayers[i] = ImageIO.read(new File("Assets/Images/Background/BG" + (i+1) + ".png"));
             }
@@ -130,13 +134,18 @@ class GamePanel extends JPanel implements KeyListener {
         g.setColor(new Color(255,255,255));
         g.setFont(gameFont);
         //Stamina
+        /*
         g.drawString("Stamina:" + player.getStamina(),10,20);
         g.setColor(new Color(247,255,10));
-        g.fillRect(25,33,(int)(((double)player.getStamina()/(double)player.getMaxStamina())*120),22);
+        g.fillRect(25,33,(int)(((double)player.getStamina()/player.getMaxStamina())*120),22);
         g.drawImage(staminaBar,8,30,this);
-        //Time
-        g.drawString("Time:" + player.getStamina(),10,20);
 
+         */
+        g.drawImage(healthBar, 10,10,this);
+        g.drawImage(staminaBar, 10,65,this);
+        g.drawImage(statsBar, 430, 22, this);
+        g.drawString("Health:", 320, 43);
+        g.drawString("Stamina:", 320, 80);
 
         // Drawing pause screen
         if(paused){

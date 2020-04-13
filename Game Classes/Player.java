@@ -199,6 +199,9 @@ public class Player {
                 spriteCount = 0;
             }
         }
+        else if(isAttacking){
+            spriteCount += 1;
+        }
         else if(velocityY < 0){ // Jumping sprites
             if(spriteCount < 1){ // Only playing the animation once through (no repetition)
                 spriteCount += 0.1;
