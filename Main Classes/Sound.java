@@ -15,6 +15,7 @@ public class Sound {
         catch (LineUnavailableException e) {
             e.printStackTrace();
         }
+        loadClip();
     }
     private void loadClip(){
         try{
@@ -27,13 +28,7 @@ public class Sound {
         }
     }
     public void play(){
-        if(!clip.isActive()){
-            clip.close();
-            loadClip();
-        }
-        else{
-            clip.setMicrosecondPosition(0);
-        }
+        clip.setMicrosecondPosition(0);
         clip.start();
     }
     public void resume(){

@@ -135,7 +135,7 @@ class GamePanel extends JPanel implements KeyListener {
         }
     }
     public void drawHealth(Graphics g, Enemy enemy){
-        double health = enemy.getHealth()-100;
+        double health = enemy.getHealth();
         double maxHealth = enemy.getMaxHealth();
         Rectangle hitBox = enemy.getHitbox();
 
