@@ -16,21 +16,25 @@ public class Player {
     private double velocityX, velocityY;
     private double acceleration, maxSpeed;
     private int direction;
-    private boolean onGround, holdingJump, attacking;
+    private boolean onGround, holdingJump;
     private double spriteCount = 0;
     // Players' gameplay-related fields
     private int health, maxHealth;
     private int stamina, maxStamina;
     private int swordDamage, spellDamage;
+    private boolean isAttacking, isCasting;
+    private int attackNum;
     // Image Arrays holding Player's Sprites
     private Image[] idleSprites = new Image[4];
     private Image[] runSprites = new Image[6];
     private Image[] jumpingSprites = new Image[2];
     private Image[] fallingSprites = new Image[2];
-    private Image[] attackSprites = new Image[2];
+    private Image[][] groundAttackSprites = new Image[1][5];
+    private Image[] airAttackSprites = new Image[5];
+    private Image[] castSprites = new Image[4];
     // Other fields
     GamePanel game;
-    // Constructor
+    // Constructor methods
     public Player(GamePanel gamePanel){
         game = gamePanel;
         // Setting up movement fields
@@ -43,27 +47,36 @@ public class Player {
         maxStamina = 50;
         stamina = maxStamina;
         // Loading Images
+        spriteLoad(fallingSprites, "fall");
+        spriteLoad(jumpingSprites, "jump");
+        spriteLoad(idleSprites, "idle");
+        spriteLoad(runSprites, "run");
+        spriteLoad(groundAttackSprites, "attack");
+        spriteLoad(castSprites, "cast");
+    }
+    public void spriteLoad(Image[] targetArray, String fileName){
         try{
-            for(int i = 0; i < 2; i++){
-                fallingSprites[i] = ImageIO.read(new File("Assets/Images/Player/fall" + i + ".png"));
-                jumpingSprites[i] = ImageIO.read(new File("Assets/Images/Player/jump" + i + ".png"));
-
+            for(int i = 0; i < targetArray.length; i++){
+                System.out.println("Assets/Images/Player/" + fileName + i + ".png");
+                targetArray[i] = ImageIO.read(new File("Assets/Images/Player/" + fileName + i + ".png"));
             }
-            for(int i = 0; i < 4; i++){
-                idleSprites[i] = ImageIO.read(new File("Assets/Images/Player/idle" + i + ".png"));
-            }
-            for(int i = 0; i < 6; i++){
-                runSprites[i] = ImageIO.read(new File("Assets/Images/Player/run" + i + ".png"));
-            }
-
         }
         catch (IOException e) {
-            System.out.println("Player image missing!");
+            System.out.println("Player sprite missing!");
             e.printStackTrace();
         }
     }
-
+    public void spriteLoad(Image[][] targetArray, String fileName){
+        for(int i = 0; i < targetArray.length; i++){
+            spriteLoad(targetArray[i], fileName + i + "-");
+        }
+    }
+    // General methods
     public void move(int type){
+        // If the player is doing an action, don't let them move
+        if(isCasting || isAttacking){
+            return;
+        }
         // Handling sudden movements
         if(type != direction){ // Change in direction
             velocityX = 0;
@@ -95,6 +108,10 @@ public class Player {
         }
     }
     public void jump(int type){
+        // If the player is doing an action, don't let them jump
+        if(isCasting || isAttacking){
+            return;
+        }
         if(type == INITIAL && onGround){
             spriteCount = 0;
             onGround = false;
@@ -106,6 +123,18 @@ public class Player {
     }
     public void attack(){
         System.out.println("attack");
+        //isAttacking = true;
+        attackNum++;
+        velocityX = 0;
+        stamina -= 5;
+    }
+    public void castMagic(){
+        System.out.println("magic");
+        if(onGround){
+            stamina -= 10;
+            isCasting = true;
+            spriteCount = 0;
+        }
     }
     // Method to update the Player Object each frame
     public void update(){
@@ -144,6 +173,11 @@ public class Player {
         // Checking if the Player is falling (This will update onGround when the Player leaves a platform without jumping)
         if(onGround && velocityY > 1){
             onGround = false;
+            if(isCasting || isAttacking){ // Cancelling any spell cast or attack
+                isCasting = false;
+                isAttacking = false;
+                spriteCount = 0;
+            }
         }
     }
     // Method to keep the Player within the confines of the game
@@ -157,7 +191,15 @@ public class Player {
     }
     // Method to smoothly update the sprite counter and produce realistic animation of the Player
     public void updateSprite(){
-        if(velocityY < 0){ // Jumping sprites
+        if(isCasting){
+            spriteCount += 0.05;
+            if(spriteCount > castSprites.length){
+                isCasting = false;
+                // Release spell here
+                spriteCount = 0;
+            }
+        }
+        else if(velocityY < 0){ // Jumping sprites
             if(spriteCount < 1){ // Only playing the animation once through (no repetition)
                 spriteCount += 0.1;
             }
@@ -201,17 +243,24 @@ public class Player {
     // Method that returns the player's current sprite by looking at various fields
     public Image getSprite(){
         Image sprite = null;
-        if(velocityY < 0){
-            sprite = jumpingSprites[(int)Math.floor(spriteCount)];
+        int spriteIndex = (int)Math.floor(spriteCount);
+        if(isCasting){
+            sprite = castSprites[spriteIndex];
+        }
+        else if(isAttacking){
+            sprite = groundAttackSprites[0][0];
+        }
+        else if(velocityY < 0){
+            sprite = jumpingSprites[spriteIndex];
         }
         else if(velocityY > 0 && !onGround)  {
-            sprite = fallingSprites[(int)Math.floor(spriteCount)];
+            sprite = fallingSprites[spriteIndex];
         }
         else if(velocityX != 0){
-            sprite = runSprites[(int)Math.floor(spriteCount)];
+            sprite = runSprites[spriteIndex];
         }
         else{
-            sprite = idleSprites[(int)Math.floor(spriteCount)];
+            sprite = idleSprites[spriteIndex];
         }
         // Flipping the image since the sprites are all right-facing
         if(direction == LEFT){
@@ -231,7 +280,14 @@ public class Player {
     }
     public Rectangle getHitbox(){
         // Since the sprite images are much larger than the actual Player, offsets must be applied
-        return new Rectangle((int)x + 50, (int)y + 15, 50, 93);
+        return new Rectangle((int)x + 58, (int)y + 15, 36, 93);
+    }
+    public Rectangle getAttackBox(){
+        int xPos = (int)x + 120;
+        if(direction == LEFT){
+            xPos = (int)x;
+        }
+        return new Rectangle(xPos, (int)y + 40, 30, 50);
     }
     public int getStamina() {
         return stamina;

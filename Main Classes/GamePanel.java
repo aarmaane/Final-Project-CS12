@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -124,6 +125,7 @@ class GamePanel extends JPanel implements KeyListener {
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
         g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
+        g.drawRect(player.getAttackBox().x - levelOffset, player.getAttackBox().y, player.getAttackBox().width, player.getAttackBox().height);
         // Drawing game stats
         g.setColor(new Color(255,255,255));
         g.setFont(gameFont);
@@ -164,15 +166,20 @@ class GamePanel extends JPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         // Running code for initially clicked keys
-        if(keyCode == KeyEvent.VK_SPACE && !keysPressed[KeyEvent.VK_SPACE] && !paused){
-            player.jump(Player.INITIAL);
-        }
-        else if(keyCode == KeyEvent.VK_P && !keysPressed[KeyEvent.VK_P]){
-            player.attack();
-        }
-        else if(keyCode == KeyEvent.VK_ESCAPE && !keysPressed[KeyEvent.VK_ESCAPE]){
-            paused = !paused;
-            repaint();
+        if(!keysPressed[keyCode]){
+            if(keyCode == KeyEvent.VK_SPACE && !paused){
+                player.jump(Player.INITIAL);
+            }
+            else if(keyCode == KeyEvent.VK_P && !paused){
+                player.attack();
+            }
+            else if(keyCode == KeyEvent.VK_O && !paused){
+                player.castMagic();
+            }
+            else if(keyCode == KeyEvent.VK_ESCAPE){
+                paused = !paused;
+                repaint();
+            }
         }
         // SOUND TEST
         if(keyCode == KeyEvent.VK_0){
