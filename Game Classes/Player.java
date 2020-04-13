@@ -236,4 +236,5 @@ public class Player {
     public int getStamina() {
         return stamina;
     }
+    public int getMaxStamina(){return maxStamina;}
 }

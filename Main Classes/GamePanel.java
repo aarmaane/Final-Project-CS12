@@ -16,6 +16,7 @@ class GamePanel extends JPanel implements KeyListener {
     // Game related Objects
     private Player player = new Player(this);
     private Image enemyHealthBar;
+    private Image staminaBar;
     private Image[] backgroundLayers = new Image[3];
     private ArrayList<LevelProp> platforms = new ArrayList<LevelProp>();
     private ArrayList<LevelProp> noCollideProps = new ArrayList<LevelProp>();
@@ -23,6 +24,7 @@ class GamePanel extends JPanel implements KeyListener {
     private Sound test = new Sound("Assets/Sounds/Music/level1.wav");
     private Sound testEffect = new Sound("Assets/Sounds/Effects/coin5.wav");
     // Game fields
+    private int time;
     private int levelOffset = 0;
     // Fonts
     Font gameFont;
@@ -36,7 +38,8 @@ class GamePanel extends JPanel implements KeyListener {
         addKeyListener(this);
         try{
             // Loading Images
-            enemyHealthBar=ImageIO.read(new File("Assets/Images/Enemies/healthBar.png"));
+            enemyHealthBar = ImageIO.read(new File("Assets/Images/Enemies/healthBar.png"));
+            staminaBar = ImageIO.read(new File("Assets/Images/Player/staminaBar2.png"));
             for(int i = 0; i < 3; i++){
                 backgroundLayers[i] = ImageIO.read(new File("Assets/Images/Background/BG" + (i+1) + ".png"));
             }
@@ -96,6 +99,7 @@ class GamePanel extends JPanel implements KeyListener {
         System.out.println("remove notify");
     }
     public void paintComponent(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
         // Drawing the background
         g.setColor(new Color(0,0,0));
         g.fillRect(0, 0, 960, 590);
@@ -123,7 +127,15 @@ class GamePanel extends JPanel implements KeyListener {
         // Drawing game stats
         g.setColor(new Color(255,255,255));
         g.setFont(gameFont);
+        //Stamina
         g.drawString("Stamina:" + player.getStamina(),10,20);
+        g.setColor(new Color(247,255,10));
+        g.fillRect(25,33,(int)(((double)player.getStamina()/(double)player.getMaxStamina())*120),22);
+        g.drawImage(staminaBar,8,30,this);
+        //Time
+        g.drawString("Time:" + player.getStamina(),10,20);
+
+
         // Drawing pause screen
         if(paused){
             g.setColor(new Color(0,0,0, 100));
@@ -138,13 +150,13 @@ class GamePanel extends JPanel implements KeyListener {
         double health = enemy.getHealth();
         double maxHealth = enemy.getMaxHealth();
         Rectangle hitBox = enemy.getHitbox();
-
+        int healthBarOffset = (hitBox.width/2)-(int)((health/maxHealth)*44);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(new Color(255,0,0));
 
-        g2d.fillRect(hitBox.x-levelOffset,hitBox.y-10,(int)((health/maxHealth)*88),13);
+        g2d.fillRect(hitBox.x-levelOffset+healthBarOffset,hitBox.y-10,(int)((health/maxHealth)*88),13);
 
-        g2d.drawImage(enemyHealthBar,hitBox.x-levelOffset-10,hitBox.y-15,this);
+        g2d.drawImage(enemyHealthBar,hitBox.x-levelOffset-10+healthBarOffset,hitBox.y-15,this);
 
     }
     // Keyboard related methods
