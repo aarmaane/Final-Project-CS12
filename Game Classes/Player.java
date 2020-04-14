@@ -16,6 +16,7 @@ public class Player {
     private double velocityX, velocityY;
     private double acceleration, maxSpeed;
     private int direction;
+    private int points;
     private boolean onGround, holdingJump;
     private double spriteCount = 0;
     // Players' gameplay-related fields
@@ -48,6 +49,7 @@ public class Player {
         stamina = maxStamina;
         maxHealth=100;
         health=maxHealth;
+        points=0;
         // Loading Images
         spriteLoad(fallingSprites, "fall");
         spriteLoad(jumpingSprites, "jump");
@@ -300,4 +302,5 @@ public class Player {
     public int getMaxStamina(){return maxStamina;}
     public int getHealth(){return health;}
     public int getMaxHealth(){return maxHealth;}
+    public int getPoints(){return points;}
 }

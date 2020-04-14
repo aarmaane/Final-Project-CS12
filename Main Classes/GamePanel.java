@@ -157,6 +157,7 @@ class GamePanel extends JPanel implements KeyListener {
         g.drawImage(healthBar, 10,10,this);
         g.drawImage(staminaBar, 10,65,this);
         g.drawString("Time: "+timeLeft,800,20);
+        g.drawString("Points: "+player.getPoints(),660,20);
 
         // Drawing pause screen
         if(paused){
@@ -173,12 +174,12 @@ class GamePanel extends JPanel implements KeyListener {
         double maxHealth = enemy.getMaxHealth();
         Rectangle hitBox = enemy.getHitbox();
         int healthBarOffset = (hitBox.width/2)-(int)((health/maxHealth)*44);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(new Color(255,0,0));
 
-        g2d.fillRect(hitBox.x-levelOffset+healthBarOffset,hitBox.y-10,(int)((health/maxHealth)*88),13);
+        g.setColor(new Color(255,0,0));
 
-        g2d.drawImage(enemyHealthBar,hitBox.x-levelOffset-10+healthBarOffset,hitBox.y-15,this);
+        g.fillRect(hitBox.x-levelOffset+healthBarOffset,hitBox.y-10,(int)((health/maxHealth)*88),13);
+
+        g.drawImage(enemyHealthBar,hitBox.x-levelOffset-10+healthBarOffset,hitBox.y-15,this);
 
     }
     // Keyboard related methods
