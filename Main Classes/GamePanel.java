@@ -27,7 +27,7 @@ class GamePanel extends JPanel implements KeyListener {
     private Sound test = new Sound("Assets/Sounds/Music/level1.wav");
     private Sound testEffect = new Sound("Assets/Sounds/Effects/coin5.wav");
     // Game fields
-    private int time;
+    private int timeLeft=200;
     private int levelOffset = 0;
     // Fonts
     Font gameFont;
@@ -133,15 +133,18 @@ class GamePanel extends JPanel implements KeyListener {
         g.setColor(new Color(255,255,255));
         g.setFont(gameFont);
 
+        /*Fills in both of the stat bars from darker shades to lighter shades by increasing the respective rgb value by 1 while shifting the
+        rectangle over each time.
+         */
         for(int i=0;i<100;i++) {
             //Health
-            g.setColor(new Color(155+i,0,0));
-            g.fillRect(59+i, 30, (int) (((double) player.getStamina() / player.getMaxStamina()) * 198)-i, 14);
+            g.setColor(new Color(155+i,0,0));//Chaning colour
+            g.fillRect(59+i, 30, (int) (((double) player.getHealth() / player.getMaxHealth()) * 198)-i, 14);
             //Stamina
             g.setColor(new Color(0,155+i,0));
             g.fillRect(59+i, 83, (int) (((double) player.getStamina() / player.getMaxStamina()) * 198)-i, 14);
         }
-
+        g.setColor(new Color(0,0,0));
 
         /*
         g.drawString("Stamina:" + player.getStamina(),10,20);
@@ -153,8 +156,7 @@ class GamePanel extends JPanel implements KeyListener {
 
         g.drawImage(healthBar, 10,10,this);
         g.drawImage(staminaBar, 10,65,this);
-        g.drawString("Health:", 320, 43);
-        g.drawString("Stamina:", 320, 80);
+        g.drawString("Time: "+timeLeft,800,20);
 
         // Drawing pause screen
         if(paused){
@@ -274,6 +276,9 @@ class GamePanel extends JPanel implements KeyListener {
         if(keysPressed[KeyEvent.VK_SPACE]){
             player.jump(Player.NORMAL);
         }
+    }
+    public void iterateTime(){
+        timeLeft-=1;
     }
 
     // Getter methods

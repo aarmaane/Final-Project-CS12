@@ -46,6 +46,8 @@ public class Player {
         // Setting gameplay fields
         maxStamina = 50;
         stamina = maxStamina;
+        maxHealth=100;
+        health=maxHealth;
         // Loading Images
         spriteLoad(fallingSprites, "fall");
         spriteLoad(jumpingSprites, "jump");
@@ -296,4 +298,6 @@ public class Player {
         return stamina;
     }
     public int getMaxStamina(){return maxStamina;}
+    public int getHealth(){return health;}
+    public int getMaxHealth(){return maxHealth;}
 }

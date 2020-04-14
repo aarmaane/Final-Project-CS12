@@ -14,6 +14,7 @@ public class MainGame extends JFrame {
     private String activePanel = MENUPANEL;
     private Timer myTimer; // Timer to call the game functions each frame
     private int runTime; // Variable to keep track of the miliseconds that have passed since the start of the game
+    private int timePassed;
     public MainGame(){
         super("Game"); // Setting the title
         // Creating the JPanels for the game
@@ -51,6 +52,12 @@ public class MainGame extends JFrame {
                 game.update();
                 game.checkCollision();
                 game.repaint();
+                //Timer
+                timePassed+=10;
+                if(timePassed==1000){
+                    timePassed=0;
+                    game.iterateTime();
+                }
             }
             else if(menu != null && activePanel.equals(MENUPANEL)){
                 menu.repaint();
