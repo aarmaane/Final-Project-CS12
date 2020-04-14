@@ -130,35 +130,22 @@ class GamePanel extends JPanel implements KeyListener {
         g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
         g.drawRect(player.getAttackBox().x - levelOffset, player.getAttackBox().y, player.getAttackBox().width, player.getAttackBox().height);
         // Drawing game stats
-        g.setColor(new Color(255,255,255));
         g.setFont(gameFont);
-
         /*Fills in both of the stat bars from darker shades to lighter shades by increasing the respective rgb value by 1 while shifting the
-        rectangle over each time.
-         */
+        rectangle over each time. */
         for(int i=0;i<100;i++) {
             //Health
-            g.setColor(new Color(155+i,0,0));//Chaning colour
+            g.setColor(new Color(155+i,0,0));//Changing colour
             g.fillRect(59+i, 30, (int) (((double) player.getHealth() / player.getMaxHealth()) * 198)-i, 14);
             //Stamina
             g.setColor(new Color(0,155+i,0));
-            g.fillRect(59+i, 83, (int) (((double) player.getStamina() / player.getMaxStamina()) * 198)-i, 14);
+            g.fillRect(59+i, 83, (int) ((player.getStamina() / player.getMaxStamina()) * 198)-i, 14);
         }
         g.setColor(new Color(0,0,0));
-
-        /*
-        g.drawString("Stamina:" + player.getStamina(),10,20);
-        g.setColor(new Color(247,255,10));
-        g.fillRect(25,33,(int)(((double)player.getStamina()/player.getMaxStamina())*120),22);
-        g.drawImage(staminaBar,8,30,this);
-
-         */
-
         g.drawImage(healthBar, 10,10,this);
         g.drawImage(staminaBar, 10,65,this);
         g.drawString("Time: "+timeLeft,800,20);
         g.drawString("Points: "+player.getPoints(),660,20);
-
         // Drawing pause screen
         if(paused){
             g.setColor(new Color(0,0,0, 100));
@@ -174,11 +161,9 @@ class GamePanel extends JPanel implements KeyListener {
         double maxHealth = enemy.getMaxHealth();
         Rectangle hitBox = enemy.getHitbox();
         int healthBarOffset = (hitBox.width/2)-(int)((health/maxHealth)*44);
-
+        // Using Graphics inputted to draw the bar
         g.setColor(new Color(255,0,0));
-
         g.fillRect(hitBox.x-levelOffset+healthBarOffset,hitBox.y-10,(int)((health/maxHealth)*88),13);
-
         g.drawImage(enemyHealthBar,hitBox.x-levelOffset-10+healthBarOffset,hitBox.y-15,this);
 
     }

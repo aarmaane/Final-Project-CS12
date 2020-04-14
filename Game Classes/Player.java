@@ -21,7 +21,7 @@ public class Player {
     private double spriteCount = 0;
     // Players' gameplay-related fields
     private int health, maxHealth;
-    private int stamina, maxStamina;
+    private double stamina, maxStamina;
     private int swordDamage, spellDamage;
     private boolean isAttacking, isCasting;
     private int attackNum;
@@ -30,7 +30,7 @@ public class Player {
     private Image[] runSprites = new Image[6];
     private Image[] jumpingSprites = new Image[2];
     private Image[] fallingSprites = new Image[2];
-    private Image[][] groundAttackSprites = new Image[1][5];
+    private Image[][] groundAttackSprites; // This array will be jagged since attacks have differing lengths
     private Image[] airAttackSprites = new Image[5];
     private Image[] castSprites = new Image[4];
     // Other fields
@@ -55,8 +55,15 @@ public class Player {
         spriteLoad(jumpingSprites, "jump");
         spriteLoad(idleSprites, "idle");
         spriteLoad(runSprites, "run");
-        spriteLoad(groundAttackSprites, "attack");
         spriteLoad(castSprites, "cast");
+        Image[] attack1 = new Image[5];
+        Image[] attack2 = new Image[6];
+        Image[] attack3 = new Image[6];
+        spriteLoad(attack1, "attack1-");
+        spriteLoad(attack2, "attack2-");
+        spriteLoad(attack3, "attack3-");
+        groundAttackSprites = new Image[][]{attack1, attack2, attack3};
+
     }
     public void spriteLoad(Image[] targetArray, String fileName){
         try{
@@ -70,14 +77,9 @@ public class Player {
             e.printStackTrace();
         }
     }
-    public void spriteLoad(Image[][] targetArray, String fileName){
-        for(int i = 0; i < targetArray.length; i++){
-            spriteLoad(targetArray[i], fileName + i + "-");
-        }
-    }
     // General methods
     public void move(int type){
-        // If the player is doing an action, don't let them move
+        // If the player is doing an action, don't let them move (ignore this call for move())
         if(isCasting || isAttacking){
             return;
         }
@@ -127,14 +129,19 @@ public class Player {
     }
     public void attack(){
         System.out.println("attack");
-        //isAttacking = true;
-        attackNum++;
-        velocityX = 0;
-        stamina -= 5;
+        if(!isAttacking && !isCasting && onGround && (stamina - 5) > 0){
+            stamina -= 5;
+            isAttacking = true;
+            spriteCount = 0;
+            attackNum++;
+            if(attackNum >= groundAttackSprites.length){
+                attackNum = 0;
+            }
+        }
     }
     public void castMagic(){
         System.out.println("magic");
-        if(onGround){
+        if(!isAttacking && !isCasting && onGround && (stamina - 10) > 0){
             stamina -= 10;
             isCasting = true;
             spriteCount = 0;
@@ -143,6 +150,7 @@ public class Player {
     // Method to update the Player Object each frame
     public void update(){
         updateMotion();
+        updateStamina();
         checkOutOfBounds();
         updateSprite();
     }
@@ -184,6 +192,20 @@ public class Player {
             }
         }
     }
+    public void updateStamina(){
+        if(isCasting || isAttacking){
+            return; // No regeneration during casting/attacks
+        }
+        else if(velocityX != 0 || !onGround) {
+            stamina += 0.01; // Slow regeneration while in motion
+        }
+        else{
+            stamina += 0.07; // Faster regeneration while standing still
+        }
+        if(stamina > maxStamina){ // Making sure stamina doesn't exceed maximum
+            stamina = maxStamina;
+        }
+    }
     // Method to keep the Player within the confines of the game
     public void checkOutOfBounds(){
         // Using the hitbox for true X coordinate values since the sprite pictures are larger than the actual player
@@ -204,28 +226,32 @@ public class Player {
             }
         }
         else if(isAttacking){
-            spriteCount += 1;
+            spriteCount += 0.1;
+            if(spriteCount > groundAttackSprites[attackNum].length){
+                isAttacking = false;
+                spriteCount = 0;
+            }
         }
         else if(velocityY < 0){ // Jumping sprites
-            if(spriteCount < 1){ // Only playing the animation once through (no repetition)
+            if(spriteCount < 1){ // Only playing the first frame only once (no repetition)
                 spriteCount += 0.1;
             }
         }
         else if(velocityY > 0 && !onGround){ // Falling sprites
             spriteCount += 0.05 + (Math.pow(velocityY,1.5)/100);
-            if(spriteCount > 2){
+            if(spriteCount > fallingSprites.length){
                 spriteCount = 0;
             }
         }
         else if(velocityX != 0){ // Running sprites
             spriteCount += 0.05 + (Math.abs(velocityX)/90); // Scaling sprite speed with player velocity
-            if(spriteCount > 6){
+            if(spriteCount > runSprites.length){
                 spriteCount = 0;
             }
         }
         else{ // Idling sprites
             spriteCount += 0.05;
-            if(spriteCount > 4){
+            if(spriteCount > idleSprites.length){
                 spriteCount = 0;
             }
         }
@@ -255,7 +281,7 @@ public class Player {
             sprite = castSprites[spriteIndex];
         }
         else if(isAttacking){
-            sprite = groundAttackSprites[0][0];
+            sprite = groundAttackSprites[attackNum][spriteIndex];
         }
         else if(velocityY < 0){
             sprite = jumpingSprites[spriteIndex];
@@ -296,10 +322,10 @@ public class Player {
         }
         return new Rectangle(xPos, (int)y + 40, 30, 50);
     }
-    public int getStamina() {
+    public double getStamina() {
         return stamina;
     }
-    public int getMaxStamina(){return maxStamina;}
+    public double getMaxStamina(){return maxStamina;}
     public int getHealth(){return health;}
     public int getMaxHealth(){return maxHealth;}
     public int getPoints(){return points;}

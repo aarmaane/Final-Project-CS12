@@ -52,9 +52,9 @@ public class MainGame extends JFrame {
                 game.update();
                 game.checkCollision();
                 game.repaint();
-                //Timer
-                timePassed+=10;
-                if(timePassed==1000){
+                // Timer to
+                timePassed+=10; // The main game loop is called every 10ms
+                if(timePassed==1000){ // If 1 second has passed
                     timePassed=0;
                     game.iterateTime();
                 }
