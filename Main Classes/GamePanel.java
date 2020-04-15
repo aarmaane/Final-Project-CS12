@@ -160,11 +160,11 @@ class GamePanel extends JPanel implements KeyListener {
         double health = enemy.getHealth();
         double maxHealth = enemy.getMaxHealth();
         Rectangle hitBox = enemy.getHitbox();
-        int healthBarOffset = (hitBox.width/2)-(int)((health/maxHealth)*44);
+        int healthBarOffset = ((100-hitBox.width)/8);
         // Using Graphics inputted to draw the bar
         g.setColor(new Color(255,0,0));
-        g.fillRect(hitBox.x-levelOffset+healthBarOffset,hitBox.y-10,(int)((health/maxHealth)*88),13);
-        g.drawImage(enemyHealthBar,hitBox.x-levelOffset-10+healthBarOffset,hitBox.y-15,this);
+        g.fillRect(hitBox.x-levelOffset-healthBarOffset,hitBox.y-10,(int)((health/maxHealth)*88),13);
+        g.drawImage(enemyHealthBar,hitBox.x-levelOffset-10-healthBarOffset,hitBox.y-15,this);
 
     }
     // Keyboard related methods
@@ -227,7 +227,9 @@ class GamePanel extends JPanel implements KeyListener {
         for(Enemy enemy: enemies){
             enemy.update(player);
         }
+        checkPlayerAttack();
         calculateOffset();
+
     }
     public void calculateOffset(){
         Rectangle hitbox = player.getHitbox();
@@ -245,6 +247,19 @@ class GamePanel extends JPanel implements KeyListener {
                 enemy.checkCollision(platform.getRect());
             }
         }
+    }
+    public void checkPlayerAttack(){
+        if(player.isAttackFrame()){
+            for(Enemy enemy:enemies){
+                if(player.getAttackBox().intersects(enemy.getHitbox())){
+                    enemy.swordHit(player);
+                    //System.out.println(enemy.getHealth());
+
+
+                }
+            }
+        }
+
     }
 
     public void checkInputs(){

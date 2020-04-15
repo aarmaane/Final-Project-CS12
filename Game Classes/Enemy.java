@@ -34,6 +34,12 @@ public abstract class Enemy {
     public int getHealthPercent(){
         return (health/maxHealth)*100;
     }
+    public void swordHit(Player player){
+        System.out.println("hit");
+        System.out.println(player.getSwordDamage());
+        health-=(randint(80,100)/100.0)*player.getSwordDamage();
+
+    }
     // Helper methods for subclasses
     protected Image flipImage(Image image){
         // Using AffineTransform with Nearest-Neighbour to apply flip while keeping 8-bit style
@@ -43,4 +49,9 @@ public abstract class Enemy {
         image = flipOp.filter((BufferedImage)image, null);
         return image;
     }
+    //Other helper methods
+    public static int randint(int low, int high){
+        return (int)(Math.random()*(high-low+1)+low);
+    }
+
 }

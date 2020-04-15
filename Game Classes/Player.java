@@ -50,6 +50,8 @@ public class Player {
         maxHealth=100;
         health=maxHealth;
         points=0;
+        swordDamage=10;
+        spellDamage=10;
         // Loading Images
         spriteLoad(fallingSprites, "fall");
         spriteLoad(jumpingSprites, "jump");
@@ -322,6 +324,15 @@ public class Player {
         }
         return new Rectangle(xPos, (int)y + 40, 30, 50);
     }
+    public boolean isAttackFrame(){
+        //System.out.println(spriteCount+" "+(double)groundAttackSprites[attackNum].length/2);
+        if(isAttacking && Math.round(spriteCount*10)/10.0 == (double)groundAttackSprites[attackNum].length/2){
+            return true;
+
+        }
+        return false;
+    }
+
     public double getStamina() {
         return stamina;
     }
@@ -329,4 +340,6 @@ public class Player {
     public int getHealth(){return health;}
     public int getMaxHealth(){return maxHealth;}
     public int getPoints(){return points;}
+    public int getSpellDamage(){return spellDamage;}
+    public int getSwordDamage(){return swordDamage;}
 }
