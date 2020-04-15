@@ -6,3 +6,13 @@
 576,283,pillarTop.png
 720,475,grassMiddle.png
 864,475,grassMiddle.png
+1008,475,grassRight.png
+1090,200,grassPlatform.png
+1296,475,grassLeft.png
+1340,475,grassMiddle.png
+1484,475,grassMiddle.png
+1628,475,grassMiddle.png
+1772,475,grassMiddle.png
+1772,235,grassPillar.png
+1916,475,grassMiddle.png
+2060,475,grassMiddle.png

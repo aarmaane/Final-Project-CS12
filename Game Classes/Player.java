@@ -223,7 +223,6 @@ public class Player {
             spriteCount += 0.05;
             if(spriteCount > castSprites.length){
                 isCasting = false;
-                // Release spell here
                 spriteCount = 0;
             }
         }
@@ -328,12 +327,11 @@ public class Player {
         //System.out.println(spriteCount+" "+(double)groundAttackSprites[attackNum].length/2);
         if(isAttacking && Math.round(spriteCount*10)/10.0 == (double)groundAttackSprites[attackNum].length/2){
             return true;
-
         }
         return false;
     }
     public boolean isCastFrame(){
-        if(isCasting && Math.round(spriteCount*10)/10.0==castSprites.length-1){
+        if(isCasting && Math.round(spriteCount*10)/10.0 == castSprites.length-1){
             return true;
         }
         return false;

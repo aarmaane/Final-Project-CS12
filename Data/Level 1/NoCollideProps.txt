@@ -3,3 +3,4 @@
 576,427,pillarMiddle.png
 // Decor
 275,427,bush.png
+1428,175,tree.png

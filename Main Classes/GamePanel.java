@@ -251,21 +251,20 @@ class GamePanel extends JPanel implements KeyListener {
         }
     }
     public void checkPlayerCast(){
-        Rectangle hitBox=player.getHitbox();
-        Rectangle attackBox=player.getAttackBox();
-        int direction=player.getDirection();
+        Rectangle hitBox = player.getHitbox();
+        Rectangle attackBox = player.getAttackBox();
+        int direction = player.getDirection();
         int speed,xPos;
-        if(direction==player.RIGHT){
-            speed=1;
-            xPos=attackBox.x;
+        if(direction == player.RIGHT){
+            speed = 1;
+            xPos = attackBox.x;
         }
         else{
-            speed=-1;
-            xPos=attackBox.x+attackBox.width;
+            speed = -1;
+            xPos = attackBox.x+attackBox.width;
         }
-
         if(player.isCastFrame()){
-            Projectile projectile=new Projectile(0,xPos,hitBox.y+hitBox.height/2.0,player.getSpellDamage(),1);
+            Projectile projectile = new Projectile(0,xPos,hitBox.y+hitBox.height/2.0,player.getSpellDamage(),1);
         }
     }
     public void checkPlayerAttack(){

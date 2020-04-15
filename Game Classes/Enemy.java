@@ -12,7 +12,7 @@ public abstract class Enemy {
     protected double spriteCount;
     protected int direction;
     protected int health, maxHealth, damage, difficulty;
-    protected boolean isActive;
+    protected boolean isActive, knockedBack;
     // Declaring methods that subclasses need to implement
     public abstract void update(Player player);
     public abstract void checkCollision(Rectangle rect);
@@ -38,6 +38,14 @@ public abstract class Enemy {
         System.out.println("hit");
         System.out.println(player.getSwordDamage());
         health-=(randint(80,100)/100.0)*player.getSwordDamage();
+        velocityY = -4;
+        if(player.getDirection() == Player.RIGHT){
+            velocityX = 4;
+        }
+        else{
+            velocityX = -4;
+        }
+        knockedBack = true;
 
     }
     // Helper methods for subclasses

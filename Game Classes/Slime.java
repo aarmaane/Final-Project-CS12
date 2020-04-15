@@ -43,7 +43,8 @@ public class Slime extends Enemy {
         // Checking the position of the Player and setting velocity towards them
         int playerX = player.getHitbox().x;
         int slimeX = getHitbox().x;
-        if(playerX > slimeX){
+        if(knockedBack){}
+        else if(playerX > slimeX){
             direction = RIGHT;
             velocityX = 0.5;
         }
@@ -73,6 +74,7 @@ public class Slime extends Enemy {
             if((int)((hitbox.y + hitbox.height) - velocityY) <= rect.y){
                 y = (rect.y - hitbox.height) - (hitbox.y - y); //
                 velocityY = 0;
+                knockedBack = false;
             }
         }
     }

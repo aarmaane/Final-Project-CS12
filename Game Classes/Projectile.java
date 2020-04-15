@@ -5,22 +5,20 @@ import java.io.IOException;
 
 public class Projectile {
     //Constants
-    public static final int PLAYER=0;
-    public static final int ENEMY=1;
+    public static final int PLAYER = 0, ENEMY = 1;
     //Fields
-    private double x,y;
+    private double x, y;
     private double damage;
     private double speed;
     private int type;
-    private Image[]projectilePics=new Image[5];
+    private Image[] projectilePics = new Image[5];
 
-    public Projectile(int type,double x,double y,double damage,double speed){
-
-        this.x=x;
-        this.y=y;
-        this.damage=damage;
-        this.speed=speed;
-        this.type=type;
+    public Projectile(int type, double x, double y, double damage, double speed){
+        this.x = x;
+        this.y = y;
+        this.damage = damage;
+        this.speed = speed;
+        this.type = type;
         spriteLoad(projectilePics,"projectile");
 
     }
@@ -32,7 +30,7 @@ public class Projectile {
             }
         }
         catch (IOException e) {
-            System.out.println("Player sprite missing!");
+            System.out.println("Projectile sprite missing!");
             e.printStackTrace();
         }
     }
