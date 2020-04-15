@@ -24,6 +24,7 @@ class GamePanel extends JPanel implements KeyListener {
     private ArrayList<LevelProp> platforms = new ArrayList<LevelProp>();
     private ArrayList<LevelProp> noCollideProps = new ArrayList<LevelProp>();
     private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+    private ArrayList<Projectile>projectiles=new ArrayList<Projectile>();
     private Sound test = new Sound("Assets/Sounds/Music/level1.wav");
     private Sound testEffect = new Sound("Assets/Sounds/Effects/coin5.wav");
     // Game fields
@@ -228,6 +229,7 @@ class GamePanel extends JPanel implements KeyListener {
             enemy.update(player);
         }
         checkPlayerAttack();
+        checkPlayerCast();
         calculateOffset();
 
     }
@@ -246,6 +248,24 @@ class GamePanel extends JPanel implements KeyListener {
             for(Enemy enemy: enemies){
                 enemy.checkCollision(platform.getRect());
             }
+        }
+    }
+    public void checkPlayerCast(){
+        Rectangle hitBox=player.getHitbox();
+        Rectangle attackBox=player.getAttackBox();
+        int direction=player.getDirection();
+        int speed,xPos;
+        if(direction==player.RIGHT){
+            speed=1;
+            xPos=attackBox.x;
+        }
+        else{
+            speed=-1;
+            xPos=attackBox.x+attackBox.width;
+        }
+
+        if(player.isCastFrame()){
+            Projectile projectile=new Projectile(0,xPos,hitBox.y+hitBox.height/2.0,player.getSpellDamage(),1);
         }
     }
     public void checkPlayerAttack(){

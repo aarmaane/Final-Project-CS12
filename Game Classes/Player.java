@@ -332,6 +332,12 @@ public class Player {
         }
         return false;
     }
+    public boolean isCastFrame(){
+        if(isCasting && Math.round(spriteCount*10)/10.0==castSprites.length-1){
+            return true;
+        }
+        return false;
+    }
 
     public double getStamina() {
         return stamina;
@@ -342,4 +348,5 @@ public class Player {
     public int getPoints(){return points;}
     public int getSpellDamage(){return spellDamage;}
     public int getSwordDamage(){return swordDamage;}
+    public int getDirection(){return direction;}
 }
