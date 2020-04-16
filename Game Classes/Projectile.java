@@ -11,7 +11,8 @@ public class Projectile {
     private double damage;
     private double speed;
     private int type;
-    private Image[] projectilePics = new Image[70];
+    private Image[] projectilePics = new Image[60];
+    private double spriteCount = 0;
 
     public Projectile(int type, double x, double y, double damage, double speed){
         this.x = x;
@@ -19,7 +20,7 @@ public class Projectile {
         this.damage = damage;
         this.speed = speed;
         this.type = type;
-        spriteLoad(projectilePics,"projectile");
+        spriteLoad(projectilePics,"Iceball/iceball");
 
     }
     public void spriteLoad(Image[] targetArray, String fileName){
@@ -34,7 +35,19 @@ public class Projectile {
             e.printStackTrace();
         }
     }
-
+    public void update(){
+        updateSprite();
+    }
+    public void updateSprite(){
+        spriteCount += 0.5;
+        if(spriteCount >= projectilePics.length){
+            spriteCount = 0;
+        }
+    }
+    public Image getSprite(){
+        System.out.println(spriteCount);
+        return projectilePics[(int)Math.floor(spriteCount)];
+    }
     public double getDamage(){return damage;}
     public double getX(){return x;}
     public double getY(){return y;}

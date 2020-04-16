@@ -127,7 +127,7 @@ class GamePanel extends JPanel implements KeyListener {
         }
         //Drawing Projectiles
         for(Projectile projectile: projectiles){
-            //g.drawImage(projectile.getSprite(),(int)projectile.getX()-levelOffset,projectile.getY(),this);
+            g.drawImage(projectile.getSprite(),(int)projectile.getX()-levelOffset, (int)projectile.getY(),this);
         }
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
@@ -230,6 +230,9 @@ class GamePanel extends JPanel implements KeyListener {
         player.update();
         for(Enemy enemy: enemies){
             enemy.update(player);
+        }
+        for(Projectile projectile: projectiles){
+            projectile.update();
         }
         checkPlayerAttack();
         checkPlayerCast();
