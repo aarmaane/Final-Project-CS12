@@ -19,7 +19,6 @@ class GamePanel extends JPanel implements KeyListener {
     private Image enemyHealthBar;
     private Image staminaBar;
     private Image healthBar;
-
     private Image[] backgroundLayers = new Image[3];
     private ArrayList<LevelProp> platforms = new ArrayList<LevelProp>();
     private ArrayList<LevelProp> noCollideProps = new ArrayList<LevelProp>();
@@ -125,6 +124,10 @@ class GamePanel extends JPanel implements KeyListener {
             g.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
             drawHealth(g, enemy);
             g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
+        }
+        //Drawing Projectiles
+        for(Projectile projectile: projectiles){
+            //g.drawImage(projectile.getSprite(),(int)projectile.getX()-levelOffset,projectile.getY(),this);
         }
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
@@ -264,7 +267,7 @@ class GamePanel extends JPanel implements KeyListener {
             xPos = attackBox.x+attackBox.width;
         }
         if(player.isCastFrame()){
-            Projectile projectile = new Projectile(0,xPos,hitBox.y+hitBox.height/2.0,player.getSpellDamage(),1);
+            projectiles.add(new Projectile(0,xPos,hitBox.y+hitBox.height/2.0,player.getSpellDamage(),1));
         }
     }
     public void checkPlayerAttack(){

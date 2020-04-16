@@ -11,7 +11,7 @@ public class Projectile {
     private double damage;
     private double speed;
     private int type;
-    private Image[] projectilePics = new Image[5];
+    private Image[] projectilePics = new Image[70];
 
     public Projectile(int type, double x, double y, double damage, double speed){
         this.x = x;
