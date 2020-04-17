@@ -34,6 +34,20 @@ public abstract class Enemy {
     public int getHealthPercent(){
         return (health/maxHealth)*100;
     }
+    public void castHit(Player player){
+        System.out.println("hit");
+        System.out.println(player.getSwordDamage());
+        health-=(randint(80,100)/100.0)*player.getSpellDamage();
+        velocityY = -3;
+        if(player.getDirection() == Player.RIGHT){
+            velocityX = 3;
+        }
+        else{
+            velocityX = -3;
+        }
+        knockedBack = true;
+
+    }
     public void swordHit(Player player){
         System.out.println("hit");
         System.out.println(player.getSwordDamage());

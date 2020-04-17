@@ -123,16 +123,17 @@ class GamePanel extends JPanel implements KeyListener {
         for(Enemy enemy: enemies){
             g.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
             drawHealth(g, enemy);
-            g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
+           // g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
         }
         //Drawing Projectiles
         for(Projectile projectile: projectiles){
             g.drawImage(projectile.getSprite(),(int)projectile.getX()-levelOffset, (int)projectile.getY(),this);
+            //g.drawRect(projectile.getRect().x-levelOffset,projectile.getRect().y,projectile.getRect().width,projectile.getRect().height);
         }
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
-        g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
-        g.drawRect(player.getAttackBox().x - levelOffset, player.getAttackBox().y, player.getAttackBox().width, player.getAttackBox().height);
+       // g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
+       //s g.drawRect(player.getAttackBox().x - levelOffset, player.getAttackBox().y, player.getAttackBox().width, player.getAttackBox().height);
         // Drawing game stats
         g.setFont(gameFont);
         /*Fills in both of the stat bars from darker shades to lighter shades by increasing the respective rgb value by 1 while shifting the
@@ -237,6 +238,7 @@ class GamePanel extends JPanel implements KeyListener {
         checkPlayerAttack();
         checkPlayerCast();
         calculateOffset();
+        collectGarbage();
 
     }
     public void calculateOffset(){
@@ -255,22 +257,30 @@ class GamePanel extends JPanel implements KeyListener {
                 enemy.checkCollision(platform.getRect());
             }
         }
+        for(Projectile projectile:projectiles){
+            for(Enemy enemy:enemies) {
+                if(!projectile.isExploding() && enemy.getHitbox().intersects(projectile.getRect())){
+                    enemy.castHit(player);
+                    projectile.explode();
+                }
+            }
+        }
+
+
     }
     public void checkPlayerCast(){
         Rectangle hitBox = player.getHitbox();
         Rectangle attackBox = player.getAttackBox();
         int direction = player.getDirection();
-        int speed,xPos;
+        int speed = -5;
+        int xPos = attackBox.x;
         if(direction == player.RIGHT){
-            speed = 1;
-            xPos = attackBox.x;
+            speed = -speed;
+            xPos -= 150;
         }
-        else{
-            speed = -1;
-            xPos = attackBox.x+attackBox.width;
-        }
+
         if(player.isCastFrame()){
-            projectiles.add(new Projectile(0,xPos,hitBox.y+hitBox.height/2.0,player.getSpellDamage(),1));
+            projectiles.add(new Projectile(0,xPos,hitBox.y+hitBox.height/2.0-5,player.getSpellDamage(),speed,player.getDirection()));
         }
     }
     public void checkPlayerAttack(){
@@ -285,6 +295,17 @@ class GamePanel extends JPanel implements KeyListener {
             }
         }
 
+    }
+    public void collectGarbage(){
+        int i=0;
+        while(i<projectiles.size()){
+            if(projectiles.get(i).isExploding()){
+                projectiles.remove(i);
+            }
+            else{
+                i++;
+            }
+        }
     }
 
     public void checkInputs(){
