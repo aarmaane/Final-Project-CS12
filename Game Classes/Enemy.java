@@ -11,12 +11,10 @@ public abstract class Enemy {
     protected int health, maxHealth, damage, difficulty;
     protected boolean isActive, knockedBack;
     // General methods
-    public void castHit(Player player){
-        System.out.println("hit");
-        System.out.println(player.getSwordDamage());
-        health -= (Utilities.randint(80,100)/100.0)*player.getSpellDamage();
+    public void castHit(Projectile cast){
+        health -= (Utilities.randint(80,100)/100.0)*cast.getDamage();
         velocityY = -3;
-        if(player.getDirection() == Player.RIGHT){
+        if(cast.getSpeed() > 0){
             velocityX = 3;
         }
         else{
@@ -26,8 +24,7 @@ public abstract class Enemy {
 
     }
     public void swordHit(Player player){
-        System.out.println("hit");
-        System.out.println(player.getSwordDamage());
+
         health -= (Utilities.randint(80,100)/100.0)*player.getSwordDamage();
         velocityY = -4;
         if(player.getDirection() == Player.RIGHT){

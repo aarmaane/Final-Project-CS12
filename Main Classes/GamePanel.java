@@ -247,7 +247,7 @@ class GamePanel extends JPanel implements KeyListener {
         for(Projectile projectile:projectiles){
             for(Enemy enemy:enemies) {
                 if(!projectile.isExploding() && enemy.getHitbox().intersects(projectile.getHitbox())){
-                    enemy.castHit(player);
+                    enemy.castHit(projectile);
                     projectile.explode();
                 }
             }
