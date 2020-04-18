@@ -1,7 +1,4 @@
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
 
 public class Player {
     // Constants
@@ -21,14 +18,14 @@ public class Player {
     private double stamina, maxStamina;
     private int swordDamage, spellDamage;
     private boolean isAttacking, isCasting;
-    private int attackNum;
+    private int groundAttackNum, airAttackNum;
     // Image Arrays holding Player's Sprites
     private Image[] idleSprites = new Image[4];
     private Image[] runSprites = new Image[6];
     private Image[] jumpingSprites = new Image[2];
     private Image[] fallingSprites = new Image[2];
     private Image[][] groundAttackSprites; // This array will be jagged since attacks have differing lengths
-    private Image[] airAttackSprites = new Image[5];
+    private Image[][] airAttackSprites; // This array will be jagged too
     private Image[] castSprites = new Image[4];
     // Other fields
     GamePanel game;
@@ -42,7 +39,7 @@ public class Player {
         maxSpeed = 6;
         onGround = true;
         // Setting gameplay fields
-        maxStamina = 50;
+        maxStamina = 500000;
         stamina = maxStamina;
         maxHealth=100;
         health=maxHealth;
@@ -55,7 +52,7 @@ public class Player {
         idleSprites = Utilities.spriteArrayLoad(idleSprites, "Player/idle");
         runSprites = Utilities.spriteArrayLoad(runSprites, "Player/run");
         castSprites = Utilities.spriteArrayLoad(castSprites, "Player/cast");
-        // Loading jagged groundAttack Array
+        // Loading jagged attack Arrays
         Image[] attack1 = new Image[5];
         Image[] attack2 = new Image[6];
         Image[] attack3 = new Image[6];
@@ -63,6 +60,11 @@ public class Player {
         attack2 = Utilities.spriteArrayLoad(attack2, "Player/attack2-");
         attack3 = Utilities.spriteArrayLoad(attack3, "Player/attack3-");
         groundAttackSprites = new Image[][]{attack1, attack2, attack3};
+        Image[] airAttack1 = new Image[4];
+        Image[] airAttack2 = new Image[3];
+        airAttack1 = Utilities.spriteArrayLoad(airAttack1, "Player/airattack1-");
+        airAttack2 = Utilities.spriteArrayLoad(airAttack2, "Player/airattack2-");
+        airAttackSprites = new Image[][]{airAttack1, airAttack2};
 
     }
     // General methods
@@ -116,13 +118,26 @@ public class Player {
         }
     }
     public void attack(){
-        if(!isAttacking && !isCasting && onGround && (stamina - 5) > 0){
-            stamina -= 5;
-            isAttacking = true;
-            spriteCount = 0;
-            attackNum++;
-            if(attackNum >= groundAttackSprites.length){
-                attackNum = 0;
+        if(!isAttacking && !isCasting && (stamina - 5) > 0){
+            if(onGround){
+                isAttacking = true;
+                groundAttackNum++;
+                if(groundAttackNum >= groundAttackSprites.length){
+                    groundAttackNum = 0;
+                }
+            }
+            else if(velocityY < 0){
+                isAttacking = true;
+                airAttackNum++;
+                if(airAttackNum >= airAttackSprites.length){
+                    airAttackNum = 0;
+                }
+            }
+            // If the attacking checks passed, reset sprite and remove stamina
+            if(isAttacking){
+                stamina -= 5;
+                isAttacking = true;
+                spriteCount = 0;
             }
         }
     }
@@ -212,7 +227,7 @@ public class Player {
         }
         else if(isAttacking){
             spriteCount += 0.1;
-            if(spriteCount > groundAttackSprites[attackNum].length){
+            if((onGround && spriteCount > groundAttackSprites[groundAttackNum].length) ||(!onGround && spriteCount > airAttackSprites[airAttackNum].length) ){
                 isAttacking = false;
                 spriteCount = 0;
             }
@@ -266,7 +281,12 @@ public class Player {
             sprite = castSprites[spriteIndex];
         }
         else if(isAttacking){
-            sprite = groundAttackSprites[attackNum][spriteIndex];
+            if(onGround){
+                sprite = groundAttackSprites[groundAttackNum][spriteIndex];
+            }
+            else{
+                sprite = airAttackSprites[airAttackNum][spriteIndex];
+            }
         }
         else if(velocityY < 0){
             sprite = jumpingSprites[spriteIndex];
@@ -304,7 +324,14 @@ public class Player {
         return new Rectangle(xPos, (int)y + 40, 30, 50);
     }
     public boolean isAttackFrame(){
-        if(isAttacking && Math.round(spriteCount*10)/10.0 == (double)groundAttackSprites[attackNum].length/2){
+        double middleFrame;
+        if(onGround){
+            middleFrame = (double)airAttackSprites[airAttackNum].length/2;
+        }
+        else{
+            middleFrame = (double)groundAttackSprites[groundAttackNum].length/2;
+        }
+        if(isAttacking && Math.round(spriteCount*10)/10.0 == middleFrame){
             return true;
         }
         return false;

@@ -21,10 +21,8 @@ public abstract class Enemy {
             velocityX = -3;
         }
         knockedBack = true;
-
     }
     public void swordHit(Player player){
-
         health -= (Utilities.randint(80,100)/100.0)*player.getSwordDamage();
         velocityY = -4;
         if(player.getDirection() == Player.RIGHT){
