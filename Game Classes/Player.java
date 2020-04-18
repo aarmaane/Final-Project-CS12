@@ -126,7 +126,7 @@ public class Player {
                     groundAttackNum = 0;
                 }
             }
-            else if(velocityY < 0){
+            else if(true){
                 isAttacking = true;
                 airAttackNum++;
                 if(airAttackNum >= airAttackSprites.length){
