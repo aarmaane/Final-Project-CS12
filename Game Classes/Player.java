@@ -1,10 +1,7 @@
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class Player {
     // Constants
@@ -53,31 +50,20 @@ public class Player {
         swordDamage=10;
         spellDamage=10;
         // Loading Images
-        spriteLoad(fallingSprites, "fall");
-        spriteLoad(jumpingSprites, "jump");
-        spriteLoad(idleSprites, "idle");
-        spriteLoad(runSprites, "run");
-        spriteLoad(castSprites, "cast");
+        fallingSprites = Utilities.spriteArrayLoad(fallingSprites, "Player/fall");
+        jumpingSprites = Utilities.spriteArrayLoad(jumpingSprites, "Player/jump");
+        idleSprites = Utilities.spriteArrayLoad(idleSprites, "Player/idle");
+        runSprites = Utilities.spriteArrayLoad(runSprites, "Player/run");
+        castSprites = Utilities.spriteArrayLoad(castSprites, "Player/cast");
+        // Loading jagged groundAttack Array
         Image[] attack1 = new Image[5];
         Image[] attack2 = new Image[6];
         Image[] attack3 = new Image[6];
-        spriteLoad(attack1, "attack1-");
-        spriteLoad(attack2, "attack2-");
-        spriteLoad(attack3, "attack3-");
+        attack1 = Utilities.spriteArrayLoad(attack1, "Player/attack1-");
+        attack2 = Utilities.spriteArrayLoad(attack2, "Player/attack2-");
+        attack3 = Utilities.spriteArrayLoad(attack3, "Player/attack3-");
         groundAttackSprites = new Image[][]{attack1, attack2, attack3};
 
-    }
-    public void spriteLoad(Image[] targetArray, String fileName){
-        try{
-            for(int i = 0; i < targetArray.length; i++){
-                System.out.println("Assets/Images/Player/" + fileName + i + ".png");
-                targetArray[i] = ImageIO.read(new File("Assets/Images/Player/" + fileName + i + ".png"));
-            }
-        }
-        catch (IOException e) {
-            System.out.println("Player sprite missing!");
-            e.printStackTrace();
-        }
     }
     // General methods
     public void move(int type){
@@ -130,7 +116,6 @@ public class Player {
         }
     }
     public void attack(){
-        System.out.println("attack");
         if(!isAttacking && !isCasting && onGround && (stamina - 5) > 0){
             stamina -= 5;
             isAttacking = true;
@@ -142,7 +127,6 @@ public class Player {
         }
     }
     public void castMagic(){
-        System.out.println("magic");
         if(!isAttacking && !isCasting && onGround && (stamina - 10) > 0){
             stamina -= 10;
             isCasting = true;
@@ -297,20 +281,11 @@ public class Player {
             sprite = idleSprites[spriteIndex];
         }
         // Flipping the image since the sprites are all right-facing
-        return getImage(sprite, direction, LEFT);
-    }
-    public Image getImage(Image sprite, int direction, int right) {
-        if(direction == right){
-            // Using AffineTransform with Nearest-Neighbour to apply flip while keeping 8-bit style
-            AffineTransform flip = AffineTransform.getScaleInstance(-1, 1);
-            flip.translate(-sprite.getWidth(null), 0);
-            AffineTransformOp flipOp = new AffineTransformOp(flip, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-            sprite = flipOp.filter((BufferedImage)sprite, null);
-
+        if(direction == LEFT){
+            sprite = Utilities.flipSprite(sprite);
         }
         return sprite;
     }
-
     public double getX() {
         return x;
     }
@@ -329,19 +304,17 @@ public class Player {
         return new Rectangle(xPos, (int)y + 40, 30, 50);
     }
     public boolean isAttackFrame(){
-        //System.out.println(spriteCount+" "+(double)groundAttackSprites[attackNum].length/2);
         if(isAttacking && Math.round(spriteCount*10)/10.0 == (double)groundAttackSprites[attackNum].length/2){
             return true;
         }
         return false;
     }
     public boolean isCastFrame(){
-        if(isCasting && Math.round(spriteCount*10)/10.0 == castSprites.length-1){
+        if(isCasting && Math.round(spriteCount*100)/100.0 == castSprites.length-1){
             return true;
         }
         return false;
     }
-
     public double getStamina() {
         return stamina;
     }

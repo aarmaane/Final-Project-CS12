@@ -1,7 +1,4 @@
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 public class Slime extends Enemy {
     // Sprites
@@ -13,16 +10,8 @@ public class Slime extends Enemy {
 
     // Method to initialize the Class by loading sprites
     public static void init(){
-        try{
-            for(int i = 0; i < 4; i++){
-                movingSprites[i] = ImageIO.read(new File("Assets/Images/Enemies/Slime/move" + i + ".png"));
-                idleSprites[i] = ImageIO.read(new File("Assets/Images/Enemies/Slime/idle" + i + ".png"));
-            }
-        }
-        catch (IOException e) {
-            System.out.println("Slime sprites not found!");
-            e.printStackTrace();
-        }
+        movingSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Slime/move");
+        idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Slime/idle");
     }
     //Constructor
     public Slime(String data){
@@ -89,7 +78,7 @@ public class Slime extends Enemy {
             sprite = idleSprites[(int)Math.floor(spriteCount)];
         }
         if(direction == RIGHT){
-            sprite = flipImage(sprite);
+            sprite = Utilities.flipSprite(sprite);
         }
         return sprite;
     }

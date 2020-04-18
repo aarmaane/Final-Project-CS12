@@ -1,10 +1,4 @@
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class Projectile {
     //Constants
@@ -17,9 +11,11 @@ public class Projectile {
     private int direction;
     private int type;
     private boolean exploding;
-    private Image[] projectilePics = new Image[60];
+    private static Image[] playerSprites = new Image[60];
     private double spriteCount = 0;
-
+    public static void init(){
+        playerSprites = Utilities.spriteArrayLoad(playerSprites, "Projectiles/Iceball/iceball");
+    }
     public Projectile(int type, double x, double y, double damage, double speed){
         this.x = x;
         this.y = y;
@@ -32,20 +28,6 @@ public class Projectile {
         else{
             this.direction = LEFT;
         }
-        spriteLoad(projectilePics,"Iceball/iceball");
-
-    }
-    public void spriteLoad(Image[] targetArray, String fileName){
-        try{
-            for(int i = 0; i < targetArray.length; i++){
-                System.out.println("Assets/Images/Projectiles/" + fileName + i + ".png");
-                targetArray[i] = ImageIO.read(new File("Assets/Images/Projectiles/" + fileName + i + ".png"));
-            }
-        }
-        catch (IOException e) {
-            System.out.println("Projectile sprite missing!");
-            e.printStackTrace();
-        }
     }
     public void update(){
         updateSprite();
@@ -56,14 +38,14 @@ public class Projectile {
     }
     public void updateSprite(){
         spriteCount += 0.5;
-        if(spriteCount >= projectilePics.length){
+        if(spriteCount >= playerSprites.length){
             spriteCount = 0;
         }
     }
     public Image getSprite(){
         Image sprite;
-        int spriteIndex=(int)Math.floor(spriteCount);
-        sprite = projectilePics[spriteIndex];
+        int spriteIndex = (int)Math.floor(spriteCount);
+        sprite = playerSprites[spriteIndex];
         if(direction == RIGHT){
             sprite = Utilities.flipSprite(sprite);
         }
@@ -72,7 +54,8 @@ public class Projectile {
     public void explode(){
         exploding = true;
     }
-    public Rectangle getRect(){
+    // Getter methods
+    public Rectangle getHitbox(){
         // Since the sprite images are much larger than the actual Player, offsets must be applied
         if(direction == RIGHT) {
             return new Rectangle((int) x+110, (int) y, 58, 18);

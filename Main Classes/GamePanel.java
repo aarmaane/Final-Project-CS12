@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -20,14 +19,14 @@ class GamePanel extends JPanel implements KeyListener {
     private Image staminaBar;
     private Image healthBar;
     private Image[] backgroundLayers = new Image[3];
-    private ArrayList<LevelProp> platforms = new ArrayList<LevelProp>();
-    private ArrayList<LevelProp> noCollideProps = new ArrayList<LevelProp>();
-    private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-    private ArrayList<Projectile>projectiles=new ArrayList<Projectile>();
+    private ArrayList<LevelProp> platforms = new ArrayList<>();
+    private ArrayList<LevelProp> noCollideProps = new ArrayList<>();
+    private ArrayList<Enemy> enemies = new ArrayList<>();
+    private ArrayList<Projectile>projectiles = new ArrayList<>();
     private Sound test = new Sound("Assets/Sounds/Music/level1.wav");
     private Sound testEffect = new Sound("Assets/Sounds/Effects/coin5.wav");
     // Game fields
-    private int timeLeft=200;
+    private int timeLeft = 200;
     private int levelOffset = 0;
     // Fonts
     Font gameFont;
@@ -44,9 +43,7 @@ class GamePanel extends JPanel implements KeyListener {
             enemyHealthBar = ImageIO.read(new File("Assets/Images/Enemies/healthBar.png"));
             staminaBar = ImageIO.read(new File("Assets/Images/Player/staminaBar.png"));
             healthBar = ImageIO.read(new File("Assets/Images/Player/healthBar.png"));
-            for(int i = 0; i < 3; i++){
-                backgroundLayers[i] = ImageIO.read(new File("Assets/Images/Background/BG" + (i+1) + ".png"));
-            }
+            backgroundLayers = Utilities.spriteArrayLoad(backgroundLayers, "Background/BG");
             // Loading fonts
             gameFont = Font.createFont(Font.TRUETYPE_FONT, new File("Assets/Fonts/8BitFont.ttf"));
             gameFont = gameFont.deriveFont(30f);
@@ -57,19 +54,20 @@ class GamePanel extends JPanel implements KeyListener {
         }
         // Initalizing the enemy Classes
         Slime.init();
+        Projectile.init();
         loadLevel(1);
     }
 
     // Method to load up all level Objects from the corresponding text files
     public void loadLevel(int levelNum){
         try{
-            for(String data: loadFile("Platforms.txt", levelNum)){
+            for(String data: Utilities.loadFile("Platforms.txt", levelNum)){
                 platforms.add(new LevelProp(data));
             }
-            for(String data: loadFile("NoCollideProps.txt", levelNum)){
+            for(String data: Utilities.loadFile("NoCollideProps.txt", levelNum)){
                 noCollideProps.add(new LevelProp(data));
             }
-            for(String data: loadFile("Slimes.txt", levelNum)){
+            for(String data: Utilities.loadFile("Slimes.txt", levelNum)){
                 enemies.add(new Slime(data));
             }
         }
@@ -78,19 +76,7 @@ class GamePanel extends JPanel implements KeyListener {
             e.printStackTrace();
         }
     }
-    // Helper method to load up individual files into ArrayLists with their lines as Strings
-    public ArrayList<String> loadFile(String fileName, int levelNum) throws IOException{
-        Scanner inFile = new Scanner(new BufferedReader(new FileReader("Data/Level " + levelNum + "/" + fileName)));
-        ArrayList<String> fileContents = new ArrayList<String>();
-        while(inFile.hasNextLine()){
-            String line = inFile.nextLine();
-            if(!line.startsWith("//")){ // Making sure that the line is not a comment
-                fileContents.add(line);
-            }
-        }
-        inFile.close();
-        return fileContents;
-    }
+
     // All window related methods
     public void addNotify() {
         super.addNotify();
@@ -128,12 +114,12 @@ class GamePanel extends JPanel implements KeyListener {
         //Drawing Projectiles
         for(Projectile projectile: projectiles){
             g.drawImage(projectile.getSprite(),(int)projectile.getX()-levelOffset, (int)projectile.getY(),this);
-            //g.drawRect(projectile.getRect().x-levelOffset,projectile.getRect().y,projectile.getRect().width,projectile.getRect().height);
+            g.drawRect(projectile.getHitbox().x-levelOffset,projectile.getHitbox().y,projectile.getHitbox().width,projectile.getHitbox().height);
         }
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
-        // g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
-        // g.drawRect(player.getAttackBox().x - levelOffset, player.getAttackBox().y, player.getAttackBox().width, player.getAttackBox().height);
+        g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
+        g.drawRect(player.getAttackBox().x - levelOffset, player.getAttackBox().y, player.getAttackBox().width, player.getAttackBox().height);
         // Drawing game stats
         g.setFont(gameFont);
         /*Fills in both of the stat bars from darker shades to lighter shades by increasing the respective rgb value by 1 while shifting the
@@ -181,10 +167,10 @@ class GamePanel extends JPanel implements KeyListener {
             if(keyCode == KeyEvent.VK_SPACE && !paused){
                 player.jump(Player.INITIAL);
             }
-            else if(keyCode == KeyEvent.VK_P && !paused){
+            else if(keyCode == KeyEvent.VK_O && !paused){
                 player.attack();
             }
-            else if(keyCode == KeyEvent.VK_O && !paused){
+            else if(keyCode == KeyEvent.VK_P && !paused){
                 player.castMagic();
             }
             else if(keyCode == KeyEvent.VK_ESCAPE){
@@ -235,8 +221,7 @@ class GamePanel extends JPanel implements KeyListener {
         for(Projectile projectile: projectiles){
             projectile.update();
         }
-        checkPlayerAttack();
-        checkPlayerCast();
+        checkPlayerAction();
         calculateOffset();
         collectGarbage();
 
@@ -251,15 +236,17 @@ class GamePanel extends JPanel implements KeyListener {
         }
     }
     public void checkCollision(){
+        // Checking collision with Level platforms
         for(LevelProp platform: platforms){
             player.checkCollision(platform.getRect());
             for(Enemy enemy: enemies){
                 enemy.checkCollision(platform.getRect());
             }
         }
+        // Checking projectile collision
         for(Projectile projectile:projectiles){
             for(Enemy enemy:enemies) {
-                if(!projectile.isExploding() && enemy.getHitbox().intersects(projectile.getRect())){
+                if(!projectile.isExploding() && enemy.getHitbox().intersects(projectile.getHitbox())){
                     enemy.castHit(player);
                     projectile.explode();
                 }
@@ -268,29 +255,28 @@ class GamePanel extends JPanel implements KeyListener {
 
 
     }
-    public void checkPlayerCast(){
-        Rectangle hitBox = player.getHitbox();
-        Rectangle attackBox = player.getAttackBox();
-        int direction = player.getDirection();
-        int speed = -5;
-        int xPos = attackBox.x;
-        if(direction == Player.RIGHT){
-            speed = -speed;
-            xPos -= 150;
-        }
-        if(player.isCastFrame()){
-            projectiles.add(new Projectile(0,xPos,hitBox.y+hitBox.height/2.0-5,player.getSpellDamage(),speed));
-        }
-    }
-    public void checkPlayerAttack(){
-        if(player.isAttackFrame()){
+    public void checkPlayerAction(){
+        // Checking if the Player has used their sword attack
+        if(player.isAttackFrame()){ // Checking if this is the frame where attacks land
+            // Going through each enemy and checking for collisions
             for(Enemy enemy:enemies){
                 if(player.getAttackBox().intersects(enemy.getHitbox())){
                     enemy.swordHit(player);
                 }
             }
         }
-
+        // Checking if the Player has cast
+        if(player.isCastFrame()){
+            Rectangle hitBox = player.getHitbox();
+            Rectangle attackBox = player.getAttackBox();
+            int speed = -5;
+            int xPos = attackBox.x;
+            if(player.getDirection() == Player.RIGHT){
+                speed = -speed;
+                xPos -= 150;
+            }
+            projectiles.add(new Projectile(Projectile.PLAYER, xPos,hitBox.y+hitBox.height/2.0-5,player.getSpellDamage(),speed));
+        }
     }
     public void collectGarbage(){
         int i=0;
