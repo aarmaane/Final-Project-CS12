@@ -317,19 +317,19 @@ public class Player {
         return new Rectangle((int)x + 58, (int)y + 15, 36, 93);
     }
     public Rectangle getAttackBox(){
-        int xPos = (int)x + 120;
+        int xPos = (int)x + 100;
         if(direction == LEFT){
             xPos = (int)x;
         }
-        return new Rectangle(xPos, (int)y + 40, 30, 50);
+        return new Rectangle(xPos, (int)y + 40, 50, 50);
     }
     public boolean isAttackFrame(){
         double middleFrame;
         if(onGround){
-            middleFrame = (double)airAttackSprites[airAttackNum].length/2;
+            middleFrame = (double)groundAttackSprites[groundAttackNum].length/2;
         }
         else{
-            middleFrame = (double)groundAttackSprites[groundAttackNum].length/2;
+            middleFrame = 1; // Air attacks are more responsive
         }
         if(isAttacking && Math.round(spriteCount*10)/10.0 == middleFrame){
             return true;
