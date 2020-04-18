@@ -132,8 +132,8 @@ class GamePanel extends JPanel implements KeyListener {
         }
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
-       // g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
-       //s g.drawRect(player.getAttackBox().x - levelOffset, player.getAttackBox().y, player.getAttackBox().width, player.getAttackBox().height);
+        // g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
+        // g.drawRect(player.getAttackBox().x - levelOffset, player.getAttackBox().y, player.getAttackBox().width, player.getAttackBox().height);
         // Drawing game stats
         g.setFont(gameFont);
         /*Fills in both of the stat bars from darker shades to lighter shades by increasing the respective rgb value by 1 while shifting the
@@ -274,13 +274,12 @@ class GamePanel extends JPanel implements KeyListener {
         int direction = player.getDirection();
         int speed = -5;
         int xPos = attackBox.x;
-        if(direction == player.RIGHT){
+        if(direction == Player.RIGHT){
             speed = -speed;
             xPos -= 150;
         }
-
         if(player.isCastFrame()){
-            projectiles.add(new Projectile(0,xPos,hitBox.y+hitBox.height/2.0-5,player.getSpellDamage(),speed,player.getDirection()));
+            projectiles.add(new Projectile(0,xPos,hitBox.y+hitBox.height/2.0-5,player.getSpellDamage(),speed));
         }
     }
     public void checkPlayerAttack(){
@@ -288,9 +287,6 @@ class GamePanel extends JPanel implements KeyListener {
             for(Enemy enemy:enemies){
                 if(player.getAttackBox().intersects(enemy.getHitbox())){
                     enemy.swordHit(player);
-                    //System.out.println(enemy.getHealth());
-
-
                 }
             }
         }
