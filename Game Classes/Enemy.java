@@ -37,7 +37,6 @@ public abstract class Enemy {
             velocityX = -4;
         }
         knockedBack = true;
-
     }
     // Declaring methods that subclasses need to implement
     public abstract void update(Player player);

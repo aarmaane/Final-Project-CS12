@@ -7,7 +7,8 @@ public class Slime extends Enemy {
     private static Image[] idleSprites = new Image[4];
     private static Image[] deathSprites;
     //Fields
-
+    private boolean platformAhead;
+    private boolean platformBehind;
     // Method to initialize the Class by loading sprites
     public static void init(){
         movingSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Slime/move");
@@ -35,11 +36,21 @@ public class Slime extends Enemy {
         if(knockedBack){}
         else if(playerX > slimeX){
             direction = RIGHT;
-            velocityX = 0.5;
+            if(platformAhead){
+                velocityX = 0.5;
+            }
+            else{
+                velocityX = 0;
+            }
         }
         else if(playerX < slimeX){
             direction = LEFT;
-            velocityX = -0.5;
+            if(platformBehind){
+                velocityX = -0.5;
+            }
+            else{
+                velocityX = 0;
+            }
         }
         else{
             velocityX = 0;
@@ -49,6 +60,9 @@ public class Slime extends Enemy {
         y += velocityY;
         // Adding gravity value
         velocityY += GRAVITY;
+        // Resetting boolean values so they can be rechecked for the new position
+        platformAhead = false;
+        platformBehind = false;
     }
     public void updateSprite(){
         spriteCount += 0.05;
@@ -61,10 +75,17 @@ public class Slime extends Enemy {
         Rectangle hitbox = getHitbox();
         if(hitbox.intersects(rect)){
             if((int)((hitbox.y + hitbox.height) - velocityY) <= rect.y){
-                y = (rect.y - hitbox.height) - (hitbox.y - y); //
+                y = (rect.y - hitbox.height) - (hitbox.y - y); // Putting the Enemy on top of the platform
                 velocityY = 0;
                 knockedBack = false;
             }
+        }
+        // Checking if there are any platforms behind or infront of the Enemy
+        if(rect.contains((hitbox.x + hitbox.width + 1),(hitbox.y + hitbox.height + 1))){
+            platformAhead = true;
+        }
+        if(rect.contains((hitbox.x - 1), (hitbox.y + hitbox.height + 1))){
+            platformBehind = true;
         }
     }
     // Getter methods

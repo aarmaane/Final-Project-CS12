@@ -252,8 +252,6 @@ class GamePanel extends JPanel implements KeyListener {
                 }
             }
         }
-
-
     }
     public void checkPlayerAction(){
         // Checking if the Player has used their sword attack
@@ -289,7 +287,6 @@ class GamePanel extends JPanel implements KeyListener {
             }
         }
     }
-
     public void checkInputs(){
         // Side-to-side movement inputs
         if(keysPressed[KeyEvent.VK_D] && keysPressed[KeyEvent.VK_A]){
