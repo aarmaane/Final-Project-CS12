@@ -257,10 +257,8 @@ class GamePanel extends JPanel implements KeyListener {
         // Checking if the Player has used their sword attack
         if(player.isAttackFrame()){ // Checking if this is the frame where attacks land
             // Going through each enemy and checking for collisions
-            System.out.println("frame");
             for(Enemy enemy:enemies){
                 if(player.getAttackBox().intersects(enemy.getHitbox())){
-                    System.out.println("hit");
                     enemy.swordHit(player);
                 }
             }

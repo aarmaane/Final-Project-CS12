@@ -39,7 +39,7 @@ public class Player {
         maxSpeed = 6;
         onGround = true;
         // Setting gameplay fields
-        maxStamina = 500000;
+        maxStamina = 50;
         stamina = maxStamina;
         maxHealth=100;
         health=maxHealth;
@@ -126,7 +126,7 @@ public class Player {
                     groundAttackNum = 0;
                 }
             }
-            else if(true){
+            else{
                 isAttacking = true;
                 airAttackNum++;
                 if(airAttackNum >= airAttackSprites.length){
@@ -134,11 +134,8 @@ public class Player {
                 }
             }
             // If the attacking checks passed, reset sprite and remove stamina
-            if(isAttacking){
-                stamina -= 5;
-                isAttacking = true;
-                spriteCount = 0;
-            }
+            stamina -= 5;
+            spriteCount = 0;
         }
     }
     public void castMagic(){
