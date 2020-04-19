@@ -248,6 +248,7 @@ class GamePanel extends JPanel implements KeyListener {
             for(Enemy enemy:enemies) {
                 if(!projectile.isExploding() && enemy.getHitbox().intersects(projectile.getHitbox())){
                     enemy.castHit(projectile);
+                    player.addPoints((int)projectile.getDamage());
                     projectile.explode();
                 }
             }
@@ -260,6 +261,7 @@ class GamePanel extends JPanel implements KeyListener {
             for(Enemy enemy:enemies){
                 if(player.getAttackBox().intersects(enemy.getHitbox())){
                     enemy.swordHit(player);
+                    player.addPoints(player.getSwordDamage());
                 }
             }
         }
@@ -277,13 +279,15 @@ class GamePanel extends JPanel implements KeyListener {
         }
     }
     public void collectGarbage(){
-        int i=0;
-        while(i<projectiles.size()){
+        for(int i = projectiles.size() - 1; i >= 0; i--){
             if(projectiles.get(i).isExploding()){
                 projectiles.remove(i);
             }
-            else{
-                i++;
+        }
+        for(int i = enemies.size() - 1; i >= 0; i--){
+            if(enemies.get(i).isDead() || enemies.get(i).getY() > this.getHeight()){
+                enemies.remove(i);
+                player.addPoints(100);
             }
         }
     }

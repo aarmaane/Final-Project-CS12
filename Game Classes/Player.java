@@ -10,11 +10,10 @@ public class Player {
     private double velocityX, velocityY;
     private double acceleration, maxSpeed;
     private int direction;
-    private int points;
     private boolean onGround, holdingJump;
     private double spriteCount = 0;
     // Players' gameplay-related fields
-    private int health, maxHealth;
+    private int health, maxHealth, points;
     private double stamina, maxStamina;
     private int swordDamage, spellDamage;
     private boolean isAttacking, isCasting;
@@ -268,6 +267,10 @@ public class Player {
         y = 366;
         velocityX = 0;
         velocityY = 0;
+    }
+    // Setter methods
+    public void addPoints(int addition){
+        points += addition;
     }
     // Getter methods
     // Method that returns the player's current sprite by looking at various fields

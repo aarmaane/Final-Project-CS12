@@ -54,5 +54,7 @@ public abstract class Enemy {
     public int getHealthPercent(){
         return (health/maxHealth)*100;
     }
-
+    public boolean isDead(){
+        return (!isActive && health <= 0);
+    }
 }
