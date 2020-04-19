@@ -3,25 +3,27 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class MainMenu extends JPanel implements MouseListener {
+public class ShopPanel extends JPanel implements MouseListener {
     // Window related Objects
     private MainGame gameFrame;
-    public MainMenu(MainGame game){
+    private Player player;
+    // Constructor
+    public ShopPanel(MainGame game){
         gameFrame = game;
+        player = gameFrame.getPlayer();
         setSize(960,590);
         addMouseListener(this);
     }
     // Window related methods
     public void paintComponent(Graphics g){
-        g.setColor(new Color(255,0,0));
+        g.setColor(Color.GREEN);
         g.fillRect(0, 0, 960, 590);
-        gameFrame.switchPanel(MainGame.SHOPPANEL); // SKIPPING MENU, REMOVE LATER
+        gameFrame.switchPanel(MainGame.GAMEPANEL); // SKIPPING SHOP, REMOVE LATER
     }
-    // Mouse related methods
+
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("test");
-        gameFrame.switchPanel(MainGame.SHOPPANEL);
+        gameFrame.switchPanel(MainGame.GAMEPANEL);
     }
     @Override
     public void mousePressed(MouseEvent e) {}

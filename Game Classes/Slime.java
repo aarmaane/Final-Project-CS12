@@ -55,6 +55,7 @@ public class Slime extends Enemy {
             velocityX = -0.5;
         }
         else{
+            direction = LEFT;
             velocityX = 0;
         }
         // Applying velocity values to position

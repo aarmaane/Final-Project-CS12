@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 class GamePanel extends JPanel implements KeyListener {
     // Window related Objects
-    public boolean paused = false;
+    private boolean paused = false;
     private boolean[] keysPressed; // Array that keeps track of keys that are pressed down
     private MainGame gameFrame;
 
@@ -152,10 +152,11 @@ class GamePanel extends JPanel implements KeyListener {
         Rectangle hitBox = enemy.getHitbox();
         int healthBarOffset = ((100-hitBox.width)/8);
         // Using Graphics inputted to draw the bar
-        g.setColor(Color.RED);
-        g.fillRect(hitBox.x-levelOffset-healthBarOffset,hitBox.y-10,(int)((health/maxHealth)*88),13);
-        g.drawImage(enemyHealthBar,hitBox.x-levelOffset-10-healthBarOffset,hitBox.y-15,this);
-
+        if(health != maxHealth){ // Only drawing if they have lost health
+            g.setColor(Color.RED);
+            g.fillRect(hitBox.x-levelOffset-healthBarOffset,hitBox.y-10,(int)((health/maxHealth)*88),13);
+            g.drawImage(enemyHealthBar,hitBox.x-levelOffset-10-healthBarOffset,hitBox.y-15,this);
+        }
     }
     // Keyboard related methods
     @Override
@@ -311,7 +312,10 @@ class GamePanel extends JPanel implements KeyListener {
     }
 
     // Getter methods
-    public double getLevelOffset(){
-        return levelOffset;
+    public Player getPlayer(){
+        return player;
+    }
+    public boolean isPaused(){
+        return paused;
     }
 }

@@ -5,13 +5,15 @@ import java.awt.event.ActionListener;
 
 public class MainGame extends JFrame {
     // Declaring constants
-    private final String GAMEPANEL = "game";
-    private final String MENUPANEL = "menu";
+    public static final String GAMEPANEL = "game";
+    public static final String MENUPANEL = "menu";
+    public static final String SHOPPANEL = "shop";
     // Declaring fields
     private GamePanel game;
     private MainMenu menu;
+    private ShopPanel shop;
     private JPanel panelManager;
-    private String activePanel = MENUPANEL;
+    private String activePanel;
     private Timer myTimer; // Timer to call the game functions each frame
     private int runTime; // Variable to keep track of the miliseconds that have passed since the start of the game
     private int timePassed;
@@ -20,12 +22,13 @@ public class MainGame extends JFrame {
         // Creating the JPanels for the game
         game = new GamePanel(this);
         menu = new MainMenu(this);
+        shop = new ShopPanel(this);
         panelManager = new JPanel(new CardLayout());
         // Setting up the CardLayout in panelManager
         panelManager.add(game, GAMEPANEL);
         panelManager.add(menu, MENUPANEL);
-        CardLayout cardLayout = (CardLayout) panelManager.getLayout();
-        cardLayout.show(panelManager, MENUPANEL);
+        panelManager.add(shop, SHOPPANEL);
+        switchPanel(MENUPANEL);
         // Creating the JFrame and JPanels
         setSize(960,590);
         setResizable(false);
@@ -37,16 +40,16 @@ public class MainGame extends JFrame {
         myTimer = new Timer(10, new TickListener());	 // trigger every 10 ms
         myTimer.start();
     }
-    public void switchPanel(){
+    public void switchPanel(String targetPanel){
         CardLayout cardLayout = (CardLayout) panelManager.getLayout();
-        cardLayout.show(panelManager, GAMEPANEL);
-        activePanel = GAMEPANEL;
-        game.addNotify(); // Getting the focus of the game
+        cardLayout.show(panelManager, targetPanel);
+        activePanel = targetPanel;
+        addNotify(); // Getting the focus of the current panel
     }
     // TickListener Class
     class TickListener implements ActionListener {
         public void actionPerformed(ActionEvent evt){
-            if(game != null && activePanel.equals(GAMEPANEL) && !game.paused){
+            if(activePanel.equals(GAMEPANEL) && !game.isPaused()){
                 // Main game loop
                 game.checkInputs();
                 game.update();
@@ -59,10 +62,16 @@ public class MainGame extends JFrame {
                     game.iterateTime();
                 }
             }
-            else if(menu != null && activePanel.equals(MENUPANEL)){
+            else if(activePanel.equals(MENUPANEL)){
                 menu.repaint();
             }
+            else if(activePanel.equals(SHOPPANEL)){
+                shop.repaint();
+            }
         }
+    }
+    public Player getPlayer(){
+        return game.getPlayer();
     }
     public static void main(String[] args){
         MainGame game = new MainGame();
