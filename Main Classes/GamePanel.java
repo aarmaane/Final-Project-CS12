@@ -5,7 +5,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 class GamePanel extends JPanel implements KeyListener {
     // Window related Objects
@@ -132,7 +131,7 @@ class GamePanel extends JPanel implements KeyListener {
             g.setColor(new Color(0,155+i,0));
             g.fillRect(59+i, 83, (int) ((player.getStamina() / player.getMaxStamina()) * 198)-i, 14);
         }
-        g.setColor(new Color(0,0,0));
+        g.setColor(Color.BLACK);
         g.drawImage(healthBar, 10,10,this);
         g.drawImage(staminaBar, 10,65,this);
         g.drawString("Time: "+timeLeft,800,20);
@@ -141,7 +140,7 @@ class GamePanel extends JPanel implements KeyListener {
         if(paused){
             g.setColor(new Color(0,0,0, 100));
             g.fillRect(0, 0, getWidth(), getHeight());
-            g.setColor(new Color(255,255,255));
+            g.setColor(Color.WHITE);
             g.drawString("Press ESC to unpause", 335, 330);
             g.setFont(gameFontBig);
             g.drawString("Paused", 400, 300);
@@ -153,7 +152,7 @@ class GamePanel extends JPanel implements KeyListener {
         Rectangle hitBox = enemy.getHitbox();
         int healthBarOffset = ((100-hitBox.width)/8);
         // Using Graphics inputted to draw the bar
-        g.setColor(new Color(255,0,0));
+        g.setColor(Color.RED);
         g.fillRect(hitBox.x-levelOffset-healthBarOffset,hitBox.y-10,(int)((health/maxHealth)*88),13);
         g.drawImage(enemyHealthBar,hitBox.x-levelOffset-10-healthBarOffset,hitBox.y-15,this);
 

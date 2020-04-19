@@ -9,7 +9,7 @@ public abstract class Enemy {
     protected double spriteCount;
     protected int direction;
     protected int health, maxHealth, damage, difficulty;
-    protected boolean isActive, knockedBack;
+    protected boolean isActive, isHurt, isAttacking, knockedBack;
     // General methods
     public void castHit(Projectile cast){
         health -= (Utilities.randint(80,100)/100.0)*cast.getDamage();
@@ -20,7 +20,9 @@ public abstract class Enemy {
         else{
             velocityX = -3;
         }
+        isHurt = true;
         knockedBack = true;
+        spriteCount = 0;
     }
     public void swordHit(Player player){
         health -= (Utilities.randint(80,100)/100.0)*player.getSwordDamage();
@@ -31,13 +33,16 @@ public abstract class Enemy {
         else{
             velocityX = -4;
         }
+        isHurt = true;
         knockedBack = true;
+        spriteCount = 0;
     }
     // Declaring methods that subclasses need to implement
     public abstract void update(Player player);
     public abstract void checkCollision(Rectangle rect);
     public abstract Image getSprite();
     public abstract Rectangle getHitbox();
+
     // Getter methods
     public double getX(){
         return x;
@@ -53,6 +58,9 @@ public abstract class Enemy {
     }
     public int getHealthPercent(){
         return (health/maxHealth)*100;
+    }
+    public int getDamage(){
+        return damage;
     }
     public boolean isDead(){
         return (!isActive && health <= 0);

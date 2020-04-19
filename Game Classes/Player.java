@@ -268,6 +268,9 @@ public class Player {
         velocityX = 0;
         velocityY = 0;
     }
+    public void enemyHit(Enemy enemy){
+        health -= enemy.getDamage();
+    }
     // Setter methods
     public void addPoints(int addition){
         points += addition;

@@ -3,16 +3,20 @@ import java.awt.*;
 public class Slime extends Enemy {
     // Sprites
     private static Image[] movingSprites = new Image[4];
-    private static Image[] attackSprites;
+    private static Image[] attackSprites = new Image[5];
+    private static Image[] hurtSprites = new Image[4];
     private static Image[] idleSprites = new Image[4];
-    private static Image[] deathSprites;
+    private static Image[] deathSprites = new Image[4];
     //Fields
     private boolean platformAhead;
     private boolean platformBehind;
     // Method to initialize the Class by loading sprites
     public static void init(){
         movingSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Slime/move");
+        attackSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Slime/attack");
+        hurtSprites = Utilities.spriteArrayLoad(hurtSprites, "Enemies/Slime/hurt");
         idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Slime/idle");
+        deathSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Slime/death");
     }
     //Constructor
     public Slime(String data){
@@ -22,35 +26,33 @@ public class Slime extends Enemy {
         difficulty = Integer.parseInt(dataSplit[2]);
         health = 100 * difficulty;
         maxHealth=health;
+        damage = 5;
+        isActive = true;
     }
     // General methods
     @Override
     public void update(Player player){
         updateMotion(player);
+        updateAttack(player);
         updateSprite();
     }
     public void updateMotion(Player player){
         // Checking the position of the Player and setting velocity towards them
         int playerX = player.getHitbox().x;
         int slimeX = getHitbox().x;
-        if(knockedBack){}
-        else if(playerX > slimeX){
-            direction = RIGHT;
-            if(platformAhead){
-                velocityX = 0.5;
-            }
-            else{
-                velocityX = 0;
-            }
+        if(knockedBack){
         }
-        else if(playerX < slimeX){
+        else if(isHurt){
+            velocityX = 0;
+        }
+        else if(playerX > slimeX && platformAhead){
+            direction = RIGHT;
+            velocityX = 0.5;
+
+        }
+        else if(playerX < slimeX && platformBehind){
             direction = LEFT;
-            if(platformBehind){
-                velocityX = -0.5;
-            }
-            else{
-                velocityX = 0;
-            }
+            velocityX = -0.5;
         }
         else{
             velocityX = 0;
@@ -64,11 +66,47 @@ public class Slime extends Enemy {
         platformAhead = false;
         platformBehind = false;
     }
-    public void updateSprite(){
-        spriteCount += 0.05;
-        if(spriteCount > 4){
+    public void updateAttack(Player player){
+        // Updating the attacking status
+        boolean originalState = isAttacking;
+        isAttacking = getHitbox().intersects(player.getHitbox()); // Setting it to true if there is hitbox collision
+        if(originalState != isAttacking){ // If there's a change in state, reset the sprite counter
             spriteCount = 0;
         }
+        // Checking if the player should be dealt damage
+        if(isAttacking && Math.round(spriteCount*10)/10.0 == attackSprites.length/2.0){
+            player.enemyHit(this);
+        }
+    }
+    public void updateSprite(){
+        if(isHurt){
+            if(health <= 0){
+                spriteCount += 0.05;
+                if(spriteCount > deathSprites.length){
+                    isActive = false;
+                }
+            }
+            else{
+                spriteCount += 0.08;
+                if(spriteCount > hurtSprites.length){
+                    spriteCount = 0;
+                    isHurt = false;
+                }
+            }
+        }
+        else if(isAttacking){
+            spriteCount += 0.05;
+            if(spriteCount > attackSprites.length){
+                spriteCount = 0;
+            }
+        }
+        else{
+            spriteCount += 0.05;
+            if(spriteCount > movingSprites.length){
+                spriteCount = 0;
+            }
+        }
+
     }
     @Override
     public void checkCollision(Rectangle rect){
@@ -92,12 +130,25 @@ public class Slime extends Enemy {
     @Override
     public Image getSprite() {
         Image sprite = null;
-        if(velocityX != 0){
-            sprite = movingSprites[(int)Math.floor(spriteCount)];
+        int spriteIndex = (int)Math.floor(spriteCount);
+        if(isHurt){
+            if(health <= 0){
+                sprite = deathSprites[spriteIndex];
+            }
+            else{
+                sprite = hurtSprites[spriteIndex];
+            }
+        }
+        else if(isAttacking){
+            sprite = attackSprites[spriteIndex];
+        }
+        else if(velocityX != 0){
+            sprite = movingSprites[spriteIndex];
         }
         else{
-            sprite = idleSprites[(int)Math.floor(spriteCount)];
+            sprite = idleSprites[spriteIndex];
         }
+        // Flipping image since sprites are left facing
         if(direction == RIGHT){
             sprite = Utilities.flipSprite(sprite);
         }
