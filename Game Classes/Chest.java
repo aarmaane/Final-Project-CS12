@@ -1,4 +1,7 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class Chest {
     // Declaring constants
@@ -8,8 +11,19 @@ public class Chest {
     private int content, quantity;
     private boolean opened;
     // Declaring sprites
-    private Image closedSprite;
-    private Image openSprite;
+    private static Image closedSprite;
+    private static Image openSprite;
+    // Class initialization
+    public static void init(){
+        try{
+            closedSprite = ImageIO.read(new File("Assets/Images/Chests/chestClosed.png"));
+            openSprite = ImageIO.read(new File("Assets/Images/Chests/chestOpen.png"));
+        }
+        catch (IOException e) {
+            System.out.println("Chest sprites not found!");
+            e.printStackTrace();
+        }
+    }
     // Constructor
     public Chest(String data){
         String[] dataSplit = data.split(",");
@@ -34,5 +48,19 @@ public class Chest {
                 content = COINS;
             }
         }
+    }
+    public void open(){
+        System.out.println(content);
+        opened = true;
+    }
+    // Getter methods
+    public Image getSprite(){
+        if(opened){
+            return openSprite;
+        }
+        return closedSprite;
+    }
+    public Rectangle getHitbox(){
+        return new Rectangle(x, y, 48, 48);
     }
 }

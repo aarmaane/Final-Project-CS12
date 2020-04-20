@@ -21,7 +21,8 @@ class GamePanel extends JPanel implements KeyListener {
     private ArrayList<LevelProp> platforms = new ArrayList<>();
     private ArrayList<LevelProp> noCollideProps = new ArrayList<>();
     private ArrayList<Enemy> enemies = new ArrayList<>();
-    private ArrayList<Projectile>projectiles = new ArrayList<>();
+    private ArrayList<Projectile> projectiles = new ArrayList<>();
+    private ArrayList<Chest> chests = new ArrayList<>();
     private Sound test = new Sound("Assets/Sounds/Music/level1.wav");
     private Sound testEffect = new Sound("Assets/Sounds/Effects/coin5.wav");
     // Game fields
@@ -54,6 +55,7 @@ class GamePanel extends JPanel implements KeyListener {
         // Initalizing the enemy Classes
         Slime.init();
         Projectile.init();
+        Chest.init();
         loadLevel(1);
     }
 
@@ -68,6 +70,9 @@ class GamePanel extends JPanel implements KeyListener {
             }
             for(String data: Utilities.loadFile("Slimes.txt", levelNum)){
                 enemies.add(new Slime(data));
+            }
+            for(String data: Utilities.loadFile("Chests.txt", levelNum)){
+                chests.add(new Chest(data));
             }
         }
         catch (IOException e) {
@@ -110,10 +115,15 @@ class GamePanel extends JPanel implements KeyListener {
             drawHealth(g, enemy);
            // g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
         }
-        //Drawing Projectiles
+        // Drawing Projectiles
         for(Projectile projectile: projectiles){
             g.drawImage(projectile.getSprite(),(int)projectile.getX()-levelOffset, (int)projectile.getY(),this);
             g.drawRect(projectile.getHitbox().x-levelOffset,projectile.getHitbox().y,projectile.getHitbox().width,projectile.getHitbox().height);
+        }
+        // Drawing chests
+        for(Chest chest: chests){
+            g.drawImage(chest.getSprite(), chest.getHitbox().x-levelOffset,chest.getHitbox().y, this);
+            g.drawRect(chest.getHitbox().x-levelOffset,chest.getHitbox().y, chest.getHitbox().width, chest.getHitbox().height);
         }
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
@@ -251,6 +261,14 @@ class GamePanel extends JPanel implements KeyListener {
                     player.addPoints((int)projectile.getDamage());
                     projectile.explode();
                 }
+            }
+        }
+        // Checking chest collision
+        Rectangle hitbox = player.getHitbox();
+        for(Chest chest: chests){
+            Rectangle chestHitbox = chest.getHitbox();
+            if(hitbox.intersects(chestHitbox) && (hitbox.y + hitbox.height) == (chestHitbox.y + chestHitbox.height)){
+                chest.open();
             }
         }
     }
