@@ -111,6 +111,7 @@ public class Player {
             spriteCount = 0;
             onGround = false;
             velocityY = -6;
+            airAttackNum = 1;
         }
         else if(type == NORMAL){
             holdingJump = true;

@@ -41,22 +41,28 @@ public class Slime extends Enemy {
         int playerX = player.getHitbox().x;
         int slimeX = getHitbox().x;
         if(knockedBack){
+            // Not touching Slime's velocity values
         }
-        else if(isHurt){
+        else if(playerX == slimeX || isHurt || isAttacking){
             velocityX = 0;
         }
-        else if(playerX > slimeX && platformAhead){
+        else if(playerX > slimeX){
             direction = RIGHT;
-            velocityX = 0.5;
-
-        }
-        else if(playerX < slimeX && platformBehind){
-            direction = LEFT;
-            velocityX = -0.5;
+            if(platformAhead){
+                velocityX = 0.5;
+            }
+            else{
+                velocityX = 0;
+            }
         }
         else{
             direction = LEFT;
-            velocityX = 0;
+            if(platformBehind){
+                velocityX = -0.5;
+            }
+            else{
+                velocityX = 0;
+            }
         }
         // Applying velocity values to position
         x += velocityX;
