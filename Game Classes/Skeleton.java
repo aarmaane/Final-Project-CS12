@@ -3,7 +3,7 @@ import java.awt.*;
 public class Skeleton extends Enemy {
     //Fields
 
-    public Skeleton(){
+    public Skeleton(String data){
         //Constructor
     }
     // General methods
