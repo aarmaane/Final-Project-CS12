@@ -40,7 +40,7 @@ public class Chest {
             }
         }
         else{
-            content = Utilities.randint(1,6);
+            quantity = Utilities.randint(1,6);
             if(randomNumber >= 45){
                 content = HEALTH;
             }
@@ -50,7 +50,6 @@ public class Chest {
         }
     }
     public void open(){
-        System.out.println(content);
         opened = true;
     }
     // Getter methods
@@ -62,5 +61,14 @@ public class Chest {
     }
     public Rectangle getHitbox(){
         return new Rectangle(x, y, 48, 48);
+    }
+    public int getContent(){
+        return content;
+    }
+    public int getQuantity(){
+        return quantity;
+    }
+    public boolean isClosed(){
+        return !opened;
     }
 }

@@ -23,6 +23,7 @@ class GamePanel extends JPanel implements KeyListener {
     private ArrayList<Enemy> enemies = new ArrayList<>();
     private ArrayList<Projectile> projectiles = new ArrayList<>();
     private ArrayList<Chest> chests = new ArrayList<>();
+    private ArrayList<Item> items = new ArrayList<>();
     private Sound test = new Sound("Assets/Sounds/Music/level1.wav");
     private Sound testEffect = new Sound("Assets/Sounds/Effects/coin5.wav");
     // Game fields
@@ -124,6 +125,11 @@ class GamePanel extends JPanel implements KeyListener {
         for(Chest chest: chests){
             g.drawImage(chest.getSprite(), chest.getHitbox().x-levelOffset,chest.getHitbox().y, this);
             g.drawRect(chest.getHitbox().x-levelOffset,chest.getHitbox().y, chest.getHitbox().width, chest.getHitbox().height);
+        }
+        // Drawing items
+        g.setColor(Color.RED);
+        for(Item item: items){
+            g.fillRect(item.getHitbox().x - levelOffset,item.getHitbox().y,10,10);
         }
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
@@ -231,6 +237,9 @@ class GamePanel extends JPanel implements KeyListener {
         for(Projectile projectile: projectiles){
             projectile.update();
         }
+        for(Item item: items){
+            item.update();
+        }
         checkPlayerAction();
         calculateOffset();
         collectGarbage();
@@ -252,6 +261,9 @@ class GamePanel extends JPanel implements KeyListener {
             for(Enemy enemy: enemies){
                 enemy.checkCollision(platform.getRect());
             }
+            for(Item item: items){
+                item.checkCollision(platform.getRect());
+            }
         }
         // Checking projectile collision
         for(Projectile projectile:projectiles){
@@ -267,8 +279,12 @@ class GamePanel extends JPanel implements KeyListener {
         Rectangle hitbox = player.getHitbox();
         for(Chest chest: chests){
             Rectangle chestHitbox = chest.getHitbox();
-            if(hitbox.intersects(chestHitbox) && (hitbox.y + hitbox.height) == (chestHitbox.y + chestHitbox.height)){
+            if(chest.isClosed() && hitbox.intersects(chestHitbox) && (hitbox.y + hitbox.height) == (chestHitbox.y + chestHitbox.height)){
                 chest.open();
+                System.out.println(chest.getQuantity());
+                for(int i = 0; i < chest.getQuantity(); i++){
+                    items.add(new Item(chest));
+                }
             }
         }
     }
