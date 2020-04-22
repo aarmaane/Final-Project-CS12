@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 
 public class Chest {
-    // Declaring constants
-    public static final int COINS = 0, HEALTH = 1, HEALTHPWR = 2, ENERGYPWR = 3;
     // Declaring fields
     private int x, y;
     private int content, quantity;
@@ -33,19 +31,19 @@ public class Chest {
         if(randomNumber >= 90){
             quantity = 1;
             if(randomNumber >= 95){
-                content = HEALTHPWR;
+                content = Item.HEALTHPWR;
             }
             else{
-                content = ENERGYPWR;
+                content = Item.ENERGYPWR;
             }
         }
         else{
             quantity = Utilities.randint(1,6);
             if(randomNumber >= 45){
-                content = HEALTH;
+                content = Item.HEALTH;
             }
             else{
-                content = COINS;
+                content = Item.COIN;
             }
         }
     }

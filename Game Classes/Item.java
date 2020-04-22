@@ -20,7 +20,7 @@ public class Item {
         healthSprites = Utilities.spriteArrayLoad(healthSprites, "Items/Health/health");
         coinSprites = Utilities.spriteArrayLoad(coinSprites, "Items/Coins/coin");
         healthPwrSprites = Utilities.spriteArrayLoad(healthPwrSprites, "Items/Health/healthpwr");
-        energySprites =Utilities.spriteArrayLoad(energySprites, "Items/Energy/energy");
+        energySprites = Utilities.spriteArrayLoad(energySprites, "Items/Energy/energy");
     }
     // Constructor
     public Item(Chest sourceChest){
@@ -64,6 +64,9 @@ public class Item {
         }
 
     }
+    public void use(){
+        used = true;
+    }
     // Getter methods
     public Image getSprite(){
         Image sprite = null;
@@ -82,11 +85,17 @@ public class Item {
         }
         return sprite;
     }
-    public void gotUsed(){used=true;}
+
     public Rectangle getHitbox(){
         return new Rectangle((int) x, (int) y, 32, 32);
     }
-    public int getType(){return type;}
-
-    public boolean isUsed(){return used;}
+    public int getType(){
+        return type;
+    }
+    public boolean isUsed(){
+        return used;
+    }
+    public boolean isSettled(){
+        return (int) bounceY == 0 && (int) bounceX == 0;
+    }
 }

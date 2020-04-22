@@ -29,7 +29,7 @@ public class MainMenu extends JPanel implements MouseListener {
             g.setColor(Color.RED);
             g.drawString("Intro screen?", 435,200);
         }
-        //gameFrame.switchPanel(MainGame.SHOPPANEL); // SKIPPING MENU, REMOVE LATER
+        gameFrame.switchPanel(MainGame.SHOPPANEL); // SKIPPING MENU, REMOVE LATER
     }
     // Mouse related methods
     @Override

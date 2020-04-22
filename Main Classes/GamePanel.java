@@ -28,7 +28,6 @@ class GamePanel extends JPanel implements KeyListener {
     private Sound testEffect = new Sound("Assets/Sounds/Effects/coin5.wav");
     // Game fields
     private int timeLeft = 200;
-    private int chestTime = 0;
     private int levelOffset = 0;
     // Fonts
     Font gameFont;
@@ -283,9 +282,9 @@ class GamePanel extends JPanel implements KeyListener {
         }
         //Checking item collision
         for(Item item: items){
-            if(item.getHitbox().intersects(player.getHitbox()) && chestTime-timeLeft>= 1) {
+            if(item.getHitbox().intersects(player.getHitbox()) && item.isSettled()) {
                 player.gainItem(item);
-                item.gotUsed();
+                item.use();
             }
         }
         // Checking chest collision
@@ -293,7 +292,6 @@ class GamePanel extends JPanel implements KeyListener {
         for(Chest chest: chests){
             Rectangle chestHitbox = chest.getHitbox();
             if(chest.isClosed() && hitbox.intersects(chestHitbox) && (hitbox.y + hitbox.height) == (chestHitbox.y + chestHitbox.height)){
-                chestTime=timeLeft;
                 chest.open();
                 System.out.println(chest.getQuantity());
                 for(int i = 0; i < chest.getQuantity(); i++){
