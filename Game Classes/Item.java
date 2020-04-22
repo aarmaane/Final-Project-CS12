@@ -9,6 +9,7 @@ public class Item {
     private double bounceX, bounceY;
     private double spriteCount;
     private int type;
+    private boolean used;
     // Declaring sprites
     private static Image[] coinSprites = new Image[5];
     private static Image[] healthSprites = new Image[6];
@@ -42,6 +43,7 @@ public class Item {
             }
         }
     }
+
     public void update(){
         updateMotion();
         updateSprite();
@@ -80,7 +82,11 @@ public class Item {
         }
         return sprite;
     }
+    public void gotUsed(){used=true;}
     public Rectangle getHitbox(){
         return new Rectangle((int) x, (int) y, 32, 32);
     }
+    public int getType(){return type;}
+
+    public boolean isUsed(){return used;}
 }

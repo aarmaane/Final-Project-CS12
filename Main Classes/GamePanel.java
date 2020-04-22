@@ -28,6 +28,7 @@ class GamePanel extends JPanel implements KeyListener {
     private Sound testEffect = new Sound("Assets/Sounds/Effects/coin5.wav");
     // Game fields
     private int timeLeft = 200;
+    private int chestTime = 0;
     private int levelOffset = 0;
     // Fonts
     Font gameFont;
@@ -153,7 +154,7 @@ class GamePanel extends JPanel implements KeyListener {
         g.drawImage(healthBar, 10,10,this);
         g.drawImage(staminaBar, 10,65,this);
         g.drawString("Time: "+timeLeft,800,20);
-        g.drawString("Points: "+player.getPoints(),660,20);
+        g.drawString("Points: "+player.getPoints(),640,20);
         // Drawing pause screen
         if(paused){
             g.setColor(new Color(0,0,0, 100));
@@ -280,11 +281,19 @@ class GamePanel extends JPanel implements KeyListener {
                 }
             }
         }
+        //Checking item collision
+        for(Item item: items){
+            if(item.getHitbox().intersects(player.getHitbox()) && chestTime-timeLeft>= 1) {
+                player.gainItem(item);
+                item.gotUsed();
+            }
+        }
         // Checking chest collision
         Rectangle hitbox = player.getHitbox();
         for(Chest chest: chests){
             Rectangle chestHitbox = chest.getHitbox();
             if(chest.isClosed() && hitbox.intersects(chestHitbox) && (hitbox.y + hitbox.height) == (chestHitbox.y + chestHitbox.height)){
+                chestTime=timeLeft;
                 chest.open();
                 System.out.println(chest.getQuantity());
                 for(int i = 0; i < chest.getQuantity(); i++){
@@ -329,6 +338,13 @@ class GamePanel extends JPanel implements KeyListener {
                 player.addPoints(100);
             }
         }
+        for(int i=items.size() - 1; i >= 0; i--){
+            if(items.get(i).isUsed()){
+                items.remove(i);
+                System.out.println("efjwckq");
+            }
+        }
+
     }
     public void checkInputs(){
         // Side-to-side movement inputs

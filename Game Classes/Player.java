@@ -4,6 +4,7 @@ public class Player {
     // Constants
     public static final int RIGHT = 0, LEFT = 1;
     public static final int INITIAL = 0, NORMAL = 1;
+    public static final int COINS = 0, HEALTH = 1, HEALTHPWR = 2, ENERGYPWR = 3;
     private static final double GRAVITY = 0.25;
     // Player's movement-related fields
     private double x, y;
@@ -17,6 +18,8 @@ public class Player {
     private double stamina, maxStamina;
     private int swordDamage, spellDamage;
     private boolean isAttacking, isCasting;
+    private boolean energyPower, healthPower;
+    private int powerTime;
     private int groundAttackNum, airAttackNum;
     // Image Arrays holding Player's Sprites
     private Image[] idleSprites = new Image[4];
@@ -260,6 +263,28 @@ public class Player {
             }
         }
     }
+    public void gainItem(Item item){
+            int type=item.getType();
+        System.out.println("HERE");
+            if(type==COINS){
+                points += 10;
+            }
+            else if(type==HEALTH){
+                if(health+10<=100) {
+                    health += 10;
+                }
+                else{
+                    health = 100;
+                }
+            }
+            else if(type==HEALTHPWR){
+                healthPower=true;
+            }
+            else if(type==ENERGYPWR){
+                energyPower=true;
+            }
+
+    }
     public void resetPos(int x, int y){
         this.x = x;
         this.y = y;
@@ -343,6 +368,15 @@ public class Player {
         }
         return false;
     }
+    public void setPowerTime(int time){
+        powerTime = time;
+    }
+    public void switchHealthPower(){
+        healthPower=!healthPower;
+    }
+    public void switchEnergyPower(){
+        energyPower=!energyPower;
+    }
     public double getStamina() {
         return stamina;
     }
@@ -353,4 +387,7 @@ public class Player {
     public int getSpellDamage(){return spellDamage;}
     public int getSwordDamage(){return swordDamage;}
     public int getDirection(){return direction;}
+    public boolean getEnergyPower(){return energyPower;}
+    public boolean getHealthPower(){return healthPower;}
+    public int getPowerTime(){return powerTime;}
 }
