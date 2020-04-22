@@ -220,7 +220,10 @@ class GamePanel extends JPanel implements KeyListener {
             }
         }
         else if(keyCode == KeyEvent.VK_CLOSE_BRACKET){
-            player.resetPos();
+            player.resetPos(0,366);
+        }
+        else if(keyCode == KeyEvent.VK_OPEN_BRACKET){
+            player.resetPos(getMousePosition().x + levelOffset - 50, getMousePosition().y);
         }
     }
     @Override

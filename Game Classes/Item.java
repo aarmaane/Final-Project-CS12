@@ -1,10 +1,8 @@
-import jdk.jshell.execution.Util;
-
 import java.awt.*;
 
 public class Item {
     // Declaring constants
-    public static final int COIN = 0, HEALTH = 1, SHIELDPWR = 2, ENERGYPWR = 3;
+    public static final int COIN = 0, HEALTH = 1, HEALTHPWR = 2, ENERGYPWR = 3;
     private static final double GRAVITY = 0.25;
     // Declaring fields
     private double x, y, velocityX, velocityY;
@@ -12,13 +10,16 @@ public class Item {
     private double spriteCount;
     private int type;
     // Declaring sprites
-    private static Image[] coinSprites;
+    private static Image[] coinSprites = new Image[5];
     private static Image[] healthSprites = new Image[6];
-    private static Image[] shieldSprites;
-    private static Image[] energySprites;
+    private static Image[] healthPwrSprites = new Image[7];
+    private static Image[] energySprites = new Image[4];
     // Initialize class
     public static void init(){
         healthSprites = Utilities.spriteArrayLoad(healthSprites, "Items/Health/health");
+        coinSprites = Utilities.spriteArrayLoad(coinSprites, "Items/Coins/coin");
+        healthPwrSprites = Utilities.spriteArrayLoad(healthPwrSprites, "Items/Health/healthpwr");
+        energySprites =Utilities.spriteArrayLoad(energySprites, "Items/Energy/energy");
     }
     // Constructor
     public Item(Chest sourceChest){
@@ -53,13 +54,31 @@ public class Item {
     }
     public void updateSprite(){
         spriteCount += 0.1;
-        if(spriteCount >= healthSprites.length){
+        if(     (type == HEALTH && spriteCount >= healthSprites.length) ||
+                (type == COIN && spriteCount >= coinSprites.length) ||
+                (type == HEALTHPWR && spriteCount >= healthPwrSprites.length) ||
+                (type == ENERGYPWR && spriteCount >= energySprites.length)){
             spriteCount = 0;
         }
+
     }
     // Getter methods
     public Image getSprite(){
-        return healthSprites[(int)Math.floor(spriteCount)];
+        Image sprite = null;
+        int spriteIndex = (int)Math.floor(spriteCount);
+        if(type == COIN){
+            sprite = coinSprites[spriteIndex];
+        }
+        else if(type == HEALTH){
+            sprite = healthSprites[spriteIndex];
+        }
+        else if(type == HEALTHPWR){
+            sprite = healthPwrSprites[spriteIndex];
+        }
+        else if(type == ENERGYPWR){
+            sprite = energySprites[spriteIndex];
+        }
+        return sprite;
     }
     public Rectangle getHitbox(){
         return new Rectangle((int) x, (int) y, 32, 32);

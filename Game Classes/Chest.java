@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class Chest {
     // Declaring constants
-    public static final int COINS = 0, HEALTH = 1, SHIELDPWR = 2, ENERGYPWR = 3;
+    public static final int COINS = 0, HEALTH = 1, HEALTHPWR = 2, ENERGYPWR = 3;
     // Declaring fields
     private int x, y;
     private int content, quantity;
@@ -33,7 +33,7 @@ public class Chest {
         if(randomNumber >= 90){
             quantity = 1;
             if(randomNumber >= 95){
-                content = SHIELDPWR;
+                content = HEALTHPWR;
             }
             else{
                 content = ENERGYPWR;

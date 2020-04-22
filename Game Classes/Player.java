@@ -263,9 +263,9 @@ public class Player {
             }
         }
     }
-    public void resetPos(){
-        x = 0;
-        y = 366;
+    public void resetPos(int x, int y){
+        this.x = x;
+        this.y = y;
         velocityX = 0;
         velocityY = 0;
     }
