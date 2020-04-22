@@ -26,11 +26,8 @@ public class Player {
     private Image[][] groundAttackSprites; // This array will be jagged since attacks have differing lengths
     private Image[][] airAttackSprites; // This array will be jagged too
     private Image[] castSprites = new Image[4];
-    // Other fields
-    GamePanel game;
     // Constructor methods
-    public Player(GamePanel gamePanel){
-        game = gamePanel;
+    public Player(){
         // Setting up movement fields
         y = 366;
         direction = RIGHT;

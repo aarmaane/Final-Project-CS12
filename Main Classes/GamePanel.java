@@ -13,7 +13,7 @@ class GamePanel extends JPanel implements KeyListener {
     private MainGame gameFrame;
 
     // Game related Objects
-    private Player player = new Player(this);
+    private Player player = new Player();
     private Image enemyHealthBar;
     private Image staminaBar;
     private Image healthBar;
