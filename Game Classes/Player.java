@@ -264,7 +264,6 @@ public class Player {
     }
     public void gainItem(Item item){
         int type = item.getType();
-        System.out.println("HERE");
         if(type == Item.COIN){
             points += 10;
         }

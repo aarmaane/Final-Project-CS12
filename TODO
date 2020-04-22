@@ -1,6 +1,9 @@
 TO DO List (Next 5 Objectives):
-- Setup basic enemies
+- Fully implement power-ups
 - Expand level 1 (More Platform pictures needed)
+- Setup Skeletons, Ghosts (Try moving some Slime code into enemy class if it's reusable for other enemies)
+- Set up indicator text (For changes in health and points)
+- Implement sound/music
 
 Future Ideas:
 - Ability to save progress

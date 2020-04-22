@@ -63,6 +63,13 @@ class GamePanel extends JPanel implements KeyListener {
 
     // Method to load up all level Objects from the corresponding text files
     public void loadLevel(int levelNum){
+        // Emptying previous values
+        platforms.clear();
+        noCollideProps.clear();
+        enemies.clear();
+        chests.clear();
+        projectiles.clear();
+        items.clear();
         try{
             for(String data: Utilities.loadFile("Platforms.txt", levelNum)){
                 platforms.add(new LevelProp(data));
@@ -225,6 +232,10 @@ class GamePanel extends JPanel implements KeyListener {
         else if(keyCode == KeyEvent.VK_OPEN_BRACKET){
             player.resetPos(getMousePosition().x + levelOffset - 50, getMousePosition().y);
         }
+        else if(keyCode == KeyEvent.VK_SEMICOLON){
+            loadLevel(1);
+            System.out.println("Level reloaded");
+        }
     }
     @Override
     public void keyReleased(KeyEvent e) {
@@ -325,24 +336,17 @@ class GamePanel extends JPanel implements KeyListener {
         }
     }
     public void collectGarbage(){
-        for(int i = projectiles.size() - 1; i >= 0; i--){
-            if(projectiles.get(i).isExploding()){
-                projectiles.remove(i);
-            }
-        }
+        // Using removeIf for Arrays that only need removal of items
+        projectiles.removeIf(Projectile::isExploding);
+        items.removeIf(item -> (item.isUsed() || item.getHitbox().y > this.getHeight()));
+
+        // Using for loops for Arrays that need to keep track of removals
         for(int i = enemies.size() - 1; i >= 0; i--){
             if(enemies.get(i).isDead() || enemies.get(i).getY() > this.getHeight()){
                 enemies.remove(i);
                 player.addPoints(100);
             }
         }
-        for(int i=items.size() - 1; i >= 0; i--){
-            if(items.get(i).isUsed()){
-                items.remove(i);
-                System.out.println("efjwckq");
-            }
-        }
-
     }
     public void checkInputs(){
         // Side-to-side movement inputs

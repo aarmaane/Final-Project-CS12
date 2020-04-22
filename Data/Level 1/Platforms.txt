@@ -16,3 +16,12 @@
 1772,235,grassPillar.png
 1916,475,grassMiddle.png
 2060,475,grassMiddle.png
+2204,475,grassMiddle.png
+2348,475,grassRight.png
+2610,325,grassPlatformBig.png
+3000,325,grassPlatformSmall.png
+3250,200,grassPlatformSmall.png
+3500,325,grassPlatformSmall.png
+3750,325,grassPlatformBig.png
+4180,475,grassLeft.png
+4224,475,grassMiddle.png
