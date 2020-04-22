@@ -57,6 +57,7 @@ class GamePanel extends JPanel implements KeyListener {
         Slime.init();
         Projectile.init();
         Chest.init();
+        Item.init();
         loadLevel(1);
     }
 
@@ -129,7 +130,8 @@ class GamePanel extends JPanel implements KeyListener {
         // Drawing items
         g.setColor(Color.RED);
         for(Item item: items){
-            g.fillRect(item.getHitbox().x - levelOffset,item.getHitbox().y,10,10);
+            g.drawImage(item.getSprite(), item.getHitbox().x - levelOffset, item.getHitbox().y, this);
+            //g.fillRect(item.getHitbox().x - levelOffset,item.getHitbox().y,10,10);
         }
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);

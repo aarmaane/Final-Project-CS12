@@ -1,3 +1,5 @@
+import jdk.jshell.execution.Util;
+
 import java.awt.*;
 
 public class Item {
@@ -7,7 +9,17 @@ public class Item {
     // Declaring fields
     private double x, y, velocityX, velocityY;
     private double bounceX, bounceY;
+    private double spriteCount;
     private int type;
+    // Declaring sprites
+    private static Image[] coinSprites;
+    private static Image[] healthSprites = new Image[6];
+    private static Image[] shieldSprites;
+    private static Image[] energySprites;
+    // Initialize class
+    public static void init(){
+        healthSprites = Utilities.spriteArrayLoad(healthSprites, "Items/Health/health");
+    }
     // Constructor
     public Item(Chest sourceChest){
         x = sourceChest.getHitbox().x;
@@ -31,6 +43,7 @@ public class Item {
     }
     public void update(){
         updateMotion();
+        updateSprite();
     }
     public void updateMotion(){
         x += velocityX;
@@ -38,8 +51,17 @@ public class Item {
         // Adding gravity
         velocityY += GRAVITY;
     }
+    public void updateSprite(){
+        spriteCount += 0.1;
+        if(spriteCount >= healthSprites.length){
+            spriteCount = 0;
+        }
+    }
     // Getter methods
+    public Image getSprite(){
+        return healthSprites[(int)Math.floor(spriteCount)];
+    }
     public Rectangle getHitbox(){
-        return new Rectangle((int) x, (int) y, 10, 10);
+        return new Rectangle((int) x, (int) y, 32, 32);
     }
 }
