@@ -149,6 +149,7 @@ public class Player {
         updateStamina();
         checkOutOfBounds();
         updateSprite();
+        checkPowerUp();
     }
     // Method to calculate and apply the physics of the Player
     public void updateMotion(){
@@ -209,6 +210,14 @@ public class Player {
         if(hitbox.x < 0){ // Player moves offscreen (from the left side)
             int extraMovement = hitbox.x;
             x -= extraMovement; // Shifting the player back into the correct position
+        }
+    }
+    public void checkPowerUp(){
+        if(energyTimer > 0){
+            stamina = maxStamina;
+        }
+        if(healthTimer > 0){
+            health = maxHealth;
         }
     }
     // Method to smoothly update the sprite counter and produce realistic animation of the Player
@@ -281,6 +290,15 @@ public class Player {
             energyTimer=30;
         }
     }
+    public void iterateTime(){
+        if(energyTimer>0){
+            energyTimer-=1;
+        }
+        if(healthTimer>0){
+            healthTimer-=1;
+        }
+
+    }
     public void resetPos(int x, int y){
         this.x = x;
         this.y = y;
@@ -294,15 +312,7 @@ public class Player {
     public void addPoints(int addition){
         points += addition;
     }
-    public void setPowerTime(int time){
-        powerTime = time;
-    }
-    public void switchHealthPower(){
-        healthPower=!healthPower;
-    }
-    public void switchEnergyPower(){
-        energyPower=!energyPower;
-    }
+
     // Getter methods
     // Method that returns the player's current sprite by looking at various fields
     public Image getSprite(){

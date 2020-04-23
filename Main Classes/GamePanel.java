@@ -366,6 +366,7 @@ class GamePanel extends JPanel implements KeyListener {
     }
     public void iterateTime(){
         timeLeft-=1;
+        player.iterateTime();
     }
 
     // Getter methods
