@@ -132,13 +132,17 @@ public class Player {
                 }
             }
             // If the attacking checks passed, reset sprite and remove stamina
-            stamina -= 5;
+            if(!hasEnergyPower()){
+                stamina -= 5;
+            }
             spriteCount = 0;
         }
     }
     public void castMagic(){
         if(!isAttacking && !isCasting && onGround && (stamina - 10) > 0){
-            stamina -= 10;
+            if(!hasEnergyPower()){
+                stamina -= 10;
+            }
             isCasting = true;
             spriteCount = 0;
         }
@@ -149,7 +153,6 @@ public class Player {
         updateStamina();
         checkOutOfBounds();
         updateSprite();
-        checkPowerUp();
     }
     // Method to calculate and apply the physics of the Player
     public void updateMotion(){
@@ -190,7 +193,7 @@ public class Player {
         }
     }
     public void updateStamina(){
-        if(isCasting || isAttacking){
+        if(isCasting || isAttacking || hasEnergyPower()){
             return; // No regeneration during casting/attacks
         }
         else if(velocityX != 0 || !onGround) {
@@ -210,14 +213,6 @@ public class Player {
         if(hitbox.x < 0){ // Player moves offscreen (from the left side)
             int extraMovement = hitbox.x;
             x -= extraMovement; // Shifting the player back into the correct position
-        }
-    }
-    public void checkPowerUp(){
-        if(energyTimer > 0){
-            stamina = maxStamina;
-        }
-        if(healthTimer > 0){
-            health = maxHealth;
         }
     }
     // Method to smoothly update the sprite counter and produce realistic animation of the Player
@@ -306,7 +301,9 @@ public class Player {
         velocityY = 0;
     }
     public void enemyHit(Enemy enemy){
-        health -= enemy.getDamage();
+        if(!hasHealthPower()){
+            health -= enemy.getDamage();
+        }
     }
     // Setter methods
     public void addPoints(int addition){
@@ -395,4 +392,6 @@ public class Player {
     public int getDirection(){return direction;}
     public int getEnergyTime(){return energyTimer;}
     public int getHealthTimer(){return healthTimer;}
+    public boolean hasEnergyPower(){return energyTimer > 0;}
+    public boolean hasHealthPower(){return healthTimer > 0;}
 }
