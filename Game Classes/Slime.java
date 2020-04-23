@@ -81,7 +81,7 @@ public class Slime extends Enemy {
             spriteCount = 0;
         }
         // Checking if the player should be dealt damage
-        if(isAttacking && Math.round(spriteCount*10)/10.0 == attackSprites.length/2.0){
+        if(isAttacking && Math.round(spriteCount*100)/100.0 == attackSprites.length/2.0){
             player.enemyHit(this);
         }
     }

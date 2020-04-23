@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Player {
     // Constants
@@ -27,6 +28,8 @@ public class Player {
     private Image[][] groundAttackSprites; // This array will be jagged since attacks have differing lengths
     private Image[][] airAttackSprites; // This array will be jagged too
     private Image[] castSprites = new Image[4];
+    // Other fields
+    private ArrayList<IndicatorText> textQueue = new ArrayList<>();
     // Constructor methods
     public Player(){
         // Setting up movement fields
@@ -303,7 +306,13 @@ public class Player {
     public void enemyHit(Enemy enemy){
         if(!hasHealthPower()){
             health -= enemy.getDamage();
+            textQueue.add(new IndicatorText(getHitbox().x, getHitbox().y, "-" + enemy.getDamage(), Color.RED));
         }
+    }
+    public ArrayList<IndicatorText> flushTextQueue(){
+        ArrayList<IndicatorText> temp = textQueue;
+        textQueue = new ArrayList<>();
+        return temp;
     }
     // Setter methods
     public void addPoints(int addition){

@@ -24,6 +24,7 @@ class GamePanel extends JPanel implements KeyListener {
     private ArrayList<Projectile> projectiles = new ArrayList<>();
     private ArrayList<Chest> chests = new ArrayList<>();
     private ArrayList<Item> items = new ArrayList<>();
+    private ArrayList<IndicatorText> indicatorText = new ArrayList<>();
     private Sound test = new Sound("Assets/Sounds/Music/level1.wav");
     private Sound testEffect = new Sound("Assets/Sounds/Effects/coin5.wav");
     // Game fields
@@ -138,7 +139,12 @@ class GamePanel extends JPanel implements KeyListener {
         g.setColor(Color.RED);
         for(Item item: items){
             g.drawImage(item.getSprite(), item.getHitbox().x - levelOffset, item.getHitbox().y, this);
-            //g.fillRect(item.getHitbox().x - levelOffset,item.getHitbox().y,10,10);
+        }
+        // Drawing indicator text
+        g.setFont(gameFont);
+        for(IndicatorText text: indicatorText){
+            g.setColor(text.getColor());
+            g.drawString(text.getString(), text.getX() - levelOffset, text.getY());
         }
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
@@ -247,6 +253,7 @@ class GamePanel extends JPanel implements KeyListener {
     // Game related methods
     public void update(){
         player.update();
+        indicatorText.addAll(player.flushTextQueue());
         for(Enemy enemy: enemies){
             enemy.update(player);
         }
@@ -255,6 +262,9 @@ class GamePanel extends JPanel implements KeyListener {
         }
         for(Item item: items){
             item.update();
+        }
+        for(IndicatorText text: indicatorText){
+            text.update();
         }
         checkPlayerAction();
         calculateOffset();
@@ -288,6 +298,8 @@ class GamePanel extends JPanel implements KeyListener {
                     enemy.castHit(projectile);
                     player.addPoints((int)projectile.getDamage());
                     projectile.explode();
+                    indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "-" + player.getSpellDamage(), Color.ORANGE));
+
                 }
             }
         }
@@ -296,6 +308,12 @@ class GamePanel extends JPanel implements KeyListener {
             if(item.getHitbox().intersects(player.getHitbox()) && item.isSettled()) {
                 player.gainItem(item);
                 item.use();
+                if(item.getType() == Item.HEALTH){
+                    indicatorText.add(new IndicatorText(player.getHitbox().x, player.getHitbox().y, "+10", Color.GREEN));
+                }
+                else if(item.getType() == Item.COIN){
+                    indicatorText.add(new IndicatorText(player.getHitbox().x, player.getHitbox().y, "+10", Color.YELLOW));
+                }
             }
         }
         // Checking chest collision
@@ -319,6 +337,7 @@ class GamePanel extends JPanel implements KeyListener {
                 if(player.getAttackBox().intersects(enemy.getHitbox())){
                     enemy.swordHit(player);
                     player.addPoints(player.getSwordDamage());
+                    indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "-" + player.getSwordDamage(), Color.ORANGE));
                 }
             }
         }
@@ -339,12 +358,15 @@ class GamePanel extends JPanel implements KeyListener {
         // Using removeIf for Arrays that only need removal of items
         projectiles.removeIf(Projectile::isExploding);
         items.removeIf(item -> (item.isUsed() || item.getHitbox().y > this.getHeight()));
+        indicatorText.removeIf(IndicatorText::isDone);
 
         // Using for loops for Arrays that need to keep track of removals
         for(int i = enemies.size() - 1; i >= 0; i--){
-            if(enemies.get(i).isDead() || enemies.get(i).getY() > this.getHeight()){
+            Enemy enemy = enemies.get(i);
+            if(enemy.isDead() || enemy.getY() > this.getHeight()){
                 enemies.remove(i);
                 player.addPoints(100);
+                indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "+100", Color.YELLOW));
             }
         }
     }
