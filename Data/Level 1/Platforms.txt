@@ -25,3 +25,6 @@
 3750,325,grassPlatformBig.png
 4180,475,grassLeft.png
 4224,475,grassMiddle.png
+4224,475,grassMiddle.png
+4368,475,grassMiddle.png
+4512,475,grassMiddle.png

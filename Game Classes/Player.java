@@ -17,8 +17,7 @@ public class Player {
     private double stamina, maxStamina;
     private int swordDamage, spellDamage;
     private boolean isAttacking, isCasting;
-    private boolean energyPower, healthPower;
-    private int powerTime;
+    private int healthTimer, energyTimer;
     private int groundAttackNum, airAttackNum;
     // Image Arrays holding Player's Sprites
     private Image[] idleSprites = new Image[4];
@@ -276,10 +275,10 @@ public class Player {
             }
         }
         else if(type == Item.HEALTHPWR){
-            healthPower=true;
+            healthTimer=30;
         }
         else if(type == Item.ENERGYPWR){
-            energyPower=true;
+            energyTimer=30;
         }
     }
     public void resetPos(int x, int y){
@@ -384,7 +383,6 @@ public class Player {
     public int getSpellDamage(){return spellDamage;}
     public int getSwordDamage(){return swordDamage;}
     public int getDirection(){return direction;}
-    public boolean getEnergyPower(){return energyPower;}
-    public boolean getHealthPower(){return healthPower;}
-    public int getPowerTime(){return powerTime;}
+    public int getEnergyTime(){return energyTimer;}
+    public int getHealthTimer(){return healthTimer;}
 }
