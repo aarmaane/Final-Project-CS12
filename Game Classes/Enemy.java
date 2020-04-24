@@ -10,9 +10,31 @@ public abstract class Enemy {
     protected int direction;
     protected int health, maxHealth, damage, difficulty;
     protected boolean isActive, isHurt, isAttacking, knockedBack;
+    protected boolean platformBehind, platformAhead;
     // General methods
-    public void castHit(Projectile cast){
-        health -= (Utilities.randint(80,100)/100.0)*cast.getDamage();
+    public void checkCollision(Rectangle rect){
+        if(this.getClass() == Skeleton.class){
+            System.out.println();
+        }
+        Rectangle hitbox = getHitbox();
+        if(hitbox.intersects(rect)){
+            if((int)((hitbox.y + hitbox.height) - velocityY) <= rect.y){
+                y = (rect.y - hitbox.height) - (hitbox.y - y); // Putting the Enemy on top of the platform
+                velocityY = 0;
+                knockedBack = false;
+            }
+        }
+        // Checking if there are any platforms behind or infront of the Enemy
+        if(rect.contains((hitbox.x + hitbox.width + 1),(hitbox.y + hitbox.height + 1))){
+            platformAhead = true;
+        }
+        if(rect.contains((hitbox.x - 1), (hitbox.y + hitbox.height + 1))){
+            platformBehind = true;
+        }
+    }
+    public double castHit(Projectile cast){
+        double damageDone = (Utilities.randint(80,100)/100.0)*cast.getDamage();
+        health -= damageDone;
         velocityY = -3;
         if(cast.getSpeed() > 0){
             velocityX = 3;
@@ -23,9 +45,11 @@ public abstract class Enemy {
         isHurt = true;
         knockedBack = true;
         spriteCount = 0;
+        return damageDone;
     }
-    public void swordHit(Player player){
-        health -= (Utilities.randint(80,100)/100.0)*player.getSwordDamage();
+    public double swordHit(Player player){
+        double damageDone = (Utilities.randint(80,100)/100.0)*player.getSwordDamage();
+        health -= damageDone;
         velocityY = -4;
         if(player.getDirection() == Player.RIGHT){
             velocityX = 4;
@@ -36,10 +60,10 @@ public abstract class Enemy {
         isHurt = true;
         knockedBack = true;
         spriteCount = 0;
+        return damageDone;
     }
     // Declaring methods that subclasses need to implement
     public abstract void update(Player player);
-    public abstract void checkCollision(Rectangle rect);
     public abstract Image getSprite();
     public abstract Rectangle getHitbox();
 

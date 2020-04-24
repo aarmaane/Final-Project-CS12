@@ -7,9 +7,6 @@ public class Slime extends Enemy {
     private static Image[] hurtSprites = new Image[4];
     private static Image[] idleSprites = new Image[4];
     private static Image[] deathSprites = new Image[4];
-    //Fields
-    private boolean platformAhead;
-    private boolean platformBehind;
     // Method to initialize the Class by loading sprites
     public static void init(){
         movingSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Slime/move");
@@ -43,21 +40,21 @@ public class Slime extends Enemy {
         if(knockedBack){
             // Not touching Slime's velocity values
         }
-        else if(playerX == slimeX || isHurt || isAttacking){
-            velocityX = 0;
+        else if(playerX == slimeX || isHurt){
+            velocityX = 0; // Stopping movement while maintaining direction
         }
         else if(playerX > slimeX){
             direction = RIGHT;
-            if(platformAhead){
+            if(platformAhead && !isAttacking){
                 velocityX = 0.5;
             }
             else{
-                velocityX = 0;
+                velocityX = 0; // Making the slime stay in place
             }
         }
-        else{
+        else{ // Same as above but for left facing
             direction = LEFT;
-            if(platformBehind){
+            if(platformBehind && !isAttacking){
                 velocityX = -0.5;
             }
             else{
@@ -81,7 +78,7 @@ public class Slime extends Enemy {
             spriteCount = 0;
         }
         // Checking if the player should be dealt damage
-        if(isAttacking && Math.round(spriteCount*100)/100.0 == attackSprites.length/2.0){
+        if(isAttacking && Utilities.roundOff(spriteCount,2) == attackSprites.length/2.0){
             player.enemyHit(this);
         }
     }
@@ -112,25 +109,6 @@ public class Slime extends Enemy {
             if(spriteCount > movingSprites.length){
                 spriteCount = 0;
             }
-        }
-
-    }
-    @Override
-    public void checkCollision(Rectangle rect){
-        Rectangle hitbox = getHitbox();
-        if(hitbox.intersects(rect)){
-            if((int)((hitbox.y + hitbox.height) - velocityY) <= rect.y){
-                y = (rect.y - hitbox.height) - (hitbox.y - y); // Putting the Enemy on top of the platform
-                velocityY = 0;
-                knockedBack = false;
-            }
-        }
-        // Checking if there are any platforms behind or infront of the Enemy
-        if(rect.contains((hitbox.x + hitbox.width + 1),(hitbox.y + hitbox.height + 1))){
-            platformAhead = true;
-        }
-        if(rect.contains((hitbox.x - 1), (hitbox.y + hitbox.height + 1))){
-            platformBehind = true;
         }
     }
     // Getter methods

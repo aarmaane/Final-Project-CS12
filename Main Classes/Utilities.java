@@ -51,4 +51,9 @@ public class Utilities {
         return (int)(Math.random()*(high-low+1)+low);
     }
 
+    public static double roundOff(double number, int decimalPlaces){
+        double powerOfTen = Math.pow(10, decimalPlaces);
+        return Math.round(number*powerOfTen)/powerOfTen;
+    }
+
 }

@@ -1,3 +1,5 @@
+import jdk.jshell.execution.Util;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -390,13 +392,13 @@ public class Player {
         else{
             middleFrame = 1; // Air attacks are more responsive
         }
-        if(isAttacking && Math.round(spriteCount*10)/10.0 == middleFrame){
+        if(isAttacking && Utilities.roundOff(spriteCount,1) == middleFrame){
             return true;
         }
         return false;
     }
     public boolean isCastFrame(){
-        if(isCasting && Math.round(spriteCount*100)/100.0 == castSprites.length-1){
+        if(isCasting && Utilities.roundOff(spriteCount,2) == castSprites.length-1){
             return true;
         }
         return false;

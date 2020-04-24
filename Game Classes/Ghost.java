@@ -9,9 +9,8 @@ public class Ghost extends Enemy {
     private static Image[] idleSprites;
     private static Image[] attackSprites;
     private static Image[] deathSprites;
+    //Constructor
     public Ghost(){
-        //Constructor
-
     }
     public static void init(){
         try{

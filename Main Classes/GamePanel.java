@@ -54,8 +54,9 @@ class GamePanel extends JPanel implements KeyListener {
         catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
-        // Initalizing the enemy Classes
+        // Initalizing the game Classes
         Slime.init();
+        Skeleton.init();
         Projectile.init();
         Chest.init();
         Item.init();
@@ -80,6 +81,9 @@ class GamePanel extends JPanel implements KeyListener {
             }
             for(String data: Utilities.loadFile("Slimes.txt", levelNum)){
                 enemies.add(new Slime(data));
+            }
+            for(String data: Utilities.loadFile("Skeletons.txt", levelNum)){
+                enemies.add(new Skeleton(data));
             }
             for(String data: Utilities.loadFile("Chests.txt", levelNum)){
                 chests.add(new Chest(data));
@@ -280,7 +284,9 @@ class GamePanel extends JPanel implements KeyListener {
         player.update();
         indicatorText.addAll(player.flushTextQueue());
         for(Enemy enemy: enemies){
-            enemy.update(player);
+            if(enemy.isActive){
+                enemy.update(player);
+            }
         }
         for(Projectile projectile: projectiles){
             projectile.update();
@@ -320,10 +326,11 @@ class GamePanel extends JPanel implements KeyListener {
         for(Projectile projectile:projectiles){
             for(Enemy enemy:enemies) {
                 if(!projectile.isExploding() && enemy.getHitbox().intersects(projectile.getHitbox())){
-                    enemy.castHit(projectile);
+                    double damageDone = enemy.castHit(projectile);
+                    damageDone = Utilities.roundOff(damageDone, 1);
                     player.addPoints((int)projectile.getDamage());
                     projectile.explode();
-                    indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "-" + player.getSpellDamage(), Color.ORANGE));
+                    indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "-" + damageDone, Color.ORANGE));
 
                 }
             }
@@ -360,9 +367,10 @@ class GamePanel extends JPanel implements KeyListener {
             // Going through each enemy and checking for collisions
             for(Enemy enemy:enemies){
                 if(player.getAttackBox().intersects(enemy.getHitbox())){
-                    enemy.swordHit(player);
+                    double damageDone = enemy.swordHit(player);
+                    damageDone = Utilities.roundOff(damageDone, 1);
                     player.addPoints(player.getSwordDamage());
-                    indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "-" + player.getSwordDamage(), Color.ORANGE));
+                    indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "-" + damageDone, Color.ORANGE));
                 }
             }
         }
