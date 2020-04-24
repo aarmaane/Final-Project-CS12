@@ -156,17 +156,41 @@ class GamePanel extends JPanel implements KeyListener {
         rectangle over each time. */
         for(int i=0;i<100;i++) {
             //Health
-            g.setColor(new Color(155+i,0,0));//Changing colour
+            if(player.getHealthTimer()>0){
+                g.setColor(new Color(255,20,100+i));
+            }
+            else {
+                g.setColor(new Color(155 + i, 0, 0));//Changing colour
+            }
             g.fillRect(59+i, 30, (int) (((double) player.getHealth() / player.getMaxHealth()) * 198)-i, 14);
+
+            //Drawing the health timer
+            if(player.getHealthTimer() > 0){
+                g.drawString(""+player.getHealthTimer(),267,41);
+            }
+
             //Stamina
-            g.setColor(new Color(0,155+i,0));
+            if(player.getEnergyTime()>0){
+                g.setColor(new Color(155+i,155+i,0));
+            }
+            else {
+                g.setColor(new Color(0, 155 + i, 0));
+            }
             g.fillRect(59+i, 83, (int) ((player.getStamina() / player.getMaxStamina()) * 198)-i, 14);
+            //Drawing the energy timer
+            if(player.getEnergyTime() > 0){
+                g.drawString(""+player.getEnergyTime(),267,96);
+            }
         }
+
         g.setColor(Color.BLACK);
         g.drawImage(healthBar, 10,10,this);
         g.drawImage(staminaBar, 10,65,this);
         g.drawString("Time: "+timeLeft,800,20);
         g.drawString("Points: "+player.getPoints(),640,20);
+
+
+
         // Drawing pause screen
         if(paused){
             g.setColor(new Color(0,0,0, 100));
