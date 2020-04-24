@@ -177,7 +177,7 @@ class GamePanel extends JPanel implements KeyListener {
                 g.setColor(new Color(0, 155 + i, 0));
             }
             g.fillRect(59+i, 83, (int) ((player.getStamina() / player.getMaxStamina()) * 198)-i, 14);
-            //Drawing the energy timer
+            //Drawing the energy timer    dvnduvn
             if(player.getEnergyTime() > 0){
                 g.drawString(""+player.getEnergyTime(),267,96);
             }
