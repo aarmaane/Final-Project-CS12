@@ -9,10 +9,7 @@ public class Skeleton extends Enemy {
     }
     // Constructor
     public Skeleton(String data){
-        String[] dataSplit = data.split(",");
-        x = Integer.parseInt(dataSplit[0]);
-        y = Integer.parseInt(dataSplit[1]);
-        difficulty = Integer.parseInt(dataSplit[2]);
+        super(data);
         health = 200 * difficulty;
         maxHealth = health;
         damage = 20;
@@ -20,19 +17,21 @@ public class Skeleton extends Enemy {
     }
     // General methods
     @Override
-    public void update(Player player){
-        updateMotion();
+    public void updateMotion(Player player){
+        // Skeleton custom movement
+        super.updateMotion(player);
     }
-    public void updateMotion(){
-        // Applying velocity values to position
-        x += velocityX;
-        y += velocityY;
-        // Adding gravity value
-        velocityY += GRAVITY;
-        // Resetting boolean values so they can be rechecked for the new position
-        platformAhead = false;
-        platformBehind = false;
+
+    @Override
+    public void updateAttack(Player player) {
+
     }
+
+    @Override
+    public void updateSprite() {
+
+    }
+
     // Getter methods
     @Override
     public Image getSprite() {

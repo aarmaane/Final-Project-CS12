@@ -11,11 +11,15 @@ public abstract class Enemy {
     protected int health, maxHealth, damage, difficulty;
     protected boolean isActive, isHurt, isAttacking, knockedBack;
     protected boolean platformBehind, platformAhead;
+    // Constructor
+    public Enemy(String data){
+        String[] dataSplit = data.split(",");
+        x = Integer.parseInt(dataSplit[0]);
+        y = Integer.parseInt(dataSplit[1]);
+        difficulty = Integer.parseInt(dataSplit[2]);
+    }
     // General methods
     public void checkCollision(Rectangle rect){
-        if(this.getClass() == Skeleton.class){
-            System.out.println();
-        }
         Rectangle hitbox = getHitbox();
         if(hitbox.intersects(rect)){
             if((int)((hitbox.y + hitbox.height) - velocityY) <= rect.y){
@@ -62,8 +66,24 @@ public abstract class Enemy {
         spriteCount = 0;
         return damageDone;
     }
+    public void update(Player player){
+        updateMotion(player);
+        updateAttack(player);
+        updateSprite();
+    }
+    public void updateMotion(Player player){
+        // Applying velocity values to position
+        x += velocityX;
+        y += velocityY;
+        // Adding gravity value
+        velocityY += GRAVITY;
+        // Resetting boolean values so they can be rechecked for the new position
+        platformAhead = false;
+        platformBehind = false;
+    }
     // Declaring methods that subclasses need to implement
-    public abstract void update(Player player);
+    public abstract void updateAttack(Player player);
+    public abstract void updateSprite();
     public abstract Image getSprite();
     public abstract Rectangle getHitbox();
 

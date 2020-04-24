@@ -3,12 +3,23 @@ import java.awt.*;
 public class Wizard extends Enemy {
     //Fields
     public Wizard(){
+        super("0,0,0");
         //Constructor
 
     }
     // General methods
     @Override
     public void update(Player player){
+
+    }
+
+    @Override
+    public void updateAttack(Player player) {
+
+    }
+
+    @Override
+    public void updateSprite() {
 
     }
 

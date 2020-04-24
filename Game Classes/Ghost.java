@@ -11,6 +11,7 @@ public class Ghost extends Enemy {
     private static Image[] deathSprites;
     //Constructor
     public Ghost(){
+        super("0,0,0");
     }
     public static void init(){
         try{
@@ -32,10 +33,14 @@ public class Ghost extends Enemy {
     }
 
     @Override
-    public void checkCollision(Rectangle rect) {
+    public void updateAttack(Player player) {
 
     }
 
+    @Override
+    public void updateSprite() {
+
+    }
     // Getter methods
     @Override
     public Image getSprite() {
