@@ -145,6 +145,7 @@ class GamePanel extends JPanel implements KeyListener {
         for(IndicatorText text: indicatorText){
             g.setColor(text.getColor());
             g.drawString(text.getString(), text.getX() - levelOffset, text.getY());
+
         }
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
