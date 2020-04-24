@@ -119,7 +119,10 @@ public class Player {
         }
     }
     public void attack(){
-        if(!isAttacking && !isCasting && (stamina - 5) > 0){
+        if(isAttacking || isCasting) {
+            return;
+        }
+        if((stamina - 5) > 0){
             if(onGround){
                 isAttacking = true;
                 groundAttackNum++;
@@ -140,14 +143,23 @@ public class Player {
             }
             spriteCount = 0;
         }
+        else{
+            textQueue.add(new IndicatorText(getHitbox().x, getHitbox().y, "Stamina Low!", Color.RED));
+        }
     }
     public void castMagic(){
-        if(!isAttacking && !isCasting && onGround && (stamina - 10) > 0){
+        if(isAttacking || isCasting || !onGround){
+            return;
+        }
+        if((stamina - 10) > 0){
             if(!hasEnergyPower()){
                 stamina -= 10;
             }
             isCasting = true;
             spriteCount = 0;
+        }
+        else{
+            textQueue.add(new IndicatorText(getHitbox().x, getHitbox().y, "Stamina Low!", Color.RED));
         }
     }
     // Method to update the Player Object each frame
