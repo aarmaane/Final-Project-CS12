@@ -26,7 +26,6 @@ class GamePanel extends JPanel implements KeyListener {
     private ArrayList<Item> items = new ArrayList<>();
     private ArrayList<IndicatorText> indicatorText = new ArrayList<>();
     private Sound test = new Sound("Assets/Sounds/Music/level1.wav");
-    private Sound testEffect = new Sound("Assets/Sounds/Effects/coin5.wav");
     // Game fields
     private int timeLeft = 200;
     private int levelOffset = 0;
@@ -250,9 +249,6 @@ class GamePanel extends JPanel implements KeyListener {
                 test.resume();
             }
         }
-        if(keyCode == KeyEvent.VK_8 && !keysPressed[KeyEvent.VK_8]){
-            testEffect.play();
-        }
         // Keeping track of whether or not the key is pressed down
         keysPressed[keyCode] = true;
         // DEBUG KEYS (REMOVE THESE AFTER)
@@ -345,6 +341,7 @@ class GamePanel extends JPanel implements KeyListener {
                 }
                 else if(item.getType() == Item.COIN){
                     indicatorText.add(new IndicatorText(player.getHitbox().x, player.getHitbox().y, "+10", Color.YELLOW));
+                    item.playSound();
                 }
             }
         }
