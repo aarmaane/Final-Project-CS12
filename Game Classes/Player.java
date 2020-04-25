@@ -30,6 +30,7 @@ public class Player {
     private Image[] castSprites = new Image[4];
     // Sound effects for the player
     private Sound jumpSound = new Sound("Assets/Sounds/Effects/jump.wav", 70);
+
     // Other fields
     private ArrayList<IndicatorText> textQueue = new ArrayList<>();
     // Constructor methods
