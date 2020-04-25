@@ -12,8 +12,8 @@ public class Skeleton extends Enemy {
         idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Skeleton/idle");
         movingSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Skeleton/walk");
         hurtSprites = Utilities.spriteArrayLoad(hurtSprites, "Enemies/Skeleton/hurt");
-        deathSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Skeleton/death");
-        attackSprites = Utilities.spriteArrayLoad(hurtSprites, "Enemies/Skeleton/attack");
+        deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Skeleton/death");
+        attackSprites = Utilities.spriteArrayLoad(attackSprites, "Enemies/Skeleton/attack");
     }
 
     // Constructor
@@ -33,14 +33,12 @@ public class Skeleton extends Enemy {
         if(knockedBack){
             // Not touching Slime's velocity values
         }
-
-        else if(playerX == slimeX || isHurt){
+        else if(isHurt || isAttacking){
             velocityX = 0; // Stopping movement while maintaining direction
         }
-
         else if(direction==RIGHT){
             //direction = RIGHT;
-            if(platformAhead && !isAttacking){
+            if(platformAhead){
                 velocityX = 0.75;
             }
             else{
@@ -48,11 +46,9 @@ public class Skeleton extends Enemy {
                 velocityX = -0.75; // Making the slime stay in place
             }
         }
-
-
         else if(direction==LEFT){ // Same as above but for left facing
            // direction = LEFT;
-            if(platformBehind && !isAttacking){
+            if(platformBehind){
                 velocityX = -0.75;
             }
             else{
@@ -74,10 +70,12 @@ public class Skeleton extends Enemy {
         if(originalState != isAttacking){ // If there's a change in state, reset the sprite counter
             spriteCount = 0;
         }
+        if(isAttacking){
+            System.out.println(Utilities.roundOff(spriteCount,2));
+        }
         // Checking if the player should be dealt damage
-        if(isAttacking && Utilities.roundOff(spriteCount,2) == attackSprites.length/2.0){
+        if(isAttacking && Utilities.roundOff(spriteCount,2) == attackSprites.length/2.5){
             player.enemyHit(this);
-            System.out.println(9204);
         }
 
 
@@ -101,7 +99,7 @@ public class Skeleton extends Enemy {
             }
         }
         else if(isAttacking){
-            spriteCount += 0.08;
+            spriteCount += 0.1;
             if(spriteCount > attackSprites.length){
                 spriteCount = 0;
             }
@@ -117,7 +115,6 @@ public class Skeleton extends Enemy {
     // Getter methods
     @Override
     public Image getSprite() {
-
         Image sprite = null;
         int spriteIndex = (int)Math.floor(spriteCount);
         if(isHurt){
@@ -135,7 +132,7 @@ public class Skeleton extends Enemy {
             sprite = movingSprites[spriteIndex];
         }
         else{
-            //sprite = idleSprites[spriteIndex];
+            sprite = idleSprites[spriteIndex];
         }
         // Flipping image since sprites are left facing
         if(direction == LEFT){
