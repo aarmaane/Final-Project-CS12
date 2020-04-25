@@ -24,6 +24,9 @@ class GamePanel extends JPanel implements KeyListener {
     private Sound castSound = new Sound("Assets/Sounds/Effects/cast.wav", 70);
     private Sound[] swordSounds = {new Sound("Assets/Sounds/Effects/sword1.wav", 70),
                                    new Sound("Assets/Sounds/Effects/sword2.wav", 70)};
+    private Sound[] hitSounds = {new Sound("Assets/Sounds/Effects/hit1.wav", 70),
+                                 new Sound("Assets/Sounds/Effects/hit2.wav", 70),
+                                 new Sound("Assets/Sounds/Effects/hit3.wav", 70)};
     // ArrayLists that hold game objects
     private ArrayList<LevelProp> platforms = new ArrayList<>();
     private ArrayList<LevelProp> noCollideProps = new ArrayList<>();
@@ -365,7 +368,7 @@ class GamePanel extends JPanel implements KeyListener {
     public void checkPlayerAction(){
         // Checking if the Player has used their sword attack
         if(player.isAttackFrame()){ // Checking if this is the frame where attacks land
-            swordSounds[Utilities.randint(0,1)].play(); // Playing the sound effect
+            swordSounds[Utilities.randint(0,1)].play(); // Playing the sword sound effect
             // Going through each enemy and checking for collisions
             for(Enemy enemy:enemies){
                 if(player.getAttackBox().intersects(enemy.getHitbox())){
@@ -373,6 +376,8 @@ class GamePanel extends JPanel implements KeyListener {
                     damageDone = Utilities.roundOff(damageDone, 1);
                     player.addPoints(player.getSwordDamage());
                     indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "-" + damageDone, Color.ORANGE));
+                    hitSounds[Utilities.randint(0,2)].play(); // Playing the hit effect
+
                 }
             }
         }
