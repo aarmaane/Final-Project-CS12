@@ -30,6 +30,8 @@ public class Player {
     private Image[][] groundAttackSprites; // This array will be jagged since attacks have differing lengths
     private Image[][] airAttackSprites; // This array will be jagged too
     private Image[] castSprites = new Image[4];
+    // Sound effects for the player
+    private Sound jumpSound = new Sound("Assets/Sounds/Effects/jump.wav", 70);
     // Other fields
     private ArrayList<IndicatorText> textQueue = new ArrayList<>();
     // Constructor methods
@@ -115,6 +117,7 @@ public class Player {
             onGround = false;
             velocityY = -6;
             airAttackNum = 1;
+            jumpSound.play();
         }
         else if(type == NORMAL){
             holdingJump = true;

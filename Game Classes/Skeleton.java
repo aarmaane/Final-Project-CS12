@@ -15,7 +15,6 @@ public class Skeleton extends Enemy {
         deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Skeleton/death");
         attackSprites = Utilities.spriteArrayLoad(attackSprites, "Enemies/Skeleton/attack");
     }
-
     // Constructor
     public Skeleton(String data){
         super(data);
