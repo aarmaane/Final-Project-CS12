@@ -30,15 +30,14 @@
 4224,475,grassMiddle.png
 4368,475,grassMiddle.png
 4512,475,grassMiddle.png
-4600,270,grassPlatformSmall.png
 4656,475,grassMiddle.png
 4800,475,grassMiddle.png
 4944,475,grassRight.png
 5100,325,grassPillar.png
 5350,225,grassPillar.png
 5600,125,grassPillar.png
-5700,475,grassLeft.png
-5800,475,grassMiddle.png
+5800,475,grassLeft.png
+5850,475,grassMiddle.png
 5900,475,grassMiddle.png
 6000,475,grassRight.png
 
