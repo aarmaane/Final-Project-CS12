@@ -68,6 +68,19 @@ public class Skeleton extends Enemy {
     @Override
     public void updateAttack(Player player) {
 
+        // Updating the attacking status
+        boolean originalState = isAttacking;
+        isAttacking = getHitbox().intersects(player.getHitbox()); // Setting it to true if there is hitbox collision
+        if(originalState != isAttacking){ // If there's a change in state, reset the sprite counter
+            spriteCount = 0;
+        }
+        // Checking if the player should be dealt damage
+        if(isAttacking && Utilities.roundOff(spriteCount,2) == attackSprites.length/2.0){
+            player.enemyHit(this);
+            System.out.println(9204);
+        }
+
+
     }
 
     @Override
@@ -88,13 +101,13 @@ public class Skeleton extends Enemy {
             }
         }
         else if(isAttacking){
-            spriteCount += 0.05;
+            spriteCount += 0.08;
             if(spriteCount > attackSprites.length){
                 spriteCount = 0;
             }
         }
         else{
-            spriteCount += 0.05;
+            spriteCount += 0.08;
             if(spriteCount > movingSprites.length){
                 spriteCount = 0;
             }
@@ -122,7 +135,7 @@ public class Skeleton extends Enemy {
             sprite = movingSprites[spriteIndex];
         }
         else{
-            sprite = idleSprites[spriteIndex];
+            //sprite = idleSprites[spriteIndex];
         }
         // Flipping image since sprites are left facing
         if(direction == LEFT){
