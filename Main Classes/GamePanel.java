@@ -25,7 +25,8 @@ class GamePanel extends JPanel implements KeyListener {
     private ArrayList<Chest> chests = new ArrayList<>();
     private ArrayList<Item> items = new ArrayList<>();
     private ArrayList<IndicatorText> indicatorText = new ArrayList<>();
-    private Sound test = new Sound("Assets/Sounds/Music/level1.wav");
+    private Sound test = new Sound("Assets/Sounds/Music/level1.wav", 70);
+    private Sound jumpSound = new Sound("Assets/Sounds/Effects/jump.wav", 70);
     // Game fields
     private int timeLeft = 200;
     private int levelOffset = 0;
@@ -225,6 +226,7 @@ class GamePanel extends JPanel implements KeyListener {
         if(!keysPressed[keyCode]){
             if(keyCode == KeyEvent.VK_SPACE && !paused){
                 player.jump(Player.INITIAL);
+                jumpSound.play();
             }
             else if(keyCode == KeyEvent.VK_O && !paused){
                 player.attack();

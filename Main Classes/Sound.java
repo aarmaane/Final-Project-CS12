@@ -1,13 +1,16 @@
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Sound {
+    private ArrayList<Sound> madeSounds = new ArrayList<>();
     private AudioInputStream inputStream;
     private Clip clip;
     private String filePath;
+    FloatControl volume;
     // Constructor
-    public Sound(String filePath){
+    public Sound(String filePath, int volumeLevel){
         this.filePath = filePath;
         try {
             clip = AudioSystem.getClip();
@@ -16,6 +19,9 @@ public class Sound {
             e.printStackTrace();
         }
         loadClip();
+        volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        setVolume(volumeLevel);
+        madeSounds.add(this);
     }
     private void loadClip(){
         try{
@@ -45,5 +51,10 @@ public class Sound {
     }
     public boolean isPlaying(){
         return clip.isActive();
+    }
+    public void setVolume(int volumeLevel){
+        float range = volume.getMaximum() - volume.getMinimum();
+        float gain = (float) (range * (volumeLevel/100.0)) + volume.getMinimum();
+        volume.setValue(gain);
     }
 }
