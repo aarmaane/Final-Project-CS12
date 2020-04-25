@@ -17,6 +17,7 @@ public class Item {
     private static Image[] energySprites = new Image[4];
     // Sounds
     private Sound coinSound = new Sound("Assets/Sounds/Effects/coin.wav", 70);
+    private Sound powerSound = new Sound("Assets/Sounds/Effects/powerUp.wav", 70);
     // Initialize class
     public static void init(){
         healthSprites = Utilities.spriteArrayLoad(healthSprites, "Items/Health/health");
@@ -72,6 +73,10 @@ public class Item {
         }
         else if(type == HEALTH){
 
+        }
+        else{
+            System.out.println("eo");
+            powerSound.play();
         }
     }
     public void use(){

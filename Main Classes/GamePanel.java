@@ -336,12 +336,12 @@ class GamePanel extends JPanel implements KeyListener {
             if(item.getHitbox().intersects(player.getHitbox()) && item.isSettled()) {
                 player.gainItem(item);
                 item.use();
+                item.playSound();
                 if(item.getType() == Item.HEALTH){
                     indicatorText.add(new IndicatorText(player.getHitbox().x, player.getHitbox().y, "+10", Color.GREEN));
                 }
                 else if(item.getType() == Item.COIN){
                     indicatorText.add(new IndicatorText(player.getHitbox().x, player.getHitbox().y, "+10", Color.YELLOW));
-                    item.playSound();
                 }
             }
         }
