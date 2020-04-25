@@ -11,13 +11,20 @@ class GamePanel extends JPanel implements KeyListener {
     private boolean paused = false;
     private boolean[] keysPressed; // Array that keeps track of keys that are pressed down
     private MainGame gameFrame;
-
-    // Game related Objects
+    // Game related fields
     private Player player = new Player();
+    private int timeLeft = 200;
+    private int levelOffset = 0;
+    // Game Images/Sounds
     private Image enemyHealthBar;
     private Image staminaBar;
     private Image healthBar;
     private Image[] backgroundLayers = new Image[3];
+    private Sound test = new Sound("Assets/Sounds/Music/level1.wav", 70);
+    private Sound castSound = new Sound("Assets/Sounds/Effects/cast.wav", 70);
+    private Sound[] swordSounds = {new Sound("Assets/Sounds/Effects/sword1.wav", 70),
+                                   new Sound("Assets/Sounds/Effects/sword2.wav", 70)};
+    // ArrayLists that hold game objects
     private ArrayList<LevelProp> platforms = new ArrayList<>();
     private ArrayList<LevelProp> noCollideProps = new ArrayList<>();
     private ArrayList<Enemy> enemies = new ArrayList<>();
@@ -25,10 +32,6 @@ class GamePanel extends JPanel implements KeyListener {
     private ArrayList<Chest> chests = new ArrayList<>();
     private ArrayList<Item> items = new ArrayList<>();
     private ArrayList<IndicatorText> indicatorText = new ArrayList<>();
-    private Sound test = new Sound("Assets/Sounds/Music/level1.wav", 70);
-    // Game fields
-    private int timeLeft = 200;
-    private int levelOffset = 0;
     // Fonts
     Font gameFont;
     Font gameFontBig;
@@ -362,6 +365,7 @@ class GamePanel extends JPanel implements KeyListener {
     public void checkPlayerAction(){
         // Checking if the Player has used their sword attack
         if(player.isAttackFrame()){ // Checking if this is the frame where attacks land
+            swordSounds[Utilities.randint(0,1)].play(); // Playing the sound effect
             // Going through each enemy and checking for collisions
             for(Enemy enemy:enemies){
                 if(player.getAttackBox().intersects(enemy.getHitbox())){
@@ -383,6 +387,7 @@ class GamePanel extends JPanel implements KeyListener {
                 xPos -= 150;
             }
             projectiles.add(new Projectile(Projectile.PLAYER, xPos,hitBox.y+hitBox.height/2.0-5,player.getSpellDamage(),speed));
+            castSound.play();
         }
     }
     public void collectGarbage(){
