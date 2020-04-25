@@ -144,9 +144,19 @@ public class Skeleton extends Enemy {
     public Rectangle getHitbox() {
         return new Rectangle((int) x,(int) y,72,96);
     }
-    //@Override
-   // public double getX(){
+    @Override
+    public double getX(){
+        if(isAttacking && direction==LEFT){
 
-    //}
-   // @Override
+            return x - 50;
+        }
+        return x;
+    }
+    @Override
+    public double getY(){
+        if(isAttacking){
+            return y-15;
+        }
+        return y;
+    }
 }
