@@ -214,7 +214,7 @@ class GamePanel extends JPanel implements KeyListener {
         if(health != maxHealth){ // Only drawing if they have lost health
             g.setColor(Color.RED);
             g.fillRect(hitBox.x-levelOffset-healthBarOffset,hitBox.y-10,(int)((health/maxHealth)*88),13);
-            g.drawImage(enemyHealthBar,hitBox.x-levelOffset-10-healthBarOffset,hitBox.y-15,this);
+            g.drawImage(enemyHealthBar,hitBox.x-levelOffset-13-healthBarOffset,hitBox.y-15,this);
         }
     }
     // Keyboard related methods
@@ -236,6 +236,7 @@ class GamePanel extends JPanel implements KeyListener {
                 paused = !paused;
                 repaint();
             }
+
         }
         // SOUND TEST
         if(keyCode == KeyEvent.VK_0){

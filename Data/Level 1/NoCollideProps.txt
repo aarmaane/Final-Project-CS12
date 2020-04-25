@@ -4,3 +4,10 @@
 // Decor
 275,427,bush.png
 1428,175,tree.png
+//4675,425,bush.png
+//4600,425,bush.png
+//4525,425,bush.png
+4500,175,tree.png
+5350,450,grassPillarCenter.png
+5600,300,grassPillarCenter.png
+5600,440,grassPillarCenter.png

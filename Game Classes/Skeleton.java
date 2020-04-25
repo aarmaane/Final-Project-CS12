@@ -84,7 +84,7 @@ public class Skeleton extends Enemy {
     public void updateSprite() {
         if(isHurt){
             if(health <= 0){
-                spriteCount += 0.05;
+                spriteCount += 0.1;
                 if(spriteCount > deathSprites.length){
                     isActive = false;
                 }
@@ -104,7 +104,7 @@ public class Skeleton extends Enemy {
             }
         }
         else{
-            spriteCount += 0.08;
+            spriteCount += 0.1;
             if(spriteCount > movingSprites.length){
                 spriteCount = 0;
             }
@@ -144,4 +144,9 @@ public class Skeleton extends Enemy {
     public Rectangle getHitbox() {
         return new Rectangle((int) x,(int) y,72,96);
     }
+    //@Override
+   // public double getX(){
+
+    //}
+   // @Override
 }

@@ -37,7 +37,7 @@ public class Utilities {
     public static ArrayList<String> loadFile(String fileName, int levelNum) throws IOException{
         Scanner inFile = new Scanner(new BufferedReader(new FileReader("Data/Level " + levelNum + "/" + fileName)));
         ArrayList<String> fileContents = new ArrayList<String>();
-        while(inFile.hasNextLine()){
+        while(inFile.hasNext()){
             String line = inFile.nextLine();
             if(!line.startsWith("//")){ // Making sure that the line is not a comment
                 fileContents.add(line);
