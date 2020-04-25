@@ -23,7 +23,8 @@ class GamePanel extends JPanel implements KeyListener {
     private Sound test = new Sound("Assets/Sounds/Music/level1.wav", 70);
     private Sound castSound = new Sound("Assets/Sounds/Effects/cast.wav", 70);
     private Sound[] swordSounds = {new Sound("Assets/Sounds/Effects/sword1.wav", 70),
-                                   new Sound("Assets/Sounds/Effects/sword2.wav", 70)};
+                                   new Sound("Assets/Sounds/Effects/sword2.wav", 70),
+                                   new Sound("Assets/Sounds/Effects/sword3.wav", 70)};
     private Sound[] hitSounds = {new Sound("Assets/Sounds/Effects/hit1.wav", 70),
                                  new Sound("Assets/Sounds/Effects/hit2.wav", 70),
                                  new Sound("Assets/Sounds/Effects/hit3.wav", 70)};
@@ -358,7 +359,6 @@ class GamePanel extends JPanel implements KeyListener {
             Rectangle chestHitbox = chest.getHitbox();
             if(chest.isClosed() && hitbox.intersects(chestHitbox) && (hitbox.y + hitbox.height) == (chestHitbox.y + chestHitbox.height)){
                 chest.open();
-                System.out.println(chest.getQuantity());
                 for(int i = 0; i < chest.getQuantity(); i++){
                     items.add(new Item(chest));
                 }
@@ -368,7 +368,7 @@ class GamePanel extends JPanel implements KeyListener {
     public void checkPlayerAction(){
         // Checking if the Player has used their sword attack
         if(player.isAttackFrame()){ // Checking if this is the frame where attacks land
-            swordSounds[Utilities.randint(0,1)].play(); // Playing the sword sound effect
+            swordSounds[Utilities.randint(0,2)].play(); // Playing the sword sound effect
             // Going through each enemy and checking for collisions
             for(Enemy enemy:enemies){
                 if(player.getAttackBox().intersects(enemy.getHitbox())){

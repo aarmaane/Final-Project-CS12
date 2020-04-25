@@ -28,25 +28,31 @@ public class Skeleton extends Enemy {
     public void updateMotion(Player player){
         // Skeleton custom movement
         int playerX = player.getHitbox().x;
-        int slimeX = getHitbox().x;
+        int skeletonX = getHitbox().x;
         if(knockedBack){
-            // Not touching Slime's velocity values
+            // Not touching Skeletons's velocity values
         }
         else if(isHurt || isAttacking){
             velocityX = 0; // Stopping movement while maintaining direction
+            if(isAttacking){
+                if(playerX > skeletonX){
+                    direction = RIGHT;
+                }
+                else{
+                    direction = LEFT;
+                }
+            }
         }
         else if(direction==RIGHT){
-            //direction = RIGHT;
             if(platformAhead){
                 velocityX = 0.75;
             }
             else{
                 direction=LEFT;
-                velocityX = -0.75; // Making the slime stay in place
+                velocityX = -0.75; // Making the skeleton stay in place
             }
         }
         else if(direction==LEFT){ // Same as above but for left facing
-           // direction = LEFT;
             if(platformBehind){
                 velocityX = -0.75;
             }
@@ -55,31 +61,22 @@ public class Skeleton extends Enemy {
                 velocityX = 0.75;
             }
         }
-
-
         super.updateMotion(player);
     }
 
     @Override
     public void updateAttack(Player player) {
-
         // Updating the attacking status
         boolean originalState = isAttacking;
         isAttacking = getHitbox().intersects(player.getHitbox()); // Setting it to true if there is hitbox collision
         if(originalState != isAttacking){ // If there's a change in state, reset the sprite counter
             spriteCount = 0;
         }
-        if(isAttacking){
-            System.out.println(Utilities.roundOff(spriteCount,2));
-        }
         // Checking if the player should be dealt damage
         if(isAttacking && Utilities.roundOff(spriteCount,2) == attackSprites.length/2.5){
             player.enemyHit(this);
         }
-
-
     }
-
     @Override
     public void updateSprite() {
         if(isHurt){

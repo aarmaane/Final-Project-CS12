@@ -17,7 +17,7 @@ public class Player {
     private int health, maxHealth, points;
     private double stamina, maxStamina;
     private int swordDamage, spellDamage;
-    private boolean isAttacking, isCasting;
+    private boolean isAttacking, isCasting, isHurt;
     private int healthTimer, energyTimer;
     private int groundAttackNum, airAttackNum;
     // Image Arrays holding Player's Sprites
@@ -25,6 +25,7 @@ public class Player {
     private Image[] runSprites = new Image[6];
     private Image[] jumpingSprites = new Image[2];
     private Image[] fallingSprites = new Image[2];
+    private Image[] hurtSprites = new Image[3];
     private Image[][] groundAttackSprites; // This array will be jagged since attacks have differing lengths
     private Image[][] airAttackSprites; // This array will be jagged too
     private Image[] castSprites = new Image[4];
@@ -55,6 +56,7 @@ public class Player {
         idleSprites = Utilities.spriteArrayLoad(idleSprites, "Player/idle");
         runSprites = Utilities.spriteArrayLoad(runSprites, "Player/run");
         castSprites = Utilities.spriteArrayLoad(castSprites, "Player/cast");
+        hurtSprites = Utilities.spriteArrayLoad(hurtSprites, "Player/hurt");
         // Loading jagged attack Arrays
         Image[] attack1 = new Image[5];
         Image[] attack2 = new Image[6];
@@ -82,6 +84,10 @@ public class Player {
         }
         if(velocityX == 0 && onGround){ // Start of movement (But not to interrupt jumping sprites)
             spriteCount = 0; // Resetting the sprite counter
+        }
+        if(isHurt){ // Moving after getting damaged
+            isHurt = false;
+            spriteCount = 0;
         }
         // Applying the actual velocity
         int midAirOffset = 1; // By default, the offset divides by one and does nothing
@@ -114,6 +120,7 @@ public class Player {
         if(type == INITIAL && onGround){
             spriteCount = 0;
             onGround = false;
+            isHurt = false;
             velocityY = -6;
             airAttackNum = 1;
             jumpSound.play();
@@ -145,6 +152,7 @@ public class Player {
             if(!hasEnergyPower()){
                 stamina -= 5;
             }
+            isHurt = false;
             spriteCount = 0;
         }
         else{
@@ -160,6 +168,7 @@ public class Player {
                 stamina -= 10;
             }
             isCasting = true;
+            isHurt = false;
             spriteCount = 0;
         }
         else{
@@ -245,9 +254,17 @@ public class Player {
         }
         else if(isAttacking){
             spriteCount += 0.1;
-            if((onGround && spriteCount > groundAttackSprites[groundAttackNum].length) ||(!onGround && spriteCount > airAttackSprites[airAttackNum].length) ){
+            if((onGround && spriteCount > groundAttackSprites[groundAttackNum].length) || (!onGround && spriteCount > airAttackSprites[airAttackNum].length) ){
                 isAttacking = false;
                 spriteCount = 0;
+            }
+        }
+        else if(isHurt){
+            spriteCount += 0.07;
+            System.out.println(spriteCount);
+            if(spriteCount > hurtSprites.length){
+                spriteCount = 0;
+                isHurt = false;
             }
         }
         else if(velocityY < 0){ // Jumping sprites
@@ -322,6 +339,10 @@ public class Player {
     public void enemyHit(Enemy enemy){
         if(!hasHealthPower()){
             health -= enemy.getDamage();
+            if(velocityX == 0 && !isAttacking && !isCasting){
+                isHurt = true;
+                spriteCount = 0;
+            }
             textQueue.add(new IndicatorText(getHitbox().x, getHitbox().y, "-" + enemy.getDamage(), Color.RED));
         }
     }
@@ -350,6 +371,10 @@ public class Player {
             else{
                 sprite = airAttackSprites[airAttackNum][spriteIndex];
             }
+        }
+        else if(isHurt){
+            System.out.println("show");
+            sprite = hurtSprites[spriteIndex];
         }
         else if(velocityY < 0){
             sprite = jumpingSprites[spriteIndex];
