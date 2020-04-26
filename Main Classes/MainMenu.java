@@ -6,35 +6,54 @@ import java.awt.event.MouseListener;
 public class MainMenu extends JPanel implements MouseListener {
     // Window related Objects
     private MainGame gameFrame;
+    private Sound menuMusic = new Sound("Assets/Sounds/Music/menu.wav", 80);
     private Player dummy = new Player();
-    private Slime dummySlime = new Slime("-150,700,1");
+    private LevelProp platform = new LevelProp("0,0,grassMiddle.png");
+    private int scrollOffset = 0;
+    private int platformsX1, platformsX2;
     public MainMenu(MainGame game){
         gameFrame = game;
         setSize(960,590);
         addMouseListener(this);
-        Slime.init();
+        menuMusic.play();
     }
     // Window related methods
     public void paintComponent(Graphics g){
         dummy.move(Player.RIGHT);
-        dummySlime.update(dummy);
-        dummySlime.checkCollision(new Rectangle(-200,800,100000,1000));
-        dummy.checkCollision(new Rectangle(0,800,100000,1000));
+        dummy.checkCollision(new Rectangle(scrollOffset,800,1000,1000));
         dummy.update();
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, 960, 590);
-        g.drawImage(dummy.getSprite(),(int) dummy.getX()- 170,400 ,this);
-        g.drawImage(dummySlime.getSprite(),(int) dummySlime.getX(),445 ,this);
-        if(dummy.getX() > 1100){
-            g.setColor(Color.RED);
-            g.drawString("Intro screen?", 435,200);
+        g.drawImage(dummy.getSprite(),(int) dummy.getX()- 170 - scrollOffset,367 ,this);
+        for(int i = 0; i < 10; i++){
+            g.drawImage(platform.getPlatformImage(), platformsX1 + i*144 - scrollOffset,475, this);
+            g.drawImage(platform.getPlatformImage(), platformsX2 + i*144 - scrollOffset,475, this);
         }
-        gameFrame.switchPanel(MainGame.SHOPPANEL); // SKIPPING MENU, REMOVE LATER
+        g.setColor(Color.RED);
+        g.drawString("Main menu", 435,200);
+    }
+    public void update(){
+        if(!menuMusic.isPlaying()){
+            menuMusic.play();
+        }
+        if(dummy.getHitbox().x > 300){
+            scrollOffset =  dummy.getHitbox().x - 300;
+        }
+        if(platformsX1 - scrollOffset + 1440 == getWidth()){
+            platformsX2 = platformsX1 + 1440;
+            System.out.println("updated 1!");
+        }
+        if(platformsX2 - scrollOffset + 1440 == getWidth()){
+            platformsX1 = platformsX2 + 1440;
+            System.out.println("updated 2!");
+
+        }
     }
     // Mouse related methods
     @Override
     public void mouseClicked(MouseEvent e) {
         System.out.println("test");
+        menuMusic.stop();
         gameFrame.switchPanel(MainGame.SHOPPANEL);
     }
     @Override

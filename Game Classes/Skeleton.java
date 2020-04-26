@@ -29,7 +29,7 @@ public class Skeleton extends Enemy {
         // Skeleton custom movement
         int playerX = player.getHitbox().x;
         int skeletonX = getHitbox().x;
-        if(knockedBack){
+        if(knockedBack || velocityY > 1){
             // Not touching Skeletons's velocity values
         }
         else if(isHurt || isAttacking){
@@ -66,12 +66,7 @@ public class Skeleton extends Enemy {
 
     @Override
     public void updateAttack(Player player) {
-        // Updating the attacking status
-        boolean originalState = isAttacking;
-        isAttacking = getHitbox().intersects(player.getHitbox()); // Setting it to true if there is hitbox collision
-        if(originalState != isAttacking){ // If there's a change in state, reset the sprite counter
-            spriteCount = 0;
-        }
+        super.updateAttack(player);
         // Checking if the player should be dealt damage
         if(isAttacking && Utilities.roundOff(spriteCount,2) == attackSprites.length/2.5){
             player.enemyHit(this);
@@ -144,7 +139,6 @@ public class Skeleton extends Enemy {
     @Override
     public double getX(){
         if(isAttacking && direction==LEFT){
-
             return x - 50;
         }
         return x;

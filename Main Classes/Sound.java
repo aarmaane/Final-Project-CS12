@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Sound {
-    private ArrayList<Sound> madeSounds = new ArrayList<>();
+    private static ArrayList<Sound> madeSounds = new ArrayList<>();
     private AudioInputStream inputStream;
     private Clip clip;
     private String filePath;
     FloatControl volume;
+    // Booleans for static control of sounds
+    private boolean wasPaused;
     // Constructor
     public Sound(String filePath, int volumeLevel){
         this.filePath = filePath;
@@ -40,7 +42,7 @@ public class Sound {
     public void resume(){
         clip.start();
     }
-    public void pause(){
+    public void stop(){
         clip.stop();
     }
     public void closeSound(){
@@ -55,7 +57,23 @@ public class Sound {
     public void setVolume(int volumeLevel){
         float range = volume.getMaximum() - volume.getMinimum();
         float gain = (float) (range * (volumeLevel/100.0)) + volume.getMinimum();
-
         volume.setValue(gain);
+    }
+    // Static methods
+    public static void pauseAll(){
+        for(Sound sound: madeSounds){
+            if(sound.isPlaying()){
+                sound.stop();
+                sound.wasPaused = true;
+            }
+        }
+    }
+    public static void resumeAll(){
+        for(Sound sound: madeSounds){
+            if(sound.wasPaused){
+                sound.resume();
+                sound.wasPaused = false;
+            }
+        }
     }
 }

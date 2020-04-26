@@ -49,7 +49,7 @@ public class Player {
         health=maxHealth;
         points=0;
         swordDamage=10;
-        spellDamage=10;
+        spellDamage=15;
         // Loading Images
         fallingSprites = Utilities.spriteArrayLoad(fallingSprites, "Player/fall");
         jumpingSprites = Utilities.spriteArrayLoad(jumpingSprites, "Player/jump");
@@ -318,6 +318,9 @@ public class Player {
         }
         else if(type == Item.ENERGYPWR){
             energyTimer=30;
+            if(stamina < 20){
+                stamina = 20;
+            }
         }
     }
     public void iterateTime(){

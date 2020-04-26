@@ -48,6 +48,7 @@ public abstract class Enemy {
         }
         isHurt = true;
         knockedBack = true;
+        isAttacking = false;
         spriteCount = 0;
         return damageDone;
     }
@@ -63,12 +64,15 @@ public abstract class Enemy {
         }
         isHurt = true;
         knockedBack = true;
+        isAttacking = false;
         spriteCount = 0;
         return damageDone;
     }
     public void update(Player player){
         updateMotion(player);
-        updateAttack(player);
+        if(!isHurt){
+            updateAttack(player);
+        }
         updateSprite();
     }
     public void updateMotion(Player player){
@@ -81,8 +85,15 @@ public abstract class Enemy {
         platformAhead = false;
         platformBehind = false;
     }
+    public void updateAttack(Player player){
+        // Updating the attacking status
+        boolean originalState = isAttacking;
+        isAttacking = getHitbox().intersects(player.getHitbox()); // Setting it to true if there is hitbox collision
+        if(originalState != isAttacking){ // If there's a change in state, reset the sprite counter
+            spriteCount = 0;
+        }
+    }
     // Declaring methods that subclasses need to implement
-    public abstract void updateAttack(Player player);
     public abstract void updateSprite();
     public abstract Image getSprite();
     public abstract Rectangle getHitbox();

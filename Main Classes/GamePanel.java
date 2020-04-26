@@ -30,6 +30,7 @@ class GamePanel extends JPanel implements KeyListener {
     private Sound[] hitSounds = {new Sound("Assets/Sounds/Effects/hit1.wav", 80),
                                  new Sound("Assets/Sounds/Effects/hit2.wav", 80),
                                  new Sound("Assets/Sounds/Effects/hit3.wav", 80)};
+    private Sound pauseSound = new Sound("Assets/Sounds/Effects/pause.wav", 80);
     // ArrayLists that hold game objects
     private ArrayList<LevelProp> platforms = new ArrayList<>();
     private ArrayList<LevelProp> noCollideProps = new ArrayList<>();
@@ -176,16 +177,16 @@ class GamePanel extends JPanel implements KeyListener {
                 g.fillRect(59+i, 30, (int) (((double) player.getHealth() / player.getMaxHealth()) * 198)-i, 14);
             }
             //Stamina
+            g.setColor(new Color(0, 155 + i, 0));
+            g.fillRect(59 + i, 83, (int) ((player.getStamina() / player.getMaxStamina()) * 198) - i, 14);
             if(player.getEnergyTime()>0) {
                 g.setColor(new Color(155 + i, 155 + i, 0, barFade));
+                g.fillRect(59 + i, 83, (int) ((player.getStamina() / player.getMaxStamina()) * 198) - i, 14);
             }
-            else{
-                g.setColor(new Color(0, 155 + i, 0));
-            }
-            g.fillRect(59 + i, 83, (int) ((player.getStamina() / player.getMaxStamina()) * 198) - i, 14);
+
         }
         if(player.getHealthTimer() > 0){
-            g.setColor(new Color(255,20,100));
+            g.setColor(new Color(255,20,200));
             g.drawString(""+player.getHealthTimer(),267,41);
         }
         if(player.getEnergyTime() > 0){
@@ -245,9 +246,15 @@ class GamePanel extends JPanel implements KeyListener {
             }
             else if(keyCode == KeyEvent.VK_ESCAPE){
                 paused = !paused;
+                if(paused){
+                    Sound.pauseAll();
+                    pauseSound.stop(); pauseSound.play();
+                }
+                else{
+                    Sound.resumeAll();
+                }
                 repaint();
             }
-
         }
         // SOUND TEST
         if(keyCode == KeyEvent.VK_0){
@@ -255,7 +262,7 @@ class GamePanel extends JPanel implements KeyListener {
                 test.play();
             }
             else if(test.isPlaying()) {
-                test.pause();
+                test.stop();
             }
             else{
                 test.resume();
@@ -372,16 +379,19 @@ class GamePanel extends JPanel implements KeyListener {
     public void checkPlayerAction(){
         // Checking if the Player has used their sword attack
         if(player.isAttackFrame()){ // Checking if this is the frame where attacks land
-            swordSounds[Utilities.randint(0,2)].play(); // Playing the sword sound effect
+            int randomSwordIndex = Utilities.randint(0,2);
+            swordSounds[randomSwordIndex].stop();
+            swordSounds[randomSwordIndex].play(); // Playing the sword sound effect
             // Going through each enemy and checking for collisions
             for(Enemy enemy:enemies){
-                if(player.getAttackBox().intersects(enemy.getHitbox())){
+                if(player.getAttackBox().intersects(enemy.getHitbox()) && !enemy.isDying()){
                     double damageDone = enemy.swordHit(player);
                     damageDone = Utilities.roundOff(damageDone, 1);
                     player.addPoints(player.getSwordDamage());
                     indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "-" + damageDone, Color.ORANGE));
-                    hitSounds[Utilities.randint(0,2)].play(); // Playing the hit effect
-
+                    int randomHitIndex = Utilities.randint(0,2);
+                    hitSounds[randomHitIndex].stop();
+                    hitSounds[randomHitIndex].play(); // Playing the hit effect
                 }
             }
         }
