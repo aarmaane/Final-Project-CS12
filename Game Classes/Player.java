@@ -181,6 +181,7 @@ public class Player {
         updateStamina();
         checkOutOfBounds();
         updateSprite();
+        //checkHealth();
     }
     // Method to calculate and apply the physics of the Player
     public void updateMotion(){
@@ -298,6 +299,11 @@ public class Player {
                 velocityY = 0;
                 onGround = true;
             }
+        }
+    }
+    public void checkHealth(){
+        if(health<=0){
+            System.exit(42);
         }
     }
     public void gainItem(Item item){

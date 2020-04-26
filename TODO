@@ -3,6 +3,11 @@ TO DO List (Next 5 Objectives):
 - Expand level 1 (More Platform pictures needed)
 - Setup Skeletons, Ghosts (Try moving some Slime code into enemy class if it's reusable for other enemies)
 - Implement sound/music
+- Bar Glow
+- Hitting dead bodies
+- Moving platforms
+- Ghost transparency
+- Skeletons in the closet
 
 Future Ideas:
 - Ability to save progress
