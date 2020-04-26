@@ -106,7 +106,10 @@ public abstract class Enemy {
     public int getDamage(){
         return damage;
     }
+    public boolean isDying(){
+        return health <= 0;
+    }
     public boolean isDead(){
-        return (!isActive && health <= 0);
+        return !isActive && isDying();
     }
 }

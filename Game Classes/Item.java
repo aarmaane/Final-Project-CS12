@@ -16,9 +16,9 @@ public class Item {
     private static Image[] healthPwrSprites = new Image[7];
     private static Image[] energySprites = new Image[4];
     // Sounds
-    private Sound coinSound = new Sound("Assets/Sounds/Effects/coin.wav", 70);
-    private Sound healthSound = new Sound("Assets/Sounds/Effects/health.wav", 70);
-    private Sound powerSound = new Sound("Assets/Sounds/Effects/powerUp.wav", 70);
+    private Sound coinSound = new Sound("Assets/Sounds/Effects/coin.wav", 80);
+    private Sound healthSound = new Sound("Assets/Sounds/Effects/health.wav", 80);
+    private Sound powerSound = new Sound("Assets/Sounds/Effects/powerUp.wav", 80);
     // Initialize class
     public static void init(){
         healthSprites = Utilities.spriteArrayLoad(healthSprites, "Items/Health/health");

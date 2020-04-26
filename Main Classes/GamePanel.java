@@ -15,19 +15,21 @@ class GamePanel extends JPanel implements KeyListener {
     private Player player = new Player();
     private int timeLeft = 200;
     private int levelOffset = 0;
+    private int barFade = 0;
+    private int barFadeAddition = 5;
     // Game Images/Sounds
     private Image enemyHealthBar;
     private Image staminaBar;
     private Image healthBar;
     private Image[] backgroundLayers = new Image[3];
-    private Sound test = new Sound("Assets/Sounds/Music/level1.wav", 70);
-    private Sound castSound = new Sound("Assets/Sounds/Effects/cast.wav", 70);
-    private Sound[] swordSounds = {new Sound("Assets/Sounds/Effects/sword1.wav", 70),
-                                   new Sound("Assets/Sounds/Effects/sword2.wav", 70),
-                                   new Sound("Assets/Sounds/Effects/sword3.wav", 70)};
-    private Sound[] hitSounds = {new Sound("Assets/Sounds/Effects/hit1.wav", 70),
-                                 new Sound("Assets/Sounds/Effects/hit2.wav", 70),
-                                 new Sound("Assets/Sounds/Effects/hit3.wav", 70)};
+    private Sound test = new Sound("Assets/Sounds/Music/level1.wav", 80);
+    private Sound castSound = new Sound("Assets/Sounds/Effects/cast.wav", 80);
+    private Sound[] swordSounds = {new Sound("Assets/Sounds/Effects/sword1.wav", 80),
+                                   new Sound("Assets/Sounds/Effects/sword2.wav", 80),
+                                   new Sound("Assets/Sounds/Effects/sword3.wav", 80)};
+    private Sound[] hitSounds = {new Sound("Assets/Sounds/Effects/hit1.wav", 80),
+                                 new Sound("Assets/Sounds/Effects/hit2.wav", 80),
+                                 new Sound("Assets/Sounds/Effects/hit3.wav", 80)};
     // ArrayLists that hold game objects
     private ArrayList<LevelProp> platforms = new ArrayList<>();
     private ArrayList<LevelProp> noCollideProps = new ArrayList<>();
@@ -165,35 +167,37 @@ class GamePanel extends JPanel implements KeyListener {
         g.setFont(gameFont);
         /*Fills in both of the stat bars from darker shades to lighter shades by increasing the respective rgb value by 1 while shifting the
         rectangle over each time. */
-        for(int i=0;i<100;i++) {
+        for(int i = 0; i < 100; i++) {
             //Health
-            if(player.getHealthTimer()>0){
-                g.setColor(new Color(255,20,100+i));
-            }
-            else {
-                g.setColor(new Color(155 + i, 0, 0));//Changing colour
-            }
+            g.setColor(new Color(155 + i, 0, 0));//Changing colour
             g.fillRect(59+i, 30, (int) (((double) player.getHealth() / player.getMaxHealth()) * 198)-i, 14);
-
-            //Drawing the health timer
-            if(player.getHealthTimer() > 0){
-                g.drawString(""+player.getHealthTimer(),267,41);
+            if(player.getHealthTimer()>0){
+                g.setColor(new Color(255,20,100+i, barFade));
+                g.fillRect(59+i, 30, (int) (((double) player.getHealth() / player.getMaxHealth()) * 198)-i, 14);
             }
-
             //Stamina
-            if(player.getEnergyTime()>0){
-                g.setColor(new Color(155+i,155+i,0));
+            if(player.getEnergyTime()>0) {
+                g.setColor(new Color(155 + i, 155 + i, 0, barFade));
             }
-            else {
+            else{
                 g.setColor(new Color(0, 155 + i, 0));
             }
-            g.fillRect(59+i, 83, (int) ((player.getStamina() / player.getMaxStamina()) * 198)-i, 14);
-            //Drawing the energy timer    dvnduvn
-            if(player.getEnergyTime() > 0){
-                g.drawString(""+player.getEnergyTime(),267,96);
-            }
+            g.fillRect(59 + i, 83, (int) ((player.getStamina() / player.getMaxStamina()) * 198) - i, 14);
         }
-
+        if(player.getHealthTimer() > 0){
+            g.setColor(new Color(255,20,100));
+            g.drawString(""+player.getHealthTimer(),267,41);
+        }
+        if(player.getEnergyTime() > 0){
+            g.setColor(new Color(255 , 255 , 0));
+            g.drawString("" + player.getEnergyTime(), 267, 96);
+        }
+        // Allowing the powerup fade to continue
+        barFade += barFadeAddition;
+        if(barFade == 0 || barFade == 255){
+            barFadeAddition *= -1;
+        }
+        // Drawing the stats
         g.setColor(Color.BLACK);
         g.drawImage(healthBar, 10,10,this);
         g.drawImage(staminaBar, 10,65,this);

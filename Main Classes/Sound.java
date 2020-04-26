@@ -55,6 +55,7 @@ public class Sound {
     public void setVolume(int volumeLevel){
         float range = volume.getMaximum() - volume.getMinimum();
         float gain = (float) (range * (volumeLevel/100.0)) + volume.getMinimum();
+
         volume.setValue(gain);
     }
 }

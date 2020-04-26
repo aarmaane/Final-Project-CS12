@@ -30,7 +30,7 @@ public class Player {
     private Image[][] airAttackSprites; // This array will be jagged too
     private Image[] castSprites = new Image[4];
     // Sound effects for the player
-    private Sound jumpSound = new Sound("Assets/Sounds/Effects/jump.wav", 70);
+    private Sound jumpSound = new Sound("Assets/Sounds/Effects/jump.wav", 80);
 
     // Other fields
     private ArrayList<IndicatorText> textQueue = new ArrayList<>();
@@ -261,7 +261,6 @@ public class Player {
         }
         else if(isHurt){
             spriteCount += 0.07;
-            System.out.println(spriteCount);
             if(spriteCount > hurtSprites.length){
                 spriteCount = 0;
                 isHurt = false;
@@ -373,7 +372,6 @@ public class Player {
             }
         }
         else if(isHurt){
-            System.out.println("show");
             sprite = hurtSprites[spriteIndex];
         }
         else if(velocityY < 0){
