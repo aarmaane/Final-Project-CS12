@@ -10,10 +10,11 @@ public class MainMenu extends JPanel implements MouseListener {
     private Player dummy = new Player();
     private LevelProp platform = new LevelProp("0,0,grassMiddle.png");
     private int scrollOffset = 0;
-    private int platformsX1, platformsX2;
+    private int screenWidth, platformsX1, platformsX2;
     public MainMenu(MainGame game){
         gameFrame = game;
         setSize(960,590);
+        screenWidth = 960;
         addMouseListener(this);
         menuMusic.play();
     }
@@ -39,14 +40,11 @@ public class MainMenu extends JPanel implements MouseListener {
         if(dummy.getHitbox().x > 300){
             scrollOffset =  dummy.getHitbox().x - 300;
         }
-        if(platformsX1 - scrollOffset + 1440 == getWidth()){
+        if(platformsX1 - scrollOffset + 1440 == screenWidth){
             platformsX2 = platformsX1 + 1440;
-            System.out.println("updated 1!");
         }
-        if(platformsX2 - scrollOffset + 1440 == getWidth()){
+        if(platformsX2 - scrollOffset + 1440 == screenWidth){
             platformsX1 = platformsX2 + 1440;
-            System.out.println("updated 2!");
-
         }
     }
     // Mouse related methods
