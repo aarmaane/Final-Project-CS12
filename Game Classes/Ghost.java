@@ -5,13 +5,17 @@ import java.io.IOException;
 
 public class Ghost extends Enemy {
     //Fields
+    private int spriteAlpha;
+    // Images arrays to hold sprites
     private static Image[] movingSprites = new Image[5];
     private static Image[] idleSprites;
     private static Image[] attackSprites;
     private static Image[] deathSprites;
+
     //Constructor
     public Ghost(){
         super("0,0,0");
+        hasAlphaSprites = true;
     }
     public static void init(){
         try{
@@ -29,16 +33,23 @@ public class Ghost extends Enemy {
     // General methods
     @Override
     public void update(Player player){
-
+        super.update(player);
     }
 
     @Override
     public void updateAttack(Player player) {
 
     }
+    // The Ghost hsa fully custom movement, so it needs to be overrided
+    @Override
+    public void updateMotion(Player player){
 
+    }
     @Override
     public void updateSprite() {
+
+    }
+    public void updateSpriteAlpha(){
 
     }
     // Getter methods
