@@ -31,33 +31,16 @@ public class Ghost extends Enemy {
     @Override
     public void updateMotion(Player player){
         // Checking the position of the Player and setting velocity towards them
-        int playerX = player.getHitbox().x;
-        int slimeX = getHitbox().x;
-        if(knockedBack){
-            // Not touching Slime's velocity values
+        Rectangle playerHitbox = player.getHitbox();
+        double angle = Math.atan(((double)getHitbox().y - playerHitbox.y)/((double)getHitbox().x - playerHitbox.x));
+
+        if(playerHitbox.x > getHitbox().x){
+            x += 1;
         }
-        else if(playerX == slimeX || isHurt){
-            velocityX = 0; // Stopping movement while maintaining direction
+        else{
+            x -= 1;
         }
-        else if(playerX > slimeX){
-            direction = RIGHT;
-            if(platformAhead && !isAttacking){
-                velocityX = 0.5;
-            }
-            else{
-                velocityX = 0; // Making the slime stay in place
-            }
-        }
-        else{ // Same as above but for left facing
-            direction = LEFT;
-            if(platformBehind && !isAttacking){
-                velocityX = -0.5;
-            }
-            else{
-                velocityX = 0;
-            }
-        }
-        super.updateMotion(player);
+
     }
 
     @Override
@@ -101,6 +84,10 @@ public class Ghost extends Enemy {
             }
         }
     }
+    @Override
+    public void checkCollision(Rectangle rect){
+        return; // Doing nothing since Ghosts ignore platforms
+    }
     // Getter methods
     @Override
     public Image getSprite() {
@@ -140,6 +127,6 @@ public class Ghost extends Enemy {
 
     @Override
     public Rectangle getHitbox() {
-        return new Rectangle((int)x + 10, (int)y + 25, 80, 45);
+        return new Rectangle((int)x + 50, (int)y + 25, 75, 105);
     }
 }
