@@ -45,7 +45,7 @@
 3960,260,mushroom.png
 3990,260,mushroom.png
 4020,260,mushroom.png
-7310,420,rock2.png
+//7310,420,rock2.png
 7350,390,rock1.png
 7350,410,rock1.png
 7400,380,rock3.png

@@ -72,7 +72,7 @@
 7970,370,grassPlatformTall.png
 8050,400,grassPlatformTall.png
 8130,430,grassPlatformTall.png
-7300,475,grassMiddle.png
+7350,475,grassMiddle.png
 7440,475,grassMiddle.png
 7580,475,grassMiddle.png
 7720,475,grassMiddle.png

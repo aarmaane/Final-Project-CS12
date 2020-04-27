@@ -38,7 +38,7 @@ public abstract class Enemy {
         }
     }
     public double castHit(Projectile cast){
-        double damageDone = (Utilities.randint(80,100)/100.0)*cast.getDamage();
+        double damageDone = (Utilities.randint(80,100)/100.0)*cast.getDamage()*getSpriteAlpha();
         health -= damageDone;
         velocityY = -3;
         if(cast.getSpeed() > 0){
@@ -54,7 +54,7 @@ public abstract class Enemy {
         return damageDone;
     }
     public double swordHit(Player player){
-        double damageDone = (Utilities.randint(80,100)/100.0)*player.getSwordDamage();
+        double damageDone = (Utilities.randint(80,100)/100.0)*player.getSwordDamage()*getSpriteAlpha();
         health -= damageDone;
         velocityY = -4;
         if(player.getDirection() == Player.RIGHT){

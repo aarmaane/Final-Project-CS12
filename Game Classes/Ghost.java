@@ -9,6 +9,7 @@ public class Ghost extends Enemy {
     private static Image[] idleSprites= new Image[10];
     private static Image[] attackSprites= new Image[8];
     private static Image[] deathSprites= new Image[7];
+    private static Image[] hurtSprites= new Image[1];
     // Fields
     private float alpha;//draw transparent
     private float ghostAlpha = (float)0.01;
@@ -29,6 +30,7 @@ public class Ghost extends Enemy {
         deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Ghost/death");
         idleSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Ghost/idle");
         attackSprites = Utilities.spriteArrayLoad(attackSprites, "Enemies/Ghost/attack");
+        hurtSprites = Utilities.spriteArrayLoad(hurtSprites, "Enemies/Ghost/hurt");
     }
     // General methods
     @Override
@@ -48,7 +50,6 @@ public class Ghost extends Enemy {
 
 
     }
-
     @Override
     public void updateAttack(Player player) {
         super.updateAttack(player);
@@ -68,13 +69,13 @@ public class Ghost extends Enemy {
                 }
             }
             else{
-                //spriteCount += 0.08;
-                /*if(spriteCount > hurtSprites.length){
+                spriteCount += 0.08;
+                if(spriteCount > hurtSprites.length){
                     spriteCount = 0;
                     isHurt = false;
                 }
 
-                 */
+
             }
         }
         else if(isAttacking){
@@ -104,7 +105,7 @@ public class Ghost extends Enemy {
                 sprite = deathSprites[spriteIndex];
             }
             else{
-                //sprite = hurtSprites[spriteIndex];
+                sprite = hurtSprites[spriteIndex];
             }
         }
         else if(isAttacking){
