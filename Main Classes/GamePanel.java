@@ -16,6 +16,7 @@ class GamePanel extends JPanel implements KeyListener {
     private int timeLeft = 200;
     private int levelOffset = 0;
     private int barFade = 0;
+    private int fadeInt = 0;
     private int barFadeAddition = 5;
     // Game Images/Sounds
     private Image enemyHealthBar;
@@ -216,6 +217,14 @@ class GamePanel extends JPanel implements KeyListener {
             g.setFont(gameFontBig);
             g.drawString("Paused", 400, 300);
         }
+        fade(g);
+        if(fadeInt<255) {
+            fadeInt++;
+        }
+    }
+    public void fade(Graphics g){
+        g.setColor(new Color(0, 0, 0, fadeInt));
+        g.fillRect(0, 0, getWidth(), getHeight());
     }
     public void drawHealth(Graphics g, Enemy enemy){
         double health = enemy.getHealth();
