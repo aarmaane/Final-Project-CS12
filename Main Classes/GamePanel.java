@@ -12,8 +12,6 @@ class GamePanel extends JPanel implements KeyListener {
     private boolean paused = false;
     private boolean fade = false;
     private boolean[] keysPressed; // Array that keeps track of keys that are pressed down
-    private float alpha = (float) 0.1;//draw transparent
-    private float ghostAlpha = (float)0.01;
     private MainGame gameFrame;
     // Game related fields
     private Player player = new Player();
@@ -75,6 +73,7 @@ class GamePanel extends JPanel implements KeyListener {
         // Initalizing the game Classes
         Slime.init();
         Skeleton.init();
+        Ghost.init();
         Projectile.init();
         Chest.init();
         Item.init();
@@ -102,6 +101,9 @@ class GamePanel extends JPanel implements KeyListener {
             }
             for(String data: Utilities.loadFile("Skeletons.txt", levelNum)){
                 enemies.add(new Skeleton(data));
+            }
+            for(String data: Utilities.loadFile("Ghosts.txt", levelNum)){
+                enemies.add(new Ghost(data));
             }
             for(String data: Utilities.loadFile("Chests.txt", levelNum)){
                 chests.add(new Chest(data));
@@ -145,7 +147,8 @@ class GamePanel extends JPanel implements KeyListener {
         }
         // Drawing enemies
         for(Enemy enemy: enemies){
-            if(enemy.getClass()== Slime.class){
+            if(enemy.getClass()== Ghost.class){
+                ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,enemy.getSpriteAlpha());
                 g2d.setComposite(ac);
                 g2d.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
                 g2d.setComposite(comp);
@@ -339,18 +342,9 @@ class GamePanel extends JPanel implements KeyListener {
         }
         checkPlayerAction();
         changeFade();
-        updateAlpha();
         calculateOffset();
         collectGarbage();
 
-    }
-    public void updateAlpha(){
-        alpha+=ghostAlpha;
-        ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,alpha);
-        //System.out.println((float)Utilities.roundOff(alpha,2));
-        if(Utilities.roundOff(alpha,2)==1.0 || Utilities.roundOff(alpha,2) == 0.1){
-            ghostAlpha=-ghostAlpha;
-        }
     }
     public void changeFade(){
         if(fade){
