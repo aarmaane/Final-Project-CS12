@@ -247,7 +247,7 @@ public class Player {
     // Method to smoothly update the sprite counter and produce realistic animation of the Player
     public void updateSprite(){
         if(isCasting){
-            spriteCount += 0.05;
+            spriteCount += 0.06;
             if(spriteCount > castSprites.length){
                 isCasting = false;
                 spriteCount = 0;

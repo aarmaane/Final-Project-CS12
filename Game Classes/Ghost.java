@@ -41,14 +41,13 @@ public class Ghost extends Enemy {
         if(playerHitbox.x > getHitbox().x){
             x += Math.cos(angle) * speed;
             y += Math.sin(angle) * speed;
+            direction = RIGHT;
         }
         else if(playerHitbox.x < getHitbox().x){
             x -= Math.cos(angle) * speed;
             y -= Math.sin(angle) * speed;
+            direction = LEFT;
         }
-
-
-
     }
     @Override
     public void updateAttack(Player player) {
@@ -85,9 +84,9 @@ public class Ghost extends Enemy {
             }
         }
         else{
-            spriteCount += 0.05;
+            spriteCount += 0.07;
             if(spriteCount > movingSprites.length){
-                spriteCount = 0;
+                spriteCount = 3;
             }
         }
     }
@@ -111,12 +110,10 @@ public class Ghost extends Enemy {
         else if(isAttacking){
             sprite = attackSprites[spriteIndex];
         }
-        else if(velocityX != 0){
+        else{
             sprite = movingSprites[spriteIndex];
         }
-        else{
-            sprite = idleSprites[spriteIndex];
-        }
+
         // Flipping image since sprites are left facing
         if(direction == RIGHT){
             sprite = Utilities.flipSprite(sprite);
