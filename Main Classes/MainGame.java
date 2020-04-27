@@ -1,7 +1,10 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 public class MainGame extends JFrame {
     // Declaring constants
@@ -17,7 +20,7 @@ public class MainGame extends JFrame {
     private Timer myTimer; // Timer to call the game functions each frame
     private int runTime; // Variable to keep track of the miliseconds that have passed since the start of the game
     private int timePassed;
-    public MainGame(){
+    public MainGame() throws IOException {
         super("Game"); // Setting the title
         // Creating the JPanels for the game
         game = new GamePanel(this);
@@ -35,6 +38,8 @@ public class MainGame extends JFrame {
         setLocationRelativeTo(null);
         add(panelManager);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Image icon = ImageIO.read(new File("Assets/Images/Chests/chestOpen.png"));
+        setIconImage(icon);
         setVisible(true);
         // Starting a timer to update the frames
         myTimer = new Timer(10, new TickListener());	 // trigger every 10 ms
@@ -74,7 +79,7 @@ public class MainGame extends JFrame {
     public Player getPlayer(){
         return game.getPlayer();
     }
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException{
         MainGame game = new MainGame();
     }
 }
