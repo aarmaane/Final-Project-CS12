@@ -3,13 +3,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 
 class GamePanel extends JPanel implements KeyListener {
     // Window related Objects
     private boolean paused = false;
+    private boolean fade = false;
     private boolean[] keysPressed; // Array that keeps track of keys that are pressed down
+    private float alpha = (float) 0.1;//draw transparent
+    private float ghostAlpha = (float)0.01;
+    private AlphaComposite ac;
     private MainGame gameFrame;
     // Game related fields
     private Player player = new Player();
@@ -17,6 +22,7 @@ class GamePanel extends JPanel implements KeyListener {
     private int levelOffset = 0;
     private int barFade = 0;
     private int fadeInt = 0;
+    private int fadeAlpha = 5;
     private int barFadeAddition = 5;
     // Game Images/Sounds
     private Image enemyHealthBar;
@@ -43,6 +49,8 @@ class GamePanel extends JPanel implements KeyListener {
     // Fonts
     Font gameFont;
     Font gameFontBig;
+    //Composite
+    Composite comp;
     // Constructor for GamePanel
     public GamePanel(MainGame game){
         // Setting up the GamePanel
@@ -118,6 +126,7 @@ class GamePanel extends JPanel implements KeyListener {
     }
     public void paintComponent(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
+        comp = g2d.getComposite();
         // Drawing the background
         g.setColor(new Color(0,0,0));
         g.fillRect(0, 0, 960, 590);
@@ -135,7 +144,11 @@ class GamePanel extends JPanel implements KeyListener {
         }
         // Drawing enemies
         for(Enemy enemy: enemies){
-            g.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
+            if(enemy.getType()==Enemy.SLIME){
+                g2d.setComposite(ac);
+            }
+            g2d.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
+            g2d.setComposite(comp);
             drawHealth(g, enemy);
            // g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
         }
@@ -217,12 +230,11 @@ class GamePanel extends JPanel implements KeyListener {
             g.setFont(gameFontBig);
             g.drawString("Paused", 400, 300);
         }
-        fade(g);
-        if(fadeInt<255) {
-            fadeInt++;
+        if(fade){
+            drawFade(g);
         }
     }
-    public void fade(Graphics g){
+    public void drawFade(Graphics g){
         g.setColor(new Color(0, 0, 0, fadeInt));
         g.fillRect(0, 0, getWidth(), getHeight());
     }
@@ -295,6 +307,9 @@ class GamePanel extends JPanel implements KeyListener {
             loadLevel(1);
             System.out.println("Level reloaded");
         }
+        else if(keyCode == KeyEvent.VK_5){
+            fade=true;
+        }
     }
     @Override
     public void keyReleased(KeyEvent e) {
@@ -322,8 +337,31 @@ class GamePanel extends JPanel implements KeyListener {
             text.update();
         }
         checkPlayerAction();
+        changeFade();
+        updateAlpha();
         calculateOffset();
         collectGarbage();
+
+    }
+    public void updateAlpha(){
+        alpha+=ghostAlpha;
+        ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,alpha);
+        System.out.println((float)Utilities.roundOff(alpha,2));
+        if(Utilities.roundOff(alpha,2)==1.0 || Utilities.roundOff(alpha,2) == 0.1){
+            ghostAlpha=-ghostAlpha;
+        }
+    }
+    public void changeFade(){
+        if(fade){
+            fadeInt+=fadeAlpha;
+            if(fadeInt==255){
+                fadeAlpha=-fadeAlpha;
+            }
+            else if(fadeInt==0){
+                fadeAlpha=-fadeAlpha;
+                fade=false;
+            }
+        }
 
     }
     public void calculateOffset(){

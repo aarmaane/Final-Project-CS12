@@ -4,6 +4,7 @@ public abstract class Enemy {
     // Constants
     public static final int RIGHT = 0, LEFT = 1;
     protected static final double GRAVITY = 0.25;
+    protected static final int SLIME = 0, SKELETON = 1, GHOST = 2, WIZARD = 3;
     //Fields
     protected double x, y, velocityX, velocityY;
     protected double spriteCount;
@@ -11,12 +12,14 @@ public abstract class Enemy {
     protected int health, maxHealth, damage, difficulty;
     protected boolean isActive, isHurt, isAttacking, knockedBack;
     protected boolean platformBehind, platformAhead;
+    protected int type;
     // Constructor
     public Enemy(String data){
         String[] dataSplit = data.split(",");
         x = Integer.parseInt(dataSplit[0]);
         y = Integer.parseInt(dataSplit[1]);
         difficulty = Integer.parseInt(dataSplit[2]);
+        type = Integer.parseInt(dataSplit[3]);
     }
     // General methods
     public void checkCollision(Rectangle rect){
@@ -123,4 +126,5 @@ public abstract class Enemy {
     public boolean isDead(){
         return !isActive && isDying();
     }
+    public int getType(){ return type;}
 }
