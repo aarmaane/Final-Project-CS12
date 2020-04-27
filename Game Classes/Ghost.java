@@ -9,14 +9,17 @@ public class Ghost extends Enemy {
     private static Image[] idleSprites= new Image[10];
     private static Image[] attackSprites= new Image[8];
     private static Image[] deathSprites= new Image[7];
+    // Fields
     private float alpha;//draw transparent
     private float ghostAlpha = (float)0.01;
+    private int speed;
     //Constructor
     public Ghost(String data){
         super(data);
         health = 100 * difficulty;
         maxHealth = health;
         damage = 15;
+        speed = difficulty * 2;
         isActive = true;
         hasAlphaSprites = true;
         alpha = (float) 0.1;
@@ -32,14 +35,17 @@ public class Ghost extends Enemy {
     public void updateMotion(Player player){
         // Checking the position of the Player and setting velocity towards them
         Rectangle playerHitbox = player.getHitbox();
-        double angle = Math.atan(((double)getHitbox().y - playerHitbox.y)/((double)getHitbox().x - playerHitbox.x));
-
+        double angle = Math.atan(((double)playerHitbox.y - getHitbox().y)/((double)playerHitbox.x - getHitbox().x));
         if(playerHitbox.x > getHitbox().x){
-            x += 1;
+            x += Math.cos(angle) * speed;
+            y += Math.sin(angle) * speed;
         }
-        else{
-            x -= 1;
+        else if(playerHitbox.x < getHitbox().x){
+            x -= Math.cos(angle) * speed;
+            y -= Math.sin(angle) * speed;
         }
+
+
 
     }
 
