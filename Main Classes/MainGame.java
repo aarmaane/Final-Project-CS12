@@ -18,7 +18,7 @@ public class MainGame extends JFrame {
     private JPanel panelManager;
     private String activePanel;
     private Timer myTimer; // Timer to call the game functions each frame
-    private int runTime; // Variable to keep track of the miliseconds that have passed since the start of the game
+    private int runTime; // Variable to keep track of the milliseconds that have passed since the start of the game
     private int timePassed;
     public MainGame() throws IOException {
         super("Game"); // Setting the title

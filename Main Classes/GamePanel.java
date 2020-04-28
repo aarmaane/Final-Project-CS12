@@ -397,7 +397,7 @@ class GamePanel extends JPanel implements KeyListener {
         // Checking projectile collision
         for(Projectile projectile:projectiles){
             for(Enemy enemy:enemies) {
-                if(!projectile.isExploding() && enemy.getHitbox().intersects(projectile.getHitbox())){
+                if(!enemy.isDying() && !projectile.isExploding() && enemy.getHitbox().intersects(projectile.getHitbox())){
                     double damageDone = enemy.castHit(projectile);
                     damageDone = Utilities.roundOff(damageDone, 1);
                     player.addPoints((int)projectile.getDamage());
