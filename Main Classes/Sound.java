@@ -47,6 +47,7 @@ public class Sound {
     }
     public void closeSound(){
         clip.close();
+        madeSounds.remove(this);
     }
     public boolean hasStarted(){
         return clip.isOpen();

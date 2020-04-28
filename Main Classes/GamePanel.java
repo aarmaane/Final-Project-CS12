@@ -94,6 +94,7 @@ class GamePanel extends JPanel implements KeyListener {
             ArrayList<String> levelData = Utilities.loadFile("LevelData.txt", levelNum);
             timeLeft = Integer.parseInt(levelData.get(0));
             levelEndX =  Integer.parseInt(levelData.get(1));
+            levelMusic.closeSound();
             levelMusic = new Sound("Assets/Sounds/Music/" + levelData.get(2), 80);
             // Loading Game-Object Arrays
             for(String data: Utilities.loadFile("Platforms.txt", levelNum)){
@@ -137,7 +138,7 @@ class GamePanel extends JPanel implements KeyListener {
         comp = g2d.getComposite();
         // Drawing the background
 
-        g.setColor(new Color(0,0,0));
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, 960, 590);
         for(int i = 0; i < 3; i ++){
             g.drawImage(backgroundLayers[i], 0, 0, this);
@@ -158,7 +159,7 @@ class GamePanel extends JPanel implements KeyListener {
         }
         // Drawing enemies
         for(Enemy enemy: enemies){
-            if(enemy.getClass()== Ghost.class){
+            if(enemy.hasAlphaSprites()){
                 ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,enemy.getSpriteAlpha());
                 g2d.setComposite(ac);
                 g2d.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
@@ -192,7 +193,6 @@ class GamePanel extends JPanel implements KeyListener {
         g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
         g.drawRect(player.getAttackBox().x - levelOffset, player.getAttackBox().y, player.getAttackBox().width, player.getAttackBox().height);
         // Drawing game stats
-        g.setFont(gameFont);
         /*Fills in both of the stat bars from darker shades to lighter shades by increasing the respective rgb value by 1 while shifting the
         rectangle over each time. */
         for(int i = 0; i < 100; i++) {
