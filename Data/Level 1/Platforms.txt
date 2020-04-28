@@ -33,9 +33,10 @@
 4656,475,grassMiddle.png
 4800,475,grassMiddle.png
 4944,475,grassRight.png
-5100,325,grassPillar.png
-5350,225,grassPillar.png
-5600,125,grassPillar.png
+4950,300,grassPlatformSmall.png
+5100,225,grassPillar.png
+5350,125,grassPillar.png
+5600,25,grassPillar.png
 6130,46,pillarTop.png
 5850,475,grassLeft.png
 5900,475,grassMiddle.png

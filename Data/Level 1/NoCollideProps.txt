@@ -2,8 +2,12 @@
 576,379,pillarMiddle.png
 576,427,pillarMiddle.png
 5350,450,grassPillarCenter.png
+5600,200,grassPillarCenter.png
 5600,300,grassPillarCenter.png
-5600,440,grassPillarCenter.png
+5600,430,grassPillarCenter.png
+5350,300,grassPillarCenter.png
+5350,430,grassPillarCenter.png
+5100,430,grassPillarCenter.png
 6130,428,pillarMiddle.png
 6130,382,pillarMiddle.png
 6130,334,pillarMiddle.png

@@ -20,7 +20,7 @@ public class Ghost extends Enemy {
         health = 100 * difficulty;
         maxHealth = health;
         damage = 15;
-        speed = difficulty * 2;
+        speed = difficulty;
         isActive = true;
         hasAlphaSprites = true;
         alpha = (float) 0.1;
@@ -62,7 +62,7 @@ public class Ghost extends Enemy {
     public void updateSprite() {
         if(isHurt){
             if(health <= 0){
-                spriteCount += 0.05;
+                spriteCount += 0.08;
                 if(spriteCount > deathSprites.length){
                     isActive = false;
                 }
@@ -78,13 +78,13 @@ public class Ghost extends Enemy {
             }
         }
         else if(isAttacking){
-            spriteCount += 0.05;
+            spriteCount += 0.08;
             if(spriteCount > attackSprites.length){
                 spriteCount = 0;
             }
         }
         else{
-            spriteCount += 0.07;
+            spriteCount += 0.08;
             if(spriteCount > movingSprites.length){
                 spriteCount = 3;
             }
@@ -123,7 +123,7 @@ public class Ghost extends Enemy {
     @Override
     public float getSpriteAlpha(){
             alpha+=ghostAlpha;
-            if(Utilities.roundOff(alpha,2)==1.0 || Utilities.roundOff(alpha,2) == 0.1){
+            if(Utilities.roundOff(alpha,2)==1.0 || Utilities.roundOff(alpha,2) == 0.05){
                 ghostAlpha=-ghostAlpha;
             }
         return alpha ;
