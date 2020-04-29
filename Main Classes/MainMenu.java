@@ -20,9 +20,6 @@ public class MainMenu extends JPanel implements MouseListener {
     }
     // Window related methods
     public void paintComponent(Graphics g){
-        dummy.move(Player.RIGHT);
-        dummy.checkCollision(new Rectangle(scrollOffset,800,1000,1000));
-        dummy.update();
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, 960, 590);
         g.drawImage(dummy.getSprite(),(int) dummy.getX()- 170 - scrollOffset,367 ,this);
@@ -34,6 +31,10 @@ public class MainMenu extends JPanel implements MouseListener {
         g.drawString("Main menu", 435,200);
     }
     public void update(){
+        dummy.move(Player.RIGHT);
+        dummy.checkCollision(new Rectangle(scrollOffset,800,1000,1000));
+        dummy.update();
+
         if(!menuMusic.isPlaying()){
             menuMusic.play();
         }
@@ -52,6 +53,7 @@ public class MainMenu extends JPanel implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         System.out.println("test");
         menuMusic.stop();
+        menuMusic.closeSound();
         gameFrame.switchPanel(MainGame.SHOPPANEL);
     }
     @Override

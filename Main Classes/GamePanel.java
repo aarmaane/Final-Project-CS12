@@ -135,7 +135,9 @@ class GamePanel extends JPanel implements KeyListener {
     }
     public void paintComponent(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
-        comp = g2d.getComposite();
+        if(comp == null){
+            comp = g2d.getComposite();
+        }
         // Drawing the background
 
         g.setColor(Color.BLACK);
@@ -145,8 +147,10 @@ class GamePanel extends JPanel implements KeyListener {
         }
         // Drawing the level
         for(LevelProp platform: platforms){
-            Rectangle platformRect = platform.getRect();
-            g.drawImage(platform.getPlatformImage(), platformRect.x - levelOffset, platformRect.y, this);
+            if(platform.getRect().x + platform.getRect().width - levelOffset > 0 && platform.getRect().x - levelOffset < 960){
+                Rectangle platformRect = platform.getRect();
+                g.drawImage(platform.getPlatformImage(), platformRect.x - levelOffset, platformRect.y, this);
+            }
         }
         for(LevelProp platform: noCollideProps){
             Rectangle platformRect = platform.getRect();
@@ -159,17 +163,19 @@ class GamePanel extends JPanel implements KeyListener {
         }
         // Drawing enemies
         for(Enemy enemy: enemies){
-            if(enemy.hasAlphaSprites()){
-                ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,enemy.getSpriteAlpha());
-                g2d.setComposite(ac);
-                g2d.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
-                g2d.setComposite(comp);
+            if(enemy.getHitbox().x + enemy.getHitbox().width - levelOffset > 0 && enemy.getHitbox().x - levelOffset < 960){
+                if(enemy.hasAlphaSprites()){
+                    ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,enemy.getSpriteAlpha());
+                    g2d.setComposite(ac);
+                    g2d.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
+                    g2d.setComposite(comp);
+                }
+                else{
+                    g.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
+                }
+                drawHealth(g, enemy);
+                g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
             }
-            else{
-                g.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
-            }
-            drawHealth(g, enemy);
-            g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
         }
         // Drawing Projectiles
         for(Projectile projectile: projectiles){
@@ -219,7 +225,6 @@ class GamePanel extends JPanel implements KeyListener {
             g.setColor(new Color(255 , 255 , 0));
             g.drawString("" + player.getEnergyTime(), 267, 96);
         }
-
         // Drawing the stats
         g.setColor(Color.BLACK);
         g.drawImage(healthBar, 10,10,this);
