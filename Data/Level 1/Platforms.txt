@@ -96,11 +96,10 @@
 10000,475,grassMiddle.png
 10140,475,grassMiddle.png
 10280,475,grassMiddle.png
-10320,475,grassMiddle.png
-10460,475,grassMiddle.png
-10600,475,grassMiddle.png
-10740,475,grassMiddle.png
-10880,475,grassMiddle.png
+10420,475,grassMiddle.png
+10560,475,grassMiddle.png
+10700,475,grassMiddle.png
+10840,475,grassMiddle.png
 
 
 

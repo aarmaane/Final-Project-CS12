@@ -33,7 +33,7 @@ public class LevelProp {
         height = propImage.getHeight(null);
     }
     // Getter methods
-    public Image getPlatformImage(){
+    public Image getPropImage(){
         return imageMap.get(imageName);
     }
     public Rectangle getRect(){

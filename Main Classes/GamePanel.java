@@ -15,17 +15,19 @@ class GamePanel extends JPanel implements KeyListener {
     // Game related fields
     private Player player = new Player();
     private int timeLeft;
-    private int levelEndX;
+    private int levelEndX, levelEndResetX;
     private int levelOffset = 0;
     private int barFade = 0;
     private int barFadeAddition = 5;
     private int fadeInt = 0;
     private int fadeAlpha = 5;
-    // Game Images/Sounds
+    private boolean levelEnding;
+    // Game Images
     private Image enemyHealthBar;
     private Image staminaBar;
     private Image healthBar;
     private Image[] backgroundLayers = new Image[3];
+    // Game Sounds
     private Sound levelMusic = new Sound("Assets/Sounds/Music/level1.wav", 80);
     private Sound castSound = new Sound("Assets/Sounds/Effects/cast.wav", 80);
     private Sound castHitSound = new Sound("Assets/Sounds/Effects/castHit.wav", 80);
@@ -94,8 +96,9 @@ class GamePanel extends JPanel implements KeyListener {
             ArrayList<String> levelData = Utilities.loadFile("LevelData.txt", levelNum);
             timeLeft = Integer.parseInt(levelData.get(0));
             levelEndX =  Integer.parseInt(levelData.get(1));
+            levelEndResetX =  Integer.parseInt(levelData.get(2));
             levelMusic.closeSound();
-            levelMusic = new Sound("Assets/Sounds/Music/" + levelData.get(2), 80);
+            levelMusic = new Sound("Assets/Sounds/Music/" + levelData.get(3), 80);
             // Loading Game-Object Arrays
             for(String data: Utilities.loadFile("Platforms.txt", levelNum)){
                 platforms.add(new LevelProp(data));
@@ -146,15 +149,17 @@ class GamePanel extends JPanel implements KeyListener {
             g.drawImage(backgroundLayers[i], 0, 0, this);
         }
         // Drawing the level
+        //g.setColor(Color.WHITE);
         for(LevelProp platform: platforms){
             if(platform.getRect().x + platform.getRect().width - levelOffset > 0 && platform.getRect().x - levelOffset < 960){
                 Rectangle platformRect = platform.getRect();
-                g.drawImage(platform.getPlatformImage(), platformRect.x - levelOffset, platformRect.y, this);
+                g.drawImage(platform.getPropImage(), platformRect.x - levelOffset, platformRect.y, this);
+                //g.drawRect(platformRect.x -levelOffset,platformRect.y,(int)platformRect.getWidth(),(int)platformRect.getHeight());
             }
         }
-        for(LevelProp platform: noCollideProps){
-            Rectangle platformRect = platform.getRect();
-            g.drawImage(platform.getPlatformImage(), platformRect.x - levelOffset, platformRect.y, this);
+        for(LevelProp prop: noCollideProps){
+            Rectangle propRect = prop.getRect();
+            g.drawImage(prop.getPropImage(), propRect.x - levelOffset, propRect.y, this);
         }
         // Drawing chests
         for(Chest chest: chests){
@@ -195,8 +200,8 @@ class GamePanel extends JPanel implements KeyListener {
         }
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
-        g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
-        g.drawRect(player.getAttackBox().x - levelOffset, player.getAttackBox().y, player.getAttackBox().width, player.getAttackBox().height);
+        //g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
+        //g.drawRect(player.getAttackBox().x - levelOffset, player.getAttackBox().y, player.getAttackBox().width, player.getAttackBox().height);
         // Drawing game stats
         /*Fills in both of the stat bars from darker shades to lighter shades by increasing the respective rgb value by 1 while shifting the
         rectangle over each time. */
@@ -231,12 +236,15 @@ class GamePanel extends JPanel implements KeyListener {
         g.drawString("Time: "+timeLeft,800,20);
         g.drawString("Points: "+player.getPoints(),640,20);
 
-        // Drawing pause screen
+        // Drawing various special screens
         if(paused){
             drawPause(g);
         }
         if(fade){
             drawFade(g);
+        }
+        if(levelEnding){
+            drawEnding(g);
         }
     }
     public void drawPause(Graphics g){
@@ -263,6 +271,11 @@ class GamePanel extends JPanel implements KeyListener {
             g.drawImage(enemyHealthBar,hitBox.x-levelOffset-13-healthBarOffset,hitBox.y-15,this);
         }
     }
+    public void drawEnding(Graphics g){
+        g.setFont(gameFontBig);
+        g.setColor(Color.CYAN);
+        g.drawString("Level Complete!", 300, 180);
+    }
     // Keyboard related methods
     @Override
     public void keyPressed(KeyEvent e) {
@@ -272,16 +285,7 @@ class GamePanel extends JPanel implements KeyListener {
         }
         // Running code for initially clicked keys
         if(!keysPressed[keyCode]){
-            if(keyCode == KeyEvent.VK_SPACE && !paused){
-                player.jump(Player.INITIAL);
-            }
-            else if(keyCode == KeyEvent.VK_O && !paused){
-                player.attack();
-            }
-            else if(keyCode == KeyEvent.VK_P && !paused){
-                player.castMagic();
-            }
-            else if(keyCode == KeyEvent.VK_ESCAPE){
+            if(keyCode == KeyEvent.VK_ESCAPE){
                 paused = !paused;
                 if(paused){
                     Sound.pauseAll();
@@ -291,6 +295,17 @@ class GamePanel extends JPanel implements KeyListener {
                     Sound.resumeAll();
                 }
                 repaint();
+            }
+            else if(!paused && !levelEnding){
+                if(keyCode == KeyEvent.VK_SPACE){
+                    player.jump(Player.INITIAL);
+                }
+                else if(keyCode == KeyEvent.VK_O){
+                    player.attack();
+                }
+                else if(keyCode == KeyEvent.VK_P){
+                    player.castMagic();
+                }
             }
         }
         // SOUND TEST
@@ -324,6 +339,7 @@ class GamePanel extends JPanel implements KeyListener {
             System.out.println("Level reloaded");
         }
         else if(keyCode == KeyEvent.VK_5){
+            player.setPos(9000,100);
             fade=true;
         }
     }
@@ -413,29 +429,38 @@ class GamePanel extends JPanel implements KeyListener {
             }
         }
         //Checking item collision
+        Rectangle playerHitbox = player.getHitbox();
         for(Item item: items){
-            if(item.getHitbox().intersects(player.getHitbox()) && item.isSettled()) {
+            if(item.getHitbox().intersects(playerHitbox) && item.isSettled()) {
                 player.gainItem(item);
                 item.use();
                 item.playSound();
                 if(item.getType() == Item.HEALTH){
-                    indicatorText.add(new IndicatorText(player.getHitbox().x, player.getHitbox().y, "+10", Color.GREEN));
+                    indicatorText.add(new IndicatorText(playerHitbox.x, playerHitbox.y, "+10", Color.GREEN));
                 }
                 else if(item.getType() == Item.COIN){
-                    indicatorText.add(new IndicatorText(player.getHitbox().x, player.getHitbox().y, "+10", Color.YELLOW));
+                    indicatorText.add(new IndicatorText(playerHitbox.x, playerHitbox.y, "+10", Color.YELLOW));
                 }
             }
         }
         // Checking chest collision
-        Rectangle hitbox = player.getHitbox();
         for(Chest chest: chests){
             Rectangle chestHitbox = chest.getHitbox();
-            if(chest.isClosed() && hitbox.intersects(chestHitbox) && (hitbox.y + hitbox.height) == (chestHitbox.y + chestHitbox.height)){
+            if(chest.isClosed() && playerHitbox.intersects(chestHitbox) && (playerHitbox.y + playerHitbox.height) == (chestHitbox.y + chestHitbox.height)){
                 chest.open();
                 for(int i = 0; i < chest.getQuantity(); i++){
                     items.add(new Item(chest));
                 }
             }
+        }
+        // Checking if the player has reached the end of the level
+        if(playerHitbox.x > levelEndX){
+            levelEnding = true;
+        }
+        if(levelEnding && playerHitbox.x > levelEndResetX){
+            int overshoot = levelEndResetX - playerHitbox.x;
+            player.setPos(levelEndX + overshoot, (int)player.getY());
+            calculateOffset();
         }
     }
     public void checkPlayerAction(){
@@ -488,6 +513,10 @@ class GamePanel extends JPanel implements KeyListener {
         }
     }
     public void checkInputs(){
+        if(levelEnding){
+            player.move(Player.RIGHT);
+            return;
+        }
         // Side-to-side movement inputs
         if(keysPressed[KeyEvent.VK_D] && keysPressed[KeyEvent.VK_A]){
             // Do nothing
@@ -504,7 +533,9 @@ class GamePanel extends JPanel implements KeyListener {
         }
     }
     public void iterateTime(){
-        timeLeft-=1;
+        if(!levelEnding){
+            timeLeft-=1;
+        }
         player.iterateTime();
     }
 

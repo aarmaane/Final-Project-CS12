@@ -23,8 +23,8 @@ public class MainMenu extends JPanel implements MouseListener {
         g.fillRect(0, 0, 960, 590);
         g.drawImage(dummy.getSprite(),(int) dummy.getX()- 170 - scrollOffset,367 ,this);
         for(int i = 0; i < 10; i++){
-            g.drawImage(platform.getPlatformImage(), platformsX1 + i*144 - scrollOffset,475, this);
-            g.drawImage(platform.getPlatformImage(), platformsX2 + i*144 - scrollOffset,475, this);
+            g.drawImage(platform.getPropImage(), platformsX1 + i*144 - scrollOffset,475, this);
+            g.drawImage(platform.getPropImage(), platformsX2 + i*144 - scrollOffset,475, this);
         }
         g.setColor(Color.RED);
         g.drawString("Main menu", 435,200);

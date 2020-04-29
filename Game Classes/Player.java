@@ -344,6 +344,10 @@ public class Player {
         velocityX = 0;
         velocityY = 0;
     }
+    public void setPos(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
     public void enemyHit(Enemy enemy){
         if(!hasHealthPower()){
             health -= enemy.getDamage();
