@@ -16,7 +16,6 @@ public class MainMenu extends JPanel implements MouseListener {
         setSize(960,590);
         screenWidth = 960;
         addMouseListener(this);
-        menuMusic.play();
     }
     // Window related methods
     public void paintComponent(Graphics g){
@@ -47,6 +46,10 @@ public class MainMenu extends JPanel implements MouseListener {
         if(platformsX2 - scrollOffset + 1440 == screenWidth){
             platformsX1 = platformsX2 + 1440;
         }
+        // SKIPPING MENU
+        menuMusic.stop();
+        menuMusic.closeSound();
+        gameFrame.switchPanel(MainGame.SHOPPANEL);
     }
     // Mouse related methods
     @Override

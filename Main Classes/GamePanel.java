@@ -28,6 +28,7 @@ class GamePanel extends JPanel implements KeyListener {
     private Image[] backgroundLayers = new Image[3];
     private Sound levelMusic = new Sound("Assets/Sounds/Music/level1.wav", 80);
     private Sound castSound = new Sound("Assets/Sounds/Effects/cast.wav", 80);
+    private Sound castHitSound = new Sound("Assets/Sounds/Effects/castHit.wav", 80);
     private Sound[] swordSounds = {new Sound("Assets/Sounds/Effects/sword1.wav", 80),
                                    new Sound("Assets/Sounds/Effects/sword2.wav", 80),
                                    new Sound("Assets/Sounds/Effects/sword3.wav", 80)};
@@ -48,7 +49,6 @@ class GamePanel extends JPanel implements KeyListener {
     private Font gameFontBig;
     //Composite
     private Composite comp;
-    private AlphaComposite ac;
     // Constructor for GamePanel
     public GamePanel(MainGame game){
         // Setting up the GamePanel
@@ -134,12 +134,12 @@ class GamePanel extends JPanel implements KeyListener {
         System.out.println("remove notify");
     }
     public void paintComponent(Graphics g){
+        // Setting up Graphics2D
         Graphics2D g2d = (Graphics2D) g;
         if(comp == null){
             comp = g2d.getComposite();
         }
         // Drawing the background
-
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, 960, 590);
         for(int i = 0; i < 3; i ++){
@@ -159,14 +159,13 @@ class GamePanel extends JPanel implements KeyListener {
         // Drawing chests
         for(Chest chest: chests){
             g.drawImage(chest.getSprite(), chest.getHitbox().x-levelOffset,chest.getHitbox().y, this);
-            g.drawRect(chest.getHitbox().x-levelOffset,chest.getHitbox().y, chest.getHitbox().width, chest.getHitbox().height);
+            //g.drawRect(chest.getHitbox().x-levelOffset,chest.getHitbox().y, chest.getHitbox().width, chest.getHitbox().height);
         }
         // Drawing enemies
         for(Enemy enemy: enemies){
             if(enemy.getHitbox().x + enemy.getHitbox().width - levelOffset > 0 && enemy.getHitbox().x - levelOffset < 960){
                 if(enemy.hasAlphaSprites()){
-                    ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,enemy.getSpriteAlpha());
-                    g2d.setComposite(ac);
+                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, enemy.getSpriteAlpha()));
                     g2d.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
                     g2d.setComposite(comp);
                 }
@@ -174,13 +173,13 @@ class GamePanel extends JPanel implements KeyListener {
                     g.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
                 }
                 drawHealth(g, enemy);
-                g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
+                //g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
             }
         }
         // Drawing Projectiles
         for(Projectile projectile: projectiles){
             g.drawImage(projectile.getSprite(),(int)projectile.getX()-levelOffset, (int)projectile.getY(),this);
-            g.drawRect(projectile.getHitbox().x-levelOffset,projectile.getHitbox().y,projectile.getHitbox().width,projectile.getHitbox().height);
+            //g.drawRect(projectile.getHitbox().x-levelOffset,projectile.getHitbox().y,projectile.getHitbox().width,projectile.getHitbox().height);
         }
         // Drawing items
         g.setColor(Color.RED);
@@ -407,6 +406,7 @@ class GamePanel extends JPanel implements KeyListener {
                     damageDone = Utilities.roundOff(damageDone, 1);
                     player.addPoints((int)projectile.getDamage());
                     projectile.explode();
+                    castHitSound.stop(); castHitSound.play();
                     indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "-" + damageDone, Color.ORANGE));
 
                 }
@@ -473,7 +473,7 @@ class GamePanel extends JPanel implements KeyListener {
     }
     public void collectGarbage(){
         // Using removeIf for Arrays that only need removal of items
-        projectiles.removeIf(Projectile::isExploding);
+        projectiles.removeIf(Projectile::isDoneExploding);
         items.removeIf(item -> (item.isUsed() || item.getHitbox().y > this.getHeight()));
         indicatorText.removeIf(IndicatorText::isDone);
 
@@ -490,7 +490,7 @@ class GamePanel extends JPanel implements KeyListener {
     public void checkInputs(){
         // Side-to-side movement inputs
         if(keysPressed[KeyEvent.VK_D] && keysPressed[KeyEvent.VK_A]){
-            // Stop movement
+            // Do nothing
         }
         else if(keysPressed[KeyEvent.VK_D]){
             player.move(Player.RIGHT);

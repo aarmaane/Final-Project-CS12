@@ -28,9 +28,9 @@ public class Chest {
         x = Integer.parseInt(dataSplit[0]);
         y = Integer.parseInt(dataSplit[1]);
         int randomNumber = Utilities.randint(0,100);
-        if(randomNumber >= 90){
+        if(randomNumber >= 70){
             quantity = 1;
-            if(randomNumber >= 95){
+            if(randomNumber >= 85){
                 content = Item.HEALTHPWR;
             }
             else{
@@ -39,7 +39,7 @@ public class Chest {
         }
         else{
             quantity = Utilities.randint(1,6);
-            if(randomNumber >= 45){
+            if(randomNumber >= 35){
                 content = Item.HEALTH;
             }
             else{
