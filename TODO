@@ -1,13 +1,23 @@
-TO DO List (Next 5 Objectives):
-- Fully implement power-ups
-- Expand level 1 (More Platform pictures needed)
-- Setup Skeletons, Ghosts (Try moving some Slime code into enemy class if it's reusable for other enemies)
-- Implement sound/music
-- Bar Glow
-- Hitting dead bodies
+TO DO List:
 - Moving platforms
-- Ghost transparency
 - Skeletons in the closet
+- Running animation at the end of the levels (Function where you input the desired background and platforms and the player continually runs on it)
+- Wizard objects
+- Make progress on shop panel
+    - Double jump
+    - Add more damage to attacks
+    - Increase health
+    - Increase Stamina
+    - Show the character on the screen
+- Level 2 and 3
+- Menu Panel
+- Boss Level
+- Ability to save progress
 
 Future Ideas:
-- Ability to save progress
+- Combo moves or additional attacks
+- Additional enemies if sprites and ideas are available
+- Character Customization probably in the shop panel
+- Additional Levels if backgrounds and platforms can be found
+- Weather Effects (Rain, Wind, Snow etc.) most likely in its own class
+-

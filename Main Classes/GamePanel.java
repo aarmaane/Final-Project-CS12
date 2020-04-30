@@ -100,6 +100,9 @@ class GamePanel extends JPanel implements KeyListener {
             levelMusic.closeSound();
             levelMusic = new Sound("Assets/Sounds/Music/" + levelData.get(3), 80);
             // Loading Game-Object Arrays
+            for(String data: Utilities.loadFile("disappearingPlatforms.txt", levelNum)){
+                platforms.add(new LevelProp(data));
+            }
             for(String data: Utilities.loadFile("Platforms.txt", levelNum)){
                 platforms.add(new LevelProp(data));
             }
@@ -153,7 +156,9 @@ class GamePanel extends JPanel implements KeyListener {
         for(LevelProp platform: platforms){
             if(platform.getRect().x + platform.getRect().width - levelOffset > 0 && platform.getRect().x - levelOffset < 960){
                 Rectangle platformRect = platform.getRect();
-                g.drawImage(platform.getPropImage(), platformRect.x - levelOffset, platformRect.y, this);
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, platform.getSpriteAlpha()));
+                g2d.drawImage(platform.getPropImage(), platformRect.x - levelOffset, platformRect.y, this);
+                g2d.setComposite(comp);
                 //g.drawRect(platformRect.x -levelOffset,platformRect.y,(int)platformRect.getWidth(),(int)platformRect.getHeight());
             }
         }
@@ -328,6 +333,9 @@ class GamePanel extends JPanel implements KeyListener {
                 System.out.println(getMousePosition() + " True x = " + (getMousePosition().x + levelOffset));
             }
         }
+        else if(keyCode == KeyEvent.VK_M){
+            System.out.println(getMousePosition().x+" "+getMousePosition().y);
+        }
         else if(keyCode == KeyEvent.VK_CLOSE_BRACKET){
             player.resetPos(0,366);
         }
@@ -373,6 +381,7 @@ class GamePanel extends JPanel implements KeyListener {
         }
         checkPlayerAction();
         changeFade();
+        checkDisappearing();
         calculateOffset();
         collectGarbage();
 
@@ -401,6 +410,15 @@ class GamePanel extends JPanel implements KeyListener {
         }
         else{
             levelOffset = 0;
+        }
+    }
+    public void checkDisappearing(){
+        if(player.getX() > 7100 && player.getY() > 173){
+            for(LevelProp platform: platforms){
+                if(platform.isTemporary()){
+                    platform.disappear();
+                }
+            }
         }
     }
     public void checkCollision(){
@@ -500,6 +518,7 @@ class GamePanel extends JPanel implements KeyListener {
         // Using removeIf for Arrays that only need removal of items
         projectiles.removeIf(Projectile::isDoneExploding);
         items.removeIf(item -> (item.isUsed() || item.getHitbox().y > this.getHeight()));
+        platforms.removeIf(LevelProp::isDoneDisappearing);
         indicatorText.removeIf(IndicatorText::isDone);
 
         // Using for loops for Arrays that need to keep track of removals
