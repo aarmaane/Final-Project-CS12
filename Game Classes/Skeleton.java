@@ -134,10 +134,14 @@ public class Skeleton extends Enemy {
 
     @Override
     public Rectangle getHitbox() {
-        return new Rectangle((int) x,(int) y,72,96);
+        if(direction == LEFT){
+            return new Rectangle((int) x + 20,(int) y + 20,50,76);
+        }
+        return new Rectangle((int) x,(int) y + 20,50,76);
     }
     @Override
     public double getX(){
+        // The attacking sprite is different from the rest, so an offset is applied
         if(isAttacking && direction==LEFT){
             return x - 50;
         }
@@ -145,6 +149,7 @@ public class Skeleton extends Enemy {
     }
     @Override
     public double getY(){
+        // The attacking sprite is different from the rest, so an offset is applied
         if(isAttacking){
             return y-15;
         }

@@ -47,9 +47,9 @@ public class MainMenu extends JPanel implements MouseListener {
             platformsX1 = platformsX2 + 1440;
         }
         // SKIPPING MENU
-        menuMusic.stop();
-        menuMusic.closeSound();
-        gameFrame.switchPanel(MainGame.SHOPPANEL);
+        //menuMusic.stop();
+        //menuMusic.closeSound();
+        //gameFrame.switchPanel(MainGame.SHOPPANEL);
     }
     // Mouse related methods
     @Override

@@ -8,8 +8,6 @@ import java.util.ArrayList;
 
 class GamePanel extends JPanel implements KeyListener {
     // Window related Objects
-    private boolean paused = false;
-    private boolean fade = false;
     private boolean[] keysPressed; // Array that keeps track of keys that are pressed down
     private MainGame gameFrame;
     // Game related fields
@@ -17,11 +15,13 @@ class GamePanel extends JPanel implements KeyListener {
     private int timeLeft;
     private int levelEndX, levelEndResetX;
     private int levelOffset = 0;
-    private int barFade = 0;
-    private int barFadeAddition = 5;
-    private int fadeInt = 0;
-    private int fadeAlpha = 5;
-    private boolean levelEnding;
+    private boolean paused = false;
+    // Game state related fields
+    private boolean fade = false;
+    private int barFade = 0, barFadeAddition = 5;
+    private int fadeInt = 0, fadeAlpha = 5;
+    private boolean levelEnding, pointsGiven;
+    private int bonusPoints;
     // Game Images
     private Image enemyHealthBar;
     private Image staminaBar;
@@ -242,14 +242,14 @@ class GamePanel extends JPanel implements KeyListener {
         g.drawString("Points: "+player.getPoints(),640,20);
 
         // Drawing various special screens
+        if(levelEnding){
+            drawEnding(g);
+        }
         if(paused){
             drawPause(g);
         }
         if(fade){
             drawFade(g);
-        }
-        if(levelEnding){
-            drawEnding(g);
         }
     }
     public void drawPause(Graphics g){
@@ -278,8 +278,19 @@ class GamePanel extends JPanel implements KeyListener {
     }
     public void drawEnding(Graphics g){
         g.setFont(gameFontBig);
-        g.setColor(Color.CYAN);
+        g.setColor(Color.BLACK);
         g.drawString("Level Complete!", 300, 180);
+        g.setFont(gameFont);
+        g.drawString("Bonus points: " + bonusPoints, 360, 200);
+        if(timeLeft > 0){
+            timeLeft--;
+            bonusPoints += 10;
+        }
+        else if(!pointsGiven){
+            pointsGiven = true;
+            player.addPoints(bonusPoints);
+            indicatorText.add(new IndicatorText((int)player.getX(),(int)player.getY(), "+"+bonusPoints, Color.YELLOW));
+        }
     }
     // Keyboard related methods
     @Override
@@ -363,6 +374,7 @@ class GamePanel extends JPanel implements KeyListener {
 
     // Game related methods
     public void update(){
+        // Updating all Objects
         player.update();
         indicatorText.addAll(player.flushTextQueue());
         for(Enemy enemy: enemies){
@@ -379,6 +391,7 @@ class GamePanel extends JPanel implements KeyListener {
         for(IndicatorText text: indicatorText){
             text.update();
         }
+        // Main game methods
         checkPlayerAction();
         changeFade();
         checkDisappearing();
@@ -424,12 +437,13 @@ class GamePanel extends JPanel implements KeyListener {
     public void checkCollision(){
         // Checking collision with Level platforms
         for(LevelProp platform: platforms){
-            player.checkCollision(platform.getRect());
+            Rectangle platformRect = platform.getRect();
+            player.checkCollision(platformRect);
             for(Enemy enemy: enemies){
-                enemy.checkCollision(platform.getRect());
+                enemy.checkCollision(platformRect);
             }
             for(Item item: items){
-                item.checkCollision(platform.getRect());
+                item.checkCollision(platformRect);
             }
         }
         // Checking projectile collision

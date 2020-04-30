@@ -80,7 +80,7 @@ public class MainGame extends JFrame {
         return game.getPlayer();
     }
     public static void main(String[] args) throws IOException{
-        System.setProperty("sum.java2d.opengl", "True");
+        System.setProperty("sun.java2d.opengl", "True");
         System.out.println(System.getProperty("sun.java2d.opengl"));
         MainGame game = new MainGame();
     }
