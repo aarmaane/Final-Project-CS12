@@ -59,6 +59,7 @@ public class MainGame extends JFrame {
                 game.checkInputs();
                 game.update();
                 game.checkCollision();
+                game.updateGraphics();
                 game.repaint();
                 // Timer to
                 timePassed+=10; // The main game loop is called every 10ms
@@ -76,8 +77,8 @@ public class MainGame extends JFrame {
             }
         }
     }
-    public Player getPlayer(){
-        return game.getPlayer();
+    public GamePanel getGame(){
+        return game;
     }
     public static void main(String[] args) throws IOException{
         System.setProperty("sun.java2d.opengl", "True");

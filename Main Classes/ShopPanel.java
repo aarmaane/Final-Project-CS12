@@ -6,11 +6,14 @@ import java.awt.event.MouseListener;
 public class ShopPanel extends JPanel implements MouseListener {
     // Window related Objects
     private MainGame gameFrame;
+    private GamePanel game;
     private Player player;
+    private Font gameFont;
     // Constructor
-    public ShopPanel(MainGame game){
-        gameFrame = game;
-        player = gameFrame.getPlayer();
+    public ShopPanel(MainGame frame){
+        gameFrame = frame;
+        game = gameFrame.getGame();
+        player = game.getPlayer();
         setSize(960,590);
         addMouseListener(this);
     }
@@ -18,11 +21,15 @@ public class ShopPanel extends JPanel implements MouseListener {
     public void paintComponent(Graphics g){
         g.setColor(Color.GREEN);
         g.fillRect(0, 0, 960, 590);
-        gameFrame.switchPanel(MainGame.GAMEPANEL); // SKIPPING SHOP, REMOVE LATER
+        g.setColor(Color.BLACK);
+        g.drawString("Player points:" + player.getPoints(), 400, 300);
+        g.drawString("Click to go to game", 400, 400);
+        //gameFrame.switchPanel(MainGame.GAMEPANEL); // SKIPPING SHOP, REMOVE LATER
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        game.loadLevel(1);
         gameFrame.switchPanel(MainGame.GAMEPANEL);
     }
     @Override

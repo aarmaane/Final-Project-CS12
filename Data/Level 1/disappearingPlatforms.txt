@@ -1,12 +1,13 @@
-7250,100,grassPlatformTall.png,disappear
-7330,130,grassPlatformTall.png,disappear
-7410,160,grassPlatformTall.png,disappear
-7490,190,grassPlatformTall.png,disappear
-7570,220,grassPlatformTall.png,disappear
-7650,250,grassPlatformTall.png,disappear
-7730,280,grassPlatformTall.png,disappear
-7810,310,grassPlatformTall.png,disappear
-7890,340,grassPlatformTall.png,disappear
-7970,370,grassPlatformTall.png,disappear
-8050,400,grassPlatformTall.png,disappear
-8130,430,grassPlatformTall.png,disappear
+// X, Y, image, disappearX, disappearY
+7250,100,grassPlatformTall.png,7100,173
+7330,130,grassPlatformTall.png,7100,173
+7410,160,grassPlatformTall.png,7100,173
+7490,190,grassPlatformTall.png,7100,173
+7570,220,grassPlatformTall.png,7100,173
+7650,250,grassPlatformTall.png,7100,173
+7730,280,grassPlatformTall.png,7100,173
+7810,310,grassPlatformTall.png,7100,173
+7890,340,grassPlatformTall.png,7100,173
+7970,370,grassPlatformTall.png,7100,173
+8050,400,grassPlatformTall.png,7100,173
+8130,430,grassPlatformTall.png,7100,173

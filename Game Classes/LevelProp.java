@@ -5,12 +5,16 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class LevelProp {
+    // Hashmap to store all platform images with quick access and without duplication
     private static HashMap<String, Image> imageMap = new HashMap<>();
+    // Object fields
     private double x, y;
     private int width, height;
+    private String imageName;
+    // Transparency related fields
+    private int disappearX, disappearY;
     private float alpha = (float) 1.0;
     private float propAlpha =  (float) -0.02;
-    private String imageName;
     private boolean temporary;
     private boolean disappearing, doneDisappearing;
     public LevelProp(String data){
@@ -20,6 +24,8 @@ public class LevelProp {
         imageName = dataSplit[2];
         if(dataSplit.length>3){
             temporary = true;
+            disappearX = Integer.parseInt(dataSplit[3]);
+            disappearY = Integer.parseInt(dataSplit[4]);
         }
         Image propImage = null;
         try{
@@ -57,7 +63,14 @@ public class LevelProp {
     public Rectangle getRect(){
         return new Rectangle((int)Math.round(x), (int)Math.round(y), width, height);
     }
+    // Transparency related getter methods
     public boolean isTemporary(){return temporary;}
     public void disappear(){ disappearing = true;}
     public boolean isDoneDisappearing(){ return doneDisappearing;}
+    public int getDisappearX() {
+        return disappearX;
+    }
+    public int getDisappearY() {
+        return disappearY;
+    }
 }

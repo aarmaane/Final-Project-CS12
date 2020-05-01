@@ -38,7 +38,10 @@ public class Ghost extends Enemy {
         // Checking the position of the Player and setting velocity towards them
         Rectangle playerHitbox = player.getHitbox();
         double angle = Math.atan(((double)playerHitbox.y - getHitbox().y)/((double)playerHitbox.x - getHitbox().x));
-        if(playerHitbox.x > getHitbox().x){
+        if(isDying()){
+            // Don't move the ghost while it's dying
+        }
+        else if(playerHitbox.x > getHitbox().x){
             x += Math.cos(angle) * speed;
             y += Math.sin(angle) * speed;
             direction = RIGHT;
@@ -92,7 +95,7 @@ public class Ghost extends Enemy {
     }
     @Override
     public void checkCollision(Rectangle rect){
-        return; // Doing nothing since Ghosts ignore platforms
+        // Doing nothing since Ghosts ignore platforms
     }
     // Getter methods
     @Override
@@ -122,10 +125,10 @@ public class Ghost extends Enemy {
     }
     @Override
     public float getSpriteAlpha(){
-            alpha+=ghostAlpha;
-            if(Utilities.roundOff(alpha,2)==1.0 || Utilities.roundOff(alpha,2) == 0.05){
-                ghostAlpha=-ghostAlpha;
-            }
+        alpha+=ghostAlpha;
+        if(Utilities.roundOff(alpha,2)==1.0 || Utilities.roundOff(alpha,2) == 0.05){
+            ghostAlpha=-ghostAlpha;
+        }
         return alpha ;
     }
 

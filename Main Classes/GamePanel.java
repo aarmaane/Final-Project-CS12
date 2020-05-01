@@ -19,9 +19,9 @@ class GamePanel extends JPanel implements KeyListener {
     // Game state related fields
     private boolean fade = false;
     private int barFade = 0, barFadeAddition = 5;
-    private int fadeInt = 0, fadeAlpha = 5;
+    private int fadeInt = 0, fadeChange = 5;
     private boolean levelEnding, pointsGiven;
-    private int bonusPoints;
+    private int endScreenFrames, bonusPoints;
     // Game Images
     private Image enemyHealthBar;
     private Image staminaBar;
@@ -79,7 +79,6 @@ class GamePanel extends JPanel implements KeyListener {
         Projectile.init();
         Chest.init();
         Item.init();
-        loadLevel(1);
     }
 
     // Method to load up all level Objects from the corresponding text files
@@ -91,6 +90,7 @@ class GamePanel extends JPanel implements KeyListener {
         chests.clear();
         projectiles.clear();
         items.clear();
+        levelEnding = false; pointsGiven = false; endScreenFrames = 0; paused = false;
         try{
             // Setting up level fields
             ArrayList<String> levelData = Utilities.loadFile("LevelData.txt", levelNum);
@@ -126,6 +126,8 @@ class GamePanel extends JPanel implements KeyListener {
             System.out.println("Level " + levelNum + " data incomplete!");
             e.printStackTrace();
         }
+        player.resetPos(0 ,366);
+        fade = true; fadeChange = -3; fadeInt = 255; // Starting the fade in
     }
 
     // All window related methods
@@ -156,9 +158,15 @@ class GamePanel extends JPanel implements KeyListener {
         for(LevelProp platform: platforms){
             if(platform.getRect().x + platform.getRect().width - levelOffset > 0 && platform.getRect().x - levelOffset < 960){
                 Rectangle platformRect = platform.getRect();
-                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, platform.getSpriteAlpha()));
-                g2d.drawImage(platform.getPropImage(), platformRect.x - levelOffset, platformRect.y, this);
-                g2d.setComposite(comp);
+                if(platform.isTemporary()){
+                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, platform.getSpriteAlpha()));
+                    g2d.drawImage(platform.getPropImage(), platformRect.x - levelOffset, platformRect.y, this);
+                    g2d.setComposite(comp);
+                }
+                else{
+                    g.drawImage(platform.getPropImage(), platformRect.x - levelOffset, platformRect.y, this);
+
+                }
                 //g.drawRect(platformRect.x -levelOffset,platformRect.y,(int)platformRect.getWidth(),(int)platformRect.getHeight());
             }
         }
@@ -174,7 +182,7 @@ class GamePanel extends JPanel implements KeyListener {
         // Drawing enemies
         for(Enemy enemy: enemies){
             if(enemy.getHitbox().x + enemy.getHitbox().width - levelOffset > 0 && enemy.getHitbox().x - levelOffset < 960){
-                if(enemy.hasAlphaSprites()){
+                if(enemy.hasAlphaSprites() && !enemy.isDying()){
                     g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, enemy.getSpriteAlpha()));
                     g2d.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
                     g2d.setComposite(comp);
@@ -240,7 +248,6 @@ class GamePanel extends JPanel implements KeyListener {
         g.drawImage(staminaBar, 10,65,this);
         g.drawString("Time: "+timeLeft,800,20);
         g.drawString("Points: "+player.getPoints(),640,20);
-
         // Drawing various special screens
         if(levelEnding){
             drawEnding(g);
@@ -267,10 +274,10 @@ class GamePanel extends JPanel implements KeyListener {
     public void drawHealth(Graphics g, Enemy enemy){
         double health = enemy.getHealth();
         double maxHealth = enemy.getMaxHealth();
-        Rectangle hitBox = enemy.getHitbox();
-        int healthBarOffset = ((100-hitBox.width)/8);
         // Using Graphics inputted to draw the bar
         if(health != maxHealth){ // Only drawing if they have lost health
+            Rectangle hitBox = enemy.getHitbox();
+            int healthBarOffset = ((100-hitBox.width)/8);
             g.setColor(Color.RED);
             g.fillRect(hitBox.x-levelOffset-healthBarOffset,hitBox.y-10,(int)((health/maxHealth)*88),13);
             g.drawImage(enemyHealthBar,hitBox.x-levelOffset-13-healthBarOffset,hitBox.y-15,this);
@@ -280,16 +287,10 @@ class GamePanel extends JPanel implements KeyListener {
         g.setFont(gameFontBig);
         g.setColor(Color.BLACK);
         g.drawString("Level Complete!", 300, 180);
-        g.setFont(gameFont);
-        g.drawString("Bonus points: " + bonusPoints, 360, 200);
-        if(timeLeft > 0){
-            timeLeft--;
-            bonusPoints += 10;
-        }
-        else if(!pointsGiven){
-            pointsGiven = true;
-            player.addPoints(bonusPoints);
-            indicatorText.add(new IndicatorText((int)player.getX(),(int)player.getY(), "+"+bonusPoints, Color.YELLOW));
+        if(endScreenFrames > 200){
+            g.setFont(gameFont);
+            g.drawString("Time bonus: " + bonusPoints, 375, 200);
+
         }
     }
     // Keyboard related methods
@@ -378,7 +379,7 @@ class GamePanel extends JPanel implements KeyListener {
         player.update();
         indicatorText.addAll(player.flushTextQueue());
         for(Enemy enemy: enemies){
-            if(enemy.isActive){
+            if(enemy.isActive()){
                 enemy.update(player);
             }
         }
@@ -391,22 +392,27 @@ class GamePanel extends JPanel implements KeyListener {
         for(IndicatorText text: indicatorText){
             text.update();
         }
-        // Main game methods
+        for(LevelProp platform: platforms){
+            checkDisappearing(platform);
+        }
+        // Updating object
         checkPlayerAction();
-        changeFade();
-        checkDisappearing();
-        calculateOffset();
         collectGarbage();
-
+    }
+    public void updateGraphics(){
+        changeFade();
+        calculateOffset();
+        if(levelEnding){
+            updateLevelEnd();
+        }
     }
     public void changeFade(){
         if(fade){
-            fadeInt+=fadeAlpha;
+            fadeInt+= fadeChange;
             if(fadeInt==255){
-                fadeAlpha=-fadeAlpha;
+                gameFrame.switchPanel(MainGame.SHOPPANEL);
             }
             else if(fadeInt==0){
-                fadeAlpha=-fadeAlpha;
                 fade=false;
             }
         }
@@ -425,13 +431,26 @@ class GamePanel extends JPanel implements KeyListener {
             levelOffset = 0;
         }
     }
-    public void checkDisappearing(){
-        if(player.getX() > 7100 && player.getY() > 173){
-            for(LevelProp platform: platforms){
-                if(platform.isTemporary()){
-                    platform.disappear();
-                }
+    public void updateLevelEnd(){
+        endScreenFrames++;
+        if(endScreenFrames > 200){
+            if(timeLeft > 0){
+                timeLeft--;
+                bonusPoints += 10;
             }
+            else if(!pointsGiven){
+                pointsGiven = true;
+                player.addPoints(bonusPoints);
+                indicatorText.add(new IndicatorText((int)player.getX(),(int)player.getY(), "+"+bonusPoints, Color.YELLOW));
+            }
+        }
+        if(endScreenFrames == 600){
+            fade = true; fadeChange = 1; fadeInt = 0;
+        }
+    }
+    public void checkDisappearing(LevelProp platform){
+        if(platform.isTemporary() && player.getX() > platform.getDisappearX() && player.getY() > platform.getDisappearY()){
+            platform.disappear();
         }
     }
     public void checkCollision(){

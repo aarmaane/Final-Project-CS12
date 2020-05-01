@@ -37,7 +37,6 @@ public class Player {
     // Constructor methods
     public Player(){
         // Setting up movement fields
-        y = 366;
         direction = RIGHT;
         acceleration = 0.2;
         maxSpeed = 6;
