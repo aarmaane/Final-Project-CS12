@@ -1,26 +1,48 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 public class MainMenu extends JPanel implements MouseListener {
     // Window related Objects
     private MainGame gameFrame;
     private Sound menuMusic = new Sound("Assets/Sounds/Music/menu.wav", 80);
+    // Buttons
+    private ArrayList<Button> buttons = new ArrayList<>();
+    // Background related fields
+    private Image[] backgroundLayers = new Image[3];
     private Player dummy = new Player();
     private LevelProp platform = new LevelProp("0,0,grassMiddle.png");
     private int scrollOffset = 0;
     private int screenWidth, platformsX1, platformsX2;
     public MainMenu(MainGame game){
+        // Setting up frame
         gameFrame = game;
         setSize(960,590);
+        setLayout(null);
+        // Setting up background animation
         screenWidth = 960;
+        dummy.resetPos(0,366);
+        backgroundLayers = Utilities.spriteArrayLoad(backgroundLayers, "Background/BG");
+        // Declaring buttons
+        Button.init();
+        Button playButton = new Button(new Rectangle(400,225, 150, 50), "Play", 46);
+        playButton.setActionCommand("Play");
+        buttons.add(playButton);
+        for(Button button: buttons){
+            button.addActionListener(new ButtonListener());
+            add(button);
+        }
         addMouseListener(this);
     }
     // Window related methods
     public void paintComponent(Graphics g){
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, 960, 590);
+        for(Image layer: backgroundLayers){
+            g.drawImage(layer,0,0,this);
+        }
         g.drawImage(dummy.getSprite(),(int) dummy.getX()- 170 - scrollOffset,367 ,this);
         for(int i = 0; i < 10; i++){
             g.drawImage(platform.getPropImage(), platformsX1 + i*144 - scrollOffset,475, this);
@@ -28,15 +50,20 @@ public class MainMenu extends JPanel implements MouseListener {
         }
         g.setColor(Color.RED);
         g.drawString("Main menu", 435,200);
+        for(Button button: buttons){
+            button.drawRect(g);
+        }
     }
     public void update(){
-        dummy.move(Player.RIGHT);
-        dummy.checkCollision(new Rectangle(scrollOffset,800,1000,1000));
-        dummy.update();
-
+        // Making sure that the music is always looping
         if(!menuMusic.isPlaying()){
             menuMusic.play();
         }
+        // Updating the dummy player
+        dummy.move(Player.RIGHT);
+        dummy.checkCollision(new Rectangle(scrollOffset,800,1000,1000));
+        dummy.update();
+        // Updating the platforms to make them look continuous
         if(dummy.getHitbox().x > 300){
             scrollOffset =  dummy.getHitbox().x - 300;
         }
@@ -46,18 +73,32 @@ public class MainMenu extends JPanel implements MouseListener {
         if(platformsX2 - scrollOffset + 1440 == screenWidth){
             platformsX1 = platformsX2 + 1440;
         }
-        // SKIPPING MENU
-        //menuMusic.stop();
-        //menuMusic.closeSound();
-        //gameFrame.switchPanel(MainGame.SHOPPANEL);
+    }
+    public void checkButtons(){
+        Point mouse = getMousePosition();
+        if(mouse != null){
+            for(Button button: buttons){
+                button.updateHover(mouse);
+            }
+        }
+
+    }
+    // Button Listner
+    public class ButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String buttonString = e.getActionCommand();
+            if(buttonString.equals("Play")){
+                menuMusic.stop();
+                menuMusic.closeSound();
+                gameFrame.switchPanel(MainGame.SHOPPANEL);
+            }
+        }
     }
     // Mouse related methods
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("test");
-        menuMusic.stop();
-        menuMusic.closeSound();
-        gameFrame.switchPanel(MainGame.SHOPPANEL);
+        System.out.println(getMousePosition());
     }
     @Override
     public void mousePressed(MouseEvent e) {}

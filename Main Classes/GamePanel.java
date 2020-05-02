@@ -49,6 +49,7 @@ class GamePanel extends JPanel implements KeyListener {
     // Fonts
     private Font gameFont;
     private Font gameFontBig;
+    private Font gameFontSmall;
     //Composite
     private Composite comp;
     // Constructor for GamePanel
@@ -68,6 +69,7 @@ class GamePanel extends JPanel implements KeyListener {
             gameFont = Font.createFont(Font.TRUETYPE_FONT, new File("Assets/Fonts/8BitFont.ttf"));
             gameFont = gameFont.deriveFont(30f);
             gameFontBig = gameFont.deriveFont(50f);
+            gameFontSmall = gameFont.deriveFont(25f);
         }
         catch (IOException | FontFormatException e) {
             e.printStackTrace();
@@ -247,7 +249,8 @@ class GamePanel extends JPanel implements KeyListener {
         g.drawImage(healthBar, 10,10,this);
         g.drawImage(staminaBar, 10,65,this);
         g.drawString("Time: "+timeLeft,800,20);
-        g.drawString("Points: "+player.getPoints(),640,20);
+        g.setFont(gameFontSmall);
+        g.drawString("Points: "+ player.getPoints(),70,68);
         // Drawing various special screens
         if(levelEnding){
             drawEnding(g);
@@ -263,6 +266,7 @@ class GamePanel extends JPanel implements KeyListener {
         g.setColor(new Color(0,0,0, 100));
         g.fillRect(0, 0, getWidth(), getHeight());
         g.setColor(Color.WHITE);
+        g.setFont(gameFont);
         g.drawString("Press ESC to unpause", 335, 330);
         g.setFont(gameFontBig);
         g.drawString("Paused", 400, 300);

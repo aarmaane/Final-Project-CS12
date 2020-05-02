@@ -70,6 +70,7 @@ public class MainGame extends JFrame {
             }
             else if(activePanel.equals(MENUPANEL)){
                 menu.update();
+                menu.checkButtons();
                 menu.repaint();
             }
             else if(activePanel.equals(SHOPPANEL)){
