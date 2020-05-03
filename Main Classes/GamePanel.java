@@ -128,7 +128,13 @@ class GamePanel extends JPanel implements KeyListener {
             System.out.println("Level " + levelNum + " data incomplete!");
             e.printStackTrace();
         }
+        // Resetting the Player
+        System.out.println(player.isDead());
+        if(player.isDead()){
+            player.restoreHealth();
+        }
         player.resetPos(0 ,366);
+        levelMusic.play();
         fade = true; fadeChange = -3; fadeInt = 255; // Starting the fade in
     }
 
@@ -414,6 +420,7 @@ class GamePanel extends JPanel implements KeyListener {
         if(fade){
             fadeInt+= fadeChange;
             if(fadeInt==255){
+                levelMusic.stop();
                 gameFrame.switchPanel(MainGame.SHOPPANEL);
             }
             else if(fadeInt==0){
@@ -549,6 +556,13 @@ class GamePanel extends JPanel implements KeyListener {
             }
             projectiles.add(new Projectile(Projectile.PLAYER, xPos,hitBox.y+hitBox.height/2.0-5,player.getSpellDamage(),speed));
             castSound.play();
+        }
+        // Check if the player is dead
+        if(player.isDead() && !fade){
+            fade = true; fadeChange = 1; fadeInt = 0;
+        }
+        if(player.getHitbox().y > getHeight()){
+            player.kill();
         }
     }
     public void collectGarbage(){

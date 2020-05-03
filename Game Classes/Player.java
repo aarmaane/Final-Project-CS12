@@ -17,7 +17,7 @@ public class Player {
     private int health, maxHealth, points;
     private double stamina, maxStamina;
     private int swordDamage, spellDamage;
-    private boolean isAttacking, isCasting, isHurt;
+    private boolean isAttacking, isCasting, isHurt, isDying;
     private int healthTimer, energyTimer;
     private int groundAttackNum, airAttackNum;
     // Image Arrays holding Player's Sprites
@@ -26,6 +26,7 @@ public class Player {
     private Image[] jumpingSprites = new Image[2];
     private Image[] fallingSprites = new Image[2];
     private Image[] hurtSprites = new Image[3];
+    private Image[] dyingSprites = new Image[7];
     private Image[][] groundAttackSprites; // This array will be jagged since attacks have differing lengths
     private Image[][] airAttackSprites; // This array will be jagged too
     private Image[] castSprites = new Image[4];
@@ -56,6 +57,7 @@ public class Player {
         runSprites = Utilities.spriteArrayLoad(runSprites, "Player/run");
         castSprites = Utilities.spriteArrayLoad(castSprites, "Player/cast");
         hurtSprites = Utilities.spriteArrayLoad(hurtSprites, "Player/hurt");
+        dyingSprites = Utilities.spriteArrayLoad(dyingSprites, "Player/die");
         // Loading jagged attack Arrays
         Image[] attack1 = new Image[5];
         Image[] attack2 = new Image[6];
@@ -74,7 +76,7 @@ public class Player {
     // General methods
     public void move(int type){
         // If the player is doing an action, don't let them move (ignore this call for move())
-        if(isCasting || isAttacking){
+        if(isCasting || isAttacking || isDying){
             return;
         }
         // Handling sudden movements
@@ -113,7 +115,7 @@ public class Player {
     }
     public void jump(int type){
         // If the player is doing an action, don't let them jump
-        if(isCasting || isAttacking){
+        if(isCasting || isAttacking || isDying){
             return;
         }
         if(type == INITIAL && onGround){
@@ -129,7 +131,7 @@ public class Player {
         }
     }
     public void attack(){
-        if(isAttacking || isCasting) {
+        if(isAttacking || isCasting || isDying) {
             return;
         }
         if((stamina - 5) > 0){
@@ -245,7 +247,12 @@ public class Player {
     }
     // Method to smoothly update the sprite counter and produce realistic animation of the Player
     public void updateSprite(){
-        if(isCasting){
+        if(isDying){
+            if(spriteCount < dyingSprites.length - 0.05){
+                spriteCount += 0.05;
+            }
+        }
+        else if(isCasting){
             spriteCount += 0.06;
             if(spriteCount > castSprites.length){
                 isCasting = false;
@@ -335,7 +342,6 @@ public class Player {
         if(healthTimer>0){
             healthTimer-=1;
         }
-
     }
     public void resetPos(int x, int y){
         this.x = x;
@@ -347,7 +353,14 @@ public class Player {
         this.x = x;
         this.y = y;
     }
+    public void restoreHealth(){
+        health = maxHealth;
+        isDying = false;
+    }
     public void enemyHit(Enemy enemy){
+        if(isDying){
+            return; // Don't register hits while the player is dying
+        }
         if(!hasHealthPower()){
             health -= enemy.getDamage();
             if(velocityX == 0 && !isAttacking && !isCasting){
@@ -356,6 +369,15 @@ public class Player {
             }
             textQueue.add(new IndicatorText(getHitbox().x, getHitbox().y, "-" + enemy.getDamage(), Color.RED));
         }
+        if(health <= 0){
+            isDying = true;
+            spriteCount = 0;
+        }
+    }
+    public void kill(){
+        health = 0;
+        isDying = true;
+        velocityX = 0;
     }
     public ArrayList<IndicatorText> flushTextQueue(){
         ArrayList<IndicatorText> temp = textQueue;
@@ -372,7 +394,10 @@ public class Player {
     public Image getSprite(){
         Image sprite = null;
         int spriteIndex = (int)Math.floor(spriteCount);
-        if(isCasting){
+        if(isDying){
+            sprite = dyingSprites[spriteIndex];
+        }
+        else if(isCasting){
             sprite = castSprites[spriteIndex];
         }
         else if(isAttacking){
@@ -454,4 +479,6 @@ public class Player {
     public int getHealthTimer(){return healthTimer;}
     public boolean hasEnergyPower(){return energyTimer > 0;}
     public boolean hasHealthPower(){return healthTimer > 0;}
+    public boolean isDead(){
+        return isDying && Utilities.roundOff(spriteCount,1) == dyingSprites.length;}
 }
