@@ -129,7 +129,6 @@ class GamePanel extends JPanel implements KeyListener {
             e.printStackTrace();
         }
         // Resetting the Player
-        System.out.println(player.isDead());
         if(player.isDead()){
             player.restoreHealth();
         }
@@ -257,6 +256,9 @@ class GamePanel extends JPanel implements KeyListener {
         g.drawString("Time: "+timeLeft,800,20);
         g.setFont(gameFontSmall);
         g.drawString("Points: "+ player.getPoints(),70,68);
+        if(Sound.isMuted()){
+            g.drawString("Sound muted", 600, 20);
+        }
         // Drawing various special screens
         if(levelEnding){
             drawEnding(g);
@@ -312,7 +314,10 @@ class GamePanel extends JPanel implements KeyListener {
         }
         // Running code for initially clicked keys
         if(!keysPressed[keyCode]){
-            if(keyCode == KeyEvent.VK_ESCAPE){
+            if(keyCode == KeyEvent.VK_M){
+                Sound.toggleVolume();
+            }
+            else if(keyCode == KeyEvent.VK_ESCAPE){
                 paused = !paused;
                 if(paused){
                     Sound.pauseAll();
@@ -354,9 +359,6 @@ class GamePanel extends JPanel implements KeyListener {
             if(getMousePosition() != null){
                 System.out.println(getMousePosition() + " True x = " + (getMousePosition().x + levelOffset));
             }
-        }
-        else if(keyCode == KeyEvent.VK_M){
-            System.out.println(getMousePosition().x+" "+getMousePosition().y);
         }
         else if(keyCode == KeyEvent.VK_CLOSE_BRACKET){
             player.resetPos(0,366);

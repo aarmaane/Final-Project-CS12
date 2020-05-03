@@ -5,12 +5,14 @@ import java.util.ArrayList;
 
 public class Sound {
     private static ArrayList<Sound> madeSounds = new ArrayList<>();
+    private static boolean isMuted;
     private AudioInputStream inputStream;
     private Clip clip;
     private String filePath;
     FloatControl volume;
     // Booleans for static control of sounds
     private boolean wasPaused;
+    private float originalGain;
     // Constructor
     public Sound(String filePath, int volumeLevel){
         this.filePath = filePath;
@@ -60,6 +62,12 @@ public class Sound {
         float gain = (float) (range * (volumeLevel/100.0)) + volume.getMinimum();
         volume.setValue(gain);
     }
+    public void setGain(float gain){
+        volume.setValue(gain);
+    }
+    public float getGain(){
+        return volume.getValue();
+    }
     // Static methods
     public static void pauseAll(){
         for(Sound sound: madeSounds){
@@ -76,5 +84,23 @@ public class Sound {
                 sound.wasPaused = false;
             }
         }
+    }
+    public static void toggleVolume(){
+        if(!isMuted){
+            for(Sound sound: madeSounds){
+                sound.originalGain = sound.getGain();
+                sound.setVolume(0);
+            }
+            isMuted = true;
+        }
+        else{
+            for(Sound sound: madeSounds){
+                sound.setGain(sound.originalGain);
+            }
+            isMuted = false;
+        }
+    }
+    public static boolean isMuted(){
+        return isMuted;
     }
 }
