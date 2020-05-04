@@ -12,7 +12,7 @@ class GamePanel extends JPanel implements KeyListener {
     private MainGame gameFrame;
     // Game related fields
     private Player player = new Player();
-    private int timeLeft;
+    private int levelNum, timeLeft;
     private int levelEndX, levelEndResetX;
     private int levelOffset = 0;
     private boolean paused = false;
@@ -84,6 +84,7 @@ class GamePanel extends JPanel implements KeyListener {
 
     // Method to load up all level Objects from the corresponding text files
     public void loadLevel(int levelNum){
+        this.levelNum = levelNum;
         // Emptying previous values
         platforms.clear();
         noCollideProps.clear();
@@ -369,7 +370,7 @@ class GamePanel extends JPanel implements KeyListener {
             player.resetPos(getMousePosition().x + levelOffset - 50, getMousePosition().y);
         }
         else if(keyCode == KeyEvent.VK_SEMICOLON){
-            loadLevel(1);
+            loadLevel(levelNum);
             System.out.println("Level reloaded");
         }
         else if(keyCode == KeyEvent.VK_5){

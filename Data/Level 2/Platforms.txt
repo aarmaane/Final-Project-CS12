@@ -3,3 +3,5 @@
 290,475,Set 2/floorMiddle.png
 435,475,Set 2/floorMiddle.png
 580,475,Set 2/floorMiddle.png
+750,275,Set 2/stonePlatform.png
+894,275,Set 2/stonePlatform.png

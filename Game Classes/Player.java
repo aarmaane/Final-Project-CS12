@@ -348,6 +348,7 @@ public class Player {
         this.y = y;
         velocityX = 0;
         velocityY = 0;
+        spriteCount = 0;
     }
     public void setPos(int x, int y){
         this.x = x;

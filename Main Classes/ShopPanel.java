@@ -29,7 +29,8 @@ public class ShopPanel extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        game.loadLevel(1);
+        String input = JOptionPane.showInputDialog("Enter level number");
+        game.loadLevel(Integer.parseInt(input));
         gameFrame.switchPanel(MainGame.GAMEPANEL);
     }
     @Override

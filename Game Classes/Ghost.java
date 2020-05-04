@@ -12,7 +12,7 @@ public class Ghost extends Enemy {
     private static Image[] hurtSprites= new Image[1];
     // Fields
     private float alpha;//draw transparent
-    private float ghostAlpha = (float)0.01;
+    private float ghostAlpha = (float)0.005;
     private int speed;
     //Constructor
     public Ghost(String data){
