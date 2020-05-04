@@ -1,0 +1,5 @@
+0,475,Set 2/floorMiddle.png
+145,475,Set 2/floorMiddle.png
+290,475,Set 2/floorMiddle.png
+435,475,Set 2/floorMiddle.png
+580,475,Set 2/floorMiddle.png

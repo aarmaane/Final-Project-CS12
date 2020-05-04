@@ -503,7 +503,7 @@ class GamePanel extends JPanel implements KeyListener {
                     indicatorText.add(new IndicatorText(playerHitbox.x, playerHitbox.y, "+10", Color.GREEN));
                 }
                 else if(item.getType() == Item.COIN){
-                    indicatorText.add(new IndicatorText(playerHitbox.x, playerHitbox.y, "+10", Color.YELLOW));
+                    indicatorText.add(new IndicatorText(playerHitbox.x, playerHitbox.y, "+100", Color.YELLOW));
                 }
             }
         }

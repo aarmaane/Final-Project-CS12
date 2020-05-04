@@ -1,0 +1,8 @@
+// Time to complete level (Seconds)
+150
+// End point ( X position of where the player gets automated )
+9300
+// Reset point (The end level loop location)
+10465
+// Music track
+level2.wav

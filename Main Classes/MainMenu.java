@@ -11,7 +11,7 @@ public class MainMenu extends JPanel implements MouseListener {
     private MainGame gameFrame;
     private Sound menuMusic = new Sound("Assets/Sounds/Music/menu.wav", 80);
     // Buttons
-    private ArrayList<Button> buttons = new ArrayList<>();
+    private final ArrayList<Button> buttons = new ArrayList<>();
     // Background related fields
     private Image[] backgroundLayers = new Image[3];
     private Player dummy = new Player();
@@ -29,9 +29,17 @@ public class MainMenu extends JPanel implements MouseListener {
         backgroundLayers = Utilities.spriteArrayLoad(backgroundLayers, "Background/BG");
         // Declaring buttons
         Button.init();
-        Button playButton = new Button(new Rectangle(400,225, 150, 50), "Play", 46);
+        Button playButton = new Button(new Rectangle(400,300, 150, 50), "Play", 46);
         playButton.setActionCommand("Play");
+
+        Button instructButton = new Button(new Rectangle(328, 350, 300, 50), "Instructions", 46);
+        instructButton.setActionCommand("Instruct");
+
+        Button quitButton = new Button(new Rectangle(400 , 400, 150, 50), "Quit", 46);
+        quitButton.setActionCommand("Quit");
         buttons.add(playButton);
+        buttons.add(instructButton);
+        buttons.add(quitButton);
         for(Button button: buttons){
             button.addActionListener(new ButtonListener());
             add(button);
@@ -50,9 +58,6 @@ public class MainMenu extends JPanel implements MouseListener {
         }
         g.setColor(Color.RED);
         g.drawString("Main menu", 435,200);
-        for(Button button: buttons){
-            button.drawRect(g);
-        }
     }
     public void update(){
         // Making sure that the music is always looping
@@ -81,7 +86,6 @@ public class MainMenu extends JPanel implements MouseListener {
                 button.updateHover(mouse);
             }
         }
-
     }
     // Button Listner
     public class ButtonListener implements ActionListener{
@@ -92,6 +96,12 @@ public class MainMenu extends JPanel implements MouseListener {
                 menuMusic.stop();
                 menuMusic.closeSound();
                 gameFrame.switchPanel(MainGame.SHOPPANEL);
+            }
+            else if(buttonString.equals("Quit")){
+                System.exit(0);
+            }
+            else{
+                System.out.println("Button not implemented");
             }
         }
     }
