@@ -6,3 +6,6 @@
 10465
 // Music track
 level2.wav
+// Background Pictures
+BG0.png,BG1.png,BG2.png
+0,0.3,0.5

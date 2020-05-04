@@ -68,6 +68,10 @@ public class Sound {
     public float getGain(){
         return volume.getValue();
     }
+    public void forceMute(){
+        originalGain = getGain();
+        setVolume(0);
+    }
     // Static methods
     public static void pauseAll(){
         for(Sound sound: madeSounds){

@@ -13,7 +13,7 @@ public class MainMenu extends JPanel implements MouseListener {
     // Buttons
     private final ArrayList<Button> buttons = new ArrayList<>();
     // Background related fields
-    private Image[] backgroundLayers = new Image[3];
+    private Background background = new Background("BG0.png,BG1.png,BG2.png", "0,0.3,0.5");
     private Player dummy = new Player();
     private LevelProp platform = new LevelProp("0,0,grassMiddle.png");
     private int scrollOffset = 0;
@@ -26,7 +26,6 @@ public class MainMenu extends JPanel implements MouseListener {
         // Setting up background animation
         screenWidth = 960;
         dummy.resetPos(0,366);
-        backgroundLayers = Utilities.spriteArrayLoad(backgroundLayers, "Background/BG");
         // Declaring buttons
         Button.init();
         Button playButton = new Button(new Rectangle(400,300, 150, 50), "Play", 46);
@@ -48,9 +47,7 @@ public class MainMenu extends JPanel implements MouseListener {
     }
     // Window related methods
     public void paintComponent(Graphics g){
-        for(Image layer: backgroundLayers){
-            g.drawImage(layer,0,0,this);
-        }
+        background.draw(g);
         g.drawImage(dummy.getSprite(),(int) dummy.getX()- 170 - scrollOffset,367 ,this);
         for(int i = 0; i < 10; i++){
             g.drawImage(platform.getPropImage(), platformsX1 + i*144 - scrollOffset,475, this);
@@ -68,6 +65,7 @@ public class MainMenu extends JPanel implements MouseListener {
         dummy.move(Player.RIGHT);
         dummy.checkCollision(new Rectangle(scrollOffset,800,1000,1000));
         dummy.update();
+        background.update(scrollOffset);
         // Updating the platforms to make them look continuous
         if(dummy.getHitbox().x > 300){
             scrollOffset =  dummy.getHitbox().x - 300;

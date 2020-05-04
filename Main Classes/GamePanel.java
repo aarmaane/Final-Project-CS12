@@ -26,7 +26,7 @@ class GamePanel extends JPanel implements KeyListener {
     private Image enemyHealthBar;
     private Image staminaBar;
     private Image healthBar;
-    private Image[] backgroundLayers = new Image[3];
+    private Background background;
     // Game Sounds
     private Sound levelMusic = new Sound("Assets/Sounds/Music/level1.wav", 80);
     private Sound castSound = new Sound("Assets/Sounds/Effects/cast.wav", 80);
@@ -64,7 +64,6 @@ class GamePanel extends JPanel implements KeyListener {
             enemyHealthBar = ImageIO.read(new File("Assets/Images/Enemies/healthBar.png"));
             staminaBar = ImageIO.read(new File("Assets/Images/Player/staminaBar.png"));
             healthBar = ImageIO.read(new File("Assets/Images/Player/healthBar.png"));
-            backgroundLayers = Utilities.spriteArrayLoad(backgroundLayers, "Background/BG");
             // Loading fonts
             gameFont = Font.createFont(Font.TRUETYPE_FONT, new File("Assets/Fonts/8BitFont.ttf"));
             gameFont = gameFont.deriveFont(30f);
@@ -101,6 +100,7 @@ class GamePanel extends JPanel implements KeyListener {
             levelEndResetX =  Integer.parseInt(levelData.get(2));
             levelMusic.closeSound();
             levelMusic = new Sound("Assets/Sounds/Music/" + levelData.get(3), 80);
+            background = new Background(levelData.get(4), levelData.get(5));
             // Loading Game-Object Arrays
             for(String data: Utilities.loadFile("disappearingPlatforms.txt", levelNum)){
                 platforms.add(new LevelProp(data));
@@ -133,7 +133,11 @@ class GamePanel extends JPanel implements KeyListener {
             player.restoreHealth();
         }
         player.resetPos(0 ,366);
+        // Resetting music
         levelMusic.play();
+        if(Sound.isMuted()){
+            levelMusic.forceMute();
+        }
         fade = true; fadeChange = -3; fadeInt = 255; // Starting the fade in
     }
 
@@ -157,9 +161,7 @@ class GamePanel extends JPanel implements KeyListener {
         // Drawing the background
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, 960, 590);
-        for(int i = 0; i < 3; i ++){
-            g.drawImage(backgroundLayers[i], 0, 0, this);
-        }
+        background.draw(g);
         // Drawing the level
         //g.setColor(Color.WHITE);
         for(LevelProp platform: platforms){
@@ -414,6 +416,7 @@ class GamePanel extends JPanel implements KeyListener {
     public void updateGraphics(){
         changeFade();
         calculateOffset();
+        background.update(levelOffset);
         if(levelEnding){
             updateLevelEnd();
         }
@@ -520,6 +523,7 @@ class GamePanel extends JPanel implements KeyListener {
         // Checking if the player has reached the end of the level
         if(playerHitbox.x > levelEndX){
             levelEnding = true;
+            background.ignoreNegative();
         }
         if(levelEnding && playerHitbox.x > levelEndResetX){
             int overshoot = levelEndResetX - playerHitbox.x;
