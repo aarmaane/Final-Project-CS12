@@ -232,7 +232,8 @@ public class Player {
         else{
             stamina += 0.07; // Faster regeneration while standing still
         }
-        if(stamina > maxStamina){ // Making sure stamina doesn't exceed maximum
+        // Making sure stamina doesn't exceed maximum
+        if(stamina > maxStamina){
             stamina = maxStamina;
         }
     }
@@ -393,7 +394,7 @@ public class Player {
     // Getter methods
     // Method that returns the player's current sprite by looking at various fields
     public Image getSprite(){
-        Image sprite = null;
+        Image sprite;
         int spriteIndex = (int)Math.floor(spriteCount);
         if(isDying){
             sprite = dyingSprites[spriteIndex];

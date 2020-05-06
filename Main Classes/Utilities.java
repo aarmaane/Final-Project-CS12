@@ -36,7 +36,7 @@ public class Utilities {
     // Helper method to load up individual files into ArrayLists with their lines as Strings
     public static ArrayList<String> loadFile(String fileName, int levelNum) throws IOException{
         Scanner inFile = new Scanner(new BufferedReader(new FileReader("Data/Level " + levelNum + "/" + fileName)));
-        ArrayList<String> fileContents = new ArrayList<String>();
+        ArrayList<String> fileContents = new ArrayList<>();
         while(inFile.hasNext()){
             String line = inFile.nextLine();
             if(!line.startsWith("//")){ // Making sure that the line is not a comment

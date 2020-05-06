@@ -50,7 +50,7 @@ public class Projectile {
         }
     }
     public Image getSprite(){
-        Image sprite = null;
+        Image sprite;
         int spriteIndex = (int)Math.floor(spriteCount);
         if(exploding){
             sprite = explosionSprites[spriteIndex];

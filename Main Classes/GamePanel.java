@@ -595,14 +595,13 @@ class GamePanel extends JPanel implements KeyListener {
             return;
         }
         // Side-to-side movement inputs
-        if(keysPressed[KeyEvent.VK_D] && keysPressed[KeyEvent.VK_A]){
-            // Do nothing
-        }
-        else if(keysPressed[KeyEvent.VK_D]){
-            player.move(Player.RIGHT);
-        }
-        else if(keysPressed[KeyEvent.VK_A]){
-            player.move(Player.LEFT);
+        if(!(keysPressed[KeyEvent.VK_D] && keysPressed[KeyEvent.VK_A])){
+            if(keysPressed[KeyEvent.VK_D]){
+                player.move(Player.RIGHT);
+            }
+            else if(keysPressed[KeyEvent.VK_A]){
+                player.move(Player.LEFT);
+            }
         }
         // Jumping input
         if(keysPressed[KeyEvent.VK_SPACE]){

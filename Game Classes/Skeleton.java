@@ -29,36 +29,35 @@ public class Skeleton extends Enemy {
         // Skeleton custom movement
         int playerX = player.getHitbox().x;
         int skeletonX = getHitbox().x;
-        if(knockedBack || velocityY > 1){
-            // Not touching Skeletons's velocity values
-        }
-        else if(isHurt || isAttacking){
-            velocityX = 0; // Stopping movement while maintaining direction
-            if(isAttacking){
-                if(playerX > skeletonX){
-                    direction = RIGHT;
+        if(!knockedBack && !(velocityY > 1)){ // Only moving if there isn't knockback and if they aren't falling
+            if(isHurt || isAttacking){
+                velocityX = 0; // Stopping movement while maintaining direction
+                if(isAttacking){
+                    if(playerX > skeletonX){
+                        direction = RIGHT;
+                    }
+                    else{
+                        direction = LEFT;
+                    }
+                }
+            }
+            else if(direction==RIGHT){
+                if(platformAhead){
+                    velocityX = 0.75;
                 }
                 else{
-                    direction = LEFT;
+                    direction=LEFT;
+                    velocityX = -0.75; // Making the skeleton stay in place
                 }
             }
-        }
-        else if(direction==RIGHT){
-            if(platformAhead){
-                velocityX = 0.75;
-            }
-            else{
-                direction=LEFT;
-                velocityX = -0.75; // Making the skeleton stay in place
-            }
-        }
-        else if(direction==LEFT){ // Same as above but for left facing
-            if(platformBehind){
-                velocityX = -0.75;
-            }
-            else{
-                direction=RIGHT;
-                velocityX = 0.75;
+            else if(direction==LEFT){ // Same as above but for left facing
+                if(platformBehind){
+                    velocityX = -0.75;
+                }
+                else{
+                    direction=RIGHT;
+                    velocityX = 0.75;
+                }
             }
         }
         super.updateMotion(player);
@@ -106,7 +105,7 @@ public class Skeleton extends Enemy {
     // Getter methods
     @Override
     public Image getSprite() {
-        Image sprite = null;
+        Image sprite;
         int spriteIndex = (int)Math.floor(spriteCount);
         if(isHurt){
             if(health <= 0){

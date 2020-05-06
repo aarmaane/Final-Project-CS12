@@ -29,28 +29,27 @@ public class Slime extends Enemy {
         // Checking the position of the Player and setting velocity towards them
         int playerX = player.getHitbox().x;
         int slimeX = getHitbox().x;
-        if(knockedBack){
-            // Not touching Slime's velocity values
-        }
-        else if(playerX == slimeX || isHurt){
-            velocityX = 0; // Stopping movement while maintaining direction
-        }
-        else if(playerX > slimeX){
-            direction = RIGHT;
-            if(platformAhead && !isAttacking){
-                velocityX = 0.5;
+        if(!knockedBack){ // Not touching Slime's velocity values if there's knockback
+            if(playerX == slimeX || isHurt){
+                velocityX = 0; // Stopping movement while maintaining direction
             }
-            else{
-                velocityX = 0; // Making the slime stay in place
+            else if(playerX > slimeX){
+                direction = RIGHT;
+                if(platformAhead && !isAttacking){
+                    velocityX = 0.5;
+                }
+                else{
+                    velocityX = 0; // Making the slime stay in place
+                }
             }
-        }
-        else{ // Same as above but for left facing
-            direction = LEFT;
-            if(platformBehind && !isAttacking){
-                velocityX = -0.5;
-            }
-            else{
-                velocityX = 0;
+            else{ // Same as above but for left facing
+                direction = LEFT;
+                if(platformBehind && !isAttacking){
+                    velocityX = -0.5;
+                }
+                else{
+                    velocityX = 0;
+                }
             }
         }
         super.updateMotion(player);
@@ -96,7 +95,7 @@ public class Slime extends Enemy {
     // Getter methods
     @Override
     public Image getSprite() {
-        Image sprite = null;
+        Image sprite;
         int spriteIndex = (int)Math.floor(spriteCount);
         if(isHurt){
             if(health <= 0){

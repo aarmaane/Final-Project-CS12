@@ -1,7 +1,4 @@
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 public class Ghost extends Enemy {
     //Fields
@@ -38,18 +35,17 @@ public class Ghost extends Enemy {
         // Checking the position of the Player and setting velocity towards them
         Rectangle playerHitbox = player.getHitbox();
         double angle = Math.atan(((double)playerHitbox.y - getHitbox().y)/((double)playerHitbox.x - getHitbox().x));
-        if(isDying()){
-            // Don't move the ghost while it's dying
-        }
-        else if(playerHitbox.x > getHitbox().x){
-            x += Math.cos(angle) * speed;
-            y += Math.sin(angle) * speed;
-            direction = RIGHT;
-        }
-        else if(playerHitbox.x < getHitbox().x){
-            x -= Math.cos(angle) * speed;
-            y -= Math.sin(angle) * speed;
-            direction = LEFT;
+        if(!isDying()){ // Only move the ghost while it's not dying
+            if(playerHitbox.x > getHitbox().x){
+                x += Math.cos(angle) * speed;
+                y += Math.sin(angle) * speed;
+                direction = RIGHT;
+            }
+            else if(playerHitbox.x < getHitbox().x){
+                x -= Math.cos(angle) * speed;
+                y -= Math.sin(angle) * speed;
+                direction = LEFT;
+            }
         }
     }
     @Override
@@ -100,7 +96,7 @@ public class Ghost extends Enemy {
     // Getter methods
     @Override
     public Image getSprite() {
-        Image sprite = null;
+        Image sprite;
         int spriteIndex = (int)Math.floor(spriteCount);
         if(isHurt){
             if(health <= 0){
@@ -116,7 +112,6 @@ public class Ghost extends Enemy {
         else{
             sprite = movingSprites[spriteIndex];
         }
-
         // Flipping image since sprites are left facing
         if(direction == RIGHT){
             sprite = Utilities.flipSprite(sprite);

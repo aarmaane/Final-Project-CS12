@@ -1,4 +1,3 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -31,6 +30,7 @@ public class Button extends JButton {
         setOpaque(false);
         setContentAreaFilled(false);
         setBorderPainted(false);
+        setFocusPainted(false);
     }
     public void drawRect(Graphics g){
         g.drawRect(buttonRect.x, buttonRect.y, buttonRect.width, buttonRect.height);

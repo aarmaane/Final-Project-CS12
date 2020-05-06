@@ -19,7 +19,6 @@ public class MainGame extends JFrame {
     private String activePanel;
     private Timer myTimer; // Timer to call the game functions each frame
     private int runTime; // Variable to keep track of the milliseconds that have passed since the start of the game
-    private int timePassed;
     public MainGame() throws IOException {
         super("Game"); // Setting the title
         // Creating the JPanels for the game
@@ -62,9 +61,9 @@ public class MainGame extends JFrame {
                 game.updateGraphics();
                 game.repaint();
                 // Timer to
-                timePassed+=10; // The main game loop is called every 10ms
-                if(timePassed==1000){ // If 1 second has passed
-                    timePassed=0;
+                runTime += 10; // The main game loop is called every 10ms
+                if(runTime == 1000){ // If 1 second has passed
+                    runTime = 0;
                     game.iterateTime();
                 }
             }
