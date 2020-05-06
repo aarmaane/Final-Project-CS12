@@ -6,7 +6,6 @@ public abstract class Enemy {
     protected static final double GRAVITY = 0.25;
     //Fields
     protected double x, y, velocityX, velocityY;
-    protected double platMomentumX, platMomentumY;
     protected double spriteCount;
     protected int direction;
     protected int health, maxHealth, damage, difficulty;
@@ -29,14 +28,13 @@ public abstract class Enemy {
                 y = (rect.y - hitbox.height) - (hitbox.y - y); // Putting the Enemy on top of the platform
                 velocityY = 0;
                 knockedBack = false;
-                platMomentumX = 0; platMomentumY = 0;
             }
         }
         // Checking if they are on a moving platform
-        if(prop.isMoving() && !onMovingPlat){
+        if(prop.isMoving() && !onMovingPlat && !knockedBack){
             if(rect.contains(hitbox.x+hitbox.width, hitbox.y+hitbox.height + 1) || rect.contains(hitbox.x, hitbox.y+hitbox.height + 1)){
-                platMomentumX = prop.getXSpeed();
-                platMomentumY += prop.getYSpeed();
+                x += prop.getXSpeed();
+                y += prop.getYSpeed();
                 onMovingPlat = true;
             }
         }
@@ -89,8 +87,8 @@ public abstract class Enemy {
     }
     public void updateMotion(Player player){
         // Applying velocity values to position
-        x += velocityX; x += platMomentumX;
-        y += velocityY; y += platMomentumY;
+        x += velocityX;
+        y += velocityY;
         // Adding gravity value
         velocityY += GRAVITY;
         // Resetting boolean values so they can be rechecked for the new position
