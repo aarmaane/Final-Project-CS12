@@ -90,7 +90,7 @@ public class Ghost extends Enemy {
         }
     }
     @Override
-    public void checkCollision(Rectangle rect){
+    public void checkCollision(LevelProp prop){
         // Doing nothing since Ghosts ignore platforms
     }
     // Getter methods

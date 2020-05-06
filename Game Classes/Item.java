@@ -36,7 +36,8 @@ public class Item {
         type = sourceChest.getContent();
     }
     // General methods
-    public void checkCollision(Rectangle rect){
+    public void checkCollision(LevelProp prop){
+        Rectangle rect = prop.getRect();
         Rectangle hitbox = getHitbox();
         if(hitbox.intersects(rect)){
             if((int)((hitbox.y + hitbox.height) - velocityY) <= rect.y){

@@ -9,9 +9,10 @@ public class Player {
     // Player's movement-related fields
     private double x, y;
     private double velocityX, velocityY;
+    private double platMomentumX, platMomentumY;
     private double acceleration, maxSpeed;
     private int direction;
-    private boolean onGround, holdingJump;
+    private boolean onGround, onMovingPlat, holdingJump;
     private double spriteCount = 0;
     // Players' gameplay-related fields
     private int health, maxHealth, points;
@@ -187,8 +188,8 @@ public class Player {
     // Method to calculate and apply the physics of the Player
     public void updateMotion(){
         // Updating position from velocities
-        x += velocityX;
-        y += velocityY;
+        x += velocityX; x += platMomentumX;
+        y += velocityY; y += platMomentumY;
         // Applying friction force
         if(onGround){ // Friction only applies when the Player is on the ground
             if(velocityX > 0){
@@ -221,6 +222,8 @@ public class Player {
                 spriteCount = 0;
             }
         }
+        // Resetting movement booleans so they can be set next frame
+        onMovingPlat = false;
     }
     public void updateStamina(){
         if(isCasting || isAttacking || hasEnergyPower()){
@@ -298,13 +301,23 @@ public class Player {
             }
         }
     }
-    public void checkCollision(Rectangle rect){
+    public void checkCollision(LevelProp prop){
+        Rectangle rect = prop.getRect();
         Rectangle hitbox = getHitbox();
         if(hitbox.intersects(rect)){
             if((int)((hitbox.y + hitbox.height) - velocityY) <= rect.y){
                 y = (rect.y - hitbox.height) - (hitbox.y - y); //
                 velocityY = 0;
                 onGround = true;
+                platMomentumX = 0;
+                platMomentumY = 0;
+            }
+        }
+        if(prop.isMoving() && !onMovingPlat){
+            if(rect.contains(hitbox.x+hitbox.width, hitbox.y+hitbox.height + 1) || rect.contains(hitbox.x, hitbox.y+hitbox.height + 1)){
+                platMomentumX = prop.getXSpeed();
+                platMomentumY = prop.getYSpeed();
+                onMovingPlat = true;
             }
         }
     }
@@ -380,6 +393,7 @@ public class Player {
         health = 0;
         isDying = true;
         velocityX = 0;
+        platMomentumX = 0; platMomentumY = 0;
     }
     public ArrayList<IndicatorText> flushTextQueue(){
         ArrayList<IndicatorText> temp = textQueue;

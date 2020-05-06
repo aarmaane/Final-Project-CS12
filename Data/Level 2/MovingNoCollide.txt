@@ -1,0 +1,6 @@
+750,266,Set 2/chainAttach.png,1000,0,2,0
+750,122,Set 2/longChain.png,1000,0,2,0
+750,-22,Set 2/longChain.png,1000,0,2,0
+1017,266,Set 2/chainAttach.png,1000,0,2,0
+1017,122,Set 2/longChain.png,1000,0,2,0
+1017,-22,Set 2/longChain.png,1000,0,2,0

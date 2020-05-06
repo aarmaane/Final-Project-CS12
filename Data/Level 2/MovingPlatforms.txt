@@ -1,0 +1,3 @@
+// X, Y, image, moveDistanceX, moveDistanceY, speedX, speedY
+750,275,Set 2/stonePlatform.png,1000,0,2,0
+894,275,Set 2/stonePlatform.png,1000,0,2,0

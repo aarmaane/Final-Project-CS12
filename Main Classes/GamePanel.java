@@ -102,16 +102,26 @@ class GamePanel extends JPanel implements KeyListener {
             levelMusic.closeSound();
             levelMusic = new Sound("Assets/Sounds/Music/" + levelData.get(3), 80);
             background = new Background(levelData.get(4), levelData.get(5));
-            // Loading Game-Object Arrays
-            for(String data: Utilities.loadFile("disappearingPlatforms.txt", levelNum)){
-                platforms.add(new LevelProp(data));
-            }
+            /* Loading Game-Object Arrays */
+
+            // Loading platforms
             for(String data: Utilities.loadFile("Platforms.txt", levelNum)){
-                platforms.add(new LevelProp(data));
+                platforms.add(new LevelProp(data, false, false));
             }
+            for(String data: Utilities.loadFile("DisappearingPlatforms.txt", levelNum)){
+                platforms.add(new LevelProp(data, true, false));
+            }
+            for(String data: Utilities.loadFile("MovingPlatforms.txt", levelNum)){
+                platforms.add(new LevelProp(data, false, true));
+            }
+            // Loading level props without collision
             for(String data: Utilities.loadFile("NoCollideProps.txt", levelNum)){
-                noCollideProps.add(new LevelProp(data));
+                noCollideProps.add(new LevelProp(data, false, false));
             }
+            for(String data: Utilities.loadFile("MovingNoCollide.txt", levelNum)){
+                noCollideProps.add(new LevelProp(data, false, true));
+            }
+            // Loading enemies
             for(String data: Utilities.loadFile("Slimes.txt", levelNum)){
                 enemies.add(new Slime(data));
             }
@@ -121,6 +131,7 @@ class GamePanel extends JPanel implements KeyListener {
             for(String data: Utilities.loadFile("Ghosts.txt", levelNum)){
                 enemies.add(new Ghost(data));
             }
+            // Loading chests
             for(String data: Utilities.loadFile("Chests.txt", levelNum)){
                 chests.add(new Chest(data));
             }
@@ -408,7 +419,10 @@ class GamePanel extends JPanel implements KeyListener {
             text.update();
         }
         for(LevelProp platform: platforms){
-            checkDisappearing(platform);
+            updateProp(platform);
+        }
+        for(LevelProp prop: noCollideProps){
+            updateProp(prop);
         }
         // Updating object
         checkPlayerAction();
@@ -465,21 +479,25 @@ class GamePanel extends JPanel implements KeyListener {
             fade = true; fadeChange = 1; fadeInt = 0;
         }
     }
-    public void checkDisappearing(LevelProp platform){
-        if(platform.isTemporary() && player.getX() > platform.getDisappearX() && player.getY() > platform.getDisappearY()){
-            platform.disappear();
+    public void updateProp(LevelProp prop){
+        // Checking if it's temporary and needs to disappear
+        if(prop.isTemporary() && player.getX() > prop.getDisappearX() && player.getY() > prop.getDisappearY()){
+            prop.disappear();
+        }
+        // Checking if it's moving and updating the platform
+        if(prop.isMoving()){
+            prop.updateMovement();
         }
     }
     public void checkCollision(){
         // Checking collision with Level platforms
         for(LevelProp platform: platforms){
-            Rectangle platformRect = platform.getRect();
-            player.checkCollision(platformRect);
+            player.checkCollision(platform);
             for(Enemy enemy: enemies){
-                enemy.checkCollision(platformRect);
+                enemy.checkCollision(platform);
             }
             for(Item item: items){
-                item.checkCollision(platformRect);
+                item.checkCollision(platform);
             }
         }
         // Checking projectile collision

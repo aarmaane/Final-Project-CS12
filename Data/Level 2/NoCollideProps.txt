@@ -1,14 +1,1 @@
-750,266,Set 2/chainAttach.png
-750,218,Set 2/chain.png
-750,170,Set 2/chain.png
-750,122,Set 2/chain.png
-750,74,Set 2/chain.png
-750,26,Set 2/chain.png
-750,-22,Set 2/chain.png
-1017,266,Set 2/chainAttach.png
-1017,218,Set 2/chain.png
-1017,170,Set 2/chain.png
-1017,122,Set 2/chain.png
-1017,74,Set 2/chain.png
-1017,26,Set 2/chain.png
-1017,-22,Set 2/chain.png
+460,435,Set 2/pot.png

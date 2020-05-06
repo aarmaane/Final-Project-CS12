@@ -24,7 +24,7 @@ public class Wizard extends Enemy {
     }
 
     @Override
-    public void checkCollision(Rectangle rect) {
+    public void checkCollision(LevelProp prop) {
 
     }
 

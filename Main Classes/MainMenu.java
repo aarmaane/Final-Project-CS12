@@ -15,7 +15,7 @@ public class MainMenu extends JPanel implements MouseListener {
     // Background related fields
     private Background background = new Background("BG0.png,BG1.png,BG2.png", "0,0.3,0.5");
     private Player dummy = new Player();
-    private LevelProp platform = new LevelProp("0,0,grassMiddle.png");
+    private LevelProp platform = new LevelProp("0,0,grassMiddle.png", false, false);
     private int scrollOffset = 0;
     private int screenWidth, platformsX1, platformsX2;
     public MainMenu(MainGame game){
@@ -63,7 +63,7 @@ public class MainMenu extends JPanel implements MouseListener {
         }
         // Updating the dummy player
         dummy.move(Player.RIGHT);
-        dummy.checkCollision(new Rectangle(scrollOffset,800,1000,1000));
+        dummy.checkCollision(new LevelProp(scrollOffset+",800,invisibleRect.png", false, false));
         dummy.update();
         background.update(scrollOffset);
         // Updating the platforms to make them look continuous

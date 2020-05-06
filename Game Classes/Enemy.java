@@ -6,10 +6,11 @@ public abstract class Enemy {
     protected static final double GRAVITY = 0.25;
     //Fields
     protected double x, y, velocityX, velocityY;
+    protected double platMomentumX, platMomentumY;
     protected double spriteCount;
     protected int direction;
     protected int health, maxHealth, damage, difficulty;
-    protected boolean isActive, isHurt, isAttacking, knockedBack;
+    protected boolean isActive, isHurt, isAttacking, knockedBack, onMovingPlat;
     protected boolean platformBehind, platformAhead;
     protected boolean hasAlphaSprites;
     // Constructor
@@ -20,13 +21,23 @@ public abstract class Enemy {
         difficulty = Integer.parseInt(dataSplit[2]);
     }
     // General methods
-    public void checkCollision(Rectangle rect){
+    public void checkCollision(LevelProp prop){
+        Rectangle rect = prop.getRect();
         Rectangle hitbox = getHitbox();
         if(hitbox.intersects(rect)){
             if((int)((hitbox.y + hitbox.height) - velocityY) <= rect.y){
                 y = (rect.y - hitbox.height) - (hitbox.y - y); // Putting the Enemy on top of the platform
                 velocityY = 0;
                 knockedBack = false;
+                platMomentumX = 0; platMomentumY = 0;
+            }
+        }
+        // Checking if they are on a moving platform
+        if(prop.isMoving() && !onMovingPlat){
+            if(rect.contains(hitbox.x+hitbox.width, hitbox.y+hitbox.height + 1) || rect.contains(hitbox.x, hitbox.y+hitbox.height + 1)){
+                platMomentumX = prop.getXSpeed();
+                platMomentumY += prop.getYSpeed();
+                onMovingPlat = true;
             }
         }
         // Checking if there are any platforms behind or infront of the Enemy
@@ -78,13 +89,14 @@ public abstract class Enemy {
     }
     public void updateMotion(Player player){
         // Applying velocity values to position
-        x += velocityX;
-        y += velocityY;
+        x += velocityX; x += platMomentumX;
+        y += velocityY; y += platMomentumY;
         // Adding gravity value
         velocityY += GRAVITY;
         // Resetting boolean values so they can be rechecked for the new position
         platformAhead = false;
         platformBehind = false;
+        onMovingPlat = false;
     }
     public void updateAttack(Player player){
         // Updating the attacking status

@@ -1,0 +1,1 @@
+// X, Y, image, moveDistanceX, moveDistanceY
