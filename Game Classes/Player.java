@@ -207,7 +207,7 @@ public class Player {
         // Applying gravity
         if(velocityY < 0 && holdingJump){ // If the player is jumping and holding the jump key, use lower gravity to allow for a variable jump height
             velocityY += GRAVITY/3;
-           holdingJump = false; // Resetting the variable so it doesn't get applied next frame without input
+            holdingJump = false; // Resetting the variable so it doesn't get applied next frame without input
         }
         else{ // Otherwise use normal gravity values
             velocityY += GRAVITY;
