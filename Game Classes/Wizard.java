@@ -19,10 +19,13 @@ public class Wizard extends Enemy {
 
     }
     // General methods
-    @Override
+   // @Override
+    /*
     public void updateMotion(Player player){
         // Doing nothing since Wizards don't move
     }
+
+     */
     @Override
     public void updateAttack(Player player) {
 
@@ -47,6 +50,7 @@ public class Wizard extends Enemy {
         Image sprite;
         int spriteIndex = (int)Math.floor(spriteCount);
         return castSprites[spriteIndex];
+
     }
 
     @Override
