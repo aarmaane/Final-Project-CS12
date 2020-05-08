@@ -77,6 +77,7 @@ class GamePanel extends JPanel implements KeyListener {
         Slime.init();
         Skeleton.init();
         Ghost.init();
+        Wizard.init();
         Projectile.init();
         Chest.init();
         Item.init();
@@ -130,6 +131,9 @@ class GamePanel extends JPanel implements KeyListener {
             }
             for(String data: Utilities.loadFile("Ghosts.txt", levelNum)){
                 enemies.add(new Ghost(data));
+            }
+            for(String data: Utilities.loadFile("Wizards.txt", levelNum)){
+                enemies.add(new Wizard(data));
             }
             // Loading chests
             for(String data: Utilities.loadFile("Chests.txt", levelNum)){

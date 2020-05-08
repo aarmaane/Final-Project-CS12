@@ -1,18 +1,28 @@
 import java.awt.*;
 
 public class Wizard extends Enemy {
-    //Fields
-    public Wizard(){
-        super("0,0,0");
-        //Constructor
+    // Fields
+    // Image Arrays for Sprites
+    private static Image[] castSprites = new Image[8];
+    private static Image[] dyingSprites;
+    // Class Initialization
+    public static void init(){
+        castSprites = Utilities.spriteArrayLoad(castSprites, "Enemies/Wizard/cast1-");
+    }
+    //Constructor
+    public Wizard(String data){
+        super(data);
+        health = 300 * difficulty;
+        maxHealth = health;
+        damage = 35;
+        isActive = true;
 
     }
     // General methods
     @Override
-    public void update(Player player){
-
+    public void updateMotion(Player player){
+        // Doing nothing since Wizards don't move
     }
-
     @Override
     public void updateAttack(Player player) {
 
@@ -20,7 +30,10 @@ public class Wizard extends Enemy {
 
     @Override
     public void updateSprite() {
-
+        spriteCount += 0.05;
+        if(spriteCount > castSprites.length){
+            spriteCount = 0;
+        }
     }
 
     @Override
@@ -31,11 +44,13 @@ public class Wizard extends Enemy {
     // Getter methods
     @Override
     public Image getSprite() {
-        return null;
+        Image sprite;
+        int spriteIndex = (int)Math.floor(spriteCount);
+        return castSprites[spriteIndex];
     }
 
     @Override
     public Rectangle getHitbox() {
-        return null;
+        return new Rectangle((int)x, (int)y, 1, 1);
     }
 }
