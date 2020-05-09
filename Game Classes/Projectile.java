@@ -88,7 +88,18 @@ public class Projectile {
                 sprite = Utilities.flipSprite(sprite);
             }
             if(isAngled){
-                sprite = Utilities.rotateSprite(sprite,angle,68,9);
+                if(Math.sin(angle) * speed < 0){
+                    if(Math.cos(angle) * speed < 0){
+                        sprite = Utilities.rotateSprite(sprite,angle,0,0);
+                    }
+                    else{
+                        sprite = Utilities.rotateSprite(sprite,angle,136,9);
+                    }
+                }
+                else{
+                    sprite = Utilities.rotateSprite(sprite,angle,68,9);
+
+                }
             }
         }
         return sprite;
