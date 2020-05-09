@@ -318,11 +318,6 @@ public class Player {
             }
         }
     }
-    public void checkHealth(){
-        if(health<=0){
-            System.exit(42);
-        }
-    }
     public void gainItem(Item item){
         int type = item.getType();
         if(type == Item.COIN){
@@ -385,6 +380,26 @@ public class Player {
             isDying = true;
             spriteCount = 0;
         }
+    }
+    public double castHit(Projectile cast){
+        double damageDone= 0;
+        if(!hasHealthPower()) {
+            damageDone = (Utilities.randint(80,100)/100.0)*cast.getDamage();
+            health -= damageDone;
+            velocityY = -3;
+            if (cast.getSpeed() > 0) {
+                velocityX = 3;
+            } else {
+                velocityX = -3;
+            }
+            isHurt = true;
+            isAttacking = false;
+            spriteCount = 0;
+            if(health <= 0){
+                isDying = true;
+            }
+        }
+        return damageDone;
     }
     public void kill(){
         health = 0;

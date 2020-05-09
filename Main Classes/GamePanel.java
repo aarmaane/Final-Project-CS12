@@ -216,7 +216,7 @@ class GamePanel extends JPanel implements KeyListener {
                     g.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
                 }
                 drawHealth(g, enemy);
-                //g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
+                g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
             }
         }
         // Drawing Projectiles
@@ -412,6 +412,12 @@ class GamePanel extends JPanel implements KeyListener {
             if(enemy.isActive()){
                 enemy.update(player);
             }
+            if(enemy.getClass() == Wizard.class){
+                checkEnemyCast(enemy);
+               // System.out.println("here");
+
+            }
+
         }
         for(Projectile projectile: projectiles){
             projectile.update();
@@ -507,14 +513,27 @@ class GamePanel extends JPanel implements KeyListener {
         // Checking projectile collision
         for(Projectile projectile:projectiles){
             for(Enemy enemy:enemies) {
-                if(!enemy.isDying() && !projectile.isExploding() && enemy.getHitbox().intersects(projectile.getHitbox())){
-                    double damageDone = enemy.castHit(projectile);
-                    damageDone = Utilities.roundOff(damageDone, 1);
-                    player.addPoints((int)projectile.getDamage());
-                    projectile.explode();
-                    castHitSound.stop(); castHitSound.play();
-                    indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "-" + damageDone, Color.ORANGE));
+                if(projectile.getType()==Projectile.PLAYER) {
+                    if (!enemy.isDying() && !projectile.isExploding() && enemy.getHitbox().intersects(projectile.getHitbox())) {
+                        double damageDone = enemy.castHit(projectile);
+                        damageDone = Utilities.roundOff(damageDone, 1);
+                        player.addPoints((int) projectile.getDamage());
+                        projectile.explode();
+                        castHitSound.stop();
+                        castHitSound.play();
+                        indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "-" + damageDone, Color.ORANGE));
 
+                    }
+                }
+                else{
+                    if (!projectile.isExploding() && player.getHitbox().intersects(projectile.getHitbox())) {
+                        double damageDone = player.castHit(projectile);
+                        damageDone = Utilities.roundOff(damageDone, 1);
+                        projectile.explode();
+                        castHitSound.stop();
+                        castHitSound.play();
+                        indicatorText.add(new IndicatorText(player.getHitbox().x, player.getHitbox().y, "-" + damageDone, Color.ORANGE));
+                    }
                 }
             }
         }
@@ -583,7 +602,7 @@ class GamePanel extends JPanel implements KeyListener {
                 speed = -speed;
                 xPos -= 150;
             }
-            projectiles.add(new Projectile(Projectile.PLAYER, xPos,hitBox.y+hitBox.height/2.0-5,player.getSpellDamage(),speed));
+            projectiles.add(new Projectile(Projectile.PLAYER, xPos,hitBox.y+hitBox.height/2.0-5,player.getSpellDamage(),speed,"Iceball/iceball"));
             castSound.play();
         }
         // Check if the player is dead
@@ -592,6 +611,22 @@ class GamePanel extends JPanel implements KeyListener {
         }
         if(player.getHitbox().y > getHeight()){
             player.kill();
+        }
+    }
+    public void checkEnemyCast(Enemy enemy){
+        if(enemy.isCastFrame()){
+            Rectangle hitBox = enemy.getHitbox();
+            Rectangle playerBox = player.getHitbox();
+            int targX = playerBox.x;
+            int targY = playerBox.y;
+            int speed = -1;
+            if(enemy.getDirection() == Enemy.LEFT){
+                speed = -speed;
+
+            }
+
+            projectiles.add(new Projectile(Projectile.ENEMY, hitBox.x,hitBox.y,targX,targY,enemy.getDamage(),speed,"DarkCast/darkCast"));
+            castSound.play();
         }
     }
     public void collectGarbage(){

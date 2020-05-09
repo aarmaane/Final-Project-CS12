@@ -138,6 +138,12 @@ public class Skeleton extends Enemy {
         }
         return new Rectangle((int) x,(int) y + 20,50,76);
     }
+
+    @Override
+    public boolean isCastFrame() {
+        return false;
+    }
+
     @Override
     public double getX(){
         // The attacking sprite is different from the rest, so an offset is applied

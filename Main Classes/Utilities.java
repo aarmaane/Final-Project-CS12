@@ -19,6 +19,16 @@ public class Utilities {
         sprite = flipOp.filter((BufferedImage) sprite, null);
         return sprite;
     }
+    public static Image rotateSprite(Image sprite, double rads,int rotX,int rotY) {
+       // double rads= Math.toRadians(angle);
+        // Using AffineTransform with Nearest-Neighbour to apply flip while keeping 8-bit style
+        AffineTransform rot = new AffineTransform();
+        rot.rotate(rads,rotX,rotY);
+        AffineTransformOp rotateOp = new AffineTransformOp(rot, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        //BufferedImage newImage =new BufferedImage(sprite.getHeight(null), sprite.getWidth(null) );
+
+        return rotateOp.filter((BufferedImage) sprite,null );
+    }
 
     public static Image[] spriteArrayLoad(Image[] targetArray, String fileName) {
         Image[] builtArray = new Image[targetArray.length];

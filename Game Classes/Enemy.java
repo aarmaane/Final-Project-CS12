@@ -84,6 +84,7 @@ public abstract class Enemy {
             updateAttack(player);
         }
         updateSprite();
+
     }
     public void updateMotion(Player player){
         // Applying velocity values to position
@@ -104,6 +105,7 @@ public abstract class Enemy {
             spriteCount = 0;
         }
     }
+
     public float getSpriteAlpha(){
         return (float)1.0;
     }
@@ -111,6 +113,7 @@ public abstract class Enemy {
     public abstract void updateSprite();
     public abstract Image getSprite();
     public abstract Rectangle getHitbox();
+    public abstract boolean isCastFrame();
 
     // Getter methods
     public double getX(){
@@ -143,4 +146,5 @@ public abstract class Enemy {
     public boolean hasAlphaSprites(){
         return hasAlphaSprites;
     }
+    public int getDirection(){ return direction;}
 }

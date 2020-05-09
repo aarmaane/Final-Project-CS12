@@ -5,20 +5,21 @@ public class Projectile {
     public static final int PLAYER = 0, ENEMY = 1;
     public static final int LEFT = 0, RIGHT = 1;
     //Fields
-    private double x, y;
+    private double x, y,targX,targY;
     private double damage, speed;
     private int direction, type;
+    private double angle;
     private double spriteCount = 0;
     private boolean exploding, doneExploding;
+    private boolean twoD;
     // Sprite Image Arrays
-    private static Image[] playerSprites = new Image[60];
+    private static Image[] projectileSprites = new Image[60];
     private static Image[] explosionSprites = new Image[44];
     public static void init(){
-        playerSprites = Utilities.spriteArrayLoad(playerSprites, "Projectiles/Iceball/iceball");
         explosionSprites = Utilities.spriteArrayLoad(explosionSprites, "Projectiles/Explosion/explosion");
 
     }
-    public Projectile(int type, double x, double y, double damage, double speed){
+    public Projectile(int type, double x, double y, double damage, double speed,String imagePath){
         this.x = x;
         this.y = y;
         this.damage = damage;
@@ -30,22 +31,60 @@ public class Projectile {
         else{
             this.direction = LEFT;
         }
+        projectileSprites = Utilities.spriteArrayLoad(projectileSprites, "Projectiles/"+imagePath);
+    }
+    public Projectile(int type, double startX, double startY,double targX,double targY ,double damage, double speed,String imagePath){
+        this.type= type;
+        this.x = startX;
+        this.y = startY;
+        this.damage = damage;
+        this.speed = speed;
+        this.targX = targX;
+        this.targY = targY;
+        twoD = true;
+        if(speed > 0){
+            this.direction = RIGHT;
+        }
+        else{
+            this.direction = LEFT;
+        }
+        projectileSprites = Utilities.spriteArrayLoad(projectileSprites, "Projectiles/"+imagePath);
     }
     public void update(){
         updateSprite();
         updatePos();
     }
     public void updatePos(){
+
         if(!exploding){
-            x+=speed;
+            if(twoD){
+                this.angle = Math.atan(((double)targY - getHitbox().y)/((double)targX - getHitbox().x));
+                //System.out.println(Math.toDegrees(angle));
+                if(targX < getHitbox().x){
+                        x += Math.cos(angle) * speed;
+                        y += Math.sin(angle) * speed;
+                        direction = LEFT;
+                }
+                else if(targX > getHitbox().x){
+                        x -= Math.cos(angle) * speed;
+                        y -= Math.sin(angle) * speed;
+                        direction = RIGHT;
+                }
+
+            }
+            else{
+                x += speed;
+            }
         }
+
+
     }
     public void updateSprite(){
         spriteCount += 0.5;
         if(exploding && spriteCount >= explosionSprites.length){
             doneExploding = true;
         }
-        if(spriteCount >= playerSprites.length){
+        if(spriteCount >= projectileSprites.length){
             spriteCount = 0;
         }
     }
@@ -56,9 +95,13 @@ public class Projectile {
             sprite = explosionSprites[spriteIndex];
         }
         else{
-            sprite = playerSprites[spriteIndex];
+            sprite = projectileSprites[spriteIndex];
             if(direction == RIGHT){
                 sprite = Utilities.flipSprite(sprite);
+                //angle= Math.PI;
+            }
+            if(twoD){
+                sprite = Utilities.rotateSprite(sprite,angle,66,9);
             }
         }
         return sprite;
@@ -102,4 +145,6 @@ public class Projectile {
     public double getSpeed(){return speed;}
     public boolean isExploding() {return exploding;}
     public boolean isDoneExploding(){return doneExploding;}
+    public int getType(){ return type;}
+    public double getAngle(){ return angle;}
 }
