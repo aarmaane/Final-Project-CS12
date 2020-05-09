@@ -26,7 +26,6 @@ public class Utilities {
         rot.rotate(rads,rotX,rotY);
         AffineTransformOp rotateOp = new AffineTransformOp(rot, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
         //BufferedImage newImage =new BufferedImage(sprite.getHeight(null), sprite.getWidth(null) );
-
         return rotateOp.filter((BufferedImage) sprite,null );
     }
 

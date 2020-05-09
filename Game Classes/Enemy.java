@@ -109,11 +109,13 @@ public abstract class Enemy {
     public float getSpriteAlpha(){
         return (float)1.0;
     }
+    public boolean isCastFrame(){
+        return false;
+    }
     // Declaring methods that subclasses need to implement
     public abstract void updateSprite();
     public abstract Image getSprite();
     public abstract Rectangle getHitbox();
-    public abstract boolean isCastFrame();
 
     // Getter methods
     public double getX(){

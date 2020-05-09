@@ -619,7 +619,7 @@ class GamePanel extends JPanel implements KeyListener {
             Rectangle playerBox = player.getHitbox();
             int targX = playerBox.x;
             int targY = playerBox.y;
-            int speed = -1;
+            int speed = -2;
             if(enemy.getDirection() == Enemy.LEFT){
                 speed = -speed;
 

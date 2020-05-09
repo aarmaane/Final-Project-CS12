@@ -5,13 +5,14 @@ public class Projectile {
     public static final int PLAYER = 0, ENEMY = 1;
     public static final int LEFT = 0, RIGHT = 1;
     //Fields
-    private double x, y,targX,targY;
+    private double x, y;
     private double damage, speed;
     private int direction, type;
-    private double angle;
     private double spriteCount = 0;
     private boolean exploding, doneExploding;
-    private boolean twoD;
+    // Angled projectile fields
+    private double angle;
+    private boolean isAngled;
     // Sprite Image Arrays
     private static Image[] projectileSprites = new Image[60];
     private static Image[] explosionSprites = new Image[44];
@@ -39,15 +40,14 @@ public class Projectile {
         this.y = startY;
         this.damage = damage;
         this.speed = speed;
-        this.targX = targX;
-        this.targY = targY;
-        twoD = true;
+        isAngled = true;
         if(speed > 0){
             this.direction = RIGHT;
         }
         else{
             this.direction = LEFT;
         }
+        this.angle = Math.atan((targY - getHitbox().y)/(targX - getHitbox().x));
         projectileSprites = Utilities.spriteArrayLoad(projectileSprites, "Projectiles/"+imagePath);
     }
     public void update(){
@@ -55,22 +55,10 @@ public class Projectile {
         updatePos();
     }
     public void updatePos(){
-
         if(!exploding){
-            if(twoD){
-                this.angle = Math.atan(((double)targY - getHitbox().y)/((double)targX - getHitbox().x));
-                //System.out.println(Math.toDegrees(angle));
-                if(targX < getHitbox().x){
-                        x += Math.cos(angle) * speed;
-                        y += Math.sin(angle) * speed;
-                        direction = LEFT;
-                }
-                else if(targX > getHitbox().x){
-                        x -= Math.cos(angle) * speed;
-                        y -= Math.sin(angle) * speed;
-                        direction = RIGHT;
-                }
-
+            if(isAngled){
+                x += Math.cos(angle) * speed;
+                y += Math.sin(angle) * speed;
             }
             else{
                 x += speed;
@@ -98,10 +86,9 @@ public class Projectile {
             sprite = projectileSprites[spriteIndex];
             if(direction == RIGHT){
                 sprite = Utilities.flipSprite(sprite);
-                //angle= Math.PI;
             }
-            if(twoD){
-                sprite = Utilities.rotateSprite(sprite,angle,66,9);
+            if(isAngled){
+                sprite = Utilities.rotateSprite(sprite,angle,68,9);
             }
         }
         return sprite;

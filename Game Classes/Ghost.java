@@ -131,9 +131,4 @@ public class Ghost extends Enemy {
     public Rectangle getHitbox() {
         return new Rectangle((int)x + 50, (int)y + 25, 75, 105);
     }
-
-    @Override
-    public boolean isCastFrame() {
-        return false;
-    }
 }

@@ -31,7 +31,13 @@ public class Wizard extends Enemy {
 
    @Override
     public void updateMotion(Player player){
-        // Doing nothing since Wizards don't move
+       Rectangle playerBox = player.getHitbox();
+       if(playerBox.x > getHitbox().x){
+           direction = LEFT;
+       }
+       else{
+           direction = RIGHT;
+       }
 
         //super.updateMotion(player);
     }
@@ -88,8 +94,6 @@ public class Wizard extends Enemy {
     }
     @Override
     public boolean isCastFrame(){
-        //System.out.println(Utilities.roundOff(spriteCount,2));
-        //System.out.println(cast1Sprites.length-1);
         if(isCasting && Utilities.roundOff(spriteCount,2) == cast1Sprites.length-1){
             return true;
         }
@@ -109,12 +113,6 @@ public class Wizard extends Enemy {
                 sprite = hurtSprites[spriteIndex];
             }
         }
-        /*
-        else if(isAttacking){
-            sprite = idleSprites[spriteIndex];
-        }
-
-         */
         else{
             sprite = cast1Sprites[spriteIndex];
         }

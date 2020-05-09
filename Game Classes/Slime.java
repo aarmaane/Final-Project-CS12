@@ -125,9 +125,4 @@ public class Slime extends Enemy {
     public Rectangle getHitbox() {
         return new Rectangle((int)x + 10, (int)y + 25, 80, 45);
     }
-
-    @Override
-    public boolean isCastFrame() {
-        return false;
-    }
 }

@@ -140,11 +140,6 @@ public class Skeleton extends Enemy {
     }
 
     @Override
-    public boolean isCastFrame() {
-        return false;
-    }
-
-    @Override
     public double getX(){
         // The attacking sprite is different from the rest, so an offset is applied
         if(isAttacking && direction==LEFT){
