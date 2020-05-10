@@ -8,19 +8,23 @@ public class Projectile {
     private double x, y;
     private double damage, speed;
     private int direction, type;
-    private double spriteCount;
+    private double spriteCount = 0;
     private boolean exploding, doneExploding;
+    private Image[] projectileSprites;
     // Angled projectile fields
     private double angle;
     private boolean isAngled;
     // Sprite Image Arrays
-    private static Image[] projectileSprites = new Image[60];
+    private static Image[] iceSprites = new Image[60];
+    private static Image[] darkSprites = new Image[60];
     private static Image[] explosionSprites = new Image[44];
     public static void init(){
+        iceSprites = Utilities.spriteArrayLoad(iceSprites, "Projectiles/Iceball/iceball");
+        darkSprites = Utilities.spriteArrayLoad(darkSprites, "Projectiles/DarkCast/darkCast");
         explosionSprites = Utilities.spriteArrayLoad(explosionSprites, "Projectiles/Explosion/explosion");
 
     }
-    public Projectile(int type, double x, double y, double damage, double speed,String imagePath){
+    public Projectile(int type, double x, double y, double damage, double speed){
         this.x = x;
         this.y = y;
         this.damage = damage;
@@ -32,9 +36,9 @@ public class Projectile {
         else{
             this.direction = LEFT;
         }
-        projectileSprites = Utilities.spriteArrayLoad(projectileSprites, "Projectiles/"+imagePath);
+        assignArray();
     }
-    public Projectile(int type, double startX, double startY,double targX,double targY ,double damage, double speed,String imagePath){
+    public Projectile(int type, double startX, double startY,double targX,double targY ,double damage, double speed){
         this.type= type;
         this.x = startX;
         this.y = startY;
@@ -47,11 +51,16 @@ public class Projectile {
         else{
             this.direction = LEFT;
         }
-        this.angle =Math.atan((y-targY)/(x-targX));
-        System.out.println((getHitbox().y-targY)/(getHitbox().x-targX));
-        System.out.println(Math.toDegrees(angle));
-        //System.out.println(getHitbox().x-targX);
-        projectileSprites = Utilities.spriteArrayLoad(projectileSprites, "Projectiles/"+imagePath);
+        this.angle = Math.atan((targY - y)/(targX - x));
+        assignArray();
+    }
+    public void assignArray(){
+        if(type == PLAYER){
+            projectileSprites = iceSprites;
+        }
+        else{
+            projectileSprites = darkSprites;
+        }
     }
     public void update(){
         updateSprite();
@@ -60,7 +69,6 @@ public class Projectile {
     public void updatePos(){
         if(!exploding){
             if(isAngled){
-                System.out.println(x+" "+y);
                 x += Math.cos(angle) * speed;
                 y += Math.sin(angle) * speed;
             }
@@ -68,7 +76,6 @@ public class Projectile {
                 x += speed;
             }
         }
-
 
     }
     public void updateSprite(){
@@ -80,6 +87,11 @@ public class Projectile {
             spriteCount = 0;
         }
     }
+    public void explode(){
+        exploding = true;
+        spriteCount = 0;
+    }
+    // Getter methods
     public Image getSprite(){
         Image sprite;
         int spriteIndex = (int)Math.floor(spriteCount);
@@ -108,11 +120,6 @@ public class Projectile {
         }
         return sprite;
     }
-    public void explode(){
-        exploding = true;
-        spriteCount = 0;
-    }
-    // Getter methods
     public Rectangle getHitbox(){
         // Since the area where the projectile applies damage is on the end of the image, offsets must be applied depending on direction
         if(direction == RIGHT) {
@@ -138,7 +145,7 @@ public class Projectile {
     public double getY(){
         // When exploding, the picture size changes, so the coordinate must change to accommodate
         if(exploding){
-            return y -20;
+            return y - 20;
         }
         // Returning normal value otherwise
         return y;

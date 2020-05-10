@@ -21,7 +21,6 @@ public class Skeleton extends Enemy {
         health = 200 * difficulty;
         maxHealth = health;
         damage = 20;
-        isActive = true;
     }
     // General methods
     @Override

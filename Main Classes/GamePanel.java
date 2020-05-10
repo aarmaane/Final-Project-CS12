@@ -411,13 +411,11 @@ class GamePanel extends JPanel implements KeyListener {
         for(Enemy enemy: enemies){
             if(enemy.isActive()){
                 enemy.update(player);
-            }
-            if(enemy.getClass() == Wizard.class){
                 checkEnemyCast(enemy);
-               // System.out.println("here");
-
             }
-
+            else{
+                checkActivation(enemy);
+            }
         }
         for(Projectile projectile: projectiles){
             projectile.update();
@@ -434,60 +432,9 @@ class GamePanel extends JPanel implements KeyListener {
         for(LevelProp prop: noCollideProps){
             updateProp(prop);
         }
-        // Updating object
+        // Updating objects
         checkPlayerAction();
         collectGarbage();
-    }
-    public void updateGraphics(){
-        changeFade();
-        calculateOffset();
-        background.update(levelOffset);
-        if(levelEnding){
-            updateLevelEnd();
-        }
-    }
-    public void changeFade(){
-        if(fade){
-            fadeInt+= fadeChange;
-            if(fadeInt==255){
-                levelMusic.stop();
-                gameFrame.switchPanel(MainGame.SHOPPANEL);
-            }
-            else if(fadeInt==0){
-                fade=false;
-            }
-        }
-        // Allowing the powerup fade to continue
-        barFade += barFadeAddition;
-        if(barFade == 0 || barFade == 255){
-            barFadeAddition *= -1;
-        }
-    }
-    public void calculateOffset(){
-        Rectangle hitbox = player.getHitbox();
-        if(hitbox.x + hitbox.width > 480){
-            levelOffset = (hitbox.x + hitbox.width) - 480;
-        }
-        else{
-            levelOffset = 0;
-        }
-    }
-    public void updateLevelEnd(){
-        endScreenFrames++;
-        if(endScreenFrames > 200){
-            if(timeLeft > 0){
-                timeLeft--;
-                bonusPoints += 10;
-            }
-            else if(!pointsGiven){
-                pointsGiven = true;
-                player.addPoints(bonusPoints);
-                indicatorText.add(new IndicatorText((int)player.getX(),(int)player.getY(), "+"+bonusPoints, Color.YELLOW));
-            }
-        }
-        if(endScreenFrames == 600){
-            fade = true; fadeChange = 1; fadeInt = 0;
-        }
     }
     public void updateProp(LevelProp prop){
         // Checking if it's temporary and needs to disappear
@@ -497,6 +444,82 @@ class GamePanel extends JPanel implements KeyListener {
         // Checking if it's moving and updating the platform
         if(prop.isMoving()){
             prop.updateMovement();
+        }
+    }
+    public void checkActivation(Enemy enemy){
+        if(!enemy.isDying() && Math.abs(enemy.getHitbox().x - player.getHitbox().x) < 1000){
+            enemy.activate();
+        }
+    }
+    public void checkPlayerAction(){
+        // Checking if the Player has used their sword attack
+        if(player.isAttackFrame()){ // Checking if this is the frame where attacks land
+            int randomSwordIndex = Utilities.randint(0,2);
+            swordSounds[randomSwordIndex].stop();
+            swordSounds[randomSwordIndex].play(); // Playing the sword sound effect
+            // Going through each enemy and checking for collisions
+            for(Enemy enemy:enemies){
+                if(player.getAttackBox().intersects(enemy.getHitbox()) && !enemy.isDying()){
+                    double damageDone = enemy.swordHit(player);
+                    damageDone = Utilities.roundOff(damageDone, 1);
+                    player.addPoints(player.getSwordDamage());
+                    indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "-" + damageDone, Color.ORANGE));
+                    int randomHitIndex = Utilities.randint(0,2);
+                    hitSounds[randomHitIndex].stop();
+                    hitSounds[randomHitIndex].play(); // Playing the hit effect
+                }
+            }
+        }
+        // Checking if the Player has cast
+        if(player.isCastFrame()){
+            Rectangle hitBox = player.getHitbox();
+            Rectangle attackBox = player.getAttackBox();
+            int speed = -5;
+            int xPos = attackBox.x;
+            if(player.getDirection() == Player.RIGHT){
+                speed = -speed;
+                xPos -= 150;
+            }
+            projectiles.add(new Projectile(Projectile.PLAYER, xPos,hitBox.y+hitBox.height/2.0-5,player.getSpellDamage(),speed));
+            castSound.play();
+        }
+        // Check if the player is dead
+        if(player.isDead() && !fade){
+            fade = true; fadeChange = 1; fadeInt = 0;
+        }
+        if(player.getHitbox().y > getHeight()){
+            player.kill();
+        }
+    }
+    public void checkEnemyCast(Enemy enemy){
+        if(enemy.isCastFrame()){
+            Rectangle hitBox = enemy.getHitbox();
+            Rectangle playerBox = player.getHitbox();
+            int targX = playerBox.x;
+            int targY = playerBox.y;
+            int speed = -2;
+            if(enemy.getDirection() == Enemy.LEFT){
+                speed = -speed;
+            }
+            projectiles.add(new Projectile(Projectile.ENEMY, hitBox.x,hitBox.y,targX,targY,enemy.getDamage(),speed));
+            castSound.play();
+        }
+    }
+    public void collectGarbage(){
+        // Using removeIf for Arrays that only need removal of items
+        projectiles.removeIf(Projectile::isDoneExploding);
+        items.removeIf(item -> (item.isUsed() || item.getHitbox().y > this.getHeight()));
+        platforms.removeIf(LevelProp::isDoneDisappearing);
+        indicatorText.removeIf(IndicatorText::isDone);
+
+        // Using for loops for Arrays that need to keep track of removals
+        for(int i = enemies.size() - 1; i >= 0; i--){
+            Enemy enemy = enemies.get(i);
+            if(enemy.isDead() || enemy.getY() > this.getHeight()){
+                enemies.remove(i);
+                player.addPoints(100);
+                indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "+100", Color.YELLOW));
+            }
         }
     }
     public void checkCollision(){
@@ -563,87 +586,66 @@ class GamePanel extends JPanel implements KeyListener {
             }
         }
         // Checking if the player has reached the end of the level
-        if(playerHitbox.x > levelEndX){
+        if(!levelEnding && playerHitbox.x > levelEndX){
             levelEnding = true;
             background.ignoreNegative();
+            enemies.clear();
         }
-        if(levelEnding && playerHitbox.x > levelEndResetX){
+        else if(playerHitbox.x > levelEndResetX){
             int overshoot = levelEndResetX - playerHitbox.x;
             player.setPos(levelEndX + overshoot, (int)player.getY());
             calculateOffset();
         }
     }
-    public void checkPlayerAction(){
-        // Checking if the Player has used their sword attack
-        if(player.isAttackFrame()){ // Checking if this is the frame where attacks land
-            int randomSwordIndex = Utilities.randint(0,2);
-            swordSounds[randomSwordIndex].stop();
-            swordSounds[randomSwordIndex].play(); // Playing the sword sound effect
-            // Going through each enemy and checking for collisions
-            for(Enemy enemy:enemies){
-                if(player.getAttackBox().intersects(enemy.getHitbox()) && !enemy.isDying()){
-                    double damageDone = enemy.swordHit(player);
-                    damageDone = Utilities.roundOff(damageDone, 1);
-                    player.addPoints(player.getSwordDamage());
-                    indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "-" + damageDone, Color.ORANGE));
-                    int randomHitIndex = Utilities.randint(0,2);
-                    hitSounds[randomHitIndex].stop();
-                    hitSounds[randomHitIndex].play(); // Playing the hit effect
-                }
+    public void updateGraphics(){
+        changeFade();
+        calculateOffset();
+        background.update(levelOffset);
+        if(levelEnding){
+            updateLevelEnd();
+        }
+    }
+    public void changeFade(){
+        if(fade){
+            fadeInt+= fadeChange;
+            if(fadeInt==255){
+                levelMusic.stop();
+                gameFrame.switchPanel(MainGame.SHOPPANEL);
+            }
+            else if(fadeInt==0){
+                fade=false;
             }
         }
-        // Checking if the Player has cast
-        if(player.isCastFrame()){
-            Rectangle hitBox = player.getHitbox();
-            Rectangle attackBox = player.getAttackBox();
-            int speed = -5;
-            int xPos = attackBox.x;
-            if(player.getDirection() == Player.RIGHT){
-                speed = -speed;
-                xPos -= 150;
-            }
-            projectiles.add(new Projectile(Projectile.PLAYER, xPos,hitBox.y+hitBox.height/2.0-5,player.getSpellDamage(),speed,"Iceball/iceball"));
-            castSound.play();
+        // Allowing the powerup fade to continue
+        barFade += barFadeAddition;
+        if(barFade == 0 || barFade == 255){
+            barFadeAddition *= -1;
         }
-        // Check if the player is dead
-        if(player.isDead() && !fade){
+    }
+    public void calculateOffset(){
+        Rectangle hitbox = player.getHitbox();
+        if(hitbox.x + hitbox.width > 480){
+            levelOffset = (hitbox.x + hitbox.width) - 480;
+        }
+        else{
+            levelOffset = 0;
+        }
+    }
+    public void updateLevelEnd(){
+        endScreenFrames++;
+        if(endScreenFrames > 200){
+            if(timeLeft > 0){
+                timeLeft--;
+                bonusPoints += 10;
+            }
+            else if(!pointsGiven){
+                pointsGiven = true;
+                player.addPoints(bonusPoints);
+                indicatorText.add(new IndicatorText((int)player.getX(),(int)player.getY(), "+"+bonusPoints, Color.YELLOW));
+            }
+        }
+        if(endScreenFrames == 600){
             fade = true; fadeChange = 1; fadeInt = 0;
-        }
-        if(player.getHitbox().y > getHeight()){
-            player.kill();
-        }
-    }
-    public void checkEnemyCast(Enemy enemy){
-        if(enemy.isCastFrame()){
-            Rectangle hitBox = enemy.getHitbox();
-            Rectangle playerBox = player.getHitbox();
-            int targX = playerBox.x;
-            int targY = playerBox.y;
-            int speed = -2;
-            if(enemy.getDirection() == Enemy.LEFT){
-                speed = -speed;
-
-            }
-
-            projectiles.add(new Projectile(Projectile.ENEMY, hitBox.x,hitBox.y,targX,targY,enemy.getDamage(),speed,"DarkCast/darkCast"));
-            castSound.play();
-        }
-    }
-    public void collectGarbage(){
-        // Using removeIf for Arrays that only need removal of items
-        projectiles.removeIf(Projectile::isDoneExploding);
-        items.removeIf(item -> (item.isUsed() || item.getHitbox().y > this.getHeight()));
-        platforms.removeIf(LevelProp::isDoneDisappearing);
-        indicatorText.removeIf(IndicatorText::isDone);
-
-        // Using for loops for Arrays that need to keep track of removals
-        for(int i = enemies.size() - 1; i >= 0; i--){
-            Enemy enemy = enemies.get(i);
-            if(enemy.isDead() || enemy.getY() > this.getHeight()){
-                enemies.remove(i);
-                player.addPoints(100);
-                indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "+100", Color.YELLOW));
-            }
         }
     }
     public void checkInputs(){

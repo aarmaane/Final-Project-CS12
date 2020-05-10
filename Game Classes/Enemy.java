@@ -20,6 +20,9 @@ public abstract class Enemy {
         difficulty = Integer.parseInt(dataSplit[2]);
     }
     // General methods
+    public void activate(){
+        isActive = true;
+    }
     public void checkCollision(LevelProp prop){
         Rectangle rect = prop.getRect();
         Rectangle hitbox = getHitbox();

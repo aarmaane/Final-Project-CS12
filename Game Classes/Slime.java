@@ -21,7 +21,6 @@ public class Slime extends Enemy {
         health = 100 * difficulty;
         maxHealth=health;
         damage = 5;
-        isActive = true;
     }
     // General methods
     @Override

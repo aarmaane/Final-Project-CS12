@@ -18,7 +18,6 @@ public class Ghost extends Enemy {
         maxHealth = health;
         damage = 15;
         speed = difficulty;
-        isActive = true;
         hasAlphaSprites = true;
         alpha = (float) 0.1;
     }
