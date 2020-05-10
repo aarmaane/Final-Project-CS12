@@ -22,7 +22,7 @@ public class Wizard extends Enemy {
         super(data);
         health = 300 * difficulty;
         maxHealth = health;
-        damage = 0;
+        damage = 35;
     }
     // General methods
    @Override

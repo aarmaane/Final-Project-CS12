@@ -4,3 +4,9 @@
 1017,266,Set 2/chainAttach.png,1000,0,2,0
 1017,122,Set 2/longChain.png,1000,0,2,0
 1017,-22,Set 2/longChain.png,1000,0,2,0
+//
+2884,-412,Set 2/longChain.png,0,300,0,2
+2884,-268,Set 2/longChain.png,0,300,0,2
+2884,-124,Set 2/longChain.png,0,300,0,2
+2884,20,Set 2/longChain.png,0,300,0,2
+2884,164,Set 2/chainAttach.png,0,300,0,2
