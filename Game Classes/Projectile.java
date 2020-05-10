@@ -8,11 +8,12 @@ public class Projectile {
     private double x, y;
     private double damage, speed;
     private int direction, type;
-    private double spriteCount = 0;
+    private double spriteCount = 0, flightTime;
     private boolean exploding, doneExploding;
     private Image[] projectileSprites;
     // Angled projectile fields
     private double angle;
+    private Rectangle angledRect;
     private boolean isAngled;
     // Sprite Image Arrays
     private static Image[] iceSprites = new Image[60];
@@ -53,6 +54,7 @@ public class Projectile {
         }
         this.angle = Math.atan((targY - y)/(targX - x));
         assignArray();
+        angledRect = Utilities.rectFinder(getSprite());
     }
     public void assignArray(){
         if(type == PLAYER){
@@ -68,6 +70,7 @@ public class Projectile {
     }
     public void updatePos(){
         if(!exploding){
+            // Updating X and Y coordinate
             if(isAngled){
                 x += Math.cos(angle) * speed;
                 y += Math.sin(angle) * speed;
@@ -75,8 +78,12 @@ public class Projectile {
             else{
                 x += speed;
             }
+            // Updating the time counter and forcing the projectile to explode after a while
+            flightTime++;
+            if(flightTime > 400){
+                explode();
+            }
         }
-
     }
     public void updateSprite(){
         spriteCount += 0.5;
@@ -106,7 +113,7 @@ public class Projectile {
             if(isAngled){
                 if(Math.sin(angle) * speed < 0){
                     if(Math.cos(angle) * speed < 0){
-                        sprite = Utilities.rotateSprite(sprite,angle,0,0);
+                        sprite = Utilities.rotateSprite(sprite,angle,0,18);
                     }
                     else{
                         sprite = Utilities.rotateSprite(sprite,angle,136,9);
@@ -121,6 +128,9 @@ public class Projectile {
         return sprite;
     }
     public Rectangle getHitbox(){
+        if(isAngled){
+            return new Rectangle(angledRect.x + (int)x, angledRect.y + (int)y, angledRect.width, angledRect.height);
+        }
         // Since the area where the projectile applies damage is on the end of the image, offsets must be applied depending on direction
         if(direction == RIGHT) {
             return new Rectangle((int) x+110, (int) y, 58, 18);
@@ -132,7 +142,10 @@ public class Projectile {
     public double getX(){
         // When exploding, the picture size changes, so the coordinate must change to accommodate
         if(exploding){
-            if(direction == LEFT){
+            if(isAngled){
+                return angledRect.x + x - 20;
+            }
+            else if(direction == LEFT){
                 return x - 30;
             }
             else{
@@ -145,6 +158,9 @@ public class Projectile {
     public double getY(){
         // When exploding, the picture size changes, so the coordinate must change to accommodate
         if(exploding){
+            if(isAngled){
+                return angledRect.y + y - 10;
+            }
             return y - 20;
         }
         // Returning normal value otherwise

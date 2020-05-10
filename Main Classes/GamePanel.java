@@ -221,8 +221,10 @@ class GamePanel extends JPanel implements KeyListener {
         }
         // Drawing Projectiles
         for(Projectile projectile: projectiles){
-            g.drawImage(projectile.getSprite(),(int)projectile.getX()-levelOffset, (int)projectile.getY(),this);
-            //g.drawRect(projectile.getHitbox().x-levelOffset,projectile.getHitbox().y,projectile.getHitbox().width,projectile.getHitbox().height);
+            if(projectile.getHitbox().x + projectile.getHitbox().width - levelOffset > 0 && projectile.getHitbox().x - levelOffset < 960){
+                g.drawImage(projectile.getSprite(),(int)projectile.getX()-levelOffset, (int)projectile.getY(),this);
+                //g.drawRect(projectile.getHitbox().x-levelOffset,projectile.getHitbox().y,projectile.getHitbox().width,projectile.getHitbox().height);
+            }
         }
         // Drawing items
         g.setColor(Color.RED);
@@ -488,7 +490,7 @@ class GamePanel extends JPanel implements KeyListener {
             fade = true; fadeChange = 1; fadeInt = 0;
         }
         if(player.getHitbox().y > getHeight()){
-            player.kill();
+            //player.kill();
         }
     }
     public void checkEnemyCast(Enemy enemy){

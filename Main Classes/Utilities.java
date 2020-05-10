@@ -28,7 +28,32 @@ public class Utilities {
         //BufferedImage newImage =new BufferedImage(sprite.getHeight(null), sprite.getWidth(null) );
         return rotateOp.filter((BufferedImage) sprite,null );
     }
-
+    public static Rectangle rectFinder(Image sprite){
+        BufferedImage pic = (BufferedImage) sprite;
+        int smallestX; int smallestY; int biggestX; int biggestY;
+        smallestX = smallestY = Integer.MAX_VALUE;
+        biggestX = biggestY = Integer.MIN_VALUE;
+        for(int x = 0; x < pic.getWidth(); x++){
+            for(int y = 0; y < pic.getHeight(); y++){
+                Color pixel = new Color(pic.getRGB(x,y));
+                if(pixel.equals(Color.WHITE)){
+                    if(x > biggestX){
+                        biggestX = x;
+                    }
+                    if(x < smallestX){
+                        smallestX = x;
+                    }
+                    if(y > biggestY){
+                        biggestY = y;
+                    }
+                    if(y < smallestY){
+                        smallestY = y;
+                    }
+                }
+            }
+        }
+        return new Rectangle(smallestX,smallestY,biggestX - smallestX,biggestY - smallestY);
+    }
     public static Image[] spriteArrayLoad(Image[] targetArray, String fileName) {
         Image[] builtArray = new Image[targetArray.length];
         try {
