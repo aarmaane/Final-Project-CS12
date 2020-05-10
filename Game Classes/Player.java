@@ -401,11 +401,17 @@ public class Player {
         }
         return damageDone;
     }
+
     public void kill(){
+        /*
         health = 0;
         isDying = true;
         velocityX = 0;
+
+         */
     }
+
+
     public ArrayList<IndicatorText> flushTextQueue(){
         ArrayList<IndicatorText> temp = textQueue;
         textQueue = new ArrayList<>();

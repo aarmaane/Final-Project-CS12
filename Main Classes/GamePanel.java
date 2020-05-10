@@ -12,7 +12,7 @@ class GamePanel extends JPanel implements KeyListener {
     private MainGame gameFrame;
     // Game related fields
     private Player player = new Player();
-    private int levelNum, timeLeft;
+    private int levelNum, timeLeft,challengeTimer;
     private int levelEndX, levelEndResetX;
     private int levelOffset = 0;
     private boolean paused = false;

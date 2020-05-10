@@ -2,3 +2,22 @@
 400,100,Set 2/stonePlatform.png,300,300,2,1
 750,275,Set 2/stonePlatform.png,1000,0,2,0
 894,275,Set 2/stonePlatform.png,1000,0,2,0
+//
+1900,175,Set 2/stonePlatform.png,500,300,3,2
+2044,175,Set 2/stonePlatform.png,500,300,3,2
+//
+2750,175,Set 2/stonePlatform.png,0,300,0,2
+2894,175,Set 2/stonePlatform.png,0,300,0,2
+//
+//3250,175,Set 2/cageBottom.png,0,300,0,2
+//3323,175,Set 2/cageBottom.png,0,300,0,2
+//
+3250,225,Set 2/stonePlatform.png,300,300,1,4
+3394,225,Set 2/chainAttachLeft.png,300,300,1,4
+3394,225,Set 2/longChainHoriz.png,300,300,1,4
+3538,225,Set 2/longChainHoriz.png,300,300,1,4
+3682,225,Set 2/chainAttachRight.png,300,300,1,4
+3690,225,Set 2/stonePlatform.png,300,300,1,4
+//3682,225,Set 2/longChainHoriz.png,300,300,1,4
+//3826,225,Set 2/longChainHoriz.png,300,300,1,4
+
