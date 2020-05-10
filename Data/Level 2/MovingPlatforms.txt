@@ -3,21 +3,44 @@
 750,275,Set 2/stonePlatform.png,1000,0,2,0
 894,275,Set 2/stonePlatform.png,1000,0,2,0
 //
-1900,175,Set 2/stonePlatform.png,500,300,3,2
-2044,175,Set 2/stonePlatform.png,500,300,3,2
+2900,175,Set 2/stonePlatform.png,500,300,3,2
+3044,175,Set 2/stonePlatform.png,500,300,3,2
 //
-2750,175,Set 2/stonePlatform.png,0,300,0,2
-2894,175,Set 2/stonePlatform.png,0,300,0,2
+3750,175,Set 2/stonePlatform.png,0,300,0,2
+3894,175,Set 2/stonePlatform.png,0,300,0,2
 //
 //3250,175,Set 2/cageBottom.png,0,300,0,2
 //3323,175,Set 2/cageBottom.png,0,300,0,2
 //
-3250,225,Set 2/stonePlatform.png,300,300,1,4
-3394,225,Set 2/chainAttachLeft.png,300,300,1,4
-3394,225,Set 2/longChainHoriz.png,300,300,1,4
-3538,225,Set 2/longChainHoriz.png,300,300,1,4
-3682,225,Set 2/chainAttachRight.png,300,300,1,4
-3690,225,Set 2/stonePlatform.png,300,300,1,4
+4850,225,Set 2/stonePlatform.png,300,300,1,4
+4994,225,Set 2/chainAttachLeft.png,300,300,1,4
+4994,225,Set 2/longChainHoriz.png,300,300,1,4
+5138,225,Set 2/longChainHoriz.png,300,300,1,4
+5282,225,Set 2/chainAttachRight.png,300,300,1,4
+5290,225,Set 2/stonePlatform.png,300,300,1,4
 //3682,225,Set 2/longChainHoriz.png,300,300,1,4
 //3826,225,Set 2/longChainHoriz.png,300,300,1,4
+//
+5750,50,Set 2/cageMiddle.png,0,550,0,2
+5880,550,Set 2/cageMiddle.png,0,550,0,-2
+//
+6010,50,Set 2/cageMiddle.png,0,550,0,2
+6140,550,Set 2/cageMiddle.png,0,550,0,-2
+//
+6270,50,Set 2/cageMiddle.png,0,550,0,2
+6400,550,Set 2/cageMiddle.png,0,550,0,-2
+//
+6530,50,Set 2/cageMiddle.png,0,550,0,2
+6660,550,Set 2/cageMiddle.png,0,550,0,-2
+//
+6747,275,Set 2/brick.png,1000,0,2,0
+6777,275,Set 2/brick.png,1000,0,2,0
+6807,275,Set 2/brick.png,1000,0,2,0
+6837,275,Set 2/brick.png,1000,0,2,0
+6867,275,Set 2/brick.png,1000,0,2,0
+6897,275,Set 2/brick.png,1000,0,2,0
+6927,275,Set 2/brick.png,1000,0,2,0
+6957,275,Set 2/brick.png,1000,0,2,0
+6987,275,Set 2/brick.png,1000,0,2,0
+7017,275,Set 2/brick.png,1000,0,2,0
 

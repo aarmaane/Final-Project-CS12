@@ -5,8 +5,26 @@
 1017,122,Set 2/longChain.png,1000,0,2,0
 1017,-22,Set 2/longChain.png,1000,0,2,0
 //
-2884,-412,Set 2/longChain.png,0,300,0,2
-2884,-268,Set 2/longChain.png,0,300,0,2
-2884,-124,Set 2/longChain.png,0,300,0,2
-2884,20,Set 2/longChain.png,0,300,0,2
-2884,164,Set 2/chainAttach.png,0,300,0,2
+2900,115,Set 2/chain.png,500,300,3,2
+3168,67,Set 2/chain.png,500,300,3,2
+3168,115,Set 2/chain.png,500,300,3,2
+2900,165,Set 2/chainAttach.png,500,300,3,2
+3168,165,Set 2/chainAttach.png,500,300,3,2
+3010,175,Set 2/banner.png,500,300,3,2
+//
+3884,-412,Set 2/longChain.png,0,300,0,2
+3884,-268,Set 2/longChain.png,0,300,0,2
+3884,-124,Set 2/longChain.png,0,300,0,2
+3884,20,Set 2/longChain.png,0,300,0,2
+3884,164,Set 2/chainAttach.png,0,300,0,2
+//
+4890,225,Set 2/banner.png,300,300,1,4
+5330,225,Set 2/banner.png,300,300,1,4
+//
+6750,266,Set 2/chainAttach.png,1000,0,2,0
+6750,122,Set 2/longChain.png,1000,0,2,0
+6750,-22,Set 2/longChain.png,1000,0,2,0
+7017,266,Set 2/chainAttach.png,1000,0,2,0
+7017,122,Set 2/longChain.png,1000,0,2,0
+7017,-22,Set 2/longChain.png,1000,0,2,0
+//

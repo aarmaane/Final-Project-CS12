@@ -53,6 +53,7 @@ public class LevelProp {
             }
         }
         catch (IOException e) {
+            System.out.println(imageName);
             System.out.println("Level prop picture missing!");
             e.printStackTrace();
             System.exit(1);
@@ -65,10 +66,10 @@ public class LevelProp {
         xMove += xSpeed;
         yMove += ySpeed;
         // Checking limits
-        if(xMove >= xLimit || xMove == 0){
+        if(Math.abs(xMove) >= xLimit || xMove == 0){
             xSpeed *= -1;
         }
-        if(yMove >= yLimit || yMove == 0){
+        if(Math.abs(yMove) >= yLimit || yMove == 0){
             ySpeed *= -1;
         }
     }

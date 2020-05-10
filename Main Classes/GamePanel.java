@@ -148,7 +148,7 @@ class GamePanel extends JPanel implements KeyListener {
         if(player.isDead()){
             player.restoreHealth();
         }
-        player.resetPos(0 ,366);
+       // player.resetPos(0 ,366);
         // Resetting music
         levelMusic.play();
         if(Sound.isMuted()){
@@ -202,7 +202,7 @@ class GamePanel extends JPanel implements KeyListener {
         // Drawing chests
         for(Chest chest: chests){
             g.drawImage(chest.getSprite(), chest.getHitbox().x-levelOffset,chest.getHitbox().y, this);
-            //g.drawRect(chest.getHitbox().x-levelOffset,chest.getHitbox().y, chest.getHitbox().width, chest.getHitbox().height);
+            g.drawRect(chest.getHitbox().x-levelOffset,chest.getHitbox().y, chest.getHitbox().width, chest.getHitbox().height);
         }
         // Drawing enemies
         for(Enemy enemy: enemies){
@@ -240,7 +240,7 @@ class GamePanel extends JPanel implements KeyListener {
         }
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
-        //g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
+        g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
         //g.drawRect(player.getAttackBox().x - levelOffset, player.getAttackBox().y, player.getAttackBox().width, player.getAttackBox().height);
         // Drawing game stats
         /*Fills in both of the stat bars from darker shades to lighter shades by increasing the respective rgb value by 1 while shifting the
