@@ -12,7 +12,9 @@
 4825,325,Set 2/floorMiddle.png
 4970,325,Set 2/floorMiddle.png
 5115,325,Set 2/floorMiddle.png
-5260,325,Set 2/floorMiddle.png
-5405,325,Set 2/floorMiddle.png
+5260,425,Set 2/cageBottom.png
+5331,425,Set 2/cageBottom.png
+5402,425,Set 2/cageBottom.png
+//5405,325,Set 2/floorMiddle.png
 5550,325,Set 2/floorMiddle.png
 5695,325,Set 2/floorMiddle.png
