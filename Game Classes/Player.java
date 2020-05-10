@@ -45,7 +45,7 @@ public class Player {
         // Setting gameplay fields
         maxStamina = 50;
         stamina = maxStamina;
-        maxHealth=100;
+        maxHealth=Integer.MAX_VALUE;
         health=maxHealth;
         points=0;
         swordDamage=10;

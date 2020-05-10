@@ -9,6 +9,7 @@ public class Wizard extends Enemy {
     private static Image[] idleSprites = new Image[6];
     private static Image[] deathSprites = new Image[7];
     private boolean isCasting;
+    private double attackDelay;
     // Class Initialization
     public static void init(){
         cast1Sprites = Utilities.spriteArrayLoad(cast1Sprites, "Enemies/Wizard/cast1-");
@@ -22,7 +23,7 @@ public class Wizard extends Enemy {
         super(data);
         health = 300 * difficulty;
         maxHealth = health;
-        damage = 35;
+        damage = 0;
         isActive = true;
         isCasting = true;
 
@@ -48,7 +49,7 @@ public class Wizard extends Enemy {
 
     @Override
     public void updateAttack(Player player) {
-        super.updateAttack(player);
+        //super.updateAttack(player);
     }
 
     @Override
@@ -68,21 +69,27 @@ public class Wizard extends Enemy {
                 }
             }
         }
-        /*
         else if(isAttacking){
+            spriteCount += 0.05;
+            if(spriteCount > cast1Sprites.length){
+                spriteCount = 0;
+                attackDelay=5;
+                isAttacking = false;
+            }
+        }
+
+
+
+        else{
             spriteCount += 0.05;
             if(spriteCount > idleSprites.length){
                 spriteCount = 0;
             }
         }
-
-         */
-
-        else{
-            spriteCount += 0.05;
-            if(spriteCount > cast1Sprites.length){
-                spriteCount = 0;
-            }
+        System.out.println(attackDelay);
+        attackDelay-=0.05;
+        if(attackDelay<0){
+            isAttacking = true;
         }
 
 
@@ -113,8 +120,11 @@ public class Wizard extends Enemy {
                 sprite = hurtSprites[spriteIndex];
             }
         }
-        else{
+        else if(isAttacking){
             sprite = cast1Sprites[spriteIndex];
+        }
+        else{
+            sprite = idleSprites[spriteIndex];
         }
         if(direction == RIGHT){
             sprite = Utilities.flipSprite(sprite);

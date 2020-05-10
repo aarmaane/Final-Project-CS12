@@ -8,7 +8,7 @@ public class Projectile {
     private double x, y;
     private double damage, speed;
     private int direction, type;
-    private double spriteCount = 0;
+    private double spriteCount;
     private boolean exploding, doneExploding;
     // Angled projectile fields
     private double angle;
@@ -47,7 +47,10 @@ public class Projectile {
         else{
             this.direction = LEFT;
         }
-        this.angle = Math.atan((targY - getHitbox().y)/(targX - getHitbox().x));
+        this.angle =Math.atan((y-targY)/(x-targX));
+        System.out.println((getHitbox().y-targY)/(getHitbox().x-targX));
+        System.out.println(Math.toDegrees(angle));
+        //System.out.println(getHitbox().x-targX);
         projectileSprites = Utilities.spriteArrayLoad(projectileSprites, "Projectiles/"+imagePath);
     }
     public void update(){
@@ -57,6 +60,7 @@ public class Projectile {
     public void updatePos(){
         if(!exploding){
             if(isAngled){
+                System.out.println(x+" "+y);
                 x += Math.cos(angle) * speed;
                 y += Math.sin(angle) * speed;
             }
