@@ -17,9 +17,7 @@ class GamePanel extends JPanel implements KeyListener {
     private int levelOffset = 0;
     private boolean paused = false;
     // Game state related fields
-    private boolean fade = false;
     private int barFade = 0, barFadeAddition = 5;
-    private int fadeInt = 0, fadeChange = 5;
     private boolean levelEnding, pointsGiven;
     private int endScreenFrames, bonusPoints;
     // Game Images
@@ -50,8 +48,9 @@ class GamePanel extends JPanel implements KeyListener {
     private Font gameFont;
     private Font gameFontBig;
     private Font gameFontSmall;
-    //Composite
+    // Graphics related fields
     private Composite comp;
+    private FadeEffect fade = new FadeEffect();
     // Constructor for GamePanel
     public GamePanel(MainGame game){
         // Setting up the GamePanel
@@ -154,7 +153,8 @@ class GamePanel extends JPanel implements KeyListener {
         if(Sound.isMuted()){
             levelMusic.forceMute();
         }
-        fade = true; fadeChange = -3; fadeInt = 255; // Starting the fade in
+        fade.start(FadeEffect.FADEIN, 3);
+        //fade = true; fadeChange = -3; fadeInt = 255; // Starting the fade in
     }
 
     // All window related methods
@@ -286,8 +286,8 @@ class GamePanel extends JPanel implements KeyListener {
         if(paused){
             drawPause(g);
         }
-        if(fade){
-            drawFade(g);
+        if(fade.isActive()){
+            fade.draw(g);
         }
     }
     public void drawPause(Graphics g){
@@ -298,10 +298,6 @@ class GamePanel extends JPanel implements KeyListener {
         g.drawString("Press ESC to unpause", 335, 330);
         g.setFont(gameFontBig);
         g.drawString("Paused", 400, 300);
-    }
-    public void drawFade(Graphics g){
-        g.setColor(new Color(0, 0, 0, fadeInt));
-        g.fillRect(0, 0, getWidth(), getHeight());
     }
     public void drawHealth(Graphics g, Enemy enemy){
         double health = enemy.getHealth();
@@ -389,10 +385,6 @@ class GamePanel extends JPanel implements KeyListener {
         else if(keyCode == KeyEvent.VK_SEMICOLON){
             loadLevel(levelNum);
             System.out.println("Level reloaded");
-        }
-        else if(keyCode == KeyEvent.VK_5){
-            player.setPos(9000,100);
-            fade=true;
         }
     }
     @Override
@@ -486,8 +478,8 @@ class GamePanel extends JPanel implements KeyListener {
             castSound.play();
         }
         // Check if the player is dead
-        if(player.isDead() && !fade){
-            fade = true; fadeChange = 1; fadeInt = 0;
+        if(player.isDead() && !fade.isActive()){
+            fade.start(FadeEffect.FADEOUT, 1);
         }
         if(player.getHitbox().y > getHeight()){
             //player.kill();
@@ -608,14 +600,11 @@ class GamePanel extends JPanel implements KeyListener {
         }
     }
     public void changeFade(){
-        if(fade){
-            fadeInt+= fadeChange;
-            if(fadeInt==255){
+        if(fade.isActive()){
+            fade.update();
+            if(fade.isDoneFadeOut()){
                 levelMusic.stop();
                 gameFrame.switchPanel(MainGame.SHOPPANEL);
-            }
-            else if(fadeInt==0){
-                fade=false;
             }
         }
         // Allowing the powerup fade to continue
@@ -647,7 +636,7 @@ class GamePanel extends JPanel implements KeyListener {
             }
         }
         if(endScreenFrames == 600){
-            fade = true; fadeChange = 1; fadeInt = 0;
+            fade.start(FadeEffect.FADEOUT, 1);
         }
     }
     public void checkInputs(){
