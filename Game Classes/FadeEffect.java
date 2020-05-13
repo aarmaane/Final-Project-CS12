@@ -24,7 +24,6 @@ public class FadeEffect {
         if(active){
             fadeInt += fadeSpeed;
             if((activeType == FADEOUT && fadeInt > 255) || (activeType == FADEIN && fadeInt < 0)) {
-                System.out.println("ded");
                 active = false;
             }
         }
@@ -35,7 +34,6 @@ public class FadeEffect {
         g.fillRect(0, 0,960,590);
     }
     // Getter methods
-
     public boolean isActive() {
         return active;
     }

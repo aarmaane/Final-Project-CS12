@@ -83,8 +83,7 @@ class GamePanel extends JPanel implements KeyListener {
     }
 
     // Method to load up all level Objects from the corresponding text files
-    public void loadLevel(int levelNum){
-        this.levelNum = levelNum;
+    public void loadLevel(){
         // Emptying previous values
         platforms.clear();
         noCollideProps.clear();
@@ -105,11 +104,11 @@ class GamePanel extends JPanel implements KeyListener {
             /* Loading Game-Object Arrays */
 
             // Loading platforms
-            for(String data: Utilities.loadFile("Platforms.txt", levelNum)){
-                platforms.add(new LevelProp(data, false, false));
-            }
             for(String data: Utilities.loadFile("DisappearingPlatforms.txt", levelNum)){
                 platforms.add(new LevelProp(data, true, false));
+            }
+            for(String data: Utilities.loadFile("Platforms.txt", levelNum)){
+                platforms.add(new LevelProp(data, false, false));
             }
             for(String data: Utilities.loadFile("MovingPlatforms.txt", levelNum)){
                 platforms.add(new LevelProp(data, false, true));
@@ -383,7 +382,7 @@ class GamePanel extends JPanel implements KeyListener {
             player.resetPos(getMousePosition().x + levelOffset - 50, getMousePosition().y);
         }
         else if(keyCode == KeyEvent.VK_SEMICOLON){
-            loadLevel(levelNum);
+            loadLevel();
             System.out.println("Level reloaded");
         }
     }
@@ -664,10 +663,19 @@ class GamePanel extends JPanel implements KeyListener {
         }
         player.iterateTime();
     }
-
+    // Setter methods
+    public void setLevelNum(int level){
+        levelNum = level;
+    }
     // Getter methods
     public Player getPlayer(){
         return player;
+    }
+    public Font getGameFont(){
+        return gameFont;
+    }
+    public int getLevelNum(){
+        return levelNum;
     }
     public boolean isPaused(){
         return paused;

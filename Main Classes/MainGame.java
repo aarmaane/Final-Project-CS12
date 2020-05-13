@@ -11,25 +11,31 @@ public class MainGame extends JFrame {
     public static final String GAMEPANEL = "game";
     public static final String MENUPANEL = "menu";
     public static final String SHOPPANEL = "shop";
+    public static final String TRANSITIONPANEL = "transition";
     // Declaring fields
     private GamePanel game;
     private MainMenu menu;
     private ShopPanel shop;
+    private TransitionPanel transition;
     private JPanel panelManager;
     private String activePanel;
     private Timer myTimer; // Timer to call the game functions each frame
     private int runTime; // Variable to keep track of the milliseconds that have passed since the start of the game
     public MainGame() throws IOException {
         super("Game"); // Setting the title
+        // Initalizing Main Classes
+        Button.init();
         // Creating the JPanels for the game
         game = new GamePanel(this);
         menu = new MainMenu(this);
         shop = new ShopPanel(this);
+        transition = new TransitionPanel(this);
         panelManager = new JPanel(new CardLayout());
         // Setting up the CardLayout in panelManager
         panelManager.add(game, GAMEPANEL);
         panelManager.add(menu, MENUPANEL);
         panelManager.add(shop, SHOPPANEL);
+        panelManager.add(transition, TRANSITIONPANEL);
         switchPanel(MENUPANEL);
         // Creating the JFrame and JPanels
         setSize(960,590);
@@ -43,6 +49,7 @@ public class MainGame extends JFrame {
         // Starting a timer to update the frames
         myTimer = new Timer(10, new TickListener());	 // trigger every 10 ms
         myTimer.start();
+
     }
     public void switchPanel(String targetPanel){
         CardLayout cardLayout = (CardLayout) panelManager.getLayout();
@@ -73,7 +80,12 @@ public class MainGame extends JFrame {
                 menu.repaint();
             }
             else if(activePanel.equals(SHOPPANEL)){
+                shop.checkButtons();
                 shop.repaint();
+            }
+            else if(activePanel.equals(TRANSITIONPANEL)){
+                transition.update();
+                transition.repaint();
             }
         }
     }

@@ -10,6 +10,7 @@ public class MainMenu extends JPanel implements MouseListener {
     // Window related Objects
     private MainGame gameFrame;
     private Sound menuMusic = new Sound("Assets/Sounds/Music/menu.wav", 80);
+    private FadeEffect fade = new FadeEffect();
     // Buttons
     private final ArrayList<Button> buttons = new ArrayList<>();
     // Background related fields
@@ -27,14 +28,13 @@ public class MainMenu extends JPanel implements MouseListener {
         screenWidth = 960;
         dummy.resetPos(0,366);
         // Declaring buttons
-        Button.init();
-        Button playButton = new Button(new Rectangle(400,300, 150, 50), "Play", 46);
+        Button playButton = new Button(new Rectangle(396,300, 150, 50), "Play", 46);
         playButton.setActionCommand("Play");
 
-        Button instructButton = new Button(new Rectangle(328, 350, 300, 50), "Instructions", 46);
+        Button instructButton = new Button(new Rectangle(323, 350, 300, 50), "Instructions", 46);
         instructButton.setActionCommand("Instruct");
 
-        Button quitButton = new Button(new Rectangle(400 , 400, 150, 50), "Quit", 46);
+        Button quitButton = new Button(new Rectangle(396 , 400, 150, 50), "Quit", 46);
         quitButton.setActionCommand("Quit");
         buttons.add(playButton);
         buttons.add(instructButton);
@@ -53,13 +53,26 @@ public class MainMenu extends JPanel implements MouseListener {
             g.drawImage(platform.getPropImage(), platformsX1 + i*144 - scrollOffset,475, this);
             g.drawImage(platform.getPropImage(), platformsX2 + i*144 - scrollOffset,475, this);
         }
+        for(Button button: buttons){
+            button.drawRect(g);
+        }
         g.setColor(Color.RED);
         g.drawString("Main menu", 435,200);
+        g.setColor(Color.WHITE);
+        g.drawLine(getWidth()/2 ,0, getWidth()/2, 960);
+        fade.draw(g);
     }
     public void update(){
         // Making sure that the music is always looping
         if(!menuMusic.isPlaying()){
             menuMusic.play();
+        }
+        // Updating the fade effect
+        fade.update();
+        if(fade.isDoneFadeOut()){
+            menuMusic.stop();
+            menuMusic.closeSound();
+            gameFrame.switchPanel(MainGame.SHOPPANEL);
         }
         // Updating the dummy player
         dummy.move(Player.RIGHT);
@@ -78,6 +91,9 @@ public class MainMenu extends JPanel implements MouseListener {
         }
     }
     public void checkButtons(){
+        if(fade.isActive()){
+            return; // Don't update buttons during the fade
+        }
         Point mouse = getMousePosition();
         if(mouse != null){
             for(Button button: buttons){
@@ -85,15 +101,15 @@ public class MainMenu extends JPanel implements MouseListener {
             }
         }
     }
-    // Button Listner
+    // Button Listener
     public class ButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
             String buttonString = e.getActionCommand();
             if(buttonString.equals("Play")){
-                menuMusic.stop();
-                menuMusic.closeSound();
-                gameFrame.switchPanel(MainGame.SHOPPANEL);
+                if(!fade.isActive()){
+                    fade.start(FadeEffect.FADEOUT, 1);
+                }
             }
             else if(buttonString.equals("Quit")){
                 System.exit(0);
