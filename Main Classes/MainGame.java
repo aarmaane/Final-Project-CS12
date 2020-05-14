@@ -49,7 +49,9 @@ public class MainGame extends JFrame {
         // Starting a timer to update the frames
         myTimer = new Timer(10, new TickListener());	 // trigger every 10 ms
         myTimer.start();
-
+        // Running panel setups
+        menu.init();
+        shop.init();
     }
     public void switchPanel(String targetPanel){
         CardLayout cardLayout = (CardLayout) panelManager.getLayout();
@@ -80,6 +82,7 @@ public class MainGame extends JFrame {
                 menu.repaint();
             }
             else if(activePanel.equals(SHOPPANEL)){
+                shop.update();
                 shop.checkButtons();
                 shop.repaint();
             }

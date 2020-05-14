@@ -24,17 +24,18 @@ public class MainMenu extends JPanel implements MouseListener {
         gameFrame = game;
         setSize(960,590);
         setLayout(null);
+        addMouseListener(this);
         // Setting up background animation
         screenWidth = 960;
         dummy.resetPos(0,366);
+    }
+    public void init(){
         // Declaring buttons
-        Button playButton = new Button(new Rectangle(396,300, 150, 50), "Play", 46);
+        Button playButton = new Button(new Rectangle((int)getSize().getWidth()/2 - 76,300, 150, 50), "Play", 46);
         playButton.setActionCommand("Play");
-
-        Button instructButton = new Button(new Rectangle(323, 350, 300, 50), "Instructions", 46);
+        Button instructButton = new Button(new Rectangle(getWidth()/2 - 149, 350, 300, 50), "Instructions", 46);
         instructButton.setActionCommand("Instruct");
-
-        Button quitButton = new Button(new Rectangle(396 , 400, 150, 50), "Quit", 46);
+        Button quitButton = new Button(new Rectangle(getWidth()/2 - 76 , 400, 150, 50), "Quit", 46);
         quitButton.setActionCommand("Quit");
         buttons.add(playButton);
         buttons.add(instructButton);
@@ -43,7 +44,6 @@ public class MainMenu extends JPanel implements MouseListener {
             button.addActionListener(new ButtonListener());
             add(button);
         }
-        addMouseListener(this);
     }
     // Window related methods
     public void paintComponent(Graphics g){

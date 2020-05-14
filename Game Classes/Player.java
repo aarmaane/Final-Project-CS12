@@ -362,6 +362,7 @@ public class Player {
     }
     public void restoreHealth(){
         health = maxHealth;
+        stamina = maxStamina;
         isDying = false;
     }
     public void enemyHit(Enemy enemy){

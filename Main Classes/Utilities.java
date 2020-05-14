@@ -28,6 +28,12 @@ public class Utilities {
         //BufferedImage newImage =new BufferedImage(sprite.getHeight(null), sprite.getWidth(null) );
         return rotateOp.filter((BufferedImage) sprite,null );
     }
+    public static Image scaleSprite(Image sprite){
+        AffineTransform scale = AffineTransform.getScaleInstance(2, 2);
+        AffineTransformOp scaleOp = new AffineTransformOp(scale, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        sprite = scaleOp.filter((BufferedImage)sprite, null);
+        return sprite;
+    }
     public static Rectangle rectFinder(Image sprite){
         BufferedImage pic = (BufferedImage) sprite;
         int smallestX; int smallestY; int biggestX; int biggestY;

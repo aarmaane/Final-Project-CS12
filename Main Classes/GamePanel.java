@@ -45,9 +45,7 @@ class GamePanel extends JPanel implements KeyListener {
     private ArrayList<Item> items = new ArrayList<>();
     private ArrayList<IndicatorText> indicatorText = new ArrayList<>();
     // Fonts
-    private Font gameFont;
-    private Font gameFontBig;
-    private Font gameFontSmall;
+    private Font gameFont, gameFontBig, gameFontSmall;
     // Graphics related fields
     private Composite comp;
     private FadeEffect fade = new FadeEffect();
@@ -529,7 +527,7 @@ class GamePanel extends JPanel implements KeyListener {
         // Checking projectile collision
         for(Projectile projectile:projectiles){
             for(Enemy enemy:enemies) {
-                if(projectile.getType()==Projectile.PLAYER) {
+                if(projectile.getType() == Projectile.PLAYER) {
                     if (!enemy.isDying() && !projectile.isExploding() && enemy.getHitbox().intersects(projectile.getHitbox())) {
                         double damageDone = enemy.castHit(projectile);
                         damageDone = Utilities.roundOff(damageDone, 1);
@@ -548,7 +546,7 @@ class GamePanel extends JPanel implements KeyListener {
                         projectile.explode();
                         castHitSound.stop();
                         castHitSound.play();
-                        indicatorText.add(new IndicatorText(player.getHitbox().x, player.getHitbox().y, "-" + damageDone, Color.ORANGE));
+                        indicatorText.add(new IndicatorText(player.getHitbox().x, player.getHitbox().y, "-" + damageDone, Color.RED));
                     }
                 }
             }

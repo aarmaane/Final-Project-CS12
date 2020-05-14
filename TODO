@@ -1,7 +1,5 @@
 TO DO List:
-- Moving platforms
 - Skeletons in the closet
-- Wizard objects
 - Make progress on shop panel
     - Double jump
     - Add more damage to attacks
@@ -12,6 +10,10 @@ TO DO List:
 - Menu Panel
 - Boss Level
 - Ability to save progress
+
+Glitches:
+- Crash when wizard and player overlap perfectly
+- Ghosts dont follow you when jumping
 
 Future Ideas:
 - Combo moves or additional attacks
