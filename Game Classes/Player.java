@@ -12,7 +12,6 @@ public class Player {
     private double acceleration, maxSpeed;
     private int direction;
     private boolean onGround, onMovingPlat, holdingJump;
-    private boolean hasCastScope, hasInstantCast,hasDoubleJump,hasHyperspeed;
     private double spriteCount = 0;
     private int jumpCount = 1;
     // Players' gameplay-related fields
@@ -22,6 +21,8 @@ public class Player {
     private boolean isAttacking, isCasting, isHurt, isDying;
     private int healthTimer, energyTimer;
     private int groundAttackNum, airAttackNum;
+    // Player's Upgrade-Related Fields
+    private boolean hasCastScope, hasInstantCast, hasDoubleJump, hasHyperspeed;
     // Image Arrays holding Player's Sprites
     private Image[] idleSprites = new Image[4];
     private Image[] runSprites = new Image[6];
@@ -120,7 +121,7 @@ public class Player {
         if(isCasting || isAttacking || isDying){
             return;
         }
-        if(type == INITIAL && (onGround ||( hasDoubleJump && jumpCount <2))){
+        if(type == INITIAL && (onGround || ( hasDoubleJump && jumpCount < 2))){
             spriteCount = 0;
             onGround = false;
             isHurt = false;
@@ -128,19 +129,11 @@ public class Player {
             airAttackNum = 1;
             jumpSound.play();
             jumpCount++;
-                //onGround = true;
-
         }
         else if(type == NORMAL){
             holdingJump = true;
 
         }
-        if (velocityY <=(double)1){
-            if(jumpCount>2) {
-                jumpCount = 1;
-            }
-        }
-
     }
     public void attack(){
         if(isAttacking || isCasting || isDying) {
@@ -173,7 +166,6 @@ public class Player {
         }
     }
     public void castMagic(){
-        System.out.println(isCasting);
         if(isAttacking || isCasting || !onGround){
             return;
         }
@@ -200,14 +192,7 @@ public class Player {
     // Method to calculate and apply the physics of the Player
     public void updateMotion(){
         // Updating position from velocities
-
-        if(hasHyperspeed) {
-            x += velocityX*1.5;
-
-        }
-        else{
-            x += velocityX;
-        }
+        x += velocityX;
         y += velocityY;
         // Applying friction force
         if(onGround){ // Friction only applies when the Player is on the ground
@@ -226,12 +211,7 @@ public class Player {
         }
         // Applying gravity
         if(velocityY < 0 && holdingJump){ // If the player is jumping and holding the jump key, use lower gravity to allow for a variable jump height
-            if(hasHyperspeed) {
-                velocityY += GRAVITY / 4;
-            }
-            else{
-                velocityY += GRAVITY / 3;
-            }
+            velocityY += GRAVITY / 3;
             holdingJump = false; // Resetting the variable so it doesn't get applied next frame without input
         }
         else{ // Otherwise use normal gravity values
@@ -240,6 +220,7 @@ public class Player {
         // Checking if the Player is falling (This will update onGround when the Player leaves a platform without jumping)
         if(onGround && velocityY > 1){
             onGround = false;
+            jumpCount = 1;
             if(isCasting || isAttacking){ // Cancelling any spell cast or attack
                 isCasting = false;
                 isAttacking = false;
@@ -338,6 +319,7 @@ public class Player {
                 y = (rect.y - hitbox.height) - (hitbox.y - y); //
                 velocityY = 0;
                 onGround = true;
+                jumpCount = 0;
             }
         }
         if(prop.isMoving() && !onMovingPlat && onGround){
@@ -412,11 +394,9 @@ public class Player {
             spriteCount = 0;
         }
     }
-    public double castHit(Projectile cast){
-        double damageDone= 0;
+    public void castHit(Projectile cast){
         if(!hasHealthPower()) {
-            damageDone = (Utilities.randint(80,100)/100.0)*cast.getDamage();
-            health -= damageDone;
+            health -= cast.getDamage();
             velocityY = -3;
             if (cast.getSpeed() > 0) {
                 velocityX = 3;
@@ -429,8 +409,8 @@ public class Player {
             if(health <= 0){
                 isDying = true;
             }
+            textQueue.add(new IndicatorText(getHitbox().x, getHitbox().y, "-" + cast.getDamage(), Color.RED));
         }
-        return damageDone;
     }
 
     public void kill(){

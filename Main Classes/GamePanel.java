@@ -567,12 +567,10 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                 }
                 else{
                     if (!projectile.isExploding() && player.getHitbox().intersects(projectile.getHitbox())) {
-                        double damageDone = player.castHit(projectile);
-                        damageDone = Utilities.roundOff(damageDone, 1);
+                        player.castHit(projectile);
                         projectile.explode();
                         castHitSound.stop();
                         castHitSound.play();
-                        indicatorText.add(new IndicatorText(player.getHitbox().x, player.getHitbox().y, "-" + damageDone, Color.RED));
                     }
                 }
             }
