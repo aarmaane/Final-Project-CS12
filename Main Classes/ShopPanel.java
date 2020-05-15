@@ -102,6 +102,7 @@ public class ShopPanel extends JPanel implements MouseListener {
         }
         for(Button button: buttons){
             button.drawRect(g);
+            button.draw(g);
         }
         // Drawing tooltips
         if(hoveredButton != null){
@@ -136,9 +137,6 @@ public class ShopPanel extends JPanel implements MouseListener {
                     hoveredButton = button;
                 }
             }
-        }
-        if(hoveredButton != null){
-            System.out.println(hoveredButton.getActionCommand());
         }
     }
     // Button Listener

@@ -55,6 +55,7 @@ public class MainMenu extends JPanel implements MouseListener {
         }
         for(Button button: buttons){
             button.drawRect(g);
+            button.draw(g);
         }
         g.setColor(Color.RED);
         g.drawString("Main menu", 435,200);
