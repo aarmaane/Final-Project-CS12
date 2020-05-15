@@ -18,9 +18,11 @@ public class ShopPanel extends JPanel implements MouseListener {
     private Sound shopMusic = new Sound("Assets/Sounds/Music/shop.wav", 80);
     private Font gameFont, gameFontBig;
     private Image checkbox, checkmark;
-    private boolean[] checks= new boolean[4];
+    private boolean[] checks = new boolean[4];
+    private Point mousePoint;
     // Buttons
-    private final ArrayList<Button> buttons = new ArrayList<>();
+    private ArrayList<Button> buttons = new ArrayList<>();
+    private Button hoveredButton;
     // Constructor
     public ShopPanel(MainGame frame){
         gameFrame = frame;
@@ -39,11 +41,11 @@ public class ShopPanel extends JPanel implements MouseListener {
 
         // Declaring Buttons
         Button continueButton = new Button(new Rectangle(getWidth() - 200,getHeight() - 50, 200, 50), "Continue", 35);
-        continueButton.setActionCommand("Continue");
+        continueButton.setActionCommand("continue");
         Button swordUpgrade = new Button(new Rectangle(0,100, 300, 50), "Upgrade Sword", 35);
-        swordUpgrade.setActionCommand("SwordUpgrade");
+        swordUpgrade.setActionCommand("swordUpgrade");
         Button castUpgrade = new Button(new Rectangle(0,200, 300, 50), "Upgrade Cast", 35);
-        castUpgrade.setActionCommand("CastUpgrade");
+        castUpgrade.setActionCommand("castUpgrade");
         //
         Button healthUpgrade = new Button(new Rectangle(0,300, 300, 50), "Upgrade Health", 35);
         healthUpgrade.setActionCommand("healthUpgrade");
@@ -91,7 +93,8 @@ public class ShopPanel extends JPanel implements MouseListener {
         g.drawString("Upgrades",30,75);
         g.drawImage(Utilities.scaleSprite(dummy.getSprite()), getWidth()/2 - 150,150, this);
         g.setColor(Color.BLACK);
-        for(int i = 0; i<checks.length; i++){
+        // Drawing Checkboxes
+        for(int i = 0; i< checks.length; i++){
             g.drawImage(checkbox,580,100*(i+1),this);
             if(checks[i]){
                 g.drawImage(checkmark,575,100*(i+1),this);
@@ -99,6 +102,19 @@ public class ShopPanel extends JPanel implements MouseListener {
         }
         for(Button button: buttons){
             button.drawRect(g);
+        }
+        // Drawing tooltips
+        if(hoveredButton != null){
+            int xPos = mousePoint.x; int yPos = mousePoint.y;
+            if(xPos + 200 > getWidth()){
+                xPos -= 200;
+            }
+            if(yPos + 150 > getHeight()){
+                yPos -= 150;
+            }
+            g.drawRect(xPos, yPos, 200, 150);
+            g.setColor(new Color(0, 0, 0, 150));
+            g.fillRect(xPos, yPos, 200, 150);
         }
         g.drawLine(getWidth()/2 ,0, getWidth()/2, 960);
     }
@@ -111,11 +127,18 @@ public class ShopPanel extends JPanel implements MouseListener {
         }
     }
     public void checkButtons(){
-        Point mouse = getMousePosition();
-        if(mouse != null){
+        mousePoint = getMousePosition();
+        hoveredButton = null;
+        if(mousePoint != null){
             for(Button button: buttons){
-                button.updateHover(mouse);
+                button.updateHover(mousePoint);
+                if(button.isHovered()){
+                    hoveredButton = button;
+                }
             }
+        }
+        if(hoveredButton != null){
+            System.out.println(hoveredButton.getActionCommand());
         }
     }
     // Button Listener
@@ -123,17 +146,17 @@ public class ShopPanel extends JPanel implements MouseListener {
         public void actionPerformed(ActionEvent e) {
             String buttonString = e.getActionCommand();
             switch (buttonString){
-                case "Continue":
+                case "continue":
                     String input = JOptionPane.showInputDialog("Enter level number");
                     game.setLevelNum(Integer.parseInt(input));
                     gameFrame.switchPanel(MainGame.TRANSITIONPANEL);
                     shopMusic.stop();
                     break;
-                case "SwordUpgrade":
+                case "swordUpgrade":
                     dummy.attack();
                     player.upgradeSword(100,10);
                     break;
-                case "CastUpgrade":
+                case "castUpgrade":
                     dummy.castMagic();
                     player.upgradeCast(100,10);
                     break;

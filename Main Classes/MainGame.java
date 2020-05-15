@@ -26,7 +26,6 @@ public class MainGame extends JFrame {
         // Initalizing Main Classes
         Button.init();
         // Creating the JPanels for the game
-        System.setProperty("sun.java2d.opengl", "True");
         game = new GamePanel(this);
         menu = new MainMenu(this);
         shop = new ShopPanel(this);
