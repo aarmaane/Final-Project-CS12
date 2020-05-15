@@ -20,6 +20,14 @@
 2550,325,Set 2/floorMiddle.png
 2695,325,Set 2/floorMiddle.png
 //
+//4800,325,Set 2/floorMiddle.png
+4945,325,Set 2/floorMiddle.png
+5090,325,Set 2/floorMiddle.png
+5235,325,Set 2/floorMiddle.png
+5380,325,Set 2/floorMiddle.png
+5425,325,Set 2/floorMiddle.png
+5570,325,Set 2/floorMiddle.png
+//
 8100,225,Set 2/floorMiddle.png
 8245,275,Set 2/floorMiddle.png
 8390,325,Set 2/floorMiddle.png

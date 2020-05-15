@@ -3,10 +3,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.*;
 import java.util.ArrayList;
 
-class GamePanel extends JPanel implements KeyListener {
+class GamePanel extends JPanel implements KeyListener, MouseListener {
     // Window related Objects
     private boolean[] keysPressed; // Array that keeps track of keys that are pressed down
     private MainGame gameFrame;
@@ -19,6 +21,7 @@ class GamePanel extends JPanel implements KeyListener {
     // Game state related fields
     private int barFade = 0, barFadeAddition = 5;
     private boolean levelEnding, pointsGiven;
+    private boolean click;
     private int endScreenFrames, bonusPoints;
     // Game Images
     private Image enemyHealthBar;
@@ -56,6 +59,7 @@ class GamePanel extends JPanel implements KeyListener {
         setSize(960,590);
         keysPressed = new boolean[KeyEvent.KEY_LAST+1];
         addKeyListener(this);
+        addMouseListener(this);
         try{
             // Loading Images
             enemyHealthBar = ImageIO.read(new File("Assets/Images/Enemies/healthBar.png"));
@@ -393,6 +397,22 @@ class GamePanel extends JPanel implements KeyListener {
     }
     @Override
     public void keyTyped(KeyEvent e) {}
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        //click = true;
+    }
+    @Override
+    public void mousePressed(MouseEvent e) {
+        click = true;
+    }
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        click = false;
+    }
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+    @Override
+    public void mouseExited(MouseEvent e) { }
 
     // Game related methods
     public void update(){
@@ -408,6 +428,7 @@ class GamePanel extends JPanel implements KeyListener {
                 checkActivation(enemy);
             }
         }
+        //System.out.println(click);
         for(Projectile projectile: projectiles){
             projectile.update();
         }
@@ -471,7 +492,12 @@ class GamePanel extends JPanel implements KeyListener {
                 speed = -speed;
                 xPos -= 150;
             }
-            projectiles.add(new Projectile(Projectile.PLAYER, xPos,hitBox.y+hitBox.height/2.0-5,player.getSpellDamage(),speed));
+            if(player.hasCastScope() && click){
+                projectiles.add(new Projectile(Projectile.PLAYER, hitBox.x,hitBox.y,getMousePosition().x,getMousePosition().y,player.getSpellDamage(),speed));
+            }
+            else {
+                projectiles.add(new Projectile(Projectile.PLAYER, xPos, hitBox.y + hitBox.height / 2.0 - 5, player.getSpellDamage(), speed));
+            }
             castSound.play();
         }
         // Check if the player is dead

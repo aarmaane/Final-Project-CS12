@@ -120,7 +120,6 @@ public class Player {
         if(isCasting || isAttacking || isDying){
             return;
         }
-        System.out.println(velocityY+" "+jumpCount);
         if(type == INITIAL && (onGround ||( hasDoubleJump && jumpCount <2))){
             spriteCount = 0;
             onGround = false;
@@ -174,6 +173,7 @@ public class Player {
         }
     }
     public void castMagic(){
+        System.out.println(isCasting);
         if(isAttacking || isCasting || !onGround){
             return;
         }
@@ -200,7 +200,14 @@ public class Player {
     // Method to calculate and apply the physics of the Player
     public void updateMotion(){
         // Updating position from velocities
-        x += velocityX;
+
+        if(hasHyperspeed) {
+            x += velocityX*1.5;
+
+        }
+        else{
+            x += velocityX;
+        }
         y += velocityY;
         // Applying friction force
         if(onGround){ // Friction only applies when the Player is on the ground
@@ -219,7 +226,12 @@ public class Player {
         }
         // Applying gravity
         if(velocityY < 0 && holdingJump){ // If the player is jumping and holding the jump key, use lower gravity to allow for a variable jump height
-            velocityY += GRAVITY/3;
+            if(hasHyperspeed) {
+                velocityY += GRAVITY / 4;
+            }
+            else{
+                velocityY += GRAVITY / 3;
+            }
             holdingJump = false; // Resetting the variable so it doesn't get applied next frame without input
         }
         else{ // Otherwise use normal gravity values
@@ -269,7 +281,12 @@ public class Player {
             }
         }
         else if(isCasting){
-            spriteCount += 0.06;
+            if(hasInstantCast){
+                spriteCount+=0.30;
+            }
+            else{
+                spriteCount += 0.06;
+            }
             if(spriteCount > castSprites.length){
                 isCasting = false;
                 spriteCount = 0;
@@ -566,6 +583,9 @@ public class Player {
 
     public double getStamina() {
         return stamina;
+    }
+    public boolean hasCastScope(){
+        return hasCastScope;
     }
     public double getMaxStamina(){return maxStamina;}
     public int getHealth(){return health;}

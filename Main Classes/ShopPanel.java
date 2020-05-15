@@ -94,7 +94,7 @@ public class ShopPanel extends JPanel implements MouseListener {
         for(int i = 0; i<checks.length; i++){
             g.drawImage(checkbox,580,100*(i+1),this);
             if(checks[i]){
-                g.drawImage(checkmark,590,95*(i+1),this);
+                g.drawImage(checkmark,575,100*(i+1),this);
             }
         }
         for(Button button: buttons){
