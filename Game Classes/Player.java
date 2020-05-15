@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Player {
     // Constants
     public static final int RIGHT = 0, LEFT = 1;
-    public static final int INITIAL = 0, NORMAL = 1;
+    public static final int INITIAL = 0, NORMAL = 1, DEMO = 2;
     private static final double GRAVITY = 0.25;
     // Player's movement-related fields
     private double x, y;
@@ -12,7 +12,9 @@ public class Player {
     private double acceleration, maxSpeed;
     private int direction;
     private boolean onGround, onMovingPlat, holdingJump;
+    private boolean hasCastScope, hasInstantCast,hasDoubleJump,hasHyperspeed;
     private double spriteCount = 0;
+    private int jumpCount = 1;
     // Players' gameplay-related fields
     private int health, maxHealth, points;
     private double stamina, maxStamina;
@@ -118,17 +120,28 @@ public class Player {
         if(isCasting || isAttacking || isDying){
             return;
         }
-        if(type == INITIAL && onGround){
+        System.out.println(velocityY+" "+jumpCount);
+        if(type == INITIAL && (onGround ||( hasDoubleJump && jumpCount <2))){
             spriteCount = 0;
             onGround = false;
             isHurt = false;
             velocityY = -6;
             airAttackNum = 1;
             jumpSound.play();
+            jumpCount++;
+                //onGround = true;
+
         }
         else if(type == NORMAL){
             holdingJump = true;
+
         }
+        if (velocityY <=(double)1){
+            if(jumpCount>2) {
+                jumpCount = 1;
+            }
+        }
+
     }
     public void attack(){
         if(isAttacking || isCasting || isDying) {
@@ -422,7 +435,58 @@ public class Player {
     public void addPoints(int addition){
         points += addition;
     }
+    public void upgradeSword(int amount,int increase){
+        if(points>=amount){
+            points-=amount;
+            swordDamage+=increase;
+        }
+    }
+    public void upgradeCast(int amount,int increase){
+        if(points>=amount){
+            points-=amount;
+            spellDamage+=increase;
+        }
+    }
+    public void upgradeHealth(int amount,int increase){
+        if(points>=amount){
+            points-=amount;
+            maxHealth+=increase;
+        }
+    }
+    public void upgradeStamina(int amount,int increase){
+        if(points>=amount){
+            points-=amount;
+            maxStamina+=increase;
+        }
+    }
+    public void enableCastScope(int amount,int increase){
+        if(points>=amount){
+            points-=amount;
+            hasCastScope = !hasCastScope;
+        }
 
+    }
+    public void enableInstantCast(int amount,int increase){
+        if(points>=amount){
+            points-=amount;
+            hasInstantCast = !hasInstantCast;
+        }
+
+    }
+    public void enableDoubleJump(int amount,int increase){
+        if(points>=amount){
+            points-=amount;
+            hasDoubleJump = !hasDoubleJump;
+        }
+
+    }
+    public void enableHyperspeed(int amount,int increase){
+        if(points>=amount){
+            points-=amount;
+            hasHyperspeed = !hasHyperspeed;
+        }
+
+    }
     // Getter methods
     // Method that returns the player's current sprite by looking at various fields
     public Image getSprite(){
@@ -499,6 +563,7 @@ public class Player {
         }
         return false;
     }
+
     public double getStamina() {
         return stamina;
     }

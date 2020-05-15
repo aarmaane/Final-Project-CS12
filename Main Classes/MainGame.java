@@ -26,6 +26,7 @@ public class MainGame extends JFrame {
         // Initalizing Main Classes
         Button.init();
         // Creating the JPanels for the game
+        System.setProperty("sun.java2d.opengl", "True");
         game = new GamePanel(this);
         menu = new MainMenu(this);
         shop = new ShopPanel(this);
@@ -36,7 +37,7 @@ public class MainGame extends JFrame {
         panelManager.add(menu, MENUPANEL);
         panelManager.add(shop, SHOPPANEL);
         panelManager.add(transition, TRANSITIONPANEL);
-        switchPanel(MENUPANEL);
+        switchPanel(SHOPPANEL);
         // Creating the JFrame and JPanels
         setSize(960,590);
         setResizable(false);

@@ -1,9 +1,12 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ShopPanel extends JPanel implements MouseListener {
@@ -14,6 +17,8 @@ public class ShopPanel extends JPanel implements MouseListener {
     private Player dummy = new Player();
     private Sound shopMusic = new Sound("Assets/Sounds/Music/shop.wav", 80);
     private Font gameFont, gameFontBig;
+    private Image checkbox, checkmark;
+    private boolean[] checks= new boolean[4];
     // Buttons
     private final ArrayList<Button> buttons = new ArrayList<>();
     // Constructor
@@ -27,7 +32,11 @@ public class ShopPanel extends JPanel implements MouseListener {
         addMouseListener(this);
         setLayout(null);
     }
-    public void init(){
+    public void init() throws IOException {
+        //Loading images
+        checkbox= ImageIO.read(new File("Assets/Images/Shop/checkbox.png"));
+        checkmark = ImageIO.read(new File("Assets/Images/Shop/checkmark.png"));
+
         // Declaring Buttons
         Button continueButton = new Button(new Rectangle(getWidth() - 200,getHeight() - 50, 200, 50), "Continue", 35);
         continueButton.setActionCommand("Continue");
@@ -35,10 +44,30 @@ public class ShopPanel extends JPanel implements MouseListener {
         swordUpgrade.setActionCommand("SwordUpgrade");
         Button castUpgrade = new Button(new Rectangle(0,200, 300, 50), "Upgrade Cast", 35);
         castUpgrade.setActionCommand("CastUpgrade");
+        //
+        Button healthUpgrade = new Button(new Rectangle(0,300, 300, 50), "Upgrade Health", 35);
+        healthUpgrade.setActionCommand("healthUpgrade");
+        Button staminaUpgrade = new Button(new Rectangle(0,400, 300, 50), "Upgrade Stamina", 35);
+        staminaUpgrade.setActionCommand("staminaUpgrade");
+        //
+        Button enableScope = new Button(new Rectangle(640,400, 300, 50), "Cast Scope", 35);
+        enableScope.setActionCommand("castScope");
+        Button enableInstantCast = new Button(new Rectangle(640,300, 300, 50), "Instant Cast", 35);
+        enableInstantCast.setActionCommand("instantCast");
+        Button enableDoubleJump = new Button(new Rectangle(640,100, 300, 50), "Double jump", 35);
+        enableDoubleJump.setActionCommand("doubleJump");
+        Button enableHyperSpeed = new Button(new Rectangle(640,200, 300, 50), "Hyperspeed", 35);
+        enableHyperSpeed.setActionCommand("hyperspeed");
         // Setting up Button Array
         buttons.add(continueButton);
         buttons.add(swordUpgrade);
+        buttons.add(healthUpgrade);
+        buttons.add(staminaUpgrade);
         buttons.add(castUpgrade);
+        buttons.add(enableScope);
+        buttons.add(enableInstantCast);
+        buttons.add(enableDoubleJump);
+        buttons.add(enableHyperSpeed);
         for(Button button: buttons){
             button.addActionListener(new ButtonListener());
             add(button);
@@ -56,8 +85,18 @@ public class ShopPanel extends JPanel implements MouseListener {
         g.setColor(Color.GREEN);
         g.setFont(gameFontBig);
         g.drawString("SHOP", getWidth()/2 - 58, 590 - getHeight());
+        g.setColor(new Color(8, 89, 255));
+        g.drawString("Abilities",690,75);
+        g.setColor(new Color(222, 255, 10));
+        g.drawString("Upgrades",30,75);
         g.drawImage(Utilities.scaleSprite(dummy.getSprite()), getWidth()/2 - 150,150, this);
         g.setColor(Color.BLACK);
+        for(int i = 0; i<checks.length; i++){
+            g.drawImage(checkbox,580,100*(i+1),this);
+            if(checks[i]){
+                g.drawImage(checkmark,590,95*(i+1),this);
+            }
+        }
         for(Button button: buttons){
             button.drawRect(g);
         }
@@ -92,9 +131,44 @@ public class ShopPanel extends JPanel implements MouseListener {
                     break;
                 case "SwordUpgrade":
                     dummy.attack();
+                    player.upgradeSword(100,10);
                     break;
                 case "CastUpgrade":
                     dummy.castMagic();
+                    player.upgradeCast(100,10);
+                    break;
+                case "healthUpgrade":
+                    player.upgradeHealth(100,10);
+                    break;
+                case "staminaUpgrade":
+                    player.upgradeStamina(100,10);
+                    break;
+                case "doubleJump":
+                    player.enableDoubleJump(0,10);
+                    player.addPoints(100);
+                    checks[0] = true;
+                    break;
+                case "hyperspeed":
+                    player.addPoints(100);
+                    player.enableHyperspeed(0,10);
+                    checks[1] = true;
+                    break;
+                case "instantCast":
+                    player.addPoints(100);
+                    player.enableInstantCast(0,10);
+                    checks[2] = true;
+                    break;
+                case "castScope":
+                    player.addPoints(100);
+                    player.enableCastScope(0,10);
+                    checks[3] = true;
+                    break;
+
+
+
+
+
+
             }
         }
     }
