@@ -99,7 +99,11 @@ public class ShopPanel extends JPanel implements MouseListener {
         }
     }
     @Override
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+        if(!Sound.isMuted()){
+            Sound.toggleVolume();
+        }
+    }
     @Override
     public void mousePressed(MouseEvent e) {}
     @Override
