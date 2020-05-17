@@ -93,7 +93,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         chests.clear();
         projectiles.clear();
         items.clear();
-        levelEnding = false; pointsGiven = false; endScreenFrames = 0; paused = false;
+        levelEnding = false; pointsGiven = false; endScreenFrames = 0; paused = false; bonusPoints = 0;
         try{
             // Setting up level fields
             ArrayList<String> levelData = Utilities.loadFile("LevelData.txt", levelNum);
@@ -355,18 +355,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                 else if(keyCode == KeyEvent.VK_P){
                     player.castMagic();
                 }
-            }
-        }
-        // SOUND TEST
-        if(keyCode == KeyEvent.VK_0){
-            if(!levelMusic.hasStarted()){
-                levelMusic.play();
-            }
-            else if(levelMusic.isPlaying()) {
-                levelMusic.stop();
-            }
-            else{
-                levelMusic.resume();
             }
         }
         // Keeping track of whether or not the key is pressed down

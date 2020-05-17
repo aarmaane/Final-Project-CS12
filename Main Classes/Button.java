@@ -4,16 +4,18 @@ import java.io.File;
 import java.io.IOException;
 
 public class Button extends JButton {
-    private static Font gameFont;
+    private static Font gameFont, gameFontThin;
     // Button fields
     private Rectangle buttonRect;
     private String text;
+    private String[] tooltips;
     private Font buttonFont;
     private boolean hovered;
     private Color color;
     public static void init(){
         try{
             gameFont = Font.createFont(Font.TRUETYPE_FONT, new File("Assets/Fonts/8BitFont.ttf"));
+            gameFontThin = gameFont.deriveFont(30f);
         }
         catch (IOException | FontFormatException e) {
             e.printStackTrace();
@@ -39,6 +41,24 @@ public class Button extends JButton {
         int height = g.getFontMetrics().getHeight();
         g.drawString(text, buttonRect.x + (buttonRect.width - width)/2, buttonRect.y + (buttonRect.height - height)/2 + 25);
     }
+    public void drawTooltip(Graphics g, int x, int y){
+        g.setFont(gameFontThin);
+        g.setColor(Color.GREEN);
+        g.drawString("Price: " + tooltips[0], x, y + 20);
+        g.setColor(Color.WHITE);
+        String[] wordSplit = tooltips[1].split(" ");
+        String line = "";
+        int lineCount = 0;
+        for(String word: wordSplit){
+            if(g.getFontMetrics().stringWidth(line + word) > 250){
+                lineCount++;
+                g.drawString(line, x, y + 40 + lineCount*20);
+                line = "";
+            }
+            line += word + " ";
+        }
+        g.drawString(line, x, y + 40 + (lineCount+1)*20);
+    }
     public void drawRect(Graphics g){
         g.setColor(Color.BLACK);
         g.drawRect(buttonRect.x, buttonRect.y, buttonRect.width, buttonRect.height);
@@ -57,8 +77,15 @@ public class Button extends JButton {
             color = Color.BLACK;
         }
     }
+    public void addTooltip(String text){
+        tooltips = text.split(",");
+    }
 
     public boolean isHovered() {
         return hovered;
+    }
+
+    public boolean hasTooltip(){
+        return tooltips != null;
     }
 }

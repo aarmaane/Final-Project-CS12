@@ -5,9 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ShopPanel extends JPanel implements MouseListener {
     // Window related Objects
@@ -42,16 +45,16 @@ public class ShopPanel extends JPanel implements MouseListener {
         // Declaring Buttons
         Button continueButton = new Button(new Rectangle(getWidth() - 200,getHeight() - 50, 200, 50), "Continue", 35);
         continueButton.setActionCommand("continue");
+        // Left Side Buttons
         Button swordUpgrade = new Button(new Rectangle(0,100, 300, 50), "Upgrade Sword", 35);
         swordUpgrade.setActionCommand("swordUpgrade");
         Button castUpgrade = new Button(new Rectangle(0,200, 300, 50), "Upgrade Cast", 35);
         castUpgrade.setActionCommand("castUpgrade");
-        //
         Button healthUpgrade = new Button(new Rectangle(0,300, 300, 50), "Upgrade Health", 35);
         healthUpgrade.setActionCommand("healthUpgrade");
         Button staminaUpgrade = new Button(new Rectangle(0,400, 300, 50), "Upgrade Stamina", 35);
         staminaUpgrade.setActionCommand("staminaUpgrade");
-        //
+        // Right Side Buttons
         Button enableScope = new Button(new Rectangle(640,400, 300, 50), "Cast Scope", 35);
         enableScope.setActionCommand("castScope");
         Button enableInstantCast = new Button(new Rectangle(640,300, 300, 50), "Instant Cast", 35);
@@ -70,9 +73,13 @@ public class ShopPanel extends JPanel implements MouseListener {
         buttons.add(enableInstantCast);
         buttons.add(enableDoubleJump);
         buttons.add(enableHyperSpeed);
-        for(Button button: buttons){
+        Scanner inFile = new Scanner(new BufferedReader(new FileReader("Data/Tooltips.txt")));
+        for (Button button : buttons) {
             button.addActionListener(new ButtonListener());
             add(button);
+            if(button != continueButton){
+                button.addTooltip(inFile.nextLine());
+            }
         }
     }
     // Window related methods
@@ -105,17 +112,18 @@ public class ShopPanel extends JPanel implements MouseListener {
             button.draw(g);
         }
         // Drawing tooltips
-        if(hoveredButton != null){
+        if(hoveredButton != null && hoveredButton.hasTooltip()){
             int xPos = mousePoint.x; int yPos = mousePoint.y;
-            if(xPos + 200 > getWidth()){
-                xPos -= 200;
+            if(xPos + 300 > getWidth()){
+                xPos -= 300;
             }
             if(yPos + 150 > getHeight()){
                 yPos -= 150;
             }
-            g.drawRect(xPos, yPos, 200, 150);
+            g.drawRect(xPos, yPos, 300, 150);
             g.setColor(new Color(0, 0, 0, 150));
-            g.fillRect(xPos, yPos, 200, 150);
+            g.fillRect(xPos, yPos, 300, 150);
+            hoveredButton.drawTooltip(g, xPos, yPos);
         }
         g.drawLine(getWidth()/2 ,0, getWidth()/2, 960);
     }
