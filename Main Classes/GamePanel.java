@@ -228,7 +228,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         for(Projectile projectile: projectiles){
             if(projectile.getHitbox().x + projectile.getHitbox().width - levelOffset > 0 && projectile.getHitbox().x - levelOffset < 960){
                 g.drawImage(projectile.getSprite(),(int)projectile.getX()-levelOffset, (int)projectile.getY(),this);
-                //g.drawRect(projectile.getHitbox().x-levelOffset,projectile.getHitbox().y,projectile.getHitbox().width,projectile.getHitbox().height);
+                g.drawRect(projectile.getHitbox().x-levelOffset,projectile.getHitbox().y,projectile.getHitbox().width,projectile.getHitbox().height);
             }
         }
         // Drawing items

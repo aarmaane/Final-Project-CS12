@@ -38,6 +38,7 @@ public class Projectile {
             this.direction = LEFT;
         }
         assignArray();
+
     }
     public Projectile(int type, double startX, double startY,double targX,double targY ,double damage, double speed){
         this.type= type;
@@ -111,16 +112,18 @@ public class Projectile {
                 sprite = Utilities.flipSprite(sprite);
             }
             if(isAngled){
+                int noRotHeight = projectileSprites[0].getHeight(null);
+                int noRotWidth = projectileSprites[0].getWidth(null);
                 if(Math.sin(angle) * speed < 0){
                     if(Math.cos(angle) * speed < 0){
-                        sprite = Utilities.rotateSprite(sprite,angle,0,18);
+                        sprite = Utilities.rotateSprite(sprite,angle,0, noRotHeight);
                     }
                     else{
-                        sprite = Utilities.rotateSprite(sprite,angle,136,9);
+                        sprite = Utilities.rotateSprite(sprite,angle, noRotWidth,noRotHeight/2);
                     }
                 }
                 else{
-                    sprite = Utilities.rotateSprite(sprite,angle,68,9);
+                    sprite = Utilities.rotateSprite(sprite,angle,noRotWidth/2,noRotHeight/2);
 
                 }
             }

@@ -1,8 +1,8 @@
-1000,Tooltip Test this is a large amount of text to test text wrap
-1000,1
-1000,2
-1000,3
-1000,4
-1000,5
-1000,6
-1000,7
+1000,Increase the amount of damage your sword deals.
+1000,Increase your maximum health.
+1000,Increase the maximum amount of stamina you have.
+1000,Increase the amount of damage each cast deals.
+1000,Casts will go in the direction of your mouse!
+1000,Reduce casting time to a fraction of a second!
+1000,Gain an extra midair jump!
+1000,Hold down shift to use your stamina and enter hyperspeed!

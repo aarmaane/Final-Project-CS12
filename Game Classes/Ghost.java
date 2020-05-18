@@ -71,8 +71,6 @@ public class Ghost extends Enemy {
                     spriteCount = 0;
                     isHurt = false;
                 }
-
-
             }
         }
         else if(isAttacking){
@@ -86,6 +84,11 @@ public class Ghost extends Enemy {
             if(spriteCount > movingSprites.length){
                 spriteCount = 3;
             }
+        }
+        // Updating sprite transparency
+        alpha+=ghostAlpha;
+        if(Utilities.roundOff(alpha,2)==1.0 || Utilities.roundOff(alpha,2) == 0.05){
+            ghostAlpha=-ghostAlpha;
         }
     }
     @Override
@@ -119,9 +122,8 @@ public class Ghost extends Enemy {
     }
     @Override
     public float getSpriteAlpha(){
-        alpha+=ghostAlpha;
-        if(Utilities.roundOff(alpha,2)==1.0 || Utilities.roundOff(alpha,2) == 0.05){
-            ghostAlpha=-ghostAlpha;
+        if(isHurt){
+            return 1;
         }
         return alpha ;
     }

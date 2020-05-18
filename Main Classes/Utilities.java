@@ -20,12 +20,10 @@ public class Utilities {
         return sprite;
     }
     public static Image rotateSprite(Image sprite, double rads,int rotX,int rotY) {
-       // double rads= Math.toRadians(angle);
-        // Using AffineTransform with Nearest-Neighbour to apply flip while keeping 8-bit style
+        // Using AffineTransform with Nearest-Neighbour to apply rotate while keeping 8-bit style
         AffineTransform rot = new AffineTransform();
         rot.rotate(rads,rotX,rotY);
         AffineTransformOp rotateOp = new AffineTransformOp(rot, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        //BufferedImage newImage =new BufferedImage(sprite.getHeight(null), sprite.getWidth(null) );
         return rotateOp.filter((BufferedImage) sprite,null );
     }
     public static Image scaleSprite(Image sprite){
@@ -65,6 +63,10 @@ public class Utilities {
         try {
             for (int i = 0; i < targetArray.length; i++) {
                 builtArray[i] = ImageIO.read(new File("Assets/Images/" + fileName + i + ".png"));
+                // Adding the alpha channel if the image isn't supporting it by default
+                if(((BufferedImage)builtArray[i]).getType() != BufferedImage.TYPE_INT_ARGB){
+                    builtArray[i] = forceAlpha(builtArray[i]);
+                }
             }
         }
         catch (IOException e) {
@@ -72,6 +74,12 @@ public class Utilities {
             e.printStackTrace();
         }
         return builtArray;
+    }
+    public static Image forceAlpha(Image sprite){
+        BufferedImage tempImage = new BufferedImage(sprite.getWidth(null), sprite.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = tempImage.createGraphics();
+        g2d.drawImage(sprite,0,0,null);
+        return tempImage;
     }
     // Helper method to load up individual files into ArrayLists with their lines as Strings
     public static ArrayList<String> loadFile(String fileName, int levelNum) throws IOException{

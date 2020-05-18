@@ -459,28 +459,28 @@ public class Player {
     public void enableCastScope(int amount,int increase){
         if(points>=amount){
             points-=amount;
-            hasCastScope = !hasCastScope;
+            hasCastScope = true;
         }
 
     }
     public void enableInstantCast(int amount,int increase){
         if(points>=amount){
             points-=amount;
-            hasInstantCast = !hasInstantCast;
+            hasInstantCast = true;
         }
 
     }
     public void enableDoubleJump(int amount,int increase){
         if(points>=amount){
             points-=amount;
-            hasDoubleJump = !hasDoubleJump;
+            hasDoubleJump = true;
         }
 
     }
     public void enableHyperspeed(int amount,int increase){
         if(points>=amount){
             points-=amount;
-            hasHyperspeed = !hasHyperspeed;
+            hasHyperspeed = true;
         }
 
     }

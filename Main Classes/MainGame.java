@@ -52,6 +52,7 @@ public class MainGame extends JFrame {
         // Running panel setups
         menu.init();
         shop.init();
+        Sound.toggleVolume(); // AUTO MUTE
     }
     public void switchPanel(String targetPanel){
         CardLayout cardLayout = (CardLayout) panelManager.getLayout();

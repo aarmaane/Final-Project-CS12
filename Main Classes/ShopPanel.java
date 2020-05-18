@@ -38,7 +38,7 @@ public class ShopPanel extends JPanel implements MouseListener {
         setLayout(null);
     }
     public void init() throws IOException {
-        //Loading images
+        // Loading images
         checkbox= ImageIO.read(new File("Assets/Images/Shop/checkbox.png"));
         checkmark = ImageIO.read(new File("Assets/Images/Shop/checkmark.png"));
 
@@ -55,13 +55,13 @@ public class ShopPanel extends JPanel implements MouseListener {
         Button staminaUpgrade = new Button(new Rectangle(0,400, 300, 50), "Upgrade Stamina", 35);
         staminaUpgrade.setActionCommand("staminaUpgrade");
         // Right Side Buttons
-        Button enableScope = new Button(new Rectangle(640,400, 300, 50), "Cast Scope", 35);
+        Button enableScope = new Button(new Rectangle(getWidth() - 300,400, 300, 50), "Cast Scope", 35);
         enableScope.setActionCommand("castScope");
-        Button enableInstantCast = new Button(new Rectangle(640,300, 300, 50), "Instant Cast", 35);
+        Button enableInstantCast = new Button(new Rectangle(getWidth() - 300,300, 300, 50), "Instant Cast", 35);
         enableInstantCast.setActionCommand("instantCast");
-        Button enableDoubleJump = new Button(new Rectangle(640,100, 300, 50), "Double jump", 35);
+        Button enableDoubleJump = new Button(new Rectangle(getWidth() - 300,100, 300, 50), "Double jump", 35);
         enableDoubleJump.setActionCommand("doubleJump");
-        Button enableHyperSpeed = new Button(new Rectangle(640,200, 300, 50), "Hyperspeed", 35);
+        Button enableHyperSpeed = new Button(new Rectangle(getWidth() - 300,200, 300, 50), "Hyperspeed", 35);
         enableHyperSpeed.setActionCommand("hyperspeed");
         // Setting up Button Array
         buttons.add(continueButton);
@@ -95,18 +95,19 @@ public class ShopPanel extends JPanel implements MouseListener {
         g.setFont(gameFontBig);
         g.drawString("SHOP", getWidth()/2 - 58, 590 - getHeight());
         g.setColor(new Color(8, 89, 255));
-        g.drawString("Abilities",690,75);
+        g.drawString("Abilities",getWidth() - 260,75);
         g.setColor(new Color(222, 255, 10));
         g.drawString("Upgrades",30,75);
         g.drawImage(Utilities.scaleSprite(dummy.getSprite()), getWidth()/2 - 150,150, this);
         g.setColor(Color.BLACK);
         // Drawing Checkboxes
         for(int i = 0; i< checks.length; i++){
-            g.drawImage(checkbox,580,100*(i+1),this);
+            g.drawImage(checkbox,getWidth() - 365,100*(i+1),this);
             if(checks[i]){
-                g.drawImage(checkmark,575,100*(i+1),this);
+                g.drawImage(checkmark,getWidth() - 365,100*(i+1),this);
             }
         }
+        // Drawing buttons
         for(Button button: buttons){
             button.drawRect(g);
             button.draw(g);
@@ -120,12 +121,12 @@ public class ShopPanel extends JPanel implements MouseListener {
             if(yPos + 150 > getHeight()){
                 yPos -= 150;
             }
+            g.setColor(Color.RED);
             g.drawRect(xPos, yPos, 300, 150);
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(xPos, yPos, 300, 150);
             hoveredButton.drawTooltip(g, xPos, yPos);
         }
-        g.drawLine(getWidth()/2 ,0, getWidth()/2, 960);
     }
     public void update(){
         // Updating the dummy player
@@ -192,12 +193,6 @@ public class ShopPanel extends JPanel implements MouseListener {
                     player.enableCastScope(0,10);
                     checks[3] = true;
                     break;
-
-
-
-
-
-
             }
         }
     }

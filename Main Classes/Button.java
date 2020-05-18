@@ -44,7 +44,7 @@ public class Button extends JButton {
     public void drawTooltip(Graphics g, int x, int y){
         g.setFont(gameFontThin);
         g.setColor(Color.GREEN);
-        g.drawString("Price: " + tooltips[0], x, y + 20);
+        g.drawString("Price: " + tooltips[0], x + 10, y + 20);
         g.setColor(Color.WHITE);
         String[] wordSplit = tooltips[1].split(" ");
         String line = "";
@@ -52,12 +52,12 @@ public class Button extends JButton {
         for(String word: wordSplit){
             if(g.getFontMetrics().stringWidth(line + word) > 250){
                 lineCount++;
-                g.drawString(line, x, y + 40 + lineCount*20);
+                g.drawString(line, x + 10, y + 40 + lineCount*20);
                 line = "";
             }
             line += word + " ";
         }
-        g.drawString(line, x, y + 40 + (lineCount+1)*20);
+        g.drawString(line, x + 10, y + 40 + (lineCount+1)*20);
     }
     public void drawRect(Graphics g){
         g.setColor(Color.BLACK);

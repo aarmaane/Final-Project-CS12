@@ -1,4 +1,7 @@
+// Decor
 460,435,Set 2/pot.png
 2700,284,Set 2/pot.png
 5045,325,Set 2/banner.png
 5530,325,Set 2/banner.png
+// Floor Extensions
+2115,543,Set 2/floorExtension.png
