@@ -18,14 +18,18 @@ public class ShopPanel extends JPanel implements MouseListener {
     private GamePanel game;
     private Player player;
     private Player dummy = new Player();
-    private Sound shopMusic = new Sound("Assets/Sounds/Music/shop.wav", 80);
     private Font gameFont, gameFontBig;
-    private Image checkbox, checkmark;
     private boolean[] checks = new boolean[4];
     private Point mousePoint;
+    // Effect related fields
+    private int lowPointFrames;
     // Buttons
     private ArrayList<Button> buttons = new ArrayList<>();
     private Button hoveredButton;
+    private int[] upgradeAmount = new int[4];
+    // Images and Sounds
+    private Image checkbox, checkmark;
+    private Sound shopMusic = new Sound("Assets/Sounds/Music/shop.wav", 80);
     // Constructor
     public ShopPanel(MainGame frame){
         gameFrame = frame;
@@ -87,10 +91,18 @@ public class ShopPanel extends JPanel implements MouseListener {
         // Drawing the Background
         g.setColor(Color.DARK_GRAY);
         g.fillRect(0, 0, 960, 590);
-        // Drawing Text
+        // Drawing Points
         g.setColor(Color.BLACK);
         g.setFont(gameFont);
-        g.drawString("Player points: " + player.getPoints(), getWidth()/2 - 93, getHeight() - 30);
+        int xOffset = 0, yOffset = 0;
+        if(lowPointFrames > 0){
+            lowPointFrames--; xOffset = Utilities.randint(-4,4); yOffset = Utilities.randint(-4,4);
+            g.setColor(Color.RED);
+        }
+        String drawnString = "Player points: " + player.getPoints();
+        int textWidth = g.getFontMetrics().stringWidth(drawnString);
+        g.drawString(drawnString, getWidth()/2 - textWidth/2 - xOffset, getHeight() - 30 - yOffset);
+        // Drawing Titles
         g.setColor(Color.GREEN);
         g.setFont(gameFontBig);
         g.drawString("SHOP", getWidth()/2 - 58, 590 - getHeight());
@@ -98,18 +110,29 @@ public class ShopPanel extends JPanel implements MouseListener {
         g.drawString("Abilities",getWidth() - 260,75);
         g.setColor(new Color(222, 255, 10));
         g.drawString("Upgrades",30,75);
+        // Drawing Dummy Player
         g.drawImage(Utilities.scaleSprite(dummy.getSprite()), getWidth()/2 - 150,150, this);
-        g.setColor(Color.BLACK);
+        // Drawing upgrade boxes
+        for(int x = 0; x < 8; x++){
+            for(int y = 0; y < 4; y++){
+                if(upgradeAmount[y] > x){
+                    g.setColor(Color.RED);
+                    g.fillRect(70 + x*20, 150 + y*100, 10, 10);
+                }
+                g.setColor(Color.BLACK);
+                g.drawRect(70 + x*20, 150 + y*100, 10, 10);
+            }
+        }
         // Drawing Checkboxes
         for(int i = 0; i< checks.length; i++){
-            g.drawImage(checkbox,getWidth() - 365,100*(i+1),this);
+            g.drawImage(checkbox,getWidth() - 335,100*(i+1),this);
             if(checks[i]){
-                g.drawImage(checkmark,getWidth() - 365,100*(i+1),this);
+                g.drawImage(checkmark,getWidth() - 335,100*(i+1),this);
             }
         }
         // Drawing buttons
         for(Button button: buttons){
-            button.drawRect(g);
+           // button.drawRect(g);
             button.draw(g);
         }
         // Drawing tooltips
@@ -135,6 +158,11 @@ public class ShopPanel extends JPanel implements MouseListener {
         if(!shopMusic.isPlaying()){
             shopMusic.play();
         }
+        // Updating the upgrade boxes
+        upgradeAmount[0] = player.getSwordUpgradeNum();
+        upgradeAmount[1] = player.getCastUpgradeNum();
+        upgradeAmount[2] = player.getHealthUpgradeNum();
+        upgradeAmount[3] = player.getStaminaUpgradeNum();
     }
     public void checkButtons(){
         mousePoint = getMousePosition();
@@ -160,18 +188,38 @@ public class ShopPanel extends JPanel implements MouseListener {
                     shopMusic.stop();
                     break;
                 case "swordUpgrade":
-                    dummy.attack();
-                    player.upgradeSword(100,10);
+                    if(player.getPoints() < 100){
+                        lowPointFrames = 50;
+                    }
+                    else if(player.getSwordUpgradeNum() < 8){
+                        dummy.attack();
+                        player.upgradeSword();
+                    }
                     break;
                 case "castUpgrade":
-                    dummy.castMagic();
-                    player.upgradeCast(100,10);
+                    if(player.getPoints() < 100){
+                        lowPointFrames = 50;
+                    }
+                    else if(player.getCastUpgradeNum() < 8){
+                        dummy.castMagic();
+                        player.upgradeCast();
+                    }
                     break;
                 case "healthUpgrade":
-                    player.upgradeHealth(100,10);
+                    if(player.getPoints() < 100){
+                        lowPointFrames = 50;
+                    }
+                    else if(player.getHealthUpgradeNum() < 8){
+                        player.upgradeHealth();
+                    }
                     break;
                 case "staminaUpgrade":
-                    player.upgradeStamina(100,10);
+                    if(player.getPoints() < 100){
+                        lowPointFrames = 50;
+                    }
+                    else if(player.getStaminaUpgradeNum() < 8){
+                        player.upgradeStamina();
+                    }
                     break;
                 case "doubleJump":
                     player.enableDoubleJump(0,10);

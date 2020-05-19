@@ -11,18 +11,19 @@ public class Player {
     private double velocityX, velocityY;
     private double acceleration, maxSpeed;
     private int direction;
-    private boolean onGround, onMovingPlat, holdingJump;
+    private boolean onGround, onMovingPlat, holdingJump, sprinting;
     private double spriteCount = 0;
     private int jumpCount = 1;
     // Players' gameplay-related fields
     private int health, maxHealth, points;
     private double stamina, maxStamina;
-    private int swordDamage, spellDamage;
+    private int swordDamage, castDamage;
     private boolean isAttacking, isCasting, isHurt, isDying;
     private int healthTimer, energyTimer;
     private int groundAttackNum, airAttackNum;
     // Player's Upgrade-Related Fields
     private boolean hasCastScope, hasInstantCast, hasDoubleJump, hasHyperspeed;
+    private int swordUpgradeNum, castUpgradeNum, healthUpgradeNum, staminaUpgradeNum;
     // Image Arrays holding Player's Sprites
     private Image[] idleSprites = new Image[4];
     private Image[] runSprites = new Image[6];
@@ -52,7 +53,7 @@ public class Player {
         health=maxHealth;
         points=0;
         swordDamage=10;
-        spellDamage=15;
+        castDamage =15;
         // Loading Images
         fallingSprites = Utilities.spriteArrayLoad(fallingSprites, "Player/fall");
         jumpingSprites = Utilities.spriteArrayLoad(jumpingSprites, "Player/jump");
@@ -113,6 +114,14 @@ public class Player {
             }
             else{                     // Speed limit in negative direction (Left)
                 velocityX = -maxSpeed;
+            }
+        }
+    }
+    public void sprint(){
+        if(velocityX != 0){
+            if(stamina - 1 > 0){
+                sprinting = true;
+                stamina -= 0.1;
             }
         }
     }
@@ -194,6 +203,10 @@ public class Player {
         // Updating position from velocities
         x += velocityX;
         y += velocityY;
+        // Additional movement given by hyperspeed
+        if(sprinting){
+            x += velocityX * 0.5;
+        }
         // Applying friction force
         if(onGround){ // Friction only applies when the Player is on the ground
             if(velocityX > 0){
@@ -228,7 +241,7 @@ public class Player {
             }
         }
         // Resetting movement booleans so they can be set next frame
-        onMovingPlat = false;
+        onMovingPlat = false; sprinting = false;
     }
     public void updateStamina(){
         if(isCasting || isAttacking || hasEnergyPower()){
@@ -395,6 +408,9 @@ public class Player {
         }
     }
     public void castHit(Projectile cast){
+        if(isDying){
+            return; // Don't register hits while the player is dying
+        }
         if(!hasHealthPower()) {
             health -= cast.getDamage();
             velocityY = -3;
@@ -406,6 +422,7 @@ public class Player {
             isHurt = true;
             isAttacking = false;
             spriteCount = 0;
+            jumpCount = 2;
             if(health <= 0){
                 isDying = true;
             }
@@ -427,62 +444,6 @@ public class Player {
         ArrayList<IndicatorText> temp = textQueue;
         textQueue = new ArrayList<>();
         return temp;
-    }
-    // Setter methods
-    public void addPoints(int addition){
-        points += addition;
-    }
-    public void upgradeSword(int amount,int increase){
-        if(points>=amount){
-            points-=amount;
-            swordDamage+=increase;
-        }
-    }
-    public void upgradeCast(int amount,int increase){
-        if(points>=amount){
-            points-=amount;
-            spellDamage+=increase;
-        }
-    }
-    public void upgradeHealth(int amount,int increase){
-        if(points>=amount){
-            points-=amount;
-            maxHealth+=increase;
-        }
-    }
-    public void upgradeStamina(int amount,int increase){
-        if(points>=amount){
-            points-=amount;
-            maxStamina+=increase;
-        }
-    }
-    public void enableCastScope(int amount,int increase){
-        if(points>=amount){
-            points-=amount;
-            hasCastScope = true;
-        }
-
-    }
-    public void enableInstantCast(int amount,int increase){
-        if(points>=amount){
-            points-=amount;
-            hasInstantCast = true;
-        }
-
-    }
-    public void enableDoubleJump(int amount,int increase){
-        if(points>=amount){
-            points-=amount;
-            hasDoubleJump = true;
-        }
-
-    }
-    public void enableHyperspeed(int amount,int increase){
-        if(points>=amount){
-            points-=amount;
-            hasHyperspeed = true;
-        }
-
     }
     // Getter methods
     // Method that returns the player's current sprite by looking at various fields
@@ -571,13 +532,74 @@ public class Player {
     public int getHealth(){return health;}
     public int getMaxHealth(){return maxHealth;}
     public int getPoints(){return points;}
-    public int getSpellDamage(){return spellDamage;}
+    public int getCastDamage(){return castDamage;}
     public int getSwordDamage(){return swordDamage;}
     public int getDirection(){return direction;}
     public int getEnergyTime(){return energyTimer;}
     public int getHealthTimer(){return healthTimer;}
     public boolean hasEnergyPower(){return energyTimer > 0;}
     public boolean hasHealthPower(){return healthTimer > 0;}
+    public int getSwordUpgradeNum() {return swordUpgradeNum;}
+    public int getCastUpgradeNum() {return castUpgradeNum;}
+    public int getHealthUpgradeNum() {return healthUpgradeNum;}
+    public int getStaminaUpgradeNum() {return staminaUpgradeNum;}
+
     public boolean isDead(){
-        return isDying && Utilities.roundOff(spriteCount,1) == dyingSprites.length;}
+        return isDying && Utilities.roundOff(spriteCount,1) == dyingSprites.length;
+    }
+
+    // Setter methods
+    public void addPoints(int addition){
+        points += addition;
+    }
+    public void spendPoints(int amount){
+        points -= amount;
+    }
+    public void upgradeSword(){
+        swordUpgradeNum++;
+        swordDamage *= 1.5;
+        points -= 100;
+    }
+    public void upgradeCast(){
+        castUpgradeNum++;
+        castDamage *= 1.5;
+        points -= 100;
+    }
+    public void upgradeHealth(){
+        healthUpgradeNum++;
+        maxHealth *= 1.25;
+        points -= 100;
+    }
+    public void upgradeStamina(){
+        staminaUpgradeNum++;
+        maxStamina *= 1.25;
+        points -= 100;
+    }
+    public void enableCastScope(int amount,int increase){
+        if(points>=amount){
+            points-=amount;
+            hasCastScope = true;
+        }
+    }
+    public void enableInstantCast(int amount,int increase){
+        if(points>=amount){
+            points-=amount;
+            hasInstantCast = true;
+        }
+
+    }
+    public void enableDoubleJump(int amount,int increase){
+        if(points>=amount){
+            points-=amount;
+            hasDoubleJump = true;
+        }
+
+    }
+    public void enableHyperspeed(int amount,int increase){
+        if(points>=amount){
+            points-=amount;
+            hasHyperspeed = true;
+        }
+
+    }
 }

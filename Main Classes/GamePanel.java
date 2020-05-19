@@ -485,10 +485,10 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                 xPos -= 150;
             }
             if(player.hasCastScope() && click){
-                projectiles.add(new Projectile(Projectile.PLAYER, hitBox.x,hitBox.y,getMousePosition().x,getMousePosition().y,player.getSpellDamage(),speed));
+                projectiles.add(new Projectile(Projectile.PLAYER, hitBox.x,hitBox.y,getMousePosition().x,getMousePosition().y,player.getCastDamage(),speed));
             }
             else {
-                projectiles.add(new Projectile(Projectile.PLAYER, xPos, hitBox.y + hitBox.height / 2.0 - 5, player.getSpellDamage(), speed));
+                projectiles.add(new Projectile(Projectile.PLAYER, xPos, hitBox.y + hitBox.height / 2.0 - 5, player.getCastDamage(), speed));
             }
             castSound.play();
         }
@@ -669,6 +669,10 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         // Jumping input
         if(keysPressed[KeyEvent.VK_SPACE]){
             player.jump(Player.NORMAL);
+        }
+        // Hyperspeed input
+        if(keysPressed[KeyEvent.VK_SHIFT]){
+            player.sprint();
         }
     }
     public void iterateTime(){
