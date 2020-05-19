@@ -118,7 +118,7 @@ public class Player {
         }
     }
     public void sprint(){
-        if(velocityX != 0){
+        if(hasHyperspeed && velocityX != 0){
             if(stamina - 1 > 0){
                 sprinting = true;
                 stamina -= 0.1;
