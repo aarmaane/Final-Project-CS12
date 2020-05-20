@@ -1,6 +1,9 @@
 import java.awt.*;
 
 public class Fire extends Enemy {
+    // Fields
+    private int attackDelay = 50;
+    // Sprites
     private static Image[] motionSprites = new Image[7];
     public static void init(){
         motionSprites = Utilities.spriteArrayLoad(motionSprites, "Enemies/Fire/fire");
@@ -10,7 +13,7 @@ public class Fire extends Enemy {
         super(data);
         health = 100;
         maxHealth=health;
-        damage = 15*difficulty;
+        damage = 15 * difficulty;
     }
 
     @Override
@@ -32,6 +35,17 @@ public class Fire extends Enemy {
         onMovingPlat = false;
     }
     @Override
+    public void updateAttack(Player player){
+        isAttacking = getHitbox().intersects(player.getHitbox()); // Setting it to true if there is hitbox collision
+        if(isAttacking){
+            attackDelay--;
+            if(attackDelay == 0){
+                player.enemyHit(this);
+                attackDelay = 50;
+            }
+        }
+    }
+    @Override
     public Image getSprite() {
         Image sprite;
         int spriteIndex = (int)Math.floor(spriteCount);
@@ -41,7 +55,7 @@ public class Fire extends Enemy {
 
     @Override
     public Rectangle getHitbox() {
-        return new Rectangle((int)x + 10, (int)y + 25, 80, 45);
+        return new Rectangle((int)x + 70, (int)y + 40, 90, 200);
     }
 
 
