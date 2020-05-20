@@ -21,7 +21,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     // Game state related fields
     private int barFade = 0, barFadeAddition = 5;
     private boolean levelEnding, pointsGiven;
-    private boolean click;
     private int endScreenFrames, bonusPoints;
     // Game Images
     private Image enemyHealthBar;
@@ -390,17 +389,35 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     @Override
     public void keyTyped(KeyEvent e) {}
     @Override
-    public void mouseClicked(MouseEvent e) {
-        //click = true;
-    }
+    public void mouseClicked(MouseEvent e) {}
     @Override
     public void mousePressed(MouseEvent e) {
-        click = true;
+        if(!paused && !levelEnding){
+            // Declaring important variables
+            Point mousePos = getMousePosition();
+            Rectangle playerHitbox = player.getHitbox();
+            double originalStamina = player.getStamina();
+            // Handling input
+
+            if(e.getButton() == MouseEvent.BUTTON1){
+                player.attack();
+            }
+            else if(e.getButton() == MouseEvent.BUTTON3){
+                player.castMagic(mousePos.x, mousePos.y);
+            }
+            // Checking if the player has performed an action and correcting his direction
+            if(originalStamina != player.getStamina()){
+                if(playerHitbox.x - levelOffset > mousePos.x){
+                    player.look(Player.LEFT);
+                }
+                else{
+                    player.look(Player.RIGHT);
+                }
+            }
+        }
     }
     @Override
-    public void mouseReleased(MouseEvent e) {
-        click = false;
-    }
+    public void mouseReleased(MouseEvent e) {}
     @Override
     public void mouseEntered(MouseEvent e) {}
     @Override
@@ -484,8 +501,8 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                 speed = -speed;
                 xPos -= 150;
             }
-            if(player.hasCastScope() && click){
-                projectiles.add(new Projectile(Projectile.PLAYER, hitBox.x,hitBox.y,getMousePosition().x,getMousePosition().y,player.getCastDamage(),speed));
+            if(player.hasAngledCast()){
+                projectiles.add(new Projectile(Projectile.PLAYER, hitBox.x,hitBox.y,player.getCastTargetX(),player.getCastTargetY(),player.getCastDamage(),speed));
             }
             else {
                 projectiles.add(new Projectile(Projectile.PLAYER, xPos, hitBox.y + hitBox.height / 2.0 - 5, player.getCastDamage(), speed));

@@ -24,6 +24,7 @@ public class Player {
     // Player's Upgrade-Related Fields
     private boolean hasCastScope, hasInstantCast, hasDoubleJump, hasHyperspeed;
     private int swordUpgradeNum, castUpgradeNum, healthUpgradeNum, staminaUpgradeNum;
+    private Integer castTargetX, castTargetY;
     // Image Arrays holding Player's Sprites
     private Image[] idleSprites = new Image[4];
     private Image[] runSprites = new Image[6];
@@ -173,6 +174,10 @@ public class Player {
         else{
             textQueue.add(new IndicatorText(getHitbox().x, getHitbox().y, "Stamina Low!", Color.RED));
         }
+    }
+    public void castMagic(int targetX, int targetY){
+        castTargetX = targetX; castTargetY = targetY;
+        castMagic();
     }
     public void castMagic(){
         if(isAttacking || isCasting || !onGround){
@@ -485,12 +490,6 @@ public class Player {
         }
         return sprite;
     }
-    public double getX() {
-        return x;
-    }
-    public double getY() {
-        return y;
-    }
     public Rectangle getHitbox(){
         // Since the sprite images are much larger than the actual Player, offsets must be applied
         return new Rectangle((int)x + 58, (int)y + 15, 36, 93);
@@ -521,7 +520,25 @@ public class Player {
         }
         return false;
     }
-
+    public boolean hasAngledCast(){
+        return hasCastScope && castTargetX != null && castTargetY != null;
+    }
+    public Integer getCastTargetX() {
+        Integer temp = castTargetX;
+        castTargetX = null;
+        return temp;
+    }
+    public Integer getCastTargetY() {
+        Integer temp = castTargetY;
+        castTargetY = null;
+        return temp;
+    }
+    public double getX() {
+        return x;
+    }
+    public double getY() {
+        return y;
+    }
     public double getStamina() {
         return stamina;
     }
@@ -549,6 +566,9 @@ public class Player {
     }
 
     // Setter methods
+    public void look(int direction){
+        this.direction = direction;
+    }
     public void addPoints(int addition){
         points += addition;
     }
