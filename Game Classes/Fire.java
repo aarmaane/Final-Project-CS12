@@ -27,8 +27,6 @@ public class Fire extends Enemy {
         // Applying velocity values to position
         x += velocityX;
         y += velocityY;
-        // Adding gravity value
-        //velocityY += GRAVITY;
         // Resetting boolean values so they can be rechecked for the new position
         platformAhead = false;
         platformBehind = false;

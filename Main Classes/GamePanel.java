@@ -499,10 +499,9 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             int xPos = attackBox.x;
             if(player.getDirection() == Player.RIGHT){
                 speed = -speed;
-                xPos -= 150;
             }
             if(player.hasAngledCast()){
-                projectiles.add(new Projectile(Projectile.PLAYER, hitBox.x,hitBox.y,player.getCastTargetX(),player.getCastTargetY(),player.getCastDamage(),speed));
+                projectiles.add(new Projectile(Projectile.PLAYER, xPos ,hitBox.y + hitBox.height / 2.0 - 5 ,player.getCastTargetX(),player.getCastTargetY(),player.getCastDamage(),speed));
             }
             else {
                 projectiles.add(new Projectile(Projectile.PLAYER, xPos, hitBox.y + hitBox.height / 2.0 - 5, player.getCastDamage(), speed));
@@ -519,15 +518,16 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     }
     public void checkEnemyCast(Enemy enemy){
         if(enemy.isCastFrame()){
-            Rectangle hitBox = enemy.getHitbox();
-            Rectangle playerBox = player.getHitbox();
-            int targX = playerBox.x;
-            int targY = playerBox.y;
+            Rectangle wizardHitBox = enemy.getHitbox();
+            Rectangle playerHitbox = player.getHitbox();
+            int startX = wizardHitBox.x - 10;
             int speed = -2;
             if(enemy.getDirection() == Enemy.LEFT){
                 speed = -speed;
+                startX = wizardHitBox.x + wizardHitBox.width + 10;
+
             }
-            projectiles.add(new Projectile(Projectile.ENEMY, hitBox.x,hitBox.y,targX,targY,enemy.getDamage(),speed));
+            projectiles.add(new Projectile(Projectile.ENEMY, startX, wizardHitBox.y, playerHitbox.x, playerHitbox.y, enemy.getDamage(),speed));
             castSound.play();
         }
     }
