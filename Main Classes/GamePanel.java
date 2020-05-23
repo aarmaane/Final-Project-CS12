@@ -158,7 +158,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             levelMusic.forceMute();
         }
         fade.start(FadeEffect.FADEIN, 3);
-        //fade = true; fadeChange = -3; fadeInt = 255; // Starting the fade in
     }
 
     // All window related methods

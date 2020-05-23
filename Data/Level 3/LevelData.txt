@@ -1,0 +1,11 @@
+// Time to complete level (Seconds)
+150
+// End point ( X position of where the player gets automated )
+9400
+// Reset point (The end level loop location)
+9900
+// Music track
+level3.wav
+// Background Pictures
+crystal1.png,crystal2.png,crystal3.png
+0.1,0.3,0.6
