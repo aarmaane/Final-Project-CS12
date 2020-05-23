@@ -493,6 +493,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         }
         // Checking if the Player has cast
         if(player.isCastFrame()){
+            // Setting up the projectile variables
             Rectangle hitBox = player.getHitbox();
             Rectangle attackBox = player.getAttackBox();
             int speed = -5;
@@ -500,10 +501,14 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             if(player.getDirection() == Player.RIGHT){
                 speed = -speed;
             }
+            // Creating the projectile
             if(player.hasAngledCast()){
                 projectiles.add(new Projectile(Projectile.PLAYER, xPos ,hitBox.y + hitBox.height / 2.0 - 5 ,player.getCastTargetX(),player.getCastTargetY(),player.getCastDamage(),speed));
             }
             else {
+                if(player.getDirection() == Player.RIGHT){
+                    xPos -= 120;
+                }
                 projectiles.add(new Projectile(Projectile.PLAYER, xPos, hitBox.y + hitBox.height / 2.0 - 5, player.getCastDamage(), speed));
             }
             castSound.play();

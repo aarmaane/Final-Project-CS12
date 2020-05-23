@@ -48,7 +48,7 @@ public class Player {
         maxSpeed = 6;
         onGround = true;
         // Setting gameplay fields
-        maxStamina = 50;
+        maxStamina = Integer.MAX_VALUE;
         stamina = maxStamina;
         maxHealth=Integer.MAX_VALUE;
         health=maxHealth;
