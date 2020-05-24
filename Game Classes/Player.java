@@ -353,6 +353,9 @@ public class Player {
         if(type == Item.COIN){
             points += 100;
         }
+        else if(type == Item.DIAMOND){
+            points += 1000;
+        }
         else if(type == Item.HEALTH){
             if(health+10<=100) {
                 health += 10;

@@ -2,7 +2,7 @@ import java.awt.*;
 
 public class Item {
     // Declaring constants
-    public static final int COIN = 0, HEALTH = 1, HEALTHPWR = 2, ENERGYPWR = 3;
+    public static final int COIN = 0, DIAMOND = 1, HEALTH = 2, HEALTHPWR = 3, ENERGYPWR = 4;
     private static final double GRAVITY = 0.25;
     // Declaring fields
     private double x, y, velocityX, velocityY;
@@ -12,6 +12,7 @@ public class Item {
     private boolean used;
     // Declaring sprites
     private static Image[] coinSprites = new Image[5];
+    private static Image[] diamondSprites = new Image[6];
     private static Image[] healthSprites = new Image[6];
     private static Image[] healthPwrSprites = new Image[7];
     private static Image[] energySprites = new Image[4];
@@ -23,6 +24,7 @@ public class Item {
     public static void init(){
         healthSprites = Utilities.spriteArrayLoad(healthSprites, "Items/Health/health");
         coinSprites = Utilities.spriteArrayLoad(coinSprites, "Items/Coins/coin");
+        diamondSprites = Utilities.spriteArrayLoad(diamondSprites, "Items/Coins/diamond");
         healthPwrSprites = Utilities.spriteArrayLoad(healthPwrSprites, "Items/Health/healthpwr");
         energySprites = Utilities.spriteArrayLoad(energySprites, "Items/Energy/energy");
     }
@@ -63,6 +65,7 @@ public class Item {
         spriteCount += 0.1;
         if(     (type == HEALTH && spriteCount >= healthSprites.length) ||
                 (type == COIN && spriteCount >= coinSprites.length) ||
+                (type == DIAMOND && spriteCount >= diamondSprites.length) ||
                 (type == HEALTHPWR && spriteCount >= healthPwrSprites.length) ||
                 (type == ENERGYPWR && spriteCount >= energySprites.length)){
             spriteCount = 0;
@@ -70,7 +73,7 @@ public class Item {
 
     }
     public void playSound(){
-        if(type == COIN){
+        if(type == COIN || type == DIAMOND){
             coinSound.stop();
             coinSound.play();
         }
@@ -92,6 +95,9 @@ public class Item {
         int spriteIndex = (int)Math.floor(spriteCount);
         if(type == COIN){
             sprite = coinSprites[spriteIndex];
+        }
+        else if(type == DIAMOND){
+            sprite = diamondSprites[spriteIndex];
         }
         else if(type == HEALTH){
             sprite = healthSprites[spriteIndex];

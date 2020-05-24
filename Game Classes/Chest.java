@@ -42,6 +42,9 @@ public class Chest {
             if(randomNumber >= 35){
                 content = Item.HEALTH;
             }
+            else if(randomNumber < 5){
+                content = Item.DIAMOND;
+            }
             else{
                 content = Item.COIN;
             }

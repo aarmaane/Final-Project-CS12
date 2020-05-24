@@ -601,6 +601,9 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                 else if(item.getType() == Item.COIN){
                     indicatorText.add(new IndicatorText(playerHitbox.x, playerHitbox.y, "+100", Color.YELLOW));
                 }
+                else if(item.getType() == Item.DIAMOND){
+                    indicatorText.add(new IndicatorText(playerHitbox.x, playerHitbox.y, "+1000", Color.YELLOW));
+                }
             }
         }
         // Checking chest collision
