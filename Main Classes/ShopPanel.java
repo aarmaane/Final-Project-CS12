@@ -222,23 +222,23 @@ public class ShopPanel extends JPanel implements MouseListener {
                     }
                     break;
                 case "doubleJump":
-                    player.enableDoubleJump(0,10);
-                    player.addPoints(100);
+                    player.enableDoubleJump(100,10);
+                    //player.addPoints(100);
                     checks[0] = true;
                     break;
                 case "hyperspeed":
-                    player.addPoints(100);
-                    player.enableHyperspeed(0,10);
+                   // player.addPoints(100);
+                    player.enableHyperspeed(100,10);
                     checks[1] = true;
                     break;
                 case "instantCast":
-                    player.addPoints(100);
-                    player.enableInstantCast(0,10);
+                    //player.addPoints(100);
+                    player.enableInstantCast(100,10);
                     checks[2] = true;
                     break;
                 case "castScope":
-                    player.addPoints(100);
-                    player.enableCastScope(0,10);
+                    //player.addPoints(100);
+                    player.enableCastScope(100,10);
                     checks[3] = true;
                     break;
             }

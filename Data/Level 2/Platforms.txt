@@ -28,6 +28,7 @@
 8390,331,Set 2/floorMiddle.png
 8535,379,Set 2/floorMiddle.png
 8680,427,Set 2/floorMiddle.png
+//
 8825,475,Set 2/floorMiddle.png
 8970,475,Set 2/floorMiddle.png
 9115,475,Set 2/floorMiddle.png

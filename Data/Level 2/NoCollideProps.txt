@@ -5,3 +5,25 @@
 5530,325,Set 2/banner.png
 // Floor Extensions
 2115,543,Set 2/floorExtension.png
+2260,543,Set 2/floorExtension.png
+2405,543,Set 2/floorExtension.png
+2550,543,Set 2/floorExtension.png
+2695,543,Set 2/floorExtension.png
+//
+4945,543,Set 2/floorExtension.png
+5090,543,Set 2/floorExtension.png
+5235,543,Set 2/floorExtension.png
+5380,543,Set 2/floorExtension.png
+5425,543,Set 2/floorExtension.png
+5570,543,Set 2/floorExtension.png
+//
+4100,543,Set 2/floorExtension.png
+4245,543,Set 2/floorExtension.png
+4390,543,Set 2/floorExtension.png
+4535,543,Set 2/floorExtension.png
+//
+8100,453,Set 2/floorExtension.png
+8245,501,Set 2/floorExtension.png
+8390,559,Set 2/floorExtension.png
+8535,597,Set 2/floorExtension.png
+8680,645,Set 2/floorExtension.png

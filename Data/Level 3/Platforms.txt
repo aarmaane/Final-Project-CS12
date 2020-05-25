@@ -1,1 +1,22 @@
-500,300,Set 3/floor1.png
+0,400,Set 3/floor1.png
+64,400,Set 3/floor1.png
+128,400,Set 3/floor1.png
+192,400,Set 3/floor1.png
+//
+256,400,Set 3/floor1.png
+320,400,Set 3/floor1.png
+384,400,Set 3/floor1.png
+448,400,Set 3/floor1.png
+//
+512,400,Set 3/floor1.png
+576,400,Set 3/floor1.png
+640,400,Set 3/floor1.png
+704,400,Set 3/floor1.png
+//
+768,400,Set 3/floor1.png
+832,400,Set 3/floor1.png
+896,400,Set 3/floor1.png
+960,400,Set 3/floor1.png
+//
+520,160,Set 3/floor3.png
+584,160,Set 3/floor3.png
