@@ -545,9 +545,6 @@ public class Player {
     public double getStamina() {
         return stamina;
     }
-    public boolean hasCastScope(){
-        return hasCastScope;
-    }
     public double getMaxStamina(){return maxStamina;}
     public int getHealth(){return health;}
     public int getMaxHealth(){return maxHealth;}
@@ -563,6 +560,11 @@ public class Player {
     public int getCastUpgradeNum() {return castUpgradeNum;}
     public int getHealthUpgradeNum() {return healthUpgradeNum;}
     public int getStaminaUpgradeNum() {return staminaUpgradeNum;}
+    public boolean hasCastScope() {return hasCastScope;}
+    public boolean hasInstantCast() {return hasInstantCast;}
+    public boolean hasDoubleJump() {return hasDoubleJump;}
+    public boolean hasHyperspeed() {return hasHyperspeed;}
+
 
     public boolean isDead(){
         return isDying && Utilities.roundOff(spriteCount,1) == dyingSprites.length;
@@ -574,9 +576,6 @@ public class Player {
     }
     public void addPoints(int addition){
         points += addition;
-    }
-    public void spendPoints(int amount){
-        points -= amount;
     }
     public void upgradeSword(){
         swordUpgradeNum++;
@@ -598,31 +597,20 @@ public class Player {
         maxStamina *= 1.25;
         points -= 100;
     }
-    public void enableCastScope(int amount,int increase){
-        if(points>=amount){
-            points-=amount;
-            hasCastScope = true;
-        }
+    public void enableCastScope(){
+        hasCastScope = true;
+        points -= 100;
     }
-    public void enableInstantCast(int amount,int increase){
-        if(points>=amount){
-            points-=amount;
-            hasInstantCast = true;
-        }
-
+    public void enableInstantCast(){
+        hasInstantCast = true;
+        points -= 100;
     }
-    public void enableDoubleJump(int amount,int increase){
-        if(points>=amount){
-            points-=amount;
-            hasDoubleJump = true;
-        }
-
+    public void enableDoubleJump(){
+        hasDoubleJump = true;
+        points -= 100;
     }
-    public void enableHyperspeed(int amount,int increase){
-        if(points>=amount){
-            points-=amount;
-            hasHyperspeed = true;
-        }
-
+    public void enableHyperspeed(){
+        hasHyperspeed = true;
+        points -= 100;
     }
 }

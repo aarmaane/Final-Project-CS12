@@ -1,3 +1,4 @@
++100,TEMPORARY
 1000,Increase the amount of damage your sword deals.
 1000,Increase your maximum health.
 1000,Increase the maximum amount of stamina you have.

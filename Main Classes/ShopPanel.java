@@ -45,28 +45,21 @@ public class ShopPanel extends JPanel implements MouseListener {
         // Loading images
         checkbox= ImageIO.read(new File("Assets/Images/Shop/checkbox.png"));
         checkmark = ImageIO.read(new File("Assets/Images/Shop/checkmark.png"));
-
         // Declaring Buttons
         Button continueButton = new Button(new Rectangle(getWidth() - 200,getHeight() - 50, 200, 50), "Continue", 35);
-        continueButton.setActionCommand("continue");
         // Left Side Buttons
         Button swordUpgrade = new Button(new Rectangle(0,100, 300, 50), "Upgrade Sword", 35);
-        swordUpgrade.setActionCommand("swordUpgrade");
         Button castUpgrade = new Button(new Rectangle(0,200, 300, 50), "Upgrade Cast", 35);
-        castUpgrade.setActionCommand("castUpgrade");
         Button healthUpgrade = new Button(new Rectangle(0,300, 300, 50), "Upgrade Health", 35);
-        healthUpgrade.setActionCommand("healthUpgrade");
         Button staminaUpgrade = new Button(new Rectangle(0,400, 300, 50), "Upgrade Stamina", 35);
-        staminaUpgrade.setActionCommand("staminaUpgrade");
         // Right Side Buttons
         Button enableScope = new Button(new Rectangle(getWidth() - 300,400, 300, 50), "Cast Scope", 35);
-        enableScope.setActionCommand("castScope");
         Button enableInstantCast = new Button(new Rectangle(getWidth() - 300,300, 300, 50), "Instant Cast", 35);
-        enableInstantCast.setActionCommand("instantCast");
-        Button enableDoubleJump = new Button(new Rectangle(getWidth() - 300,100, 300, 50), "Double jump", 35);
-        enableDoubleJump.setActionCommand("doubleJump");
+        Button enableDoubleJump = new Button(new Rectangle(getWidth() - 300,100, 300, 50), "Double Jump", 35);
         Button enableHyperSpeed = new Button(new Rectangle(getWidth() - 300,200, 300, 50), "Hyperspeed", 35);
-        enableHyperSpeed.setActionCommand("hyperspeed");
+        // REMOVE LATER
+        Button freePoints = new Button(new Rectangle(0,0,200,100),"Give 100", 35);
+        buttons.add(freePoints);
         // Setting up Button Array
         buttons.add(continueButton);
         buttons.add(swordUpgrade);
@@ -176,70 +169,72 @@ public class ShopPanel extends JPanel implements MouseListener {
             }
         }
     }
+    public boolean canBuy(int points){
+        if(player.getPoints() < 100){
+            lowPointFrames = 50;
+            return false;
+        }
+        return true;
+    }
     // Button Listener
     public class ButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String buttonString = e.getActionCommand();
             switch (buttonString){
-                case "continue":
+                case "Give 100":
+                    player.addPoints(100);
+                    break;
+                case "Continue":
                     String input = JOptionPane.showInputDialog("Enter level number");
                     game.setLevelNum(Integer.parseInt(input));
                     gameFrame.switchPanel(MainGame.TRANSITIONPANEL);
                     shopMusic.stop();
                     break;
-                case "swordUpgrade":
-                    if(player.getPoints() < 100){
-                        lowPointFrames = 50;
-                    }
-                    else if(player.getSwordUpgradeNum() < 8){
+                case "Upgrade Sword":
+                    if(player.getSwordUpgradeNum() < 8 && canBuy(100)){
                         dummy.attack();
                         player.upgradeSword();
                     }
                     break;
-                case "castUpgrade":
-                    if(player.getPoints() < 100){
-                        lowPointFrames = 50;
-                    }
-                    else if(player.getCastUpgradeNum() < 8){
+                case "Upgrade Cast":
+                    if(player.getCastUpgradeNum() < 8 && canBuy(100)){
                         dummy.castMagic();
                         player.upgradeCast();
                     }
                     break;
-                case "healthUpgrade":
-                    if(player.getPoints() < 100){
-                        lowPointFrames = 50;
-                    }
-                    else if(player.getHealthUpgradeNum() < 8){
+                case "Upgrade Health":
+                    if(player.getHealthUpgradeNum() < 8 && canBuy(100)){
                         player.upgradeHealth();
                     }
                     break;
-                case "staminaUpgrade":
-                    if(player.getPoints() < 100){
-                        lowPointFrames = 50;
-                    }
-                    else if(player.getStaminaUpgradeNum() < 8){
+                case "Upgrade Stamina":
+                    if(player.getStaminaUpgradeNum() < 8 && canBuy(100)){
                         player.upgradeStamina();
                     }
                     break;
-                case "doubleJump":
-                    player.enableDoubleJump(100,10);
-                    //player.addPoints(100);
-                    checks[0] = true;
+                case "Double Jump":
+                    if(!player.hasDoubleJump() && canBuy(100)){
+                        player.enableDoubleJump();
+                        checks[0] = true;
+                    }
                     break;
-                case "hyperspeed":
-                   // player.addPoints(100);
-                    player.enableHyperspeed(100,10);
-                    checks[1] = true;
+                case "Hyperspeed":
+                    if(!player.hasHyperspeed() && canBuy(100)){
+                        player.enableHyperspeed();
+                        checks[1] = true;
+                    }
                     break;
-                case "instantCast":
-                    //player.addPoints(100);
-                    player.enableInstantCast(100,10);
-                    checks[2] = true;
+                case "Instant Cast":
+                    if(!player.hasInstantCast() && canBuy(100)){
+                        player.enableInstantCast();
+                        checks[2] = true;
+                    }
                     break;
-                case "castScope":
-                    //player.addPoints(100);
-                    player.enableCastScope(100,10);
-                    checks[3] = true;
+                case "Cast Scope":
+                    if(!player.hasCastScope() && canBuy(100)){
+                        player.enableCastScope();
+                        checks[3] = true;
+                    }
                     break;
             }
         }

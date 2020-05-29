@@ -36,7 +36,7 @@ public class MainGame extends JFrame {
         panelManager.add(menu, MENUPANEL);
         panelManager.add(shop, SHOPPANEL);
         panelManager.add(transition, TRANSITIONPANEL);
-        switchPanel(SHOPPANEL);
+        switchPanel(MENUPANEL);
         // Creating the JFrame and JPanels
         setSize(960,590);
         setResizable(false);
@@ -63,33 +63,37 @@ public class MainGame extends JFrame {
     // TickListener Class
     class TickListener implements ActionListener {
         public void actionPerformed(ActionEvent evt){
-            if(activePanel.equals(GAMEPANEL) && !game.isPaused()){
-                // Main game loop
-                game.checkInputs();
-                game.update();
-                game.checkCollision();
-                game.updateGraphics();
-                game.repaint();
-                // Timer to
-                runTime += 10; // The main game loop is called every 10ms
-                if(runTime == 1000){ // If 1 second has passed
-                    runTime = 0;
-                    game.iterateTime();
-                }
-            }
-            else if(activePanel.equals(MENUPANEL)){
-                menu.update();
-                menu.checkButtons();
-                menu.repaint();
-            }
-            else if(activePanel.equals(SHOPPANEL)){
-                shop.update();
-                shop.checkButtons();
-                shop.repaint();
-            }
-            else if(activePanel.equals(TRANSITIONPANEL)){
-                transition.update();
-                transition.repaint();
+            switch(activePanel){
+                case GAMEPANEL:
+                    if(!game.isPaused()){
+                        // Main game loop
+                        game.checkInputs();
+                        game.update();
+                        game.checkCollision();
+                        game.updateGraphics();
+                        game.repaint();
+                        // Timer to
+                        runTime += 10; // The main game loop is called every 10ms
+                        if(runTime == 1000){ // If 1 second has passed
+                            runTime = 0;
+                            game.iterateTime();
+                        }
+                    }
+                    break;
+                case MENUPANEL:
+                    menu.update();
+                    menu.checkButtons();
+                    menu.repaint();
+                    break;
+                case SHOPPANEL:
+                    shop.update();
+                    shop.checkButtons();
+                    shop.repaint();
+                    break;
+                case TRANSITIONPANEL:
+                    transition.update();
+                    transition.repaint();
+                    break;
             }
         }
     }

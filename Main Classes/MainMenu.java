@@ -12,13 +12,18 @@ public class MainMenu extends JPanel implements MouseListener {
     private Sound menuMusic = new Sound("Assets/Sounds/Music/menu.wav", 80);
     private FadeEffect fade = new FadeEffect();
     // Buttons
-    private final ArrayList<Button> buttons = new ArrayList<>();
+    private ArrayList<Button> buttons = new ArrayList<>();
+    private Button backButton;
     // Background related fields
     private Background background = new Background("BG0.png,BG1.png,BG2.png", "0,0.3,0.5");
     private Player dummy = new Player();
     private LevelProp platform = new LevelProp("0,0,grassMiddle.png", false, false);
     private int scrollOffset = 0;
     private int screenWidth, platformsX1, platformsX2;
+    // Other fields
+    private boolean inInstructions;
+    private Image[] keyImages = new Image[5];
+    // Constructor
     public MainMenu(MainGame game){
         // Setting up frame
         gameFrame = game;
@@ -32,11 +37,8 @@ public class MainMenu extends JPanel implements MouseListener {
     public void init(){
         // Declaring buttons
         Button playButton = new Button(new Rectangle((int)getSize().getWidth()/2 - 76,300, 150, 50), "Play", 46);
-        playButton.setActionCommand("Play");
         Button instructButton = new Button(new Rectangle(getWidth()/2 - 149, 350, 300, 50), "Instructions", 46);
-        instructButton.setActionCommand("Instruct");
         Button quitButton = new Button(new Rectangle(getWidth()/2 - 76 , 400, 150, 50), "Quit", 46);
-        quitButton.setActionCommand("Quit");
         buttons.add(playButton);
         buttons.add(instructButton);
         buttons.add(quitButton);
@@ -44,6 +46,9 @@ public class MainMenu extends JPanel implements MouseListener {
             button.addActionListener(new ButtonListener());
             add(button);
         }
+        // Declaring instructions buttons
+        backButton = new Button(new Rectangle(0, 10, 150, 50), "Back", 46);
+        backButton.addActionListener(new ButtonListener());
     }
     // Window related methods
     public void paintComponent(Graphics g){
@@ -53,15 +58,24 @@ public class MainMenu extends JPanel implements MouseListener {
             g.drawImage(platform.getPropImage(), platformsX1 + i*144 - scrollOffset,475, this);
             g.drawImage(platform.getPropImage(), platformsX2 + i*144 - scrollOffset,475, this);
         }
-        for(Button button: buttons){
-            button.drawRect(g);
-            button.draw(g);
+        if(inInstructions){
+            // Drawing the instructions page
+            drawInstructions(g);
+        }
+        else{
+            // Drawing all of the menu buttons
+            for(Button button: buttons){
+                button.draw(g);
+            }
         }
         g.setColor(Color.RED);
         g.drawString("Main menu", 435,200);
         g.setColor(Color.WHITE);
         g.drawLine(getWidth()/2 ,0, getWidth()/2, 960);
         fade.draw(g);
+    }
+    public void drawInstructions(Graphics g){
+        backButton.draw(g);
     }
     public void update(){
         // Making sure that the music is always looping
@@ -100,6 +114,7 @@ public class MainMenu extends JPanel implements MouseListener {
             for(Button button: buttons){
                 button.updateHover(mouse);
             }
+            backButton.updateHover(mouse);
         }
     }
     // Button Listener
@@ -107,16 +122,29 @@ public class MainMenu extends JPanel implements MouseListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             String buttonString = e.getActionCommand();
-            if(buttonString.equals("Play")){
-                if(!fade.isActive()){
-                    fade.start(FadeEffect.FADEOUT, 1);
-                }
-            }
-            else if(buttonString.equals("Quit")){
-                System.exit(0);
-            }
-            else{
-                System.out.println("Button not implemented");
+            switch(buttonString) {
+                case "Play":
+                    if(!fade.isActive()){
+                        fade.start(FadeEffect.FADEOUT, 1);
+                    }
+                    break;
+                case "Quit":
+                    System.exit(0);
+                    break;
+                case "Instructions":
+                    inInstructions = true;
+                    for(Button button: buttons){
+                        remove(button);
+                    }
+                    add(backButton);
+                    break;
+                case "Back":
+                    inInstructions = false;
+                    for(Button button: buttons){
+                        add(button);
+                    }
+                    remove(backButton);
+                    break;
             }
         }
     }

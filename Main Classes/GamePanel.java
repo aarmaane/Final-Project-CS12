@@ -317,10 +317,12 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     public void drawEnding(Graphics g){
         g.setFont(gameFontBig);
         g.setColor(Color.BLACK);
-        g.drawString("Level Complete!", 300, 180);
+        g.drawString("Level Complete!", getWidth()/2 - 173, 180);
         if(endScreenFrames > 200){
             g.setFont(gameFont);
-            g.drawString("Time bonus: " + bonusPoints, 375, 200);
+            String displayString = "Time bonus: " + bonusPoints;
+            int stringSize = g.getFontMetrics().stringWidth(displayString);
+            g.drawString(displayString, getWidth()/2 - stringSize/2, 200);
 
         }
     }

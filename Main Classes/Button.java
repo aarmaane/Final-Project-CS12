@@ -26,8 +26,9 @@ public class Button extends JButton {
         super();
         this.buttonRect = buttonRect;
         this.text = text;
-        setBounds(buttonRect);
         buttonFont = gameFont.deriveFont((float)fontSize);
+        setActionCommand(text);
+        setBounds(buttonRect);
         setOpaque(false);
         setContentAreaFilled(false);
         setBorderPainted(false);
