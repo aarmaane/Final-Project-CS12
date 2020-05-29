@@ -20,17 +20,21 @@ public class Fire extends Enemy {
     public void updateSprite() {
         spriteCount+=0.10;
         if(spriteCount > motionSprites.length){
-            spriteCount = 0;
+            if(health <=0){
+                isActive = false;
+            }
+            else{
+                spriteCount = 0;
+            }
         }
     }
+    @Override
+    public void checkCollision(LevelProp prop){
+        // Fire has no motion, do nothing
+    }
+    @Override
     public void updateMotion(Player player){
-        // Applying velocity values to position
-        x += velocityX;
-        y += velocityY;
-        // Resetting boolean values so they can be rechecked for the new position
-        platformAhead = false;
-        platformBehind = false;
-        onMovingPlat = false;
+        // Fire has no motion, do nothing
     }
     @Override
     public void updateAttack(Player player){
