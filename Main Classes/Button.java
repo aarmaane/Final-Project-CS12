@@ -60,10 +60,6 @@ public class Button extends JButton {
         }
         g.drawString(line, x + 10, y + 40 + (lineCount+1)*20);
     }
-    public void drawRect(Graphics g){
-        g.setColor(Color.BLACK);
-        g.drawRect(buttonRect.x, buttonRect.y, buttonRect.width, buttonRect.height);
-    }
     public void updateHover(Point point){
         hovered = false;
         ButtonModel model = getModel();
