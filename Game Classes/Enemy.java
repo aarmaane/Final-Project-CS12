@@ -1,4 +1,7 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public abstract class Enemy {
     // Constants
@@ -12,6 +15,17 @@ public abstract class Enemy {
     protected boolean isActive, isHurt, isAttacking, knockedBack, onMovingPlat;
     protected boolean platformBehind, platformAhead;
     protected boolean hasAlphaSprites;
+    // Images
+    protected static Image healthBar;
+    // Class initialization
+    public static void init(){
+        try {
+            healthBar = ImageIO.read(new File("Assets/Images/Enemies/healthBar.png"));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     // Constructor
     public Enemy(String data){
         String[] dataSplit = data.split(",");
@@ -22,6 +36,15 @@ public abstract class Enemy {
     // General methods
     public void activate(){
         isActive = true;
+    }
+    public void drawHealth(Graphics g, int levelOffset){
+        if(health != maxHealth){ // Only drawing if they have lost health
+            Rectangle hitBox = getHitbox();
+            int healthBarOffset = ((100-hitBox.width)/8);
+            g.setColor(Color.RED);
+            g.fillRect(hitBox.x-levelOffset-healthBarOffset,hitBox.y-10,(int)(((double)health/maxHealth)*88),13);
+            g.drawImage(healthBar,hitBox.x-levelOffset-13-healthBarOffset,hitBox.y-15,null);
+        }
     }
     public void checkCollision(LevelProp prop){
         Rectangle rect = prop.getRect();

@@ -9,3 +9,5 @@ level3.wav
 // Background Pictures
 crystal1.png,crystal2.png,crystal3.png
 0.1,0.3,0.6
+// Is the level ending locked until enemies are defeated
+False

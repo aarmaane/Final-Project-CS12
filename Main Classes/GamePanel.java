@@ -14,16 +14,15 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     private MainGame gameFrame;
     // Game related fields
     private Player player = new Player();
-    private int levelNum, timeLeft,challengeTimer;
+    private int levelNum, timeLeft;
     private int levelEndX, levelEndResetX;
     private int levelOffset = 0;
     private boolean paused = false;
     // Game state related fields
     private int barFade = 0, barFadeAddition = 5;
-    private boolean levelEnding, pointsGiven;
+    private boolean specialEnding, levelEnding, pointsGiven;
     private int endScreenFrames, bonusPoints;
     // Game Images
-    private Image enemyHealthBar;
     private Image staminaBar;
     private Image healthBar;
     private Background background;
@@ -61,7 +60,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         addMouseListener(this);
         try{
             // Loading Images
-            enemyHealthBar = ImageIO.read(new File("Assets/Images/Enemies/healthBar.png"));
             staminaBar = ImageIO.read(new File("Assets/Images/Player/staminaBar.png"));
             healthBar = ImageIO.read(new File("Assets/Images/Player/healthBar.png"));
             // Loading fonts
@@ -74,11 +72,13 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             e.printStackTrace();
         }
         // Initalizing the game Classes
+        Enemy.init();
         Slime.init();
         Skeleton.init();
         Ghost.init();
         Wizard.init();
         Fire.init();
+        Boss.init();
         Projectile.init();
         Chest.init();
         Item.init();
@@ -103,6 +103,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             levelMusic.closeSound();
             levelMusic = new Sound("Assets/Sounds/Music/" + levelData.get(3), 80);
             background = new Background(levelData.get(4), levelData.get(5));
+            specialEnding = Boolean.parseBoolean(levelData.get(6));
             /* Loading Game-Object Arrays */
 
             // Loading platforms
@@ -137,6 +138,9 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             }
             for(String data: Utilities.loadFile("Fires.txt", levelNum)){
                 enemies.add(new Fire(data));
+            }
+            for(String data: Utilities.loadFile("Boss.txt", levelNum)){
+                enemies.add(new Boss(data));
             }
             // Loading chests
             for(String data: Utilities.loadFile("Chests.txt", levelNum)){
@@ -205,7 +209,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         // Drawing chests
         for(Chest chest: chests){
             g.drawImage(chest.getSprite(), chest.getHitbox().x-levelOffset,chest.getHitbox().y, this);
-            g.drawRect(chest.getHitbox().x-levelOffset,chest.getHitbox().y, chest.getHitbox().width, chest.getHitbox().height);
         }
         // Drawing enemies
         for(Enemy enemy: enemies){
@@ -218,15 +221,15 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                 else{
                     g.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
                 }
-                drawHealth(g, enemy);
-                g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
+                enemy.drawHealth(g, levelOffset);
+                //g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
             }
         }
         // Drawing Projectiles
         for(Projectile projectile: projectiles){
             if(projectile.getHitbox().x + projectile.getHitbox().width - levelOffset > 0 && projectile.getHitbox().x - levelOffset < 960){
                 g.drawImage(projectile.getSprite(),(int)projectile.getX()-levelOffset, (int)projectile.getY(),this);
-                g.drawRect(projectile.getHitbox().x-levelOffset,projectile.getHitbox().y,projectile.getHitbox().width,projectile.getHitbox().height);
+                //g.drawRect(projectile.getHitbox().x-levelOffset,projectile.getHitbox().y,projectile.getHitbox().width,projectile.getHitbox().height);
             }
         }
         // Drawing items
@@ -301,18 +304,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         g.drawString("Press ESC to unpause", 335, 330);
         g.setFont(gameFontBig);
         g.drawString("Paused", 400, 300);
-    }
-    public void drawHealth(Graphics g, Enemy enemy){
-        double health = enemy.getHealth();
-        double maxHealth = enemy.getMaxHealth();
-        // Using Graphics inputted to draw the bar
-        if(health != maxHealth){ // Only drawing if they have lost health
-            Rectangle hitBox = enemy.getHitbox();
-            int healthBarOffset = ((100-hitBox.width)/8);
-            g.setColor(Color.RED);
-            g.fillRect(hitBox.x-levelOffset-healthBarOffset,hitBox.y-10,(int)((health/maxHealth)*88),13);
-            g.drawImage(enemyHealthBar,hitBox.x-levelOffset-13-healthBarOffset,hitBox.y-15,this);
-        }
     }
     public void drawEnding(Graphics g){
         g.setFont(gameFontBig);
@@ -618,7 +609,10 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             }
         }
         // Checking if the player has reached the end of the level
-        if(!levelEnding && playerHitbox.x > levelEndX){
+        if(specialEnding && enemies.size() == 0){
+            levelEnding = true;
+        }
+        else if(!levelEnding && playerHitbox.x > levelEndX){
             levelEnding = true;
             background.ignoreNegative();
             enemies.clear();
@@ -678,7 +672,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         }
     }
     public void checkInputs(){
-        if(levelEnding){
+        if(levelEnding && !specialEnding){
             player.move(Player.RIGHT);
             return;
         }

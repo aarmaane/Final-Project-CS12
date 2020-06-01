@@ -9,3 +9,5 @@ level2.wav
 // Background Pictures
 sky1.png,sky2.png,windows.png
 0.1,0.3,0.6
+// Is the level ending locked until enemies are defeated
+False
