@@ -397,7 +397,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             // Declaring important variables
             Point mousePos = getMousePosition();
             Rectangle playerHitbox = player.getHitbox();
-            double originalStamina = player.getStamina();
+            boolean wasPerformingAction = player.isAttacking() || player.isCasting();
             // Handling input
             if(e.getButton() == MouseEvent.BUTTON1){
                 player.attack();
@@ -406,7 +406,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                 player.castMagic(mousePos.x + levelOffset, mousePos.y);
             }
             // Checking if the player has performed an action and correcting his direction
-            if(originalStamina != player.getStamina()){
+            if(wasPerformingAction != (player.isAttacking() || player.isCasting())){
                 if(playerHitbox.x - levelOffset > mousePos.x){
                     player.look(Player.LEFT);
                 }

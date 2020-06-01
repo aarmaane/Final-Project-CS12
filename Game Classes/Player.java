@@ -559,6 +559,8 @@ public class Player {
     public int getDirection(){return direction;}
     public int getEnergyTime(){return energyTimer;}
     public int getHealthTimer(){return healthTimer;}
+    public boolean isAttacking(){return isAttacking;}
+    public boolean isCasting(){return isCasting;}
     public boolean hasEnergyPower(){return energyTimer > 0;}
     public boolean hasHealthPower(){return healthTimer > 0;}
     public int getSwordUpgradeNum() {return swordUpgradeNum;}

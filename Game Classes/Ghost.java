@@ -33,14 +33,17 @@ public class Ghost extends Enemy {
     public void updateMotion(Player player){
         // Checking the position of the Player and setting velocity towards them
         Rectangle playerHitbox = player.getHitbox();
-        double angle = Math.atan(((double)playerHitbox.y - getHitbox().y)/((double)playerHitbox.x - getHitbox().x));
+        double angle = Math.atan(((playerHitbox.y - 10.0) - getHitbox().y)/((playerHitbox.x - 40.0)- getHitbox().x));
+        if(Double.isNaN(angle)){
+            return;
+        }
         if(!isDying()){ // Only move the ghost while it's not dying
-            if(playerHitbox.x > getHitbox().x){
+            if(playerHitbox.x - 40 >= getHitbox().x){
                 x += Math.cos(angle) * speed;
                 y += Math.sin(angle) * speed;
                 direction = RIGHT;
             }
-            else if(playerHitbox.x < getHitbox().x){
+            else if(playerHitbox.x - 40 < getHitbox().x){
                 x -= Math.cos(angle) * speed;
                 y -= Math.sin(angle) * speed;
                 direction = LEFT;
