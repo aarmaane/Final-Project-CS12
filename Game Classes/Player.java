@@ -176,10 +176,13 @@ public class Player {
         }
     }
     public void castMagic(int targetX, int targetY){
+        Rectangle hitbox = getHitbox();
         double angle = Math.atan(((double)targetY - getAttackBox().y)/(targetX - getAttackBox().x));
-        if(hasCastScope && Math.abs(angle) > 1.2){
-            textQueue.add(new IndicatorText(getHitbox().x - 30, getHitbox().y, "Angle too steep!", Color.RED));
-            return;
+        if(hasCastScope) {
+            if ((targetX > hitbox.x && targetX < hitbox.getMaxX()) || Math.abs(angle) > 1.2) {
+                textQueue.add(new IndicatorText(getHitbox().x - 30, getHitbox().y, "Angle too steep!", Color.RED));
+                return;
+            }
         }
         castTargetX = targetX; castTargetY = targetY;
         castMagic();
