@@ -196,4 +196,6 @@ public abstract class Enemy {
     }
     public int getDirection(){ return direction;}
     public boolean hasOutOfBoundsPoints(){ return outOfBoundsPoints;}
+
+    public int getCastType(){ return 2;}
 }

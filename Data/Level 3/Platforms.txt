@@ -104,14 +104,25 @@
 5846,320,Set 3/floor3.png
 5910,320,Set 3/floor3.png
 5974,320,Set 3/floor3.png
-6038,320,Set 3/floor3.png
-6102,320,Set 3/floor3.png
-6166,320,Set 3/floor3.png
-6230,320,Set 3/floor3.png
+6038,500,Set 3/floor3.png
+6102,500,Set 3/floor3.png
+6166,500,Set 3/floor3.png
+6230,500,Set 3/floor3.png
 6294,320,Set 3/floor3.png
 6358,320,Set 3/floor3.png
 6422,320,Set 3/floor3.png
 6486,320,Set 3/floor3.png
+//
+//5782,500,Set 3/floor3.png
+5846,500,Set 3/floor3.png
+5910,500,Set 3/floor3.png
+5974,500,Set 3/floor3.png
+//
+6294,500,Set 3/floor3.png
+6358,500,Set 3/floor3.png
+6422,500,Set 3/floor3.png
+//6486,500,Set 3/floor3.png
+//
 6550,320,Set 3/floor3.png
 6614,320,Set 3/floor3.png
 6678,320,Set 3/floor3.png
@@ -124,6 +135,38 @@
 7126,320,Set 3/floor3.png
 7190,320,Set 3/floor3.png
 7254,320,Set 3/floor3.png
+7318,320,Set 3/floor3.png
+//7382,320,Set 3/floor3.png
+//7446,320,Set 3/floor3.png
+//7510,320,Set 3/floor3.png
+//7574,320,Set 3/floor3.png
+//7638,320,Set 3/floor3.png
+//7702,320,Set 3/floor3.png
+//7766,320,Set 3/floor3.png
+//7830,320,Set 3/floor3.png
+//7894,320,Set 3/floor3.png
+//7958,320,Set 3/floor3.png
+//8022,320,Set 3/floor3.png
+//8086,320,Set 3/floor3.png
 //
 4200,90,Set 3/floor5.png
 4232,90,Set 3/floor5.png
+//
+7462,500,Set 3/floor3.png
+7526,500,Set 3/floor3.png
+7558,500,Set 3/floor3.png
+7590,500,Set 3/floor3.png
+7654,500,Set 3/floor3.png
+7728,500,Set 3/floor3.png
+7758,500,Set 3/floor3.png
+7822,500,Set 3/floor3.png
+7886,500,Set 3/floor3.png
+7950,500,Set 3/floor3.png
+8014,500,Set 3/floor3.png
+8078,500,Set 3/floor3.png
+8142,500,Set 3/floor3.png
+8206,500,Set 3/floor3.png
+8238,500,Set 3/floor3.png
+8270,500,Set 3/floor3.png
+8334,500,Set 3/floor3.png
+8398,500,Set 3/floor3.png

@@ -126,6 +126,44 @@
 7334,0,Set 3/bottom2.png
 7398,0,Set 3/bottom3.png
 //
+7462,0,Set 3/bottom1.png
+7526,0,Set 3/bottom3.png
+7558,0,Set 3/bottom4.png
+7590,0,Set 3/bottom2.png
+7654,0,Set 3/bottom1.png
+7728,0,Set 3/bottom6.png
+7758,0,Set 3/bottom1.png
+7822,0,Set 3/bottom2.png
+7886,0,Set 3/bottom3.png
+7950,0,Set 3/bottom4.png
+8014,0,Set 3/bottom2.png
+8078,0,Set 3/bottom1.png
+8142,0,Set 3/bottom3.png
+8206,0,Set 3/bottom5.png
+8238,0,Set 3/bottom6.png
+8270,0,Set 3/bottom3.png
+8334,0,Set 3/bottom2.png
+8398,0,Set 3/bottom3.png
+//
+8462,0,Set 3/bottom1.png
+8526,0,Set 3/bottom3.png
+8558,0,Set 3/bottom4.png
+8590,0,Set 3/bottom2.png
+8654,0,Set 3/bottom1.png
+8728,0,Set 3/bottom6.png
+8758,0,Set 3/bottom1.png
+8822,0,Set 3/bottom2.png
+8886,0,Set 3/bottom3.png
+8950,0,Set 3/bottom4.png
+9014,0,Set 3/bottom2.png
+9078,0,Set 3/bottom1.png
+9142,0,Set 3/bottom3.png
+9206,0,Set 3/bottom5.png
+9238,0,Set 3/bottom6.png
+9270,0,Set 3/bottom3.png
+9334,0,Set 3/bottom2.png
+9398,0,Set 3/bottom3.png
+//
 4462,500,Set 3/bottom1upside.png
 4526,500,Set 3/bottom3upside.png
 4558,500,Set 3/bottom4upside.png
@@ -170,4 +208,69 @@
 //
 4200,115,Set 3/bottom5.png
 4232,115,Set 3/bottom5.png
+//
+6462,500,Set 3/bottom1upside.png
+6526,500,Set 3/bottom3upside.png
+6558,500,Set 3/bottom4upside.png
+6590,500,Set 3/bottom2upside.png
+6654,500,Set 3/bottom1upside.png
+6728,500,Set 3/bottom6upside.png
+6758,500,Set 3/bottom1upside.png
+6822,500,Set 3/bottom2upside.png
+6886,500,Set 3/bottom3upside.png
+6950,500,Set 3/bottom4upside.png
+7014,500,Set 3/bottom2upside.png
+7078,500,Set 3/bottom1upside.png
+7142,500,Set 3/bottom3upside.png
+7206,500,Set 3/bottom5upside.png
+7238,500,Set 3/bottom6upside.png
+7270,500,Set 3/bottom3upside.png
+7334,500,Set 3/bottom2upside.png
+7398,500,Set 3/bottom3upside.png
+//
+7462,500,Set 3/bottom1upside.png
+7526,500,Set 3/bottom3upside.png
+7558,500,Set 3/bottom4upside.png
+7590,500,Set 3/bottom2upside.png
+7654,500,Set 3/bottom1upside.png
+7728,500,Set 3/bottom6upside.png
+7758,500,Set 3/bottom1upside.png
+7822,500,Set 3/bottom2upside.png
+7886,500,Set 3/bottom3upside.png
+7950,500,Set 3/bottom4upside.png
+8014,500,Set 3/bottom2upside.png
+8078,500,Set 3/bottom1upside.png
+8142,500,Set 3/bottom3upside.png
+8206,500,Set 3/bottom5upside.png
+8238,500,Set 3/bottom6upside.png
+8270,500,Set 3/bottom3upside.png
+8334,500,Set 3/bottom2upside.png
+8398,500,Set 3/bottom3upside.png
+//
+8462,500,Set 3/bottom1upside.png
+8526,500,Set 3/bottom3upside.png
+8558,500,Set 3/bottom4upside.png
+8590,500,Set 3/bottom2upside.png
+8654,500,Set 3/bottom1upside.png
+8728,500,Set 3/bottom6upside.png
+8758,500,Set 3/bottom1upside.png
+8822,500,Set 3/bottom2upside.png
+8886,500,Set 3/bottom3upside.png
+8950,500,Set 3/bottom4upside.png
+9014,500,Set 3/bottom2upside.png
+9078,500,Set 3/bottom1upside.png
+9142,500,Set 3/bottom3upside.png
+9206,500,Set 3/bottom5upside.png
+9238,500,Set 3/bottom6upside.png
+9270,500,Set 3/bottom3upside.png
+9334,500,Set 3/bottom2upside.png
+9398,500,Set 3/bottom3upside.png
+//
+5780,380,Set 3/sideRight.png
+5780,480,Set 3/sideRight.png
+5780,510,Set 3/sideRight.png
+//
+6485,380,Set 3/sideLeft.png
+6485,480,Set 3/sideLeft.png
+6485,510,Set 3/sideLeft.png
 

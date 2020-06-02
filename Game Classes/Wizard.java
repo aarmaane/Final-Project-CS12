@@ -1,18 +1,19 @@
 import java.awt.*;
 
 public class Wizard extends Enemy {
+    //Constants
+    public static final int CAST1 = 1, CAST2 = 2;
     // Fields
     private double attackDelay;
+    private int castType;
     // Image Arrays for Sprites
-    private static Image[] cast1Sprites = new Image[8];
-    private static Image[] cast2Sprites = new Image[8];
     private static Image[] hurtSprites = new Image[4];
     private static Image[] idleSprites = new Image[6];
     private static Image[] deathSprites = new Image[7];
+    private Image[] castSprites = new Image[8];
     // Class Initialization
     public static void init(){
-        cast2Sprites = Utilities.spriteArrayLoad(cast1Sprites, "Enemies/Wizard/cast1-");
-        cast1Sprites = Utilities.spriteArrayLoad(cast2Sprites, "Enemies/Wizard/cast2-");
+        //cast2Sprites = Utilities.spriteArrayLoad(cast1Sprites, "Enemies/Wizard/cast1-");
         hurtSprites = Utilities.spriteArrayLoad(hurtSprites, "Enemies/Wizard/hurt");
         idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Wizard/idle");
         deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Wizard/death");
@@ -20,9 +21,12 @@ public class Wizard extends Enemy {
     //Constructor
     public Wizard(String data){
         super(data);
+        String[] dataSplit = data.split(",");
+        castType = Integer.parseInt(dataSplit[3]);
         health = 300 * difficulty;
         maxHealth = health;
         damage = 35*difficulty;
+        castSprites = Utilities.spriteArrayLoad(castSprites, "Enemies/Wizard/cast"+castType+"-");
     }
     // General methods
    @Override
@@ -40,8 +44,13 @@ public class Wizard extends Enemy {
     @Override
     public void updateAttack(Player player) {
         if(Math.abs(player.getX()-x)<1000) {
-            if (!isAttacking) {
-                attackDelay += 0.05 * difficulty;
+            if (!isAttacking){
+                if(castType == CAST1) {
+                    attackDelay += 0.005 * difficulty;
+                }
+                else if(castType == CAST2) {
+                    attackDelay += 0.05 * difficulty;
+                }
                 if (attackDelay > 10) {
                     isAttacking = true;
                     spriteCount = 0;
@@ -69,7 +78,7 @@ public class Wizard extends Enemy {
         }
         else if(isAttacking){
             spriteCount += 0.1;
-            if(spriteCount > cast1Sprites.length){
+            if(spriteCount > castSprites.length){
                 spriteCount = 0;
                 attackDelay = 0;
                 isAttacking = false;
@@ -89,7 +98,7 @@ public class Wizard extends Enemy {
     }
     @Override
     public boolean isCastFrame(){
-        if(isAttacking && Utilities.roundOff(spriteCount,2) == cast1Sprites.length - 1){
+        if(isAttacking && Utilities.roundOff(spriteCount,2) == castSprites.length - 1){
             return true;
         }
         return false;
@@ -109,7 +118,7 @@ public class Wizard extends Enemy {
             }
         }
         else if(isAttacking){
-            sprite = cast1Sprites[spriteIndex];
+            sprite = castSprites[spriteIndex];
         }
         else{
             sprite = idleSprites[spriteIndex];
@@ -125,4 +134,6 @@ public class Wizard extends Enemy {
     public Rectangle getHitbox() {
         return new Rectangle((int)x+90, (int)y+50, 65, 91);
     }
+    @Override
+    public int getCastType(){return castType;}
 }

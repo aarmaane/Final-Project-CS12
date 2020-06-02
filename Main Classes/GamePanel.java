@@ -549,8 +549,16 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                (playerHitbox.x > wizardHitBox.getMaxX() && playerHitbox.x < wizardHitBox.x && speed < 0)){
                 speed = -speed;
             }
-            projectiles.add(new Projectile(Projectile.ENEMY, startX, wizardHitBox.y, playerHitbox.x, playerHitbox.y, enemy.getDamage(),speed));
-            castSound.play();
+            if(enemy.getCastType() == Wizard.CAST2){
+                projectiles.add(new Projectile(Projectile.ENEMY, startX, wizardHitBox.y, playerHitbox.x, playerHitbox.y, enemy.getDamage(), speed));
+                castSound.play();
+            }
+            else if(enemy.getCastType() == Wizard.CAST1){
+                for(int i=0;i<20;i++){
+                    projectiles.add(new Projectile(Projectile.ENEMY, playerHitbox.x+Utilities.randint(-450,450), 0, playerHitbox.x+Utilities.randint(-150,150), 590, enemy.getDamage(), speed));
+                    castSound.play();
+                }
+            }
         }
     }
     public void collectGarbage(){

@@ -1,0 +1,13 @@
+// X, Y, image, disappearX, disappearY
+7382,320,Set 3/floor3.png,7250,200
+7446,320,Set 3/floor3.png,7350,200
+7510,320,Set 3/floor3.png,7450,200
+7574,320,Set 3/floor3.png,7500,200
+7638,320,Set 3/floor3.png,7580,200
+7702,320,Set 3/floor3.png,7600,200
+7766,320,Set 3/floor3.png,7670,200
+7830,320,Set 3/floor3.png,7750,200
+7894,320,Set 3/floor3.png,7790,200
+7958,320,Set 3/floor3.png,7850,200
+8022,320,Set 3/floor3.png,7940,200
+8086,320,Set 3/floor3.png,7990,200
