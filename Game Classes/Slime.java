@@ -20,7 +20,7 @@ public class Slime extends Enemy {
         super(data);
         health = 100 * difficulty;
         maxHealth=health;
-        damage = 5;
+        damage = 5*difficulty;
     }
     // General methods
     @Override

@@ -18,5 +18,112 @@
 896,400,Set 3/floor1.png
 960,400,Set 3/floor1.png
 //
-520,160,Set 3/floor3.png
-584,160,Set 3/floor3.png
+520,100,Set 3/floor3.png
+584,100,Set 3/floor3.png
+//
+1004,330,Set 3/floor5.png
+1036,310,Set 3/floor5.png
+1068,290,Set 3/floor5.png
+1100,270,Set 3/floor5.png
+1132,250,Set 3/floor5.png
+1164,230,Set 3/floor5.png
+1196,210,Set 3/floor5.png
+1228,190,Set 3/floor5.png
+1260,170,Set 3/floor5.png
+1292,150,Set 3/floor5.png
+1324,130,Set 3/floor5.png
+1356,110,Set 3/floor5.png
+1388,90,Set 3/floor5.png
+1420,70,Set 3/floor5.png
+//
+1135,500,Set 3/hangingPlatformRight.png
+1282,500,Set 3/hangingPlatformLeft.png
+//
+1470,135,Set 3/hangingPlatformRight.png
+1615,135,Set 3/hangingPlatformLeft.png
+//
+1735,135,Set 3/hangingPlatformRight.png
+1880,135,Set 3/hangingPlatformLeft.png
+//
+2000,135,Set 3/hangingPlatformRight.png
+2145,135,Set 3/hangingPlatformLeft.png
+//
+2265,135,Set 3/hangingPlatformRight.png
+2410,135,Set 3/hangingPlatformLeft.png
+2670,0,Set 3/backPillar1.png
+//
+3310,230,Set 3/floor6.png
+3342,230,Set 3/floor6.png
+3374,230,Set 3/floor6.png
+3406,230,Set 3/floor6.png
+3438,230,Set 3/floor6.png
+3470,230,Set 3/floor6.png
+3502,230,Set 3/floor6.png
+3534,230,Set 3/floor6.png
+3566,230,Set 3/floor6.png
+3598,230,Set 3/floor6.png
+3630,230,Set 3/floor6.png
+3662,230,Set 3/floor6.png
+3694,230,Set 3/floor6.png
+3726,230,Set 3/floor6.png
+3758,230,Set 3/floor3.png
+3822,230,Set 3/floor3.png
+3886,230,Set 3/floor3.png
+3950,230,Set 3/floor3.png
+4014,230,Set 3/floor3.png
+4078,230,Set 3/floor3.png
+4142,230,Set 3/floor3.png
+4206,230,Set 3/floor3.png
+4270,230,Set 3/floor3.png
+4334,230,Set 3/floor3.png
+4398,230,Set 3/floor3.png
+//
+4462,230,Set 3/floor3.png
+//
+4502,320,Set 3/floor3.png
+4566,320,Set 3/floor3.png
+4630,320,Set 3/floor3.png
+4694,320,Set 3/floor3.png
+4758,320,Set 3/floor3.png
+4822,320,Set 3/floor3.png
+4886,320,Set 3/floor3.png
+4950,320,Set 3/floor3.png
+5014,320,Set 3/floor3.png
+5078,320,Set 3/floor3.png
+5142,320,Set 3/floor3.png
+5206,320,Set 3/floor3.png
+5270,320,Set 3/floor3.png
+5334,320,Set 3/floor3.png
+5398,320,Set 3/floor3.png
+5462,320,Set 3/floor3.png
+5526,320,Set 3/floor3.png
+5590,320,Set 3/floor3.png
+5654,320,Set 3/floor3.png
+5718,320,Set 3/floor3.png
+5782,320,Set 3/floor3.png
+5846,320,Set 3/floor3.png
+5910,320,Set 3/floor3.png
+5974,320,Set 3/floor3.png
+6038,320,Set 3/floor3.png
+6102,320,Set 3/floor3.png
+6166,320,Set 3/floor3.png
+6230,320,Set 3/floor3.png
+6294,320,Set 3/floor3.png
+6358,320,Set 3/floor3.png
+6422,320,Set 3/floor3.png
+6486,320,Set 3/floor3.png
+6550,320,Set 3/floor3.png
+6614,320,Set 3/floor3.png
+6678,320,Set 3/floor3.png
+6742,320,Set 3/floor3.png
+6806,320,Set 3/floor3.png
+6870,320,Set 3/floor3.png
+6934,320,Set 3/floor3.png
+6998,320,Set 3/floor3.png
+7062,320,Set 3/floor3.png
+7126,320,Set 3/floor3.png
+7190,320,Set 3/floor3.png
+7254,320,Set 3/floor3.png
+//
+4200,90,Set 3/floor5.png
+4232,90,Set 3/floor5.png

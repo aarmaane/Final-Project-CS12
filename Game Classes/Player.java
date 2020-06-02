@@ -52,7 +52,7 @@ public class Player {
         stamina = maxStamina;
         maxHealth=Integer.MAX_VALUE;
         health=maxHealth;
-        points=0;
+        points=100000;
         swordDamage=10;
         castDamage =15;
         // Loading Images

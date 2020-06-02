@@ -20,7 +20,7 @@ public class Skeleton extends Enemy {
         super(data);
         health = 200 * difficulty;
         maxHealth = health;
-        damage = 20;
+        damage = 20*difficulty;
     }
     // General methods
     @Override

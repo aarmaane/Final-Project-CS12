@@ -5,5 +5,5 @@
 1000,Increase the amount of damage each cast deals
 1000,Casts will go in the direction of your mouse when you left-click
 1000,Reduce casting time to a fraction of a second
-1000,Gain an extra midair jump
+1000,Gain an extra midair jump that can help you access higher platforms
 1000,Hold down shift to use your stamina and enter hyperspeed

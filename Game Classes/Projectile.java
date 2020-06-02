@@ -57,6 +57,7 @@ public class Projectile {
         // Assigning x and y with proper offset
         x = startX - angledRect.x;
         y = startY - angledRect.y;
+        System.out.println(targX - startX);
     }
     public void assignArray(){
         if(type == PLAYER){

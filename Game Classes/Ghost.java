@@ -16,10 +16,11 @@ public class Ghost extends Enemy {
         super(data);
         health = 100 * difficulty;
         maxHealth = health;
-        damage = 15;
+        damage = 15*difficulty;
         speed = difficulty;
         hasAlphaSprites = true;
         alpha = (float) 0.1;
+        outOfBoundsPoints = false;
     }
     public static void init(){
         movingSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Ghost/move");

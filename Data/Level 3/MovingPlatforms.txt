@@ -1,0 +1,2 @@
+2550,135,Set 3/hangingPlatformRight.png,400,300,1,1
+2700,135,Set 3/hangingPlatformLeft.png,400,300,1,1

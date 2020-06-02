@@ -11,8 +11,8 @@ public class Wizard extends Enemy {
     private static Image[] deathSprites = new Image[7];
     // Class Initialization
     public static void init(){
-        cast1Sprites = Utilities.spriteArrayLoad(cast1Sprites, "Enemies/Wizard/cast1-");
-        cast2Sprites = Utilities.spriteArrayLoad(cast2Sprites, "Enemies/Wizard/cast2-");
+        cast2Sprites = Utilities.spriteArrayLoad(cast1Sprites, "Enemies/Wizard/cast1-");
+        cast1Sprites = Utilities.spriteArrayLoad(cast2Sprites, "Enemies/Wizard/cast2-");
         hurtSprites = Utilities.spriteArrayLoad(hurtSprites, "Enemies/Wizard/hurt");
         idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Wizard/idle");
         deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Wizard/death");
@@ -22,7 +22,7 @@ public class Wizard extends Enemy {
         super(data);
         health = 300 * difficulty;
         maxHealth = health;
-        damage = 35;
+        damage = 35*difficulty;
     }
     // General methods
    @Override
@@ -39,11 +39,13 @@ public class Wizard extends Enemy {
 
     @Override
     public void updateAttack(Player player) {
-        if(!isAttacking){
-            attackDelay += 0.05;
-            if(attackDelay > 10){
-                isAttacking = true;
-                spriteCount = 0;
+        if(Math.abs(player.getX()-x)<1000) {
+            if (!isAttacking) {
+                attackDelay += 0.05 * difficulty;
+                if (attackDelay > 10) {
+                    isAttacking = true;
+                    spriteCount = 0;
+                }
             }
         }
     }

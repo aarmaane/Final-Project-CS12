@@ -10,15 +10,18 @@ public abstract class Enemy {
     //Fields
     protected double x, y, velocityX, velocityY;
     protected double spriteCount;
+    protected int timeAlive;
     protected int direction;
     protected int health, maxHealth, damage, difficulty;
     protected boolean isActive, isHurt, isAttacking, knockedBack, onMovingPlat;
     protected boolean platformBehind, platformAhead;
     protected boolean hasAlphaSprites;
+    protected boolean hasTimeLimit;
+    protected boolean outOfBoundsPoints;
     // Images
     protected static Image healthBar;
     // Class initialization
-    public static void init(){
+    public static void init() throws IOException {
         try {
             healthBar = ImageIO.read(new File("Assets/Images/Enemies/healthBar.png"));
         }
@@ -32,6 +35,7 @@ public abstract class Enemy {
         x = Integer.parseInt(dataSplit[0]);
         y = Integer.parseInt(dataSplit[1]);
         difficulty = Integer.parseInt(dataSplit[2]);
+        outOfBoundsPoints = true;
     }
     // General methods
     public void activate(){
@@ -112,6 +116,18 @@ public abstract class Enemy {
         updateSprite();
 
     }
+    public void iterateTime(){
+        if(hasTimeLimit){
+            if(timeAlive>0) {
+                timeAlive -= 1;
+            }
+            else{
+                health = 0;
+                isHurt = true;
+                spriteCount = 0;
+            }
+        }
+    }
     public void updateMotion(Player player){
         // Applying velocity values to position
         x += velocityX;
@@ -130,6 +146,10 @@ public abstract class Enemy {
         if(originalState != isAttacking){ // If there's a change in state, reset the sprite counter
             spriteCount = 0;
         }
+    }
+    public void setTimeLimit(int timeLimit){
+        hasTimeLimit = true;
+        timeAlive = timeLimit;
     }
 
     public float getSpriteAlpha(){
@@ -175,4 +195,5 @@ public abstract class Enemy {
         return hasAlphaSprites;
     }
     public int getDirection(){ return direction;}
+    public boolean hasOutOfBoundsPoints(){ return outOfBoundsPoints;}
 }

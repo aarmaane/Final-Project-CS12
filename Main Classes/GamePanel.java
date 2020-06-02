@@ -14,7 +14,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     private MainGame gameFrame;
     // Game related fields
     private Player player = new Player();
-    private int levelNum, timeLeft;
+    private int levelNum, timeLeft,spawnDelay;
     private int levelEndX, levelEndResetX;
     private int levelOffset = 0;
     private boolean paused = false;
@@ -42,6 +42,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     private ArrayList<LevelProp> noCollideProps = new ArrayList<>();
     private ArrayList<Enemy> enemies = new ArrayList<>();
     private ArrayList<Projectile> projectiles = new ArrayList<>();
+    private ArrayList<Spawner> spawners = new ArrayList<>();
     private ArrayList<Chest> chests = new ArrayList<>();
     private ArrayList<Item> items = new ArrayList<>();
     private ArrayList<IndicatorText> indicatorText = new ArrayList<>();
@@ -51,7 +52,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     private Composite comp;
     private FadeEffect fade = new FadeEffect();
     // Constructor for GamePanel
-    public GamePanel(MainGame game){
+    public GamePanel(MainGame game) throws IOException {
         // Setting up the GamePanel
         gameFrame = game;
         setSize(960,590);
@@ -78,6 +79,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         Ghost.init();
         Wizard.init();
         Fire.init();
+        Crystal.init();
         Boss.init();
         Projectile.init();
         Chest.init();
@@ -93,11 +95,13 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         chests.clear();
         projectiles.clear();
         items.clear();
+        spawners.clear();
         levelEnding = false; pointsGiven = false; endScreenFrames = 0; paused = false; bonusPoints = 0;
         try{
             // Setting up level fields
             ArrayList<String> levelData = Utilities.loadFile("LevelData.txt", levelNum);
             timeLeft = Integer.parseInt(levelData.get(0));
+            spawnDelay = timeLeft;
             levelEndX =  Integer.parseInt(levelData.get(1));
             levelEndResetX =  Integer.parseInt(levelData.get(2));
             levelMusic.closeSound();
@@ -139,8 +143,15 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             for(String data: Utilities.loadFile("Fires.txt", levelNum)){
                 enemies.add(new Fire(data));
             }
+            for(String data: Utilities.loadFile("Crystals.txt", levelNum)){
+                enemies.add(new Crystal(data));
+            }
             for(String data: Utilities.loadFile("Boss.txt", levelNum)){
                 enemies.add(new Boss(data));
+            }
+            //Loading spawners
+            for(String data: Utilities.loadFile("Spawners.txt", levelNum)){
+                spawners.add(new Spawner(data));
             }
             // Loading chests
             for(String data: Utilities.loadFile("Chests.txt", levelNum)){
@@ -444,9 +455,20 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         for(LevelProp prop: noCollideProps){
             updateProp(prop);
         }
+        for(Spawner spawner: spawners){
+            if(spawnDelay-timeLeft>4) {
+                spawnEnemy(spawner);
+                spawnDelay = timeLeft;
+            }
+        }
         // Updating objects
         checkPlayerAction();
         collectGarbage();
+    }
+    public void spawnEnemy(Spawner spawner){
+        if(Math.abs(player.getX()-spawner.getSpawnX()) <= 700){
+            enemies.add(spawner.spawnEnemy());
+        }
     }
     public void updateProp(LevelProp prop){
         // Checking if it's temporary and needs to disappear
@@ -533,6 +555,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     }
     public void collectGarbage(){
         // Using removeIf for Arrays that only need removal of items
+        //enemies.removeIf(enemy -> (enemy.isDying() && enemy.hasTimeLimit));
         projectiles.removeIf(Projectile::isDoneExploding);
         items.removeIf(item -> (item.isUsed() || item.getHitbox().y > this.getHeight()));
         platforms.removeIf(LevelProp::isDoneDisappearing);
@@ -543,8 +566,10 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             Enemy enemy = enemies.get(i);
             if(enemy.isDead() || enemy.getY() > this.getHeight()){
                 enemies.remove(i);
-                player.addPoints(100);
-                indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "+100", Color.YELLOW));
+                if(enemy.hasOutOfBoundsPoints()) {
+                    player.addPoints(100);
+                    indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "+100", Color.YELLOW));
+                }
             }
         }
     }
@@ -703,6 +728,9 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             timeLeft-=1;
         }
         player.iterateTime();
+        for(Enemy enemy: enemies){
+            enemy.iterateTime();
+        }
     }
     // Setter methods
     public void setLevelNum(int level){
