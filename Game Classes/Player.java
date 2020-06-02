@@ -177,7 +177,7 @@ public class Player {
     }
     public void castMagic(int targetX, int targetY){
         double angle = Math.atan(((double)targetY - getAttackBox().y)/(targetX - getAttackBox().x));
-        if(Math.abs(angle) > 1.2){
+        if(hasCastScope && Math.abs(angle) > 1.2){
             textQueue.add(new IndicatorText(getHitbox().x - 30, getHitbox().y, "Angle too steep!", Color.RED));
             return;
         }

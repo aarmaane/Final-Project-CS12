@@ -28,7 +28,8 @@ public class Wizard extends Enemy {
    @Override
     public void updateMotion(Player player){
        Rectangle playerBox = player.getHitbox();
-       if(playerBox.x > getHitbox().x){
+       Rectangle hitbox = getHitbox();
+       if(playerBox.x < hitbox.x){
            direction = LEFT;
        }
        else{
@@ -111,7 +112,7 @@ public class Wizard extends Enemy {
         else{
             sprite = idleSprites[spriteIndex];
         }
-        if(direction == RIGHT){
+        if(direction == LEFT){
             sprite = Utilities.flipSprite(sprite);
         }
         return sprite;
