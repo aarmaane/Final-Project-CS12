@@ -43,12 +43,13 @@ public class Projectile {
     public Projectile(int type, double startX, double startY,double targX,double targY ,double damage, double speed){
         this.type= type;
         this.damage = damage;
-        this.speed = speed;
         isAngled = true;
-        if(speed > 0){
+        if(targX > startX){
+            this.speed = speed;
             this.direction = RIGHT;
         }
         else{
+            this.speed = -speed;
             this.direction = LEFT;
         }
         this.angle = Math.atan((targY - startY)/(targX - startX));
@@ -57,7 +58,6 @@ public class Projectile {
         // Assigning x and y with proper offset
         x = startX - angledRect.x;
         y = startY - angledRect.y;
-        System.out.println(targX - startX);
     }
     public void assignArray(){
         if(type == PLAYER){

@@ -177,10 +177,25 @@ public class Player {
     }
     public void castMagic(int targetX, int targetY){
         Rectangle hitbox = getHitbox();
-        double angle = Math.atan(((double)targetY - getAttackBox().y)/(targetX - getAttackBox().x));
+        // Getting the correct attackBox
+        int originalDir = getDirection();
+        if(targetX < hitbox.x){
+            direction = LEFT;
+        }
+        else{
+            direction = RIGHT;
+        }
+        int attackDir = direction;
+        Rectangle attackBox = getAttackBox();
+        direction = originalDir;
+        double angle = Math.atan(((double)targetY - attackBox.y)/(targetX - attackBox.x));
         if(hasCastScope) {
-            if ((targetX > hitbox.x && targetX < hitbox.getMaxX()) || Math.abs(angle) > 1.2) {
+            if ((targetX > hitbox.x && targetX < hitbox.getMaxX()) || (attackDir == RIGHT && Math.abs(angle) > 1.2) || (attackDir == LEFT && Math.abs(angle) > 1.4)) {
                 textQueue.add(new IndicatorText(getHitbox().x - 30, getHitbox().y, "Angle too steep!", Color.RED));
+                return;
+            }
+            else if((attackDir == LEFT && targetX > attackBox.getMaxX() - 20) || (attackDir == RIGHT  && targetX < attackBox.x)){
+                textQueue.add(new IndicatorText(getHitbox().x - 30, getHitbox().y, "Target too close!", Color.RED));
                 return;
             }
         }

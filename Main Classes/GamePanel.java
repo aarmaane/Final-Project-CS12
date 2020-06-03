@@ -258,7 +258,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
         g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
-        //g.drawRect(player.getAttackBox().x - levelOffset, player.getAttackBox().y, player.getAttackBox().width, player.getAttackBox().height);
+        g.drawRect(player.getAttackBox().x - levelOffset, player.getAttackBox().y, player.getAttackBox().width, player.getAttackBox().height);
         // Drawing game stats
         /*Fills in both of the stat bars from darker shades to lighter shades by increasing the respective rgb value by 1 while shifting the
         rectangle over each time. */
@@ -509,18 +509,21 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             // Setting up the projectile variables
             Rectangle hitBox = player.getHitbox();
             Rectangle attackBox = player.getAttackBox();
-            int speed = -5;
+            int speed = 5;
             int xPos = attackBox.x;
-            if(player.getDirection() == Player.RIGHT){
-                speed = -speed;
-            }
             // Creating the projectile
             if(player.hasAngledCast()){
+                if(player.getDirection() == Player.LEFT){
+                    xPos = (int)attackBox.getMaxX() - 20;
+                }
                 projectiles.add(new Projectile(Projectile.PLAYER, xPos ,hitBox.y + hitBox.height / 2.0 - 5 ,player.getCastTargetX(),player.getCastTargetY(),player.getCastDamage(),speed));
             }
             else {
                 if(player.getDirection() == Player.RIGHT){
                     xPos -= 120;
+                }
+                else{
+                    speed = -speed;
                 }
                 projectiles.add(new Projectile(Projectile.PLAYER, xPos, hitBox.y + hitBox.height / 2.0 - 5, player.getCastDamage(), speed));
             }
@@ -539,15 +542,9 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             Rectangle wizardHitBox = enemy.getHitbox();
             Rectangle playerHitbox = player.getHitbox();
             int startX = wizardHitBox.x - 10;
-            int speed = -2;
+            int speed = 2;
             if(enemy.getDirection() == Enemy.RIGHT){
-                speed = -speed;
                 startX = wizardHitBox.x + wizardHitBox.width + 10;
-            }
-            // Fixing case of being under the wizard
-            if((playerHitbox.x < wizardHitBox.getMaxX() && playerHitbox.x > wizardHitBox.x && speed > 0) ||
-               (playerHitbox.x > wizardHitBox.getMaxX() && playerHitbox.x < wizardHitBox.x && speed < 0)){
-                speed = -speed;
             }
             if(enemy.getCastType() == Wizard.CAST2){
                 projectiles.add(new Projectile(Projectile.ENEMY, startX, wizardHitBox.y, playerHitbox.x, playerHitbox.y, enemy.getDamage(), speed));
@@ -563,7 +560,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     }
     public void collectGarbage(){
         // Using removeIf for Arrays that only need removal of items
-        //enemies.removeIf(enemy -> (enemy.isDying() && enemy.hasTimeLimit));
         projectiles.removeIf(Projectile::isDoneExploding);
         items.removeIf(item -> (item.isUsed() || item.getHitbox().y > this.getHeight()));
         platforms.removeIf(LevelProp::isDoneDisappearing);
