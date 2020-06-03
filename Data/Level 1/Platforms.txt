@@ -1,3 +1,6 @@
+//This text file stores all of the information about the colliding platforms in level 1 in the format:
+//X,Y,Image
+//Ground
 0,475,grassMiddle.png
 144,475,grassMiddle.png
 288,475,grassMiddle.png
@@ -18,14 +21,6 @@
 2060,475,grassMiddle.png
 2204,475,grassMiddle.png
 2348,475,grassRight.png
-2610,325,grassPlatformBig.png
-3000,325,grassPlatform.png
-2950,325,grassPlatform.png
-3250,200,grassPlatform.png
-3300,200,grassPlatform.png
-3350,200,grassPlatform.png
-3575,350,grassPlatformBig.png
-3890,275,grassPlatformBig.png
 4180,475,grassLeft.png
 4224,475,grassMiddle.png
 4368,475,grassMiddle.png
@@ -33,7 +28,6 @@
 4656,475,grassMiddle.png
 4800,475,grassMiddle.png
 4944,475,grassRight.png
-4950,300,grassPlatformSmall.png
 5100,225,grassPillar.png
 5350,125,grassPillar.png
 5600,25,grassPillar.png
@@ -52,7 +46,19 @@
 6448,187,box.png
 6496,187,box.png
 6544,187,box.png
+//Floating platforms
+2610,325,grassPlatformBig.png
+3000,325,grassPlatform.png
+2950,325,grassPlatform.png
+3250,200,grassPlatform.png
+3300,200,grassPlatform.png
+3350,200,grassPlatform.png
+3575,350,grassPlatformBig.png
+3890,275,grassPlatformBig.png
+4950,300,grassPlatformSmall.png
 6800,160,grassPlatformSmall.png
+7070,100,grassPlatform.png
+//Rock bridge
 6950,475,rock1.png
 7000,475,rock1.png
 7050,475,rock1.png
@@ -60,8 +66,7 @@
 7150,475,rock1.png
 7200,475,rock1.png
 7250,475,rock1.png
-7070,100,grassPlatform.png
-//
+//Ending Runoff
 7350,475,grassMiddle.png
 7440,475,grassMiddle.png
 7580,475,grassMiddle.png

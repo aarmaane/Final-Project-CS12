@@ -1,4 +1,8 @@
+//This text file stores all of the information about the colliding platforms in level 2 in the format:
+//X,Y,Image
+//Floating platforms
 280,190,Set 2/stonePlatform.png
+//Ground
 0,475,Set 2/floorMiddle.png
 145,475,Set 2/floorMiddle.png
 290,475,Set 2/floorMiddle.png
@@ -8,27 +12,22 @@
 4245,325,Set 2/floorMiddle.png
 4390,325,Set 2/floorMiddle.png
 4535,325,Set 2/floorMiddle.png
-//
 2115,325,Set 2/floorMiddle.png
 2260,325,Set 2/floorMiddle.png
 2405,325,Set 2/floorMiddle.png
 2550,325,Set 2/floorMiddle.png
 2695,325,Set 2/floorMiddle.png
-//
-//4800,325,Set 2/floorMiddle.png
 4945,325,Set 2/floorMiddle.png
 5090,325,Set 2/floorMiddle.png
 5235,325,Set 2/floorMiddle.png
 5380,325,Set 2/floorMiddle.png
 5425,325,Set 2/floorMiddle.png
 5570,325,Set 2/floorMiddle.png
-//
 8100,235,Set 2/floorMiddle.png
 8245,283,Set 2/floorMiddle.png
 8390,331,Set 2/floorMiddle.png
 8535,379,Set 2/floorMiddle.png
 8680,427,Set 2/floorMiddle.png
-//
 8825,475,Set 2/floorMiddle.png
 8970,475,Set 2/floorMiddle.png
 9115,475,Set 2/floorMiddle.png

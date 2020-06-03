@@ -1,3 +1,6 @@
+//This text file stores all of the information for the non-colliding platforms in level 1 in the format:
+//X,Y,Image
+//
 // Platform extensions
 576,379,pillarMiddle.png
 576,427,pillarMiddle.png
@@ -15,7 +18,6 @@
 6130,238,pillarMiddle.png
 6130,190,pillarMiddle.png
 6130,142,pillarMiddle.png
-//6100,pillarMiddle.png
 6400,235,box.png
 6448,235,box.png
 6496,235,box.png
@@ -36,6 +38,7 @@
 6448,427,box.png
 6496,427,box.png
 6544,427,box.png
+//
 // Decor
 275,427,bush.png
 1428,175,tree.png
@@ -49,7 +52,6 @@
 3960,260,mushroom.png
 3990,260,mushroom.png
 4020,260,mushroom.png
-//7310,420,rock2.png
 7350,390,rock1.png
 7350,410,rock1.png
 7400,380,rock3.png

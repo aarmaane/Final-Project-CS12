@@ -1,4 +1,6 @@
+//This text file stores the information for all the disappearing platforms in level 3. The information stores goes as follows:
 // X, Y, image, disappearX, disappearY
+//Cave ground above fire
 7382,320,Set 3/floor3.png,7250,200
 7446,320,Set 3/floor3.png,7350,200
 7510,320,Set 3/floor3.png,7450,200

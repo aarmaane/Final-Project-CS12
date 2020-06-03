@@ -1,3 +1,5 @@
+//This text file contains all of the data for the skeleton enemies in level 2 in the format:
+//X,Y,difficulty
 800,170,2
 2200,170,2
 2350,170,2

@@ -1,2 +1,6 @@
+//This text file contains the data for the colliding moving platforms in level 3 in the format:
+// X, Y, image, moveDistanceX, moveDistanceY, speedX, speedY
 2550,135,Set 3/hangingPlatformRight.png,400,300,1,1
 2700,135,Set 3/hangingPlatformLeft.png,400,300,1,1
+6550,135,Set 3/smallHangingRight.png,400,300,1,1
+6700,135,Set 3/smallHangingLeft.png,400,300,1,1

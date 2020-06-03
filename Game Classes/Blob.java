@@ -1,28 +1,26 @@
 import java.awt.*;
 
-public class Slime extends Enemy {
-    // Sprites
-    private static Image[] movingSprites = new Image[4];
-    private static Image[] attackSprites = new Image[5];
-    private static Image[] hurtSprites = new Image[4];
-    private static Image[] idleSprites = new Image[4];
-    private static Image[] deathSprites = new Image[4];
-    // Method to initialize the Class by loading sprites
-    public static void init(){
-        movingSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Slime/move");
-        attackSprites = Utilities.spriteArrayLoad(attackSprites, "Enemies/Slime/attack");
-        hurtSprites = Utilities.spriteArrayLoad(hurtSprites, "Enemies/Slime/hurt");
-        idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Slime/idle");
-        deathSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Slime/death");
-    }
-    //Constructor
-    public Slime(String data){
+public class Blob extends Enemy  {
+    private static Image[] movingSprites = new Image[8];
+    private static Image[] idleSprites= new Image[6];
+    private static Image[] attackSprites= new Image[8];
+    private static Image[] deathSprites= new Image[7];
+    private static Image[] hurtSprites= new Image[1];
+    public Blob(String data) {
         super(data);
-        health = 100 * difficulty;
-        maxHealth=health;
-        damage = 5*difficulty;
+        health = 500 * difficulty;
+        maxHealth = health;
+        damage = 15 * difficulty;
     }
-    // General methods
+
+
+    public static void init(){
+        movingSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Blob/walk");
+        //deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Ghost/death");
+        idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Blob/idle");
+        attackSprites = Utilities.spriteArrayLoad(attackSprites, "Enemies/Blob/attack");
+        //hurtSprites = Utilities.spriteArrayLoad(hurtSprites, "Enemies/Ghost/hurt");
+    }
     @Override
     public void updateMotion(Player player){
         // Checking the position of the Player and setting velocity towards them
@@ -62,7 +60,7 @@ public class Slime extends Enemy {
         }
     }
     @Override
-    public void updateSprite(){
+    public void updateSprite() {
         if(isHurt){
             if(health <= 0){
                 spriteCount += 0.05;
@@ -79,29 +77,30 @@ public class Slime extends Enemy {
             }
         }
         else if(isAttacking){
-            spriteCount += 0.05;
+            spriteCount += 0.1;
             if(spriteCount > attackSprites.length){
                 spriteCount = 0;
+                isAttacking = false;
             }
         }
         else{
-            spriteCount += 0.05;
-            if(spriteCount > movingSprites.length){
+            spriteCount += 0.07;
+            if(spriteCount > idleSprites.length){
                 spriteCount = 0;
             }
         }
     }
-    // Getter methods
+
     @Override
     public Image getSprite() {
-        Image sprite;
+        Image sprite = null;
         int spriteIndex = (int)Math.floor(spriteCount);
         if(isHurt){
             if(health <= 0){
-                sprite = deathSprites[spriteIndex];
+                //sprite = deathSprites[spriteIndex];
             }
             else{
-                sprite = hurtSprites[spriteIndex];
+                //sprite = hurtSprites[spriteIndex];
             }
         }
         else if(isAttacking){

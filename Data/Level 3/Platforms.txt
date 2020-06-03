@@ -1,57 +1,23 @@
+//This text file stores all of the information about the colliding platforms in level 3 in the format:
+//X,Y,Image
+////Crystal Ground
 0,400,Set 3/floor1.png
 64,400,Set 3/floor1.png
 128,400,Set 3/floor1.png
 192,400,Set 3/floor1.png
-//
 256,400,Set 3/floor1.png
 320,400,Set 3/floor1.png
 384,400,Set 3/floor1.png
 448,400,Set 3/floor1.png
-//
 512,400,Set 3/floor1.png
 576,400,Set 3/floor1.png
 640,400,Set 3/floor1.png
 704,400,Set 3/floor1.png
-//
 768,400,Set 3/floor1.png
 832,400,Set 3/floor1.png
 896,400,Set 3/floor1.png
 960,400,Set 3/floor1.png
-//
-520,100,Set 3/floor3.png
-584,100,Set 3/floor3.png
-//
-1004,330,Set 3/floor5.png
-1036,310,Set 3/floor5.png
-1068,290,Set 3/floor5.png
-1100,270,Set 3/floor5.png
-1132,250,Set 3/floor5.png
-1164,230,Set 3/floor5.png
-1196,210,Set 3/floor5.png
-1228,190,Set 3/floor5.png
-1260,170,Set 3/floor5.png
-1292,150,Set 3/floor5.png
-1324,130,Set 3/floor5.png
-1356,110,Set 3/floor5.png
-1388,90,Set 3/floor5.png
-1420,70,Set 3/floor5.png
-//
-1135,500,Set 3/hangingPlatformRight.png
-1282,500,Set 3/hangingPlatformLeft.png
-//
-1470,135,Set 3/hangingPlatformRight.png
-1615,135,Set 3/hangingPlatformLeft.png
-//
-1735,135,Set 3/hangingPlatformRight.png
-1880,135,Set 3/hangingPlatformLeft.png
-//
-2000,135,Set 3/hangingPlatformRight.png
-2145,135,Set 3/hangingPlatformLeft.png
-//
-2265,135,Set 3/hangingPlatformRight.png
-2410,135,Set 3/hangingPlatformLeft.png
-2670,0,Set 3/backPillar1.png
-//
+//Cave Entrance
 3310,230,Set 3/floor6.png
 3342,230,Set 3/floor6.png
 3374,230,Set 3/floor6.png
@@ -77,9 +43,8 @@
 4270,230,Set 3/floor3.png
 4334,230,Set 3/floor3.png
 4398,230,Set 3/floor3.png
-//
 4462,230,Set 3/floor3.png
-//
+//Cave Platforms
 4502,320,Set 3/floor3.png
 4566,320,Set 3/floor3.png
 4630,320,Set 3/floor3.png
@@ -104,25 +69,10 @@
 5846,320,Set 3/floor3.png
 5910,320,Set 3/floor3.png
 5974,320,Set 3/floor3.png
-6038,500,Set 3/floor3.png
-6102,500,Set 3/floor3.png
-6166,500,Set 3/floor3.png
-6230,500,Set 3/floor3.png
 6294,320,Set 3/floor3.png
 6358,320,Set 3/floor3.png
 6422,320,Set 3/floor3.png
 6486,320,Set 3/floor3.png
-//
-//5782,500,Set 3/floor3.png
-5846,500,Set 3/floor3.png
-5910,500,Set 3/floor3.png
-5974,500,Set 3/floor3.png
-//
-6294,500,Set 3/floor3.png
-6358,500,Set 3/floor3.png
-6422,500,Set 3/floor3.png
-//6486,500,Set 3/floor3.png
-//
 6550,320,Set 3/floor3.png
 6614,320,Set 3/floor3.png
 6678,320,Set 3/floor3.png
@@ -148,10 +98,6 @@
 //7958,320,Set 3/floor3.png
 //8022,320,Set 3/floor3.png
 //8086,320,Set 3/floor3.png
-//
-4200,90,Set 3/floor5.png
-4232,90,Set 3/floor5.png
-//
 7462,500,Set 3/floor3.png
 7526,500,Set 3/floor3.png
 7558,500,Set 3/floor3.png
@@ -170,3 +116,49 @@
 8270,500,Set 3/floor3.png
 8334,500,Set 3/floor3.png
 8398,500,Set 3/floor3.png
+//Cave Chest Bunker
+6038,500,Set 3/floor3.png
+6102,500,Set 3/floor3.png
+6166,500,Set 3/floor3.png
+6230,500,Set 3/floor3.png
+//5782,500,Set 3/floor3.png
+5846,500,Set 3/floor3.png
+5910,500,Set 3/floor3.png
+5974,500,Set 3/floor3.png
+6294,500,Set 3/floor3.png
+6358,500,Set 3/floor3.png
+6422,500,Set 3/floor3.png
+//6486,500,Set 3/floor3.png
+//Floating Platforms
+520,100,Set 3/floor3.png
+584,100,Set 3/floor3.png
+4200,90,Set 3/floor5.png
+4232,90,Set 3/floor5.png
+1135,500,Set 3/hangingPlatformRight.png
+1282,500,Set 3/hangingPlatformLeft.png
+1470,135,Set 3/hangingPlatformRight.png
+1615,135,Set 3/hangingPlatformLeft.png
+1735,135,Set 3/hangingPlatformRight.png
+1880,135,Set 3/hangingPlatformLeft.png
+2000,135,Set 3/hangingPlatformRight.png
+2145,135,Set 3/hangingPlatformLeft.png
+2265,135,Set 3/hangingPlatformRight.png
+2410,135,Set 3/hangingPlatformLeft.png
+//Stairs
+1004,330,Set 3/floor5.png
+1036,310,Set 3/floor5.png
+1068,290,Set 3/floor5.png
+1100,270,Set 3/floor5.png
+1132,250,Set 3/floor5.png
+1164,230,Set 3/floor5.png
+1196,210,Set 3/floor5.png
+1228,190,Set 3/floor5.png
+1260,170,Set 3/floor5.png
+1292,150,Set 3/floor5.png
+1324,130,Set 3/floor5.png
+1356,110,Set 3/floor5.png
+1388,90,Set 3/floor5.png
+1420,70,Set 3/floor5.png
+//Shadow Pillars
+2670,0,Set 3/backPillar1.png
+

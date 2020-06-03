@@ -1,3 +1,6 @@
+//This text file contains all of the data for the crystal enemies in level 3 in the format:
+//X,Y,difficulty
+//Cave crystals that are triggered once player moves close to them
 4700,0,3
 4800,0,3
 4900,0,3

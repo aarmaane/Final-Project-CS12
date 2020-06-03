@@ -1,3 +1,5 @@
+//This text file contains all of the data for the slime enemies in level 1 in the format:
+//X,Y,difficulty
 765,403,1
 1130,130,1
 1601,403,1

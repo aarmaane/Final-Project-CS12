@@ -1,3 +1,4 @@
+//This text file stores the (x,y) coordinates of all the chests in level 3.
 555,52
 4290,182
 6150,452

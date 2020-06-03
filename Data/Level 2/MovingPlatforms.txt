@@ -1,39 +1,24 @@
+//This text file contains the data for the colliding moving platforms in level 2 in the format:
 // X, Y, image, moveDistanceX, moveDistanceY, speedX, speedY
+
+//Moving Stone platforms
 450,100,Set 2/stonePlatform.png,300,300,0,1
 750,275,Set 2/stonePlatform.png,1000,0,2,0
 894,275,Set 2/stonePlatform.png,1000,0,2,0
-//
 2900,175,Set 2/stonePlatform.png,500,300,2,1
 3044,175,Set 2/stonePlatform.png,500,300,2,1
-//
 3750,175,Set 2/stonePlatform.png,0,300,0,2
 3894,175,Set 2/stonePlatform.png,0,300,0,2
-//
-//3250,175,Set 2/cageBottom.png,0,300,0,2
-//3323,175,Set 2/cageBottom.png,0,300,0,2
-//
-//4850,225,Set 2/stonePlatform.png,300,300,1,2
-//4994,225,Set 2/chainAttachLeft.png,300,300,1,2
-//4994,225,Set 2/longChainHoriz.png,300,300,1,2
-//5138,225,Set 2/longChainHoriz.png,300,300,1,2
-//5282,225,Set 2/chainAttachRight.png,300,300,1,2
-//5290,225,Set 2/stonePlatform.png,300,300,1,2
-//
-//3682,225,Set 2/longChainHoriz.png,300,300,1,2
-//3826,225,Set 2/longChainHoriz.png,300,300,1,2
-//
+//Cage Field
 5750,50,Set 2/cageMiddle.png,0,550,0,2
 5880,550,Set 2/cageMiddle.png,0,550,0,-2
-//
 6010,50,Set 2/cageMiddle.png,0,550,0,2
 6140,550,Set 2/cageMiddle.png,0,550,0,-2
-//
 6270,50,Set 2/cageMiddle.png,0,550,0,2
 6400,550,Set 2/cageMiddle.png,0,550,0,-2
-//
 6530,50,Set 2/cageMiddle.png,0,550,0,2
 6660,550,Set 2/cageMiddle.png,0,550,0,-2
-//
+//Brick platform
 6747,275,Set 2/brick.png,1000,0,2,0
 6777,275,Set 2/brick.png,1000,0,2,0
 6807,275,Set 2/brick.png,1000,0,2,0

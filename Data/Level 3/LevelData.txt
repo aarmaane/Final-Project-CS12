@@ -1,3 +1,5 @@
+//This text file stores all of the essential data needed for the functionality of level 3.
+//
 // Time to complete level (Seconds)
 150
 // End point ( X position of where the player gets automated )

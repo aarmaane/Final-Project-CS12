@@ -1,3 +1,4 @@
+//This text file stores the information for all the disappearing platforms in level 1. The information stores goes as follows:
 // X, Y, image, disappearX, disappearY
 7250,100,grassPlatformTall.png,7100,173
 7330,130,grassPlatformTall.png,7100,173

@@ -1,1 +1,3 @@
+//This text file stores the data for the spawners in level 3 in the following format:
+//X,Y,Duration(Time in Seconds),EnemyType,difficulty
 2800,0,30,Ghost,2

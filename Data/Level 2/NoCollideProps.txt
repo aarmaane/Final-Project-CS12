@@ -1,3 +1,5 @@
+//This text file stores all of the information for the non-colliding platforms in level 2 in the format:
+//X,Y,Image
 // Decor
 460,435,Set 2/pot.png
 2700,284,Set 2/pot.png
@@ -9,19 +11,16 @@
 2405,543,Set 2/floorExtension.png
 2550,543,Set 2/floorExtension.png
 2695,543,Set 2/floorExtension.png
-//
 4945,543,Set 2/floorExtension.png
 5090,543,Set 2/floorExtension.png
 5235,543,Set 2/floorExtension.png
 5380,543,Set 2/floorExtension.png
 5425,543,Set 2/floorExtension.png
 5570,543,Set 2/floorExtension.png
-//
 4100,543,Set 2/floorExtension.png
 4245,543,Set 2/floorExtension.png
 4390,543,Set 2/floorExtension.png
 4535,543,Set 2/floorExtension.png
-//
 8100,453,Set 2/floorExtension.png
 8245,501,Set 2/floorExtension.png
 8390,559,Set 2/floorExtension.png

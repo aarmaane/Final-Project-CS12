@@ -80,6 +80,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         Wizard.init();
         Fire.init();
         Crystal.init();
+        Blob.init();
         Boss.init();
         Projectile.init();
         Chest.init();
@@ -145,6 +146,9 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             }
             for(String data: Utilities.loadFile("Crystals.txt", levelNum)){
                 enemies.add(new Crystal(data));
+            }
+            for(String data: Utilities.loadFile("Blobs.txt", levelNum)){
+                enemies.add(new Blob(data));
             }
             for(String data: Utilities.loadFile("Boss.txt", levelNum)){
                 enemies.add(new Boss(data));
@@ -233,7 +237,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                     g.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
                 }
                 enemy.drawHealth(g, levelOffset);
-                //g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
+                g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
             }
         }
         // Drawing Projectiles

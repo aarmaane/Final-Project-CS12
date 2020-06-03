@@ -1,7 +1,7 @@
 import java.awt.*;
 
 public class Ghost extends Enemy {
-    //Fields
+    //Arrays
     private static Image[] movingSprites = new Image[5];
     private static Image[] idleSprites= new Image[10];
     private static Image[] attackSprites= new Image[8];
@@ -25,7 +25,7 @@ public class Ghost extends Enemy {
     public static void init(){
         movingSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Ghost/move");
         deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Ghost/death");
-        idleSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Ghost/idle");
+        idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Ghost/idle");
         attackSprites = Utilities.spriteArrayLoad(attackSprites, "Enemies/Ghost/attack");
         hurtSprites = Utilities.spriteArrayLoad(hurtSprites, "Enemies/Ghost/hurt");
     }

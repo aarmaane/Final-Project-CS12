@@ -1,3 +1,8 @@
+//Utilities.java
+//Armaan Randhhawa and Shivan Gaur
+/*The purpose of this class is to store useful general methods that can be used anywhere in the overall project, so that multiple redundant
+lines of code are saved.
+ */
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -12,6 +17,7 @@ import java.util.Scanner;
 
 public class Utilities {
     public static Image flipSprite(Image sprite) {
+        //This method takes a sprite and flips it horizontally
         // Using AffineTransform with Nearest-Neighbour to apply flip while keeping 8-bit style
         AffineTransform flip = AffineTransform.getScaleInstance(-1, 1);
         flip.translate(-sprite.getWidth(null), 0);
@@ -20,6 +26,7 @@ public class Utilities {
         return sprite;
     }
     public static Image rotateSprite(Image sprite, double rads,int rotX,int rotY) {
+        //This method takes a sprite, a radian value, and a coordinate, and rotates the sprite about that coordinate.
         // Using AffineTransform with Nearest-Neighbour to apply rotate while keeping 8-bit style
         AffineTransform rot = new AffineTransform();
         rot.rotate(rads,rotX,rotY);
@@ -59,17 +66,18 @@ public class Utilities {
         return new Rectangle(smallestX,smallestY,biggestX - smallestX,biggestY - smallestY);
     }
     public static Image[] spriteArrayLoad(Image[] targetArray, String fileName) {
+        //This method takes an unloaded Image array and a file path, and loads all the images into the array.
         Image[] builtArray = new Image[targetArray.length];
         try {
             for (int i = 0; i < targetArray.length; i++) {
-                builtArray[i] = ImageIO.read(new File("Assets/Images/" + fileName + i + ".png"));
+                builtArray[i] = ImageIO.read(new File("Assets/Images/" + fileName + i + ".png"));//loading image
                 // Adding the alpha channel if the image isn't supporting it by default
                 if(((BufferedImage)builtArray[i]).getType() != BufferedImage.TYPE_INT_ARGB){
                     builtArray[i] = forceAlpha(builtArray[i]);
                 }
             }
         }
-        catch (IOException e) {
+        catch (IOException e) {//exception
             System.out.println("Sprite image missing!");
             e.printStackTrace();
         }
@@ -83,6 +91,9 @@ public class Utilities {
     }
     // Helper method to load up individual files into ArrayLists with their lines as Strings
     public static ArrayList<String> loadFile(String fileName, int levelNum) throws IOException{
+        /*This method returns an arraylist of strings from the loaded text data files of each level by taking in the file path along with the
+         current level and loading each line in the files.
+         */
         Scanner inFile = new Scanner(new BufferedReader(new FileReader("Data/Level " + levelNum + "/" + fileName)));
         ArrayList<String> fileContents = new ArrayList<>();
         while(inFile.hasNext()){
@@ -96,10 +107,12 @@ public class Utilities {
     }
 
     public static int randint(int low, int high){
+        //Mr Mckenzie's randint method that returns a random integer within the given parameters(inclusive).
         return (int)(Math.random()*(high-low+1)+low);
     }
 
     public static double roundOff(double number, int decimalPlaces){
+        //This method takes a double and properly rounds it off to the desired number of decimal places by using manipulation of powers of 10.
         double powerOfTen = Math.pow(10, decimalPlaces);
         return Math.round(number*powerOfTen)/powerOfTen;
     }

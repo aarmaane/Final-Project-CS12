@@ -1,3 +1,6 @@
+//This text file contains all of the data for the fire enemies in level 3 in the format:
+//X,Y,difficulty
+//Below cave entrance
 3220,375,3
 3280,375,3
 3340,375,3
@@ -18,7 +21,7 @@
 4240,375,3
 3540,375,3
 4300,375,3
-//
+//Below disappearing platforms inside cave
 7700,345,3
 7300,345,3
 7800,345,3

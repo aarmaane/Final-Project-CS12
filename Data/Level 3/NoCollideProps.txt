@@ -1,26 +1,24 @@
+//This text file stores all of the information for the non-colliding platforms in level 3 in the format:
+//X,Y,Image
+//Crystal platform extensions
 0,470,Set 3/bottom1.png
 64,470,Set 3/bottom2.png
 128,470,Set 3/bottom3.png
 192,470,Set 3/bottom4.png
-//
 256,470,Set 3/bottom2.png
 320,470,Set 3/bottom2.png
 384,470,Set 3/bottom3.png
 448,470,Set 3/bottom4.png
-//
 512,470,Set 3/bottom2.png
 576,470,Set 3/bottom2.png
 640,470,Set 3/bottom3.png
 704,470,Set 3/bottom4.png
-//
 768,470,Set 3/bottom2.png
 832,470,Set 3/bottom2.png
 896,470,Set 3/bottom3.png
 960,470,Set 3/bottom4.png
-//
 520,120,Set 3/bottom1.png
 584,120,Set 3/bottom3.png
-//
 1004,390,Set 3/bottom5.png
 1036,370,Set 3/bottom5.png
 1068,350,Set 3/bottom5.png
@@ -35,19 +33,9 @@
 1356,170,Set 3/bottom5.png
 1388,150,Set 3/bottom5.png
 1420,130,Set 3/bottom5.png
-//940,200,Set 3/backPillar1.png
-1390,147,Set 3/backPillar2.png
-1650,147,Set 3/backPillar2.png
-1910,147,Set 3/backPillar2.png
-2170,147,Set 3/backPillar2.png
-//
 3310,290,Set 3/bottom1.png
-//3342,290,Set 3/bottom6.png
-//3374,290,Set 3/bottom6.png
 3406,290,Set 3/bottom6.png
 3438,290,Set 3/bottom2.png
-//3470,290,Set 3/bottom6.png
-//3502,290,Set 3/bottom6.png
 3534,290,Set 3/bottom5.png
 3566,290,Set 3/bottom2.png
 3598,290,Set 3/bottom1.png
@@ -55,7 +43,6 @@
 3662,290,Set 3/bottom3.png
 3694,290,Set 3/bottom6.png
 3726,290,Set 3/bottom6.png
-//
 3758,290,Set 3/bottom1.png
 3822,290,Set 3/bottom2.png
 3886,290,Set 3/bottom3.png
@@ -68,7 +55,10 @@
 4270,290,Set 3/bottom3.png
 4334,290,Set 3/bottom2.png
 4398,290,Set 3/bottom3.png
-//
+4200,115,Set 3/bottom5.png
+4232,115,Set 3/bottom5.png
+////Cave Lining
+//Top
 4462,0,Set 3/bottom1.png
 4526,0,Set 3/bottom3.png
 4558,0,Set 3/bottom4.png
@@ -87,7 +77,6 @@
 5270,0,Set 3/bottom3.png
 5334,0,Set 3/bottom2.png
 5398,0,Set 3/bottom3.png
-//
 5462,0,Set 3/bottom1.png
 5526,0,Set 3/bottom3.png
 5558,0,Set 3/bottom4.png
@@ -106,7 +95,6 @@
 6270,0,Set 3/bottom3.png
 6334,0,Set 3/bottom2.png
 6398,0,Set 3/bottom3.png
-//
 6462,0,Set 3/bottom1.png
 6526,0,Set 3/bottom3.png
 6558,0,Set 3/bottom4.png
@@ -125,7 +113,6 @@
 7270,0,Set 3/bottom3.png
 7334,0,Set 3/bottom2.png
 7398,0,Set 3/bottom3.png
-//
 7462,0,Set 3/bottom1.png
 7526,0,Set 3/bottom3.png
 7558,0,Set 3/bottom4.png
@@ -144,7 +131,6 @@
 8270,0,Set 3/bottom3.png
 8334,0,Set 3/bottom2.png
 8398,0,Set 3/bottom3.png
-//
 8462,0,Set 3/bottom1.png
 8526,0,Set 3/bottom3.png
 8558,0,Set 3/bottom4.png
@@ -163,7 +149,7 @@
 9270,0,Set 3/bottom3.png
 9334,0,Set 3/bottom2.png
 9398,0,Set 3/bottom3.png
-//
+//Bottom
 4462,500,Set 3/bottom1upside.png
 4526,500,Set 3/bottom3upside.png
 4558,500,Set 3/bottom4upside.png
@@ -182,7 +168,6 @@
 5270,500,Set 3/bottom3upside.png
 5334,500,Set 3/bottom2upside.png
 5398,500,Set 3/bottom3upside.png
-//
 5462,500,Set 3/bottom1upside.png
 5526,500,Set 3/bottom3upside.png
 5558,500,Set 3/bottom4upside.png
@@ -201,14 +186,6 @@
 6270,500,Set 3/bottom3upside.png
 6334,500,Set 3/bottom2upside.png
 6398,500,Set 3/bottom3upside.png
-//
-4462,290,Set 3/sideRight.png
-4462,400,Set 3/sideRight.png
-4462,430,Set 3/sideRight.png
-//
-4200,115,Set 3/bottom5.png
-4232,115,Set 3/bottom5.png
-//
 6462,500,Set 3/bottom1upside.png
 6526,500,Set 3/bottom3upside.png
 6558,500,Set 3/bottom4upside.png
@@ -227,7 +204,6 @@
 7270,500,Set 3/bottom3upside.png
 7334,500,Set 3/bottom2upside.png
 7398,500,Set 3/bottom3upside.png
-//
 7462,500,Set 3/bottom1upside.png
 7526,500,Set 3/bottom3upside.png
 7558,500,Set 3/bottom4upside.png
@@ -246,7 +222,6 @@
 8270,500,Set 3/bottom3upside.png
 8334,500,Set 3/bottom2upside.png
 8398,500,Set 3/bottom3upside.png
-//
 8462,500,Set 3/bottom1upside.png
 8526,500,Set 3/bottom3upside.png
 8558,500,Set 3/bottom4upside.png
@@ -265,12 +240,19 @@
 9270,500,Set 3/bottom3upside.png
 9334,500,Set 3/bottom2upside.png
 9398,500,Set 3/bottom3upside.png
-//
+//Other extensions
 5780,380,Set 3/sideRight.png
 5780,480,Set 3/sideRight.png
 5780,510,Set 3/sideRight.png
-//
 6485,380,Set 3/sideLeft.png
 6485,480,Set 3/sideLeft.png
 6485,510,Set 3/sideLeft.png
+4462,290,Set 3/sideRight.png
+4462,400,Set 3/sideRight.png
+4462,430,Set 3/sideRight.png
+//Shadow Pillars
+1390,147,Set 3/backPillar2.png
+1650,147,Set 3/backPillar2.png
+1910,147,Set 3/backPillar2.png
+2170,147,Set 3/backPillar2.png
 

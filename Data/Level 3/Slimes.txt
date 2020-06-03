@@ -1,5 +1,7 @@
-//576,200,3
-//790,200,3
-//1004,200,3
+//This text file contains all of the data for the slime enemies in level 3 in the format:
+//X,Y,difficulty
+576,200,3
+790,200,3
+1004,200,3
 5200,200,3
 6150,352,3
