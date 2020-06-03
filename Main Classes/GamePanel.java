@@ -718,6 +718,13 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                 player.move(Player.LEFT);
             }
         }
+        // Sliding input
+        if(keysPressed[KeyEvent.VK_S]){
+            player.crouch();
+        }
+        else{
+            player.unCrouch();
+        }
         // Jumping input
         if(keysPressed[KeyEvent.VK_SPACE]){
             player.jump(Player.NORMAL);

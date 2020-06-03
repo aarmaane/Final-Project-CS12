@@ -11,7 +11,7 @@ public class Player {
     private double velocityX, velocityY;
     private double acceleration, maxSpeed;
     private int direction;
-    private boolean onGround, onMovingPlat, holdingJump, sprinting;
+    private boolean onGround, onMovingPlat, holdingJump, sprinting, isCrouching;
     private double spriteCount = 0;
     private int jumpCount = 1;
     // Players' gameplay-related fields
@@ -28,6 +28,8 @@ public class Player {
     // Image Arrays holding Player's Sprites
     private Image[] idleSprites = new Image[4];
     private Image[] runSprites = new Image[6];
+    private Image[] slidingSprites = new Image[2];
+    private Image[] crouchSprites = new Image[4];
     private Image[] jumpingSprites = new Image[2];
     private Image[] fallingSprites = new Image[2];
     private Image[] hurtSprites = new Image[3];
@@ -58,6 +60,8 @@ public class Player {
         // Loading Images
         fallingSprites = Utilities.spriteArrayLoad(fallingSprites, "Player/fall");
         jumpingSprites = Utilities.spriteArrayLoad(jumpingSprites, "Player/jump");
+        slidingSprites = Utilities.spriteArrayLoad(slidingSprites, "Player/slide");
+        crouchSprites = Utilities.spriteArrayLoad(crouchSprites, "Player/crouch");
         idleSprites = Utilities.spriteArrayLoad(idleSprites, "Player/idle");
         runSprites = Utilities.spriteArrayLoad(runSprites, "Player/run");
         castSprites = Utilities.spriteArrayLoad(castSprites, "Player/cast");
@@ -81,7 +85,7 @@ public class Player {
     // General methods
     public void move(int type){
         // If the player is doing an action, don't let them move (ignore this call for move())
-        if(isCasting || isAttacking || isDying){
+        if(isCasting || isAttacking || isDying || isCrouching){
             return;
         }
         // Handling sudden movements
@@ -125,6 +129,15 @@ public class Player {
                 stamina -= 0.1;
             }
         }
+    }
+    public void crouch(){
+        if(isCasting || isAttacking || !onGround || isDying){
+            return;
+        }
+        isCrouching = true;
+    }
+    public void unCrouch(){
+        isCrouching = false;
     }
     public void jump(int type){
         // If the player is doing an action, don't let them jump
@@ -188,12 +201,15 @@ public class Player {
         int attackDir = direction;
         Rectangle attackBox = getAttackBox();
         direction = originalDir;
+        // Making sure that the target for the projectile is not awkward
         double angle = Math.atan(((double)targetY - attackBox.y)/(targetX - attackBox.x));
         if(hasCastScope) {
+            // When the projectile angle is too steep
             if ((targetX > hitbox.x && targetX < hitbox.getMaxX()) || (attackDir == RIGHT && Math.abs(angle) > 1.2) || (attackDir == LEFT && Math.abs(angle) > 1.4)) {
                 textQueue.add(new IndicatorText(getHitbox().x - 30, getHitbox().y, "Angle too steep!", Color.RED));
                 return;
             }
+            // When the projectile target is too close to the player
             else if((attackDir == LEFT && targetX > attackBox.getMaxX() - 20) || (attackDir == RIGHT  && targetX < attackBox.x)){
                 textQueue.add(new IndicatorText(getHitbox().x - 30, getHitbox().y, "Target too close!", Color.RED));
                 return;
@@ -341,15 +357,31 @@ public class Player {
         }
         else if(velocityX != 0){ // Running sprites
             spriteCount += 0.05 + (Math.abs(velocityX)/90); // Scaling sprite speed with player velocity
-            if(spriteCount > runSprites.length){
-                spriteCount = 0;
+            if(isCrouching){
+                if(spriteCount > slidingSprites.length){
+                    spriteCount = 0;
+                }
             }
+            else{
+                if(spriteCount > runSprites.length){
+                    spriteCount = 0;
+                }
+            }
+
         }
         else{ // Idling sprites
             spriteCount += 0.05;
-            if(spriteCount > idleSprites.length){
-                spriteCount = 0;
+            if(isCrouching){
+                if(spriteCount > crouchSprites.length){
+                    spriteCount = 0;
+                }
             }
+            else{
+                if(spriteCount > idleSprites.length){
+                    spriteCount = 0;
+                }
+            }
+
         }
     }
     public void checkCollision(LevelProp prop){
@@ -505,10 +537,20 @@ public class Player {
             sprite = fallingSprites[spriteIndex];
         }
         else if(velocityX != 0){
-            sprite = runSprites[spriteIndex];
+            if(isCrouching){
+                sprite = slidingSprites[spriteIndex];
+            }
+            else{
+                sprite = runSprites[spriteIndex];
+            }
         }
         else{
-            sprite = idleSprites[spriteIndex];
+            if(isCrouching){
+                sprite = crouchSprites[spriteIndex];
+            }
+            else{
+                sprite = idleSprites[spriteIndex];
+            }
         }
         // Flipping the image since the sprites are all right-facing
         if(direction == LEFT){
@@ -518,6 +560,9 @@ public class Player {
     }
     public Rectangle getHitbox(){
         // Since the sprite images are much larger than the actual Player, offsets must be applied
+        if(isCrouching){
+            return new Rectangle((int)x + 58, (int)y + 61, 36, 47);
+        }
         return new Rectangle((int)x + 58, (int)y + 15, 36, 93);
     }
     public Rectangle getAttackBox(){
