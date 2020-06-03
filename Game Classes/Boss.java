@@ -1,3 +1,6 @@
+//Boss.java
+//Armaan randhawa and Shivan Gaur
+//This program is a subclass of the Enemy class, and it creates an object that serves as the final boss of the game.
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -9,8 +12,9 @@ public class Boss extends Enemy{
     public static void init(){
 
     }
-    // Constructor
+
     public Boss(String data) {
+        // Constructor
         super(data);
         health = 5000;
         damage = 250;

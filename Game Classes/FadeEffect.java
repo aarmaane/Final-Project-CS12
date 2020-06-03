@@ -1,3 +1,6 @@
+//FadeEffect.java
+//Armaan Randhawa and Shivan Gaur
+//This class creates a fade effect that is very useful in screen transitions
 import java.awt.*;
 
 public class FadeEffect {
@@ -8,6 +11,7 @@ public class FadeEffect {
     private boolean active;
     // Main methods
     public void start(int type, int speed){
+        //This method begins the fade
         active = true;
         activeType = type;
         if(type == FADEIN){
@@ -21,6 +25,7 @@ public class FadeEffect {
     }
 
     public void update(){
+        //Updates the fading screen
         if(active){
             fadeInt += fadeSpeed;
             if((activeType == FADEOUT && fadeInt > 255) || (activeType == FADEIN && fadeInt < 0)) {
@@ -30,6 +35,7 @@ public class FadeEffect {
     }
 
     public void draw(Graphics g){
+        //Draws the fading screen
         g.setColor(new Color(0, 0, 0, fadeInt));
         g.fillRect(0, 0,960,590);
     }

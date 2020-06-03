@@ -1,3 +1,6 @@
+//Ghost.java
+//Armaan Randhawa and Shivan Gaur
+//This program is a subclass of the enemy class that creates ghost enemies which fluctuate in transparency and fly towards the player
 import java.awt.*;
 
 public class Ghost extends Enemy {
@@ -9,7 +12,7 @@ public class Ghost extends Enemy {
     private static Image[] hurtSprites= new Image[1];
     // Fields
     private float alpha;//draw transparent
-    private float ghostAlpha = (float)0.005;
+    private float ghostAlpha = (float)0.005;//Value that the alpha will change by
     private int speed;
     //Constructor
     public Ghost(String data){
@@ -23,6 +26,7 @@ public class Ghost extends Enemy {
         outOfBoundsPoints = false;
     }
     public static void init(){
+        //Class initialization
         movingSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Ghost/move");
         deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Ghost/death");
         idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Ghost/idle");
@@ -39,6 +43,7 @@ public class Ghost extends Enemy {
             return;
         }
         if(!isDying()){ // Only move the ghost while it's not dying
+            //Using trigonometry to change the position of the ghost
             if(playerHitbox.x - 40 >= getHitbox().x){
                 x += Math.cos(angle) * speed;
                 y += Math.sin(angle) * speed;
@@ -53,6 +58,7 @@ public class Ghost extends Enemy {
     }
     @Override
     public void updateAttack(Player player) {
+        //Updating attack of the ghost
         super.updateAttack(player);
         // Checking if the player should be dealt damage
         if(isAttacking && Utilities.roundOff(spriteCount,2) == attackSprites.length/2.0){
@@ -62,6 +68,7 @@ public class Ghost extends Enemy {
 
     @Override
     public void updateSprite() {
+        //Resetting the sprite cycles of the ghost
         if(isHurt){
             if(health <= 0){
                 spriteCount += 0.08;
@@ -126,6 +133,7 @@ public class Ghost extends Enemy {
     }
     @Override
     public float getSpriteAlpha(){
+        //This method returns the current alpha value of the ghost (0 to 1)
         if(isHurt){
             return 1;
         }
@@ -133,6 +141,7 @@ public class Ghost extends Enemy {
     }
 
     @Override
+    //Returns rectangle object with the hitbox of the ghost
     public Rectangle getHitbox() {
         return new Rectangle((int)x + 50, (int)y + 25, 75, 105);
     }

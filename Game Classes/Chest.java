@@ -1,3 +1,6 @@
+//Chest.java
+//Armaan Randhawa and Shivan Gaur
+//This class creates chest objects that shoot out random Item objects to help the player through the game.
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
@@ -6,7 +9,7 @@ import java.io.IOException;
 public class Chest {
     // Declaring fields
     private int x, y;
-    private int content, quantity;
+    private int content, quantity;//Fields for the type  items inside the chest and the amount of items.
     private boolean opened;
     // Declaring sprites
     private static Image closedSprite;
@@ -28,6 +31,7 @@ public class Chest {
         x = Integer.parseInt(dataSplit[0]);
         y = Integer.parseInt(dataSplit[1]);
         int randomNumber = Utilities.randint(0,100);
+        //Setting the probabilities of receiving certain items from the chest
         if(randomNumber >= 70){
             quantity = 1;
             if(randomNumber >= 85){
