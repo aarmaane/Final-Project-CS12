@@ -1,6 +1,6 @@
-//Blob.java
-//Armaan Randhawa and Shivan Gaur
-//This program is a subclass of the Enemy class, and creates the elite minion object of the final boss.
+// Blob.java
+// Armaan Randhawa and Shivan Gaur
+// Subclass of the Enemy class: creates the elite minion object of the final boss.
 import java.awt.*;
 
 public class Blob extends Enemy  {
@@ -17,8 +17,6 @@ public class Blob extends Enemy  {
         maxHealth = health;
         damage = 15 * difficulty;
     }
-
-
     public static void init(){
         //Initialing sprite arrays
         movingSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Blob/walk");
@@ -31,12 +29,12 @@ public class Blob extends Enemy  {
     public void updateMotion(Player player){
         // Checking the position of the Player and setting velocity towards them
         int playerX = player.getHitbox().x;
-        int slimeX = getHitbox().x;
+        int blobX = getHitbox().x;
         if(!knockedBack){ // Not touching blob's velocity values if there's knockback
-            if(playerX == slimeX || isHurt){
+            if(playerX == blobX || isHurt){
                 velocityX = 0; // Stopping movement while maintaining direction
             }
-            else if(playerX > slimeX){
+            else if(playerX > blobX){
                 direction = RIGHT;
                 if(platformAhead && !isAttacking){
                     velocityX = 0.5;

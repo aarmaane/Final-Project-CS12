@@ -1,8 +1,6 @@
-//Utilities.java
-//Armaan Randhhawa and Shivan Gaur
-/*The purpose of this class is to store useful general methods that can be used anywhere in the overall project, so that multiple redundant
-lines of code are saved.
- */
+// Utilities.java
+// Armaan Randhhawa and Shivan Gaur
+// Class to store general helper methods for Images, FileIO, and number manipulation
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -16,8 +14,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Utilities {
+    // Method takes a sprite and flips it horizontally
     public static Image flipSprite(Image sprite) {
-        //This method takes a sprite and flips it horizontally
         // Using AffineTransform with Nearest-Neighbour to apply flip while keeping 8-bit style
         AffineTransform flip = AffineTransform.getScaleInstance(-1, 1);
         flip.translate(-sprite.getWidth(null), 0);
@@ -25,8 +23,8 @@ public class Utilities {
         sprite = flipOp.filter((BufferedImage) sprite, null);
         return sprite;
     }
+    // Method takes a sprite, a radian value, and a coordinate, and rotates the sprite about that coordinate.
     public static Image rotateSprite(Image sprite, double rads,int rotX,int rotY) {
-        //This method takes a sprite, a radian value, and a coordinate, and rotates the sprite about that coordinate.
         // Using AffineTransform with Nearest-Neighbour to apply rotate while keeping 8-bit style
         AffineTransform rot = new AffineTransform();
         rot.rotate(rads,rotX,rotY);
@@ -65,8 +63,8 @@ public class Utilities {
         }
         return new Rectangle(smallestX,smallestY,biggestX - smallestX,biggestY - smallestY);
     }
+    //Method takes an unloaded Image array and loads all specified images into it
     public static Image[] spriteArrayLoad(Image[] targetArray, String fileName) {
-        //This method takes an unloaded Image array and a file path, and loads all the images into the array.
         Image[] builtArray = new Image[targetArray.length];
         try {
             for (int i = 0; i < targetArray.length; i++) {
@@ -91,28 +89,24 @@ public class Utilities {
     }
     // Helper method to load up individual files into ArrayLists with their lines as Strings
     public static ArrayList<String> loadFile(String fileName, int levelNum) throws IOException{
-        /*This method returns an arraylist of strings from the loaded text data files of each level by taking in the file path along with the
-         current level and loading each line in the files.
-         */
         Scanner inFile = new Scanner(new BufferedReader(new FileReader("Data/Level " + levelNum + "/" + fileName)));
         ArrayList<String> fileContents = new ArrayList<>();
         while(inFile.hasNext()){
             String line = inFile.nextLine();
-            if(!line.startsWith("//")){ // Making sure that the line is not a comment
+            if(!line.startsWith("//") && !line.isBlank()){ // Making sure that the line is not a comment
                 fileContents.add(line);
             }
         }
         inFile.close();
         return fileContents;
     }
-
+    // Mr Mckenzie's randint method that returns a random integer
     public static int randint(int low, int high){
-        //Mr Mckenzie's randint method that returns a random integer within the given parameters(inclusive).
         return (int)(Math.random()*(high-low+1)+low);
     }
-
+    //This method takes a double and properly rounds it off to the desired number of decimal places
     public static double roundOff(double number, int decimalPlaces){
-        //This method takes a double and properly rounds it off to the desired number of decimal places by using manipulation of powers of 10.
+        // Rounding by multiplying by powers of ten and slicing off decimals
         double powerOfTen = Math.pow(10, decimalPlaces);
         return Math.round(number*powerOfTen)/powerOfTen;
     }

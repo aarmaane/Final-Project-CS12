@@ -1,3 +1,7 @@
+// Enemy.java
+// Armaan Randhawa and Shivan Gaur
+// Abstract class that lays out basic enemy characteristics such as physics, collisions, attacks, and graphics
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
