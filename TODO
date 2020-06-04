@@ -1,22 +1,19 @@
 TO DO List:
+- Super big picture image
 - Wizards only shoot near the player(possibly remove it)
-- Skeletons in the closet
-- Level 3 and 4
-- Menu Panel
-- Boss Level
+- Menu Panel (Instructions)
+- Boss Level (Blob + Boss)
+- Death/Win Handling
 - Ability to save progress
 
-Level 3 Planning Ideas:
--Cave
-- Wizard-
-- Fire Pits
-- Projectile crystal
 Glitches:
 - Crash when wizard and player overlap perfectly
 
+Handing In Checklist:
+- Remove all commented data file lines
+- Remove all hitbox drawing
+- Header comments
+- Remove unnecessary sprite files
+
 Future Ideas:
-- Combo moves or additional attacks
-- Additional enemies if sprites and ideas are available
-- Character Customization probably in the shop panel
-- Additional Levels if backgrounds and platforms can be found
-- Weather Effects (Rain, Wind, Snow etc.) most likely in its own class
+- Allow attack cancelling

@@ -7,10 +7,11 @@ import java.awt.image.BufferedImage;
 public class Boss extends Enemy{
     // Fields
     // Images
-    private Image bossHealthBar;
+    private static Image bossHealthBar;
+    private static Image[] idleSprites = new Image[5];
     // Initialization of Class
     public static void init(){
-
+        idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Boss/idle");
     }
 
     public Boss(String data) {
@@ -26,16 +27,18 @@ public class Boss extends Enemy{
     }
     @Override
     public void updateSprite() {
-
+        spriteCount += 0.05;
+        if(spriteCount > idleSprites.length){
+            spriteCount = 0;
+        }
     }
     // Getter methods
     @Override
     public Image getSprite() {
-        return new BufferedImage(1,1,1);
+        return idleSprites[(int) Math.floor(spriteCount)];
     }
-
     @Override
     public Rectangle getHitbox() {
-        return new Rectangle((int)x, (int)y, 100, 100);
+        return new Rectangle((int)x + 110, (int)y + 90, 150, 165);
     }
 }
