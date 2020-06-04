@@ -5,25 +5,66 @@ import java.awt.*;
 
 public class Blob extends Enemy  {
     //Sprite arrays
-    private static Image[] movingSprites = new Image[8];
-    private static Image[] idleSprites= new Image[6];
-    private static Image[] attackSprites= new Image[8];
-    private static Image[] deathSprites= new Image[7];
-    private static Image[] hurtSprites= new Image[1];
+    private  Image[] movingSprites = new Image[8];
+    private  Image[] idleSprites= new Image[6];
+    private  Image[] attackSprites= new Image[8];
+    private  Image[] deathSprites= new Image[7];
+    private  Image[] hurtSprites= new Image[1];
+    //Fields
+    private double growthFactor;
+    private double growthVal = 1.0;
+    private double growthChange;
+    private boolean grown;
     public Blob(String data) {
         //Constructor
         super(data);
         health = 500 * difficulty;
         maxHealth = health;
         damage = 15 * difficulty;
+        blobInit();
     }
-    public static void init(){
+    public void blobInit(){
         //Initialing sprite arrays
         movingSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Blob/walk");
         //deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Ghost/death");
         idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Blob/idle");
         attackSprites = Utilities.spriteArrayLoad(attackSprites, "Enemies/Blob/attack");
         //hurtSprites = Utilities.spriteArrayLoad(hurtSprites, "Enemies/Ghost/hurt");
+    }
+    @Override
+    public void update(Player player){
+        //This method updates all the changing properties of the enemy
+        updateMotion(player);
+        if(!isHurt){
+            updateAttack(player);
+        }
+        updateSize(player);
+        updateSprite();
+
+    }
+    public void updateSize(Player player){
+        if(isHurt && growthChange <0.2 && !grown){
+            growthVal+=0.1;
+            growthChange+=0.1;
+            if(growthChange == 0.2){
+                grown = true;
+            }
+            growthFactor= 1+(.2*(1.0/growthVal));
+            growSprites();
+        }
+
+    }
+    public void growSprites(){
+        for(int i =0;i<movingSprites.length;i++){
+            movingSprites[i] = Utilities.scaleSprite(movingSprites[i],growthFactor);
+            attackSprites[i] = Utilities.scaleSprite(attackSprites[i],growthFactor);
+        }
+        for(int i =0;i<idleSprites.length;i++){
+            idleSprites[i] = Utilities.scaleSprite(idleSprites[i],growthFactor);
+        }
+        System.out.println(growthVal);
+        growthOffsetX=80*(growthVal-.2);
+        growthOffsetY=80*(growthVal-.2);
     }
     @Override
     public void updateMotion(Player player){
@@ -94,20 +135,22 @@ public class Blob extends Enemy  {
             if(spriteCount > idleSprites.length){
                 spriteCount = 0;
             }
+            growthChange =0;
+            grown = false;
         }
     }
 
     @Override
     public Image getSprite() {
         //This method returns the appropriate sprite based on the blob's situation
-        Image sprite = null;
+        Image sprite;
         int spriteIndex = (int)Math.floor(spriteCount);
         if(isHurt){
             if(health <= 0){
-                //sprite = deathSprites[spriteIndex];
+                sprite = idleSprites[spriteIndex];
             }
             else{
-                //sprite = hurtSprites[spriteIndex];
+                sprite = idleSprites[spriteIndex];
             }
         }
         else if(isAttacking){
@@ -129,6 +172,6 @@ public class Blob extends Enemy  {
     @Override
     public Rectangle getHitbox() {
         //This method returns a rectangle object that is the hitbox of the blob
-        return new Rectangle((int)x + 10, (int)y + 25, 80, 45);
+        return new Rectangle((int)(x+23), (int)(y+35), (int)(40*growthVal), (int)(45*growthVal));
     }
 }

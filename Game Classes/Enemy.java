@@ -18,6 +18,7 @@ public abstract class Enemy {
     protected int timeAlive;//Variable for enemies who have a timer on them
     protected int direction;
     protected int health, maxHealth, damage, difficulty;
+    protected double growthOffsetX,growthOffsetY;
     protected boolean isActive, isHurt, isAttacking, knockedBack, onMovingPlat;
     protected boolean platformBehind, platformAhead;
     protected boolean hasAlphaSprites;//Boolean for whether the enemy becomes transparent
@@ -183,10 +184,10 @@ public abstract class Enemy {
         return false;
     }
     public double getX(){
-        return x;
+        return x-growthOffsetX;
     }
     public double getY(){
-        return y;
+        return y-growthOffsetY;
     }
     public int getHealth(){
         return health;

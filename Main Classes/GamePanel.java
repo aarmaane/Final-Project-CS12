@@ -80,7 +80,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         Wizard.init();
         Fire.init();
         Crystal.init();
-        Blob.init();
+        //Blob.init();
         Boss.init();
         Projectile.init();
         Chest.init();
