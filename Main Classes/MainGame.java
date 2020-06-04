@@ -1,3 +1,6 @@
+//MainGame.java
+//Armaan Randhawa and Shivan Gaur
+//This class is the Main game class and is the class that creates the game panel.
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;

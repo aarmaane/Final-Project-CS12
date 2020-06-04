@@ -1,3 +1,6 @@
+//Button.java
+//Armaan Randhawa and Shivan Gaur
+//This class is our own custom button class we made and it extends JButton.
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -12,6 +15,8 @@ public class Button extends JButton {
     private Font buttonFont;
     private boolean hovered;
     private Color color;
+
+    //Initialization
     public static void init(){
         try{
             gameFont = Font.createFont(Font.TRUETYPE_FONT, new File("Assets/Fonts/8BitFont.ttf"));

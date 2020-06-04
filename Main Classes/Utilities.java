@@ -31,8 +31,8 @@ public class Utilities {
         AffineTransformOp rotateOp = new AffineTransformOp(rot, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
         return rotateOp.filter((BufferedImage) sprite,null );
     }
-    public static Image scaleSprite(Image sprite){
-        AffineTransform scale = AffineTransform.getScaleInstance(2, 2);
+    public static Image scaleSprite(Image sprite,double scaleFactor){
+        AffineTransform scale = AffineTransform.getScaleInstance(scaleFactor, scaleFactor);
         AffineTransformOp scaleOp = new AffineTransformOp(scale, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
         sprite = scaleOp.filter((BufferedImage)sprite, null);
         return sprite;

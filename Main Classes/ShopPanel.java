@@ -1,3 +1,6 @@
+//ShopPanel.java
+//Armaan Randhawa and Shivan Gaur
+//This class creates a separate JPanel for the shop that the player can use to upgrade themselves
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -30,6 +33,7 @@ public class ShopPanel extends JPanel implements MouseListener {
     // Images and Sounds
     private Image checkbox, checkmark;
     private Sound shopMusic = new Sound("Assets/Sounds/Music/shop.wav", 80);
+
     // Constructor
     public ShopPanel(MainGame frame){
         gameFrame = frame;
@@ -104,7 +108,7 @@ public class ShopPanel extends JPanel implements MouseListener {
         g.setColor(new Color(222, 255, 10));
         g.drawString("Upgrades",30,75);
         // Drawing Dummy Player
-        g.drawImage(Utilities.scaleSprite(dummy.getSprite()), getWidth()/2 - 150,150, this);
+        g.drawImage(Utilities.scaleSprite(dummy.getSprite(),2), getWidth()/2 - 150,150, this);
         // Drawing upgrade boxes
         for(int x = 0; x < 8; x++){
             for(int y = 0; y < 4; y++){
@@ -181,6 +185,7 @@ public class ShopPanel extends JPanel implements MouseListener {
         public void actionPerformed(ActionEvent e) {
             String buttonString = e.getActionCommand();
             switch (buttonString){
+                //Switch cases for the different upgrade buttons that the player has
                 case "Give 100":
                     player.addPoints(100);
                     break;
@@ -239,6 +244,7 @@ public class ShopPanel extends JPanel implements MouseListener {
             }
         }
     }
+    //Mouse methods
     @Override
     public void mouseClicked(MouseEvent e) {
         if(!Sound.isMuted()){

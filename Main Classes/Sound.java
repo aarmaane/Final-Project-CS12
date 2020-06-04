@@ -1,9 +1,14 @@
+//Sound.java
+//Armaan Randhawa and Shivan Gaur
+//This class is used to control all the music and sound effects in the game
+
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class Sound {
+    //Fields
     private static ArrayList<Sound> madeSounds = new ArrayList<>();
     private static boolean isMuted;
     private AudioInputStream inputStream;
@@ -13,6 +18,7 @@ public class Sound {
     // Booleans for static control of sounds
     private boolean wasPaused;
     private float originalGain;
+
     // Constructor
     public Sound(String filePath, int volumeLevel){
         this.filePath = filePath;
@@ -28,6 +34,7 @@ public class Sound {
         madeSounds.add(this);
     }
     private void loadClip(){
+        //Method that loads the clip into the audio stream
         try{
             inputStream = AudioSystem.getAudioInputStream(new File(filePath));
             clip.open(inputStream);
@@ -37,7 +44,9 @@ public class Sound {
             e.printStackTrace();
         }
     }
+    //Basic Sound Methods
     public void play(){
+        //Method that plays the clip
         clip.setMicrosecondPosition(0);
         clip.start();
     }

@@ -1,3 +1,6 @@
+//MainMenu.java
+//Armaan Randhawa and Shivan Gaur
+//This class is the main menu for the game. Once the player selects the play button this panel closes and the main game starts.
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,6 +25,7 @@ public class MainMenu extends JPanel {
     private boolean inInstructions;
     private Image[] instructPages = new Image[3];
     private int currentPage = 0;
+
     // Constructor
     public MainMenu(MainGame game){
         // Setting up frame
@@ -32,6 +36,7 @@ public class MainMenu extends JPanel {
         screenWidth = 960;
         dummy.resetPos(0,366);
     }
+    //Initialization
     public void init(){
         // Declaring buttons
         Button playButton = new Button(new Rectangle((int)getSize().getWidth()/2 - 76,300, 150, 50), "Play", 46);
@@ -59,6 +64,7 @@ public class MainMenu extends JPanel {
     }
     // Window related methods
     public void paintComponent(Graphics g){
+        //Method that draws everything
         background.draw(g);
         g.drawImage(dummy.getSprite(),(int) dummy.getX()- 170 - scrollOffset,367 ,this);
         for(int i = 0; i < 10; i++){
@@ -80,6 +86,7 @@ public class MainMenu extends JPanel {
         fade.draw(g);
     }
     public void drawInstructions(Graphics g){
+        //Method that draws the instructions of the game
         for(Button button: instructButtons){
             button.draw(g);
         }
