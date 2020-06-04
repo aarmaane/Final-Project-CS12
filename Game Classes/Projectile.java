@@ -1,3 +1,6 @@
+//Projectile.java
+//Armaan Randhawa and Shivan Gaur
+//This class creates projectile objects that are used when the player or certain enemies use their casting abilities
 import java.awt.*;
 
 public class Projectile {
@@ -19,12 +22,15 @@ public class Projectile {
     private static Image[] iceSprites = new Image[60];
     private static Image[] darkSprites = new Image[60];
     private static Image[] explosionSprites = new Image[44];
+
+    //Class Initialization
     public static void init(){
         iceSprites = Utilities.spriteArrayLoad(iceSprites, "Projectiles/Iceball/iceball");
         darkSprites = Utilities.spriteArrayLoad(darkSprites, "Projectiles/DarkCast/darkCast");
         explosionSprites = Utilities.spriteArrayLoad(explosionSprites, "Projectiles/Explosion/explosion");
 
     }
+    //First Constructor ---> 1D projectile
     public Projectile(int type, double x, double y, double damage, double speed){
         this.x = x;
         this.y = y;
@@ -40,6 +46,7 @@ public class Projectile {
         assignArray();
 
     }
+    //Second Constructor---> 2D projectile
     public Projectile(int type, double startX, double startY,double targX,double targY ,double damage, double speed){
         this.type= type;
         this.damage = damage;
@@ -60,6 +67,7 @@ public class Projectile {
         y = startY - angledRect.y;
     }
     public void assignArray(){
+        //This method assigns the proper array of sprites to the projectile object based on if the projectile came from an enemy or the player
         if(type == PLAYER){
             projectileSprites = iceSprites;
         }
@@ -72,6 +80,7 @@ public class Projectile {
         updatePos();
     }
     public void updatePos(){
+        //Updates the motion and (x,y) position of the projectile
         if(!exploding){
             // Updating X and Y coordinate
             if(isAngled){
@@ -98,6 +107,7 @@ public class Projectile {
         }
     }
     public void explode(){
+        //Makes the projectile explode and prepares it to be swept up by the garbage collector
         exploding = true;
         spriteCount = 0;
     }
@@ -113,7 +123,7 @@ public class Projectile {
             if(direction == RIGHT){
                 sprite = Utilities.flipSprite(sprite);
             }
-            if(isAngled){
+            if(isAngled){//Rotating the projectile sprites at the proper coordinate
                 int noRotHeight = projectileSprites[0].getHeight(null);
                 int noRotWidth = projectileSprites[0].getWidth(null);
                 if(Math.sin(angle) * speed < 0){
