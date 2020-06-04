@@ -18,12 +18,11 @@ public abstract class Enemy {
     protected int timeAlive;//Variable for enemies who have a timer on them
     protected int direction;
     protected int health, maxHealth, damage, difficulty;
-    protected double growthOffsetX,growthOffsetY;
     protected boolean isActive, isHurt, isAttacking, knockedBack, onMovingPlat;
     protected boolean platformBehind, platformAhead;
-    protected boolean hasAlphaSprites;//Boolean for whether the enemy becomes transparent
-    protected boolean hasTimeLimit;//Boolean for whether the enemy has a timer or not
-    protected boolean outOfBoundsPoints;//Boolean for whether the enemy gives the player points once it is out of bounds
+    protected boolean hasAlphaSprites; //Boolean for whether the enemy becomes transparent
+    protected boolean hasTimeLimit; //Boolean for whether the enemy has a timer or not
+    protected boolean outOfBoundsPoints; //Boolean for whether the enemy gives the player points once it is out of bounds
     // Images
     protected static Image healthBar;
 
@@ -184,10 +183,10 @@ public abstract class Enemy {
         return false;
     }
     public double getX(){
-        return x-growthOffsetX;
+        return x;
     }
     public double getY(){
-        return y-growthOffsetY;
+        return y;
     }
     public int getHealth(){
         return health;

@@ -5,25 +5,19 @@ import java.awt.*;
 
 public class Blob extends Enemy  {
     //Sprite arrays
-    private  Image[] movingSprites = new Image[8];
-    private  Image[] idleSprites= new Image[6];
-    private  Image[] attackSprites= new Image[8];
-    private  Image[] deathSprites= new Image[7];
-    private  Image[] hurtSprites= new Image[1];
+    private Image[] movingSprites = new Image[8];
+    private Image[] idleSprites= new Image[6];
+    private Image[] attackSprites= new Image[8];
+    private Image[] deathSprites= new Image[7];
+    private Image[] hurtSprites= new Image[1];
     //Fields
-    private double growthFactor;
-    private double growthVal = 1.0;
-    private double growthChange;
-    private boolean grown;
+    private double growth = 1;
     public Blob(String data) {
         //Constructor
         super(data);
         health = 500 * difficulty;
         maxHealth = health;
         damage = 15 * difficulty;
-        blobInit();
-    }
-    public void blobInit(){
         //Initialing sprite arrays
         movingSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Blob/walk");
         //deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Ghost/death");
@@ -34,37 +28,14 @@ public class Blob extends Enemy  {
     @Override
     public void update(Player player){
         //This method updates all the changing properties of the enemy
-        updateMotion(player);
-        if(!isHurt){
-            updateAttack(player);
-        }
+        super.update(player);
         updateSize(player);
-        updateSprite();
 
     }
     public void updateSize(Player player){
-        if(isHurt && growthChange <0.2 && !grown){
-            growthVal+=0.1;
-            growthChange+=0.1;
-            if(growthChange == 0.2){
-                grown = true;
-            }
-            growthFactor= 1+(.2*(1.0/growthVal));
-            growSprites();
-        }
-
-    }
-    public void growSprites(){
-        for(int i =0;i<movingSprites.length;i++){
-            movingSprites[i] = Utilities.scaleSprite(movingSprites[i],growthFactor);
-            attackSprites[i] = Utilities.scaleSprite(attackSprites[i],growthFactor);
-        }
-        for(int i =0;i<idleSprites.length;i++){
-            idleSprites[i] = Utilities.scaleSprite(idleSprites[i],growthFactor);
-        }
-        System.out.println(growthVal);
-        growthOffsetX=80*(growthVal-.2);
-        growthOffsetY=80*(growthVal-.2);
+        double healthLeft = (double)health / maxHealth;
+        growth = 1 + (5 * (1 - healthLeft));
+        System.out.println(growth);
     }
     @Override
     public void updateMotion(Player player){
@@ -117,7 +88,7 @@ public class Blob extends Enemy  {
             }
             else{//If the blob was not killed then it was simply hurt so the hurt sprite count is reset once it is cycled through
                 spriteCount += 0.08;
-                if(spriteCount > hurtSprites.length){
+                if(spriteCount > idleSprites.length){
                     spriteCount = 0;
                     isHurt = false;
                 }
@@ -135,8 +106,6 @@ public class Blob extends Enemy  {
             if(spriteCount > idleSprites.length){
                 spriteCount = 0;
             }
-            growthChange =0;
-            grown = false;
         }
     }
 
@@ -150,7 +119,7 @@ public class Blob extends Enemy  {
                 sprite = idleSprites[spriteIndex];
             }
             else{
-                sprite = idleSprites[spriteIndex];
+                sprite = movingSprites[0];
             }
         }
         else if(isAttacking){
@@ -166,12 +135,14 @@ public class Blob extends Enemy  {
         if(direction == RIGHT){
             sprite = Utilities.flipSprite(sprite);
         }
+        // Applying scale depending on blobs growth amount
+        sprite = Utilities.scaleSprite(sprite, growth);
         return sprite;
     }
 
     @Override
     public Rectangle getHitbox() {
-        //This method returns a rectangle object that is the hitbox of the blob
-        return new Rectangle((int)(x+23), (int)(y+35), (int)(40*growthVal), (int)(45*growthVal));
+        // Getting the hitbox of the blob with the growth scaling applied to the dimensions
+        return new Rectangle((int)(x + (25 * growth)), (int)(y + (45 * growth)), (int)(27 * growth), (int)(35 * growth));
     }
 }

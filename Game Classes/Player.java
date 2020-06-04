@@ -507,7 +507,13 @@ public class Player {
             textQueue.add(new IndicatorText(getHitbox().x, getHitbox().y, "-" + cast.getDamage(), Color.RED));
         }
     }
-
+    public void kill(){
+        /*
+        health = 0;
+        isDying = true;
+        velocityX = 0;
+         */
+    }
 
     public ArrayList<IndicatorText> flushTextQueue(){
         ArrayList<IndicatorText> temp = textQueue;
