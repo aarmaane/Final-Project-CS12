@@ -140,10 +140,11 @@ public class Wizard extends Enemy {
     }
 
     @Override
-    //Returns rectangle object with the hitbox of the
+    //Returns rectangle object with the hitbox of the wizard
     public Rectangle getHitbox() {
         return new Rectangle((int)x+90, (int)y+50, 65, 91);
     }
     @Override
+    //Returns the cast type of the wizard
     public int getCastType(){return castType;}
 }

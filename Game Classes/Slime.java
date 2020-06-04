@@ -1,3 +1,6 @@
+//Slime.java
+//Armaan Randhawa and Shivan Gaur
+//This program is a subclass of the Enemy class that creates Slime enemies that follow the player around.
 import java.awt.*;
 
 public class Slime extends Enemy {
@@ -55,6 +58,7 @@ public class Slime extends Enemy {
     }
     @Override
     public void updateAttack(Player player){
+        //This method determines when the slime inflicts damage on the player
         super.updateAttack(player);
         // Checking if the player should be dealt damage
         if(isAttacking && Utilities.roundOff(spriteCount,2) == attackSprites.length/2.0){
@@ -63,6 +67,7 @@ public class Slime extends Enemy {
     }
     @Override
     public void updateSprite(){
+        //Restarting the sprite cycles
         if(isHurt){
             if(health <= 0){
                 spriteCount += 0.05;
@@ -94,6 +99,7 @@ public class Slime extends Enemy {
     // Getter methods
     @Override
     public Image getSprite() {
+        //Returns the correct sprite based on the situation of the slime
         Image sprite;
         int spriteIndex = (int)Math.floor(spriteCount);
         if(isHurt){
@@ -121,6 +127,7 @@ public class Slime extends Enemy {
     }
 
     @Override
+    //Returns a rectangle object as the hitbox of the slime.
     public Rectangle getHitbox() {
         return new Rectangle((int)x + 10, (int)y + 25, 80, 45);
     }

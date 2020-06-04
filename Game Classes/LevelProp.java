@@ -1,4 +1,8 @@
-import org.w3c.dom.css.Rect;
+//LevelProp.java
+//Armaan Randhawa and Shivan Gaur
+/*This class creates multiple different types of level props for each level including colliding platforms, non-colliding platforms, moving platforms
+and disappearing platforms.
+*/
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -9,7 +13,7 @@ import java.util.HashMap;
 public class LevelProp {
     // Hashmap to store all platform images with quick access and without duplication
     private static HashMap<String, Image> imageMap = new HashMap<>();
-    // Object fields
+    /////Fields
     private double x, y;
     private int width, height;
     private String imageName;
@@ -23,6 +27,8 @@ public class LevelProp {
     private boolean moving;
     private int xLimit, yLimit;
     private double xMove, yMove, xSpeed, ySpeed;
+
+    //Constructor
     public LevelProp(String data, boolean temporary, boolean moving){
         // Setting up prop fields
         String[] dataSplit = data.split(",");
@@ -34,7 +40,7 @@ public class LevelProp {
             disappearX = Integer.parseInt(dataSplit[3]);
             disappearY = Integer.parseInt(dataSplit[4]);
         }
-        if(moving){
+        if(moving){//Setting up fields for moving platforms
             this.moving = true;
             xLimit = Integer.parseInt(dataSplit[3]);
             yLimit = Integer.parseInt(dataSplit[4]);
@@ -79,12 +85,14 @@ public class LevelProp {
         return imageMap.get(imageName);
     }
     public Rectangle getRect(){
+        //Method that returns the rectangle object that is the hitbox of the level prop
         if(moving){
             return new Rectangle((int)(x + xMove), (int)(y + yMove), width, height);
         }
         return new Rectangle((int)x, (int)y, width, height);
     }
     public float getSpriteAlpha(){
+        //Method that returns the alpha value of the platform
         if(disappearing) {
             alpha += propAlpha;
             if (Utilities.roundOff(alpha, 2) == 0) {
@@ -108,7 +116,6 @@ public class LevelProp {
     public double getXSpeed() {
         return xSpeed;
     }
-
     public double getYSpeed() {
         return ySpeed;
     }

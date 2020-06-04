@@ -1,3 +1,6 @@
+//Player.java
+//Armaan Randhawa and Shivan Gaur
+//This class creates the player object of the game
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -6,6 +9,7 @@ public class Player {
     public static final int RIGHT = 0, LEFT = 1;
     public static final int INITIAL = 0, NORMAL = 1, DEMO = 2;
     private static final double GRAVITY = 0.25;
+    ////Fields
     // Player's movement-related fields
     private double x, y;
     private double velocityX, velocityY;
@@ -123,6 +127,7 @@ public class Player {
         }
     }
     public void sprint(){
+        //Allows player to move faster if they have enabled hyperspeed
         if(hasHyperspeed && velocityX != 0){
             if(stamina - 1 > 0){
                 sprinting = true;
@@ -131,6 +136,7 @@ public class Player {
         }
     }
     public void crouch(){
+        //Allows the player to crouch
         if(isCasting || isAttacking || !onGround || isDying){
             return;
         }
@@ -159,6 +165,7 @@ public class Player {
         }
     }
     public void attack(){
+        //Method that allows the player to attack
         if(isAttacking || isCasting || isDying) {
             return;
         }
@@ -385,6 +392,7 @@ public class Player {
         }
     }
     public void checkCollision(LevelProp prop){
+        //This method checks the collision between the platforms and the player
         Rectangle rect = prop.getRect();
         Rectangle hitbox = getHitbox();
         if(hitbox.intersects(rect)){
@@ -395,7 +403,7 @@ public class Player {
                 jumpCount = 0;
             }
         }
-        if(prop.isMoving() && !onMovingPlat && onGround){
+        if(prop.isMoving() && !onMovingPlat && onGround){//Moving player position for moving platforms
             if(rect.contains(hitbox.x+hitbox.width, hitbox.y+hitbox.height + 1) || rect.contains(hitbox.x, hitbox.y+hitbox.height + 1)){
                 x += prop.getXSpeed();
                 y += prop.getYSpeed();
@@ -404,6 +412,7 @@ public class Player {
         }
     }
     public void gainItem(Item item){
+        //This method adds the benefits from an item that the player obtained
         int type = item.getType();
         if(type == Item.COIN){
             points += 100;
@@ -430,6 +439,7 @@ public class Player {
         }
     }
     public void iterateTime(){
+        //This method controls the timers for the energy and health power-ups
         if(energyTimer>0){
             energyTimer-=1;
         }
@@ -438,6 +448,7 @@ public class Player {
         }
     }
     public void resetPos(int x, int y){
+        //This method resets the position of the player
         this.x = x;
         this.y = y;
         velocityX = 0;
@@ -445,19 +456,22 @@ public class Player {
         spriteCount = 0;
     }
     public void setPos(int x, int y){
+        //Method that sets the (X,Y) of the player to the given parameters
         this.x = x;
         this.y = y;
     }
     public void restoreHealth(){
+        //Method that restores the health and stamina of the player to 100%
         health = maxHealth;
         stamina = maxStamina;
         isDying = false;
     }
     public void enemyHit(Enemy enemy){
+        //Method that calculates the physical attacks inflicted by an enemy
         if(isDying){
             return; // Don't register hits while the player is dying
         }
-        if(!hasHealthPower()){
+        if(!hasHealthPower()){//damage is neglected if the player has the health power-up
             health -= enemy.getDamage();
             if(velocityX == 0 && !isAttacking && !isCasting){
                 isHurt = true;
@@ -465,16 +479,17 @@ public class Player {
             }
             textQueue.add(new IndicatorText(getHitbox().x, getHitbox().y, "-" + enemy.getDamage(), Color.RED));
         }
-        if(health <= 0){
+        if(health <= 0){//Player death
             isDying = true;
             spriteCount = 0;
         }
     }
     public void castHit(Projectile cast){
+        //Method that calculates the damage done by the projectiles
         if(isDying){
             return; // Don't register hits while the player is dying
         }
-        if(!hasHealthPower()) {
+        if(!hasHealthPower()) {//Damage is neglected if health power-up is activated
             health -= cast.getDamage();
             velocityY = -3;
             if (cast.getSpeed() > 0) {
@@ -493,15 +508,6 @@ public class Player {
         }
     }
 
-    public void kill(){
-        /*
-        health = 0;
-        isDying = true;
-        velocityX = 0;
-
-         */
-    }
-
 
     public ArrayList<IndicatorText> flushTextQueue(){
         ArrayList<IndicatorText> temp = textQueue;
@@ -511,6 +517,7 @@ public class Player {
     // Getter methods
     // Method that returns the player's current sprite by looking at various fields
     public Image getSprite(){
+        //Returns proper sprite for the player based on the player's situation
         Image sprite;
         int spriteIndex = (int)Math.floor(spriteCount);
         if(isDying){
@@ -566,6 +573,7 @@ public class Player {
         return new Rectangle((int)x + 58, (int)y + 15, 36, 93);
     }
     public Rectangle getAttackBox(){
+        //Returns rectangle object for the attackbox of the player
         int xPos = (int)x + 100;
         if(direction == LEFT){
             xPos = (int)x;
@@ -647,6 +655,8 @@ public class Player {
     public void addPoints(int addition){
         points += addition;
     }
+
+    //Upgrade Methods
     public void upgradeSword(){
         swordUpgradeNum++;
         swordDamage *= 1.5;

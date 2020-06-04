@@ -1,6 +1,10 @@
+//IndicatorText.java
+//Armaan Randhawa and Shivan Gaur
+//This class creates the indicator text that appears for things like damage infliction and important messages during game play.
 import java.awt.*;
 
 public class IndicatorText {
+    //Fields
     private int x, y;
     private String text;
     private Color color;

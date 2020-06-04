@@ -1,7 +1,10 @@
+//Skeleton.java
+//Armaan Randhawa and Shivan Gaur
+//This program is a subclass of the Enemy class and it creates skeleton enemies that walk back and forth on a platform
 import java.awt.*;
 
 public class Skeleton extends Enemy {
-    // Sprites
+    // Sprite arrays
     private static Image[] movingSprites = new Image[13];
     private static Image[] attackSprites = new Image[18];
     private static Image[] hurtSprites = new Image[3];
@@ -25,6 +28,7 @@ public class Skeleton extends Enemy {
     // General methods
     @Override
     public void updateMotion(Player player){
+        //Method that updates motion of the skeleton
         // Skeleton custom movement
         int playerX = player.getHitbox().x;
         int skeletonX = getHitbox().x;
@@ -64,6 +68,7 @@ public class Skeleton extends Enemy {
 
     @Override
     public void updateAttack(Player player) {
+        //Method that determines when to inflict damage on the player
         super.updateAttack(player);
         // Checking if the player should be dealt damage
         if(isAttacking && Utilities.roundOff(spriteCount,2) == attackSprites.length/2.5){
@@ -72,6 +77,7 @@ public class Skeleton extends Enemy {
     }
     @Override
     public void updateSprite() {
+        //Method restarting sprite cycles
         if(isHurt){
             if(health <= 0){
                 spriteCount += 0.1;
@@ -104,6 +110,7 @@ public class Skeleton extends Enemy {
     // Getter methods
     @Override
     public Image getSprite() {
+        //Method that returns the proper sprite for the current situation of the skeleton
         Image sprite;
         int spriteIndex = (int)Math.floor(spriteCount);
         if(isHurt){
@@ -132,10 +139,12 @@ public class Skeleton extends Enemy {
 
     @Override
     public Rectangle getHitbox() {
+        //This method returns a rectangle object for the hitbox of the skeleton
         if(direction == LEFT){
+            //There is a 20 pixel offset to the x position if the skeleton is facing left due to how the sprites were formatted
             return new Rectangle((int) x + 20,(int) y + 20,50,76);
         }
-        return new Rectangle((int) x,(int) y + 20,50,76);
+        return new Rectangle((int) x,(int) y + 20,50,76);//without offset
     }
 
     @Override

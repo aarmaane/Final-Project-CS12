@@ -1,3 +1,6 @@
+//Item.java
+//Armaan Randhawa and Shivan Gaur
+//This class creates item object that benefits the player in some way by giving the player power-ups
 import java.awt.*;
 
 public class Item {
@@ -52,6 +55,7 @@ public class Item {
     }
 
     public void update(){
+        //Method that updates item properties
         updateMotion();
         updateSprite();
     }
@@ -62,6 +66,7 @@ public class Item {
         velocityY += GRAVITY;
     }
     public void updateSprite(){
+        //Method that resets sprite cycles
         spriteCount += 0.1;
         if(     (type == HEALTH && spriteCount >= healthSprites.length) ||
                 (type == COIN && spriteCount >= coinSprites.length) ||
@@ -73,6 +78,7 @@ public class Item {
 
     }
     public void playSound(){
+        //Method that plays the appropriate sound for each item type
         if(type == COIN || type == DIAMOND){
             coinSound.stop();
             coinSound.play();

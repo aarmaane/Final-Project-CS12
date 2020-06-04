@@ -12,6 +12,7 @@ public abstract class Enemy {
     public static final int RIGHT = 0, LEFT = 1;
     protected static final double GRAVITY = 0.25;
     //Fields
+    //All fields are protected, which prevents other users from altering the field values but also allows subclasses to inherit the fields.
     protected double x, y, velocityX, velocityY;
     protected double spriteCount;
     protected int timeAlive;//Variable for enemies who have a timer on them
@@ -24,6 +25,7 @@ public abstract class Enemy {
     protected boolean outOfBoundsPoints;//Boolean for whether the enemy gives the player points once it is out of bounds
     // Images
     protected static Image healthBar;
+
     // Class initialization
     public static void init() throws IOException {
         try {
