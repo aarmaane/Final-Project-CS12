@@ -14,7 +14,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     private MainGame gameFrame;
     // Game related fields
     private Player player = new Player();
-    private int levelNum, timeLeft,spawnDelay;
+    private int levelNum, timeLeft;
     private int levelEndX, levelEndResetX;
     private int levelOffset = 0;
     private boolean paused = false;
@@ -102,7 +102,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             // Setting up level fields
             ArrayList<String> levelData = Utilities.loadFile("LevelData.txt", levelNum);
             timeLeft = Integer.parseInt(levelData.get(0));
-            spawnDelay = timeLeft;
             levelEndX =  Integer.parseInt(levelData.get(1));
             levelEndResetX =  Integer.parseInt(levelData.get(2));
             levelMusic.closeSound();
@@ -460,9 +459,8 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             updateProp(prop);
         }
         for(Spawner spawner: spawners){
-            if(spawnDelay-timeLeft>4) {
+            if(spawner.spawnQueued()) {
                 spawnEnemy(spawner);
-                spawnDelay = timeLeft;
             }
         }
         // Updating objects
@@ -745,6 +743,9 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         player.iterateTime();
         for(Enemy enemy: enemies){
             enemy.iterateTime();
+        }
+        for(Spawner spawner: spawners){
+            spawner.iterateTime();
         }
     }
     // Setter methods

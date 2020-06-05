@@ -8,6 +8,8 @@ public class Spawner {
     private String enemyType;
     private int spawnX,spawnY;
     private int difficulty;
+    private int spawnDelay = 5;
+    private boolean queuedSpawn;
     public Spawner(String data){
         //Constructor
         String[] dataSplit = data.split(",");
@@ -17,6 +19,13 @@ public class Spawner {
         enemyType = dataSplit[3];
         difficulty = Integer.parseInt(dataSplit[4]);
 
+    }
+    public void iterateTime(){
+        spawnDelay--;
+        if(spawnDelay < 0){
+            queuedSpawn = true;
+            spawnDelay = 5;
+        }
     }
     public Enemy spawnEnemy(){
         //This method returns the proper enemy that needs to be spawned
@@ -47,4 +56,9 @@ public class Spawner {
     public double getSpawnY(){ return spawnY;}
     public int getTimeLimit(){ return timeLimit;}
     public String getEnemyType(){ return enemyType;}
+    public boolean spawnQueued(){
+        boolean tmp = queuedSpawn;
+        queuedSpawn = false;
+        return tmp;
+    }
 }
