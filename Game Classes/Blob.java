@@ -33,9 +33,13 @@ public class Blob extends Enemy  {
 
     }
     public void updateSize(Player player){
+        int originalHeight = getHitbox().height;
+        // Calculating the growth depending on health lost
         double healthLeft = (double)health / maxHealth;
         growth = 1 + (5 * (1 - healthLeft));
-        System.out.println(growth);
+        // Adjusting y position based on new growth
+        y -= getHitbox().height - originalHeight;
+
     }
     @Override
     public void updateMotion(Player player){
