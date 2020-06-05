@@ -147,6 +147,10 @@ public class Blob extends Enemy  {
     @Override
     public Rectangle getHitbox() {
         // Getting the hitbox of the blob with the growth scaling applied to the dimensions
+        if(direction == RIGHT){
+            // Offset for right-facing sprites is applied in x dimensions
+            return new Rectangle((int)(x + (29 * growth)), (int)(y + (45 * growth)), (int)(27 * growth), (int)(35 * growth));
+        }
         return new Rectangle((int)(x + (25 * growth)), (int)(y + (45 * growth)), (int)(27 * growth), (int)(35 * growth));
     }
 }
