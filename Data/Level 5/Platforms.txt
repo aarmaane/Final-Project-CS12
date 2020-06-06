@@ -1,0 +1,5 @@
+0,462,Set 5/platTop.png
+224,462,Set 5/platTop.png
+448,462,Set 5/platTop.png
+672,462,Set 5/platTop.png
+896,462,Set 5/platTopCut.png

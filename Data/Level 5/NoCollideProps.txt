@@ -1,0 +1,5 @@
+0,526,Set 5/platBottom.png
+224,526,Set 5/platBottom.png
+448,526,Set 5/platBottom.png
+672,526,Set 5/platBottom.png
+896,526,Set 5/platBottom.png

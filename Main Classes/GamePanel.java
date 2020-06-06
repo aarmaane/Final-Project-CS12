@@ -351,7 +351,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                 }
                 repaint();
             }
-            else if(!paused && !levelEnding){
+            else if(!paused && (!levelEnding || specialEnding)){
                 if(keyCode == KeyEvent.VK_SPACE){
                     player.jump(Player.INITIAL);
                 }
@@ -395,7 +395,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     public void mouseClicked(MouseEvent e) {}
     @Override
     public void mousePressed(MouseEvent e) {
-        if(!paused && !levelEnding){
+        if(!paused && (!levelEnding || specialEnding)){
             // Declaring important variables
             Point mousePos = getMousePosition();
             Rectangle playerHitbox = player.getHitbox();
