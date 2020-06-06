@@ -75,7 +75,7 @@ public class MainGame extends JFrame {
                         game.checkCollision();
                         game.updateGraphics();
                         game.repaint();
-                        // Timer to
+                        // Counter to keep track of time elapsed
                         runTime += 10; // The main game loop is called every 10ms
                         if(runTime == 1000){ // If 1 second has passed
                             runTime = 0;

@@ -1,10 +1,7 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -708,6 +705,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     }
     public void checkInputs(){
         if(levelEnding && !specialEnding){
+            player.unCrouch(); // Undoing any crouch applied before the level end
             player.move(Player.RIGHT);
             return;
         }

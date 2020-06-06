@@ -160,5 +160,5 @@
 1388,90,Set 3/floor5.png
 1420,70,Set 3/floor5.png
 //Shadow Pillars
-2670,0,Set 3/backPillar1.png
+2670,-910,Set 3/backPillar1Padded.png
 

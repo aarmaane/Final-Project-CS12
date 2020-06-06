@@ -49,7 +49,7 @@ public class Wizard extends Enemy {
         //This method updates the attack of the enemy
         if(Math.abs(player.getX()-x)<1000) {
             if (!isAttacking){
-                if(castType == CAST1) {//Cast1 is much more difficult so the delay is longer
+                if(castType == CAST1) {// Cast1 is much more difficult so the delay is longer
                     attackDelay += 0.005 * difficulty;
                 }
                 else if(castType == CAST2) {//Delay is 10x shorter for cast2
@@ -96,13 +96,6 @@ public class Wizard extends Enemy {
             }
         }
     }
-    /*
-    @Override
-    public void checkCollision(LevelProp prop) {
-
-    }
-
-     */
     @Override
     public boolean isCastFrame(){
         //This method checks whether the wizard is in the cast frame or not and returns a boolean

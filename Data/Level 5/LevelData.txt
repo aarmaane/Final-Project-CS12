@@ -1,0 +1,13 @@
+// Time to complete level (Seconds)
+150
+// End point ( X position of where the player gets automated )
+9400
+// Reset point (The end level loop location)
+9900
+// Music track
+level5.wav
+// Background Pictures
+hell1.png,hell2.png,hell3.png,hell4.png,hell5.png,hell6.png
+0,0.05,0.1,0.15,0.2,0.25
+// Is the level ending locked until enemies are defeated
+True

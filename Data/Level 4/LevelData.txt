@@ -5,9 +5,9 @@
 // Reset point (The end level loop location)
 9900
 // Music track
-level3.wav
+level4.wav
 // Background Pictures
 mountain1.png,mountain2.png,mountain3.png,mountain4.png,clouds1.png,clouds2.png,clouds3.png
 0,0.05,0.1,0.15,0.1,0.2,0.4
 // Is the level ending locked until enemies are defeated
-True
+False
