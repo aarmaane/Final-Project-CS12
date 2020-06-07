@@ -232,4 +232,5 @@ public abstract class Enemy {
     public boolean hasLimitedTime(){ return hasTimeLimit;}
     public int getCastType(){ return 2;}
     public int getDifficulty(){ return difficulty;}
+    public String getSpriteType(){ return "";}
 }

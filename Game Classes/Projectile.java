@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class Projectile {
     //Constants
-    public static final int PLAYER = 0, ENEMY = 1;
+    public static final int PLAYER = 0, ENEMY = 1, ELITEENEMY = 2;
     public static final int LEFT = 0, RIGHT = 1;
     //Fields
     private double x, y;
@@ -21,12 +21,14 @@ public class Projectile {
     // Sprite Image Arrays
     private static Image[] iceSprites = new Image[60];
     private static Image[] darkSprites = new Image[60];
+    private static Image[] fireSprites = new Image[60];
     private static Image[] explosionSprites = new Image[44];
 
     //Class Initialization
     public static void init(){
         iceSprites = Utilities.spriteArrayLoad(iceSprites, "Projectiles/Iceball/iceball");
         darkSprites = Utilities.spriteArrayLoad(darkSprites, "Projectiles/DarkCast/darkCast");
+        fireSprites = Utilities.spriteArrayLoad(fireSprites, "Projectiles/Fireball/fireball");
         explosionSprites = Utilities.spriteArrayLoad(explosionSprites, "Projectiles/Explosion/explosion");
     }
 
@@ -74,8 +76,11 @@ public class Projectile {
         if(type == PLAYER){
             projectileSprites = iceSprites;
         }
-        else{
+        else if(type == ENEMY){
             projectileSprites = darkSprites;
+        }
+        else{
+            projectileSprites = fireSprites;
         }
     }
 

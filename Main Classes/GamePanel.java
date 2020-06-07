@@ -78,7 +78,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         Slime.init();
         Skeleton.init();
         Ghost.init();
-        Wizard.init();
+        //Wizard.init();
         Fire.init();
         Crystal.init();
         Boss.init();
@@ -169,7 +169,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         if(player.isDead()){
             player.restoreHealth();
         }
-        player.resetPos(0 ,-111);
+        player.resetPos(0 ,-112);
         // Resetting music
         levelMusic.play();
         if(Sound.isMuted()){ // Forcing mute if the game is already muted
@@ -544,16 +544,25 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             Rectangle playerHitbox = player.getHitbox();
             int startX = wizardHitBox.x - 10;
             int speed = 2;
+            String spriteType  = enemy.getSpriteType();
+            int projectileType;
+            if(spriteType.equals("")){
+                projectileType = Projectile.ENEMY;
+            }
+            else{
+                projectileType =  Projectile.ELITEENEMY;
+            }
             if(enemy.getDirection() == Enemy.RIGHT){
                 startX = wizardHitBox.x + wizardHitBox.width + 10;
             }
             if(enemy.getCastType() == Wizard.CAST2){
-                projectiles.add(new Projectile(Projectile.ENEMY, startX, wizardHitBox.y, playerHitbox.x, playerHitbox.y, enemy.getDamage(), speed));
+                projectiles.add(new Projectile(projectileType, startX, wizardHitBox.y, playerHitbox.x, playerHitbox.y, enemy.getDamage(), speed));
                 castSound.play();
             }
             else if(enemy.getCastType() == Wizard.CAST1){
+
                 for(int i = 0; i < 10; i++){
-                    projectiles.add(new Projectile(Projectile.ENEMY, playerHitbox.x+Utilities.randint(-450,450), 0, playerHitbox.x+Utilities.randint(-150,150), 590, enemy.getDamage(), speed));
+                    projectiles.add(new Projectile(projectileType, playerHitbox.x+Utilities.randint(-450,450), 0, playerHitbox.x+Utilities.randint(-150,150), 590, enemy.getDamage(), speed));
                     castSound.play();
                 }
             }

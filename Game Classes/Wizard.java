@@ -8,29 +8,28 @@ public class Wizard extends Enemy {
     public static final int CAST1 = 1, CAST2 = 2;
     // Fields
     private double attackDelay;
+    private String spriteType;
     private int castType; // Type of casting the wizard performs
     // Image Arrays for Sprites
-    private static Image[] hurtSprites = new Image[4];
-    private static Image[] idleSprites = new Image[6];
-    private static Image[] deathSprites = new Image[7];
+    private Image[] hurtSprites = new Image[4];
+    private Image[] idleSprites = new Image[6];
+    private Image[] deathSprites = new Image[7];
     private Image[] castSprites = new Image[8];
 
-    // Class Initialization
-    public static void init(){
-        hurtSprites = Utilities.spriteArrayLoad(hurtSprites, "Enemies/Wizard/hurt");
-        idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Wizard/idle");
-        deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Wizard/death");
-    }
 
     // Constructor
     public Wizard(String data){
         super(data);
         String[] dataSplit = data.split(",");
         castType = Integer.parseInt(dataSplit[3]);
+        spriteType = dataSplit[4];
         health = 300 * difficulty;
         maxHealth = health;
         damage = 35*difficulty;
-        castSprites = Utilities.spriteArrayLoad(castSprites, "Enemies/Wizard/cast"+castType+"-"); // Not static since it will differ
+        hurtSprites = Utilities.spriteArrayLoad(hurtSprites, "Enemies/Wizard/"+spriteType+"hurt");
+        idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Wizard/"+spriteType+"idle");
+        deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Wizard/"+spriteType+"death");
+        castSprites = Utilities.spriteArrayLoad(castSprites, "Enemies/Wizard/"+spriteType+"cast"+castType+"-"); // Not static since it will differ
     }
     // General methods
     @Override
@@ -144,4 +143,6 @@ public class Wizard extends Enemy {
     @Override
     //Returns the cast type of the wizard
     public int getCastType(){return castType;}
+    @Override
+    public String getSpriteType(){return spriteType;}
 }
