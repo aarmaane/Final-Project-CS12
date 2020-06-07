@@ -1,6 +1,6 @@
-//ShopPanel.java
-//Armaan Randhawa and Shivan Gaur
-//This class creates a separate JPanel for the shop that the player can use to upgrade themselves
+// ShopPanel.java
+// Armaan Randhawa and Shivan Gaur
+// Class creates a JPanel for the shop that the player can use to purchase upgrades
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ShopPanel extends JPanel implements MouseListener {
+public class ShopPanel extends JPanel {
     // Window related Objects
     private MainGame gameFrame;
     private GamePanel game;
@@ -35,34 +35,35 @@ public class ShopPanel extends JPanel implements MouseListener {
     private Sound shopMusic = new Sound("Assets/Sounds/Music/shop.wav", 80);
 
     // Constructor
-    public ShopPanel(MainGame frame){
+    public ShopPanel(MainGame frame) {
         gameFrame = frame;
         game = frame.getGame();
         player = game.getPlayer();
         gameFont = game.getGameFont();
         gameFontBig = gameFont.deriveFont(60f);
-        setSize(960,590);
-        addMouseListener(this);
+        setSize(960, 590);
         setLayout(null);
     }
+
+    // Panel initialization
     public void init() throws IOException {
         // Loading images
-        checkbox= ImageIO.read(new File("Assets/Images/Shop/checkbox.png"));
+        checkbox = ImageIO.read(new File("Assets/Images/Shop/checkbox.png"));
         checkmark = ImageIO.read(new File("Assets/Images/Shop/checkmark.png"));
         // Declaring Buttons
-        Button continueButton = new Button(new Rectangle(getWidth() - 200,getHeight() - 50, 200, 50), "Continue", 35);
+        Button continueButton = new Button(new Rectangle(getWidth() - 200, getHeight() - 50, 200, 50), "Continue", 35);
         // Left Side Buttons
-        Button swordUpgrade = new Button(new Rectangle(0,100, 300, 50), "Upgrade Sword", 35);
-        Button castUpgrade = new Button(new Rectangle(0,200, 300, 50), "Upgrade Cast", 35);
-        Button healthUpgrade = new Button(new Rectangle(0,300, 300, 50), "Upgrade Health", 35);
-        Button staminaUpgrade = new Button(new Rectangle(0,400, 300, 50), "Upgrade Stamina", 35);
+        Button swordUpgrade = new Button(new Rectangle(0, 100, 300, 50), "Upgrade Sword", 35);
+        Button castUpgrade = new Button(new Rectangle(0, 200, 300, 50), "Upgrade Cast", 35);
+        Button healthUpgrade = new Button(new Rectangle(0, 300, 300, 50), "Upgrade Health", 35);
+        Button staminaUpgrade = new Button(new Rectangle(0, 400, 300, 50), "Upgrade Stamina", 35);
         // Right Side Buttons
-        Button enableScope = new Button(new Rectangle(getWidth() - 300,400, 300, 50), "Cast Scope", 35);
-        Button enableInstantCast = new Button(new Rectangle(getWidth() - 300,300, 300, 50), "Instant Cast", 35);
-        Button enableDoubleJump = new Button(new Rectangle(getWidth() - 300,100, 300, 50), "Double Jump", 35);
-        Button enableHyperSpeed = new Button(new Rectangle(getWidth() - 300,200, 300, 50), "Hyperspeed", 35);
+        Button enableScope = new Button(new Rectangle(getWidth() - 300, 400, 300, 50), "Cast Scope", 35);
+        Button enableInstantCast = new Button(new Rectangle(getWidth() - 300, 300, 300, 50), "Instant Cast", 35);
+        Button enableDoubleJump = new Button(new Rectangle(getWidth() - 300, 100, 300, 50), "Double Jump", 35);
+        Button enableHyperSpeed = new Button(new Rectangle(getWidth() - 300, 200, 300, 50), "Hyperspeed", 35);
         // REMOVE LATER
-        Button freePoints = new Button(new Rectangle(0,0,200,100),"Give 100", 35);
+        Button freePoints = new Button(new Rectangle(0, 0, 200, 100), "Give 100", 35);
         buttons.add(freePoints);
         // Setting up Button Array
         buttons.add(continueButton);
@@ -78,13 +79,14 @@ public class ShopPanel extends JPanel implements MouseListener {
         for (Button button : buttons) {
             button.addActionListener(new ButtonListener());
             add(button);
-            if(button != continueButton){
+            if (button != continueButton) {
                 button.addTooltip(inFile.nextLine());
             }
         }
     }
+
     // Window related methods
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g) {
         // Drawing the Background
         g.setColor(Color.DARK_GRAY);
         g.fillRect(0, 0, 960, 590);
@@ -92,53 +94,56 @@ public class ShopPanel extends JPanel implements MouseListener {
         g.setColor(Color.BLACK);
         g.setFont(gameFont);
         int xOffset = 0, yOffset = 0;
-        if(lowPointFrames > 0){
-            lowPointFrames--; xOffset = Utilities.randint(-4,4); yOffset = Utilities.randint(-4,4);
+        if (lowPointFrames > 0) { // Drawing the low-points shake
+            lowPointFrames--;
+            xOffset = Utilities.randint(-4, 4);
+            yOffset = Utilities.randint(-4, 4);
             g.setColor(Color.RED);
         }
         String drawnString = "Player points: " + player.getPoints();
         int textWidth = g.getFontMetrics().stringWidth(drawnString);
-        g.drawString(drawnString, getWidth()/2 - textWidth/2 - xOffset, getHeight() - 30 - yOffset);
+        g.drawString(drawnString, getWidth() / 2 - textWidth / 2 - xOffset, getHeight() - 30 - yOffset);
         // Drawing Titles
         g.setColor(Color.GREEN);
         g.setFont(gameFontBig);
-        g.drawString("SHOP", getWidth()/2 - 58, 590 - getHeight());
+        g.drawString("SHOP", getWidth() / 2 - 58, 590 - getHeight());
         g.setColor(new Color(8, 89, 255));
-        g.drawString("Abilities",getWidth() - 260,75);
+        g.drawString("Abilities", getWidth() - 260, 75);
         g.setColor(new Color(222, 255, 10));
-        g.drawString("Upgrades",30,75);
+        g.drawString("Upgrades", 30, 75);
         // Drawing Dummy Player
-        g.drawImage(Utilities.scaleSprite(dummy.getSprite(),2), getWidth()/2 - 150,150, this);
+        g.drawImage(Utilities.scaleSprite(dummy.getSprite(), 2), getWidth() / 2 - 150, 150, this);
         // Drawing upgrade boxes
-        for(int x = 0; x < 8; x++){
-            for(int y = 0; y < 4; y++){
-                if(upgradeAmount[y] > x){
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 4; y++) {
+                if (upgradeAmount[y] > x) {
                     g.setColor(Color.RED);
-                    g.fillRect(70 + x*20, 150 + y*100, 10, 10);
+                    g.fillRect(70 + x * 20, 150 + y * 100, 10, 10);
                 }
                 g.setColor(Color.BLACK);
-                g.drawRect(70 + x*20, 150 + y*100, 10, 10);
+                g.drawRect(70 + x * 20, 150 + y * 100, 10, 10);
             }
         }
         // Drawing Checkboxes
-        for(int i = 0; i< checks.length; i++){
-            g.drawImage(checkbox,getWidth() - 300,100*(i+1),this);
-            if(checks[i]){
-                g.drawImage(checkmark,getWidth() - 300,100*(i+1),this);
+        for (int i = 0; i < checks.length; i++) {
+            g.drawImage(checkbox, getWidth() - 300, 100 * (i + 1), this);
+            if (checks[i]) {
+                g.drawImage(checkmark, getWidth() - 300, 100 * (i + 1), this);
             }
         }
         // Drawing buttons
-        for(Button button: buttons){
-           // button.drawRect(g);
+        for (Button button : buttons) {
             button.draw(g);
         }
-        // Drawing tooltips
-        if(hoveredButton != null && hoveredButton.hasTooltip()){
-            int xPos = mousePoint.x; int yPos = mousePoint.y;
-            if(xPos + 300 > getWidth()){
+        // Drawing tooltip for currently hovered button
+        if (hoveredButton != null && hoveredButton.hasTooltip()) {
+            // Making sure that the tooltip stays visible and not offscreen
+            int xPos = mousePoint.x;
+            int yPos = mousePoint.y;
+            if (xPos + 300 > getWidth()) {
                 xPos -= 300;
             }
-            if(yPos + 150 > getHeight()){
+            if (yPos + 150 > getHeight()) {
                 yPos -= 150;
             }
             g.setColor(Color.RED);
@@ -148,11 +153,14 @@ public class ShopPanel extends JPanel implements MouseListener {
             hoveredButton.drawTooltip(g, xPos, yPos);
         }
     }
-    public void update(){
+
+    // Method to update shop elements
+    public void update() {
         // Updating the dummy player
-        dummy.updateSprite(); dummy.restoreHealth();
+        dummy.updateSprite();
+        dummy.restoreHealth();
         // Checking that music is playing
-        if(!shopMusic.isPlaying()){
+        if (!shopMusic.isPlaying()) {
             shopMusic.play();
         }
         // Updating the upgrade boxes
@@ -161,82 +169,90 @@ public class ShopPanel extends JPanel implements MouseListener {
         upgradeAmount[2] = player.getHealthUpgradeNum();
         upgradeAmount[3] = player.getStaminaUpgradeNum();
     }
-    public void checkButtons(){
+
+    // Method to update button statuses
+    public void checkButtons() {
         mousePoint = getMousePosition();
         hoveredButton = null;
-        if(mousePoint != null){
-            for(Button button: buttons){
+        if (mousePoint != null) {
+            // Updating the color of all buttons
+            for (Button button : buttons) {
                 button.updateHover(mousePoint);
-                if(button.isHovered()){
-                    hoveredButton = button;
+                if (button.isHovered()) {
+                    hoveredButton = button; // Keeping track of the current hovered button for tooltip showing
                 }
             }
         }
     }
-    public boolean canBuy(int points){
-        if(player.getPoints() < 100){
+
+    // Method to check if the player can spend a certain amount of points
+    public boolean canBuy(int points) {
+        // Shaking the points display if they dont have enough
+        if (player.getPoints() < points) {
             lowPointFrames = 50;
             return false;
         }
         return true;
     }
+
     // Button Listener
     public class ButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String buttonString = e.getActionCommand();
-            switch (buttonString){
+            switch (buttonString) {
                 //Switch cases for the different upgrade buttons that the player has
                 case "Give 100":
                     player.addPoints(100);
                     break;
                 case "Continue":
+                    // Starting the fade-out
                     String input = JOptionPane.showInputDialog("Enter level number");
                     game.setLevelNum(Integer.parseInt(input));
                     gameFrame.switchPanel(MainGame.TRANSITIONPANEL);
                     shopMusic.stop();
                     break;
                 case "Upgrade Sword":
-                    if(player.getSwordUpgradeNum() < 8 && canBuy(100)){
+                    if (player.getSwordUpgradeNum() < 8 && canBuy(100)) {
                         dummy.attack();
                         player.upgradeSword();
                     }
                     break;
                 case "Upgrade Cast":
-                    if(player.getCastUpgradeNum() < 8 && canBuy(100)){
+                    if (player.getCastUpgradeNum() < 8 && canBuy(100)) {
                         dummy.castMagic();
                         player.upgradeCast();
                     }
                     break;
                 case "Upgrade Health":
-                    if(player.getHealthUpgradeNum() < 8 && canBuy(100)){
+                    if (player.getHealthUpgradeNum() < 8 && canBuy(100)) {
                         player.upgradeHealth();
                     }
                     break;
                 case "Upgrade Stamina":
-                    if(player.getStaminaUpgradeNum() < 8 && canBuy(100)){
+                    if (player.getStaminaUpgradeNum() < 8 && canBuy(100)) {
                         player.upgradeStamina();
                     }
                     break;
                 case "Double Jump":
-                    if(!player.hasDoubleJump() && canBuy(100)){
+                    if (!player.hasDoubleJump() && canBuy(100)) {
                         player.enableDoubleJump();
                         checks[0] = true;
                     }
                     break;
                 case "Hyperspeed":
-                    if(!player.hasHyperspeed() && canBuy(100)){
+                    if (!player.hasHyperspeed() && canBuy(100)) {
                         player.enableHyperspeed();
                         checks[1] = true;
                     }
                     break;
                 case "Instant Cast":
-                    if(!player.hasInstantCast() && canBuy(100)){
+                    if (!player.hasInstantCast() && canBuy(100)) {
                         player.enableInstantCast();
                         checks[2] = true;
                     }
                     break;
                 case "Cast Scope":
-                    if(!player.hasCastScope() && canBuy(100)){
+                    if (!player.hasCastScope() && canBuy(100)) {
                         player.enableCastScope();
                         checks[3] = true;
                     }
@@ -244,19 +260,4 @@ public class ShopPanel extends JPanel implements MouseListener {
             }
         }
     }
-    //Mouse methods
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if(!Sound.isMuted()){
-            Sound.toggleVolume();
-        }
-    }
-    @Override
-    public void mousePressed(MouseEvent e) {}
-    @Override
-    public void mouseReleased(MouseEvent e) {}
-    @Override
-    public void mouseEntered(MouseEvent e) {}
-    @Override
-    public void mouseExited(MouseEvent e) { }
 }

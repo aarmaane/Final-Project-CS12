@@ -1,6 +1,6 @@
-//TransitionPanel.java
-//Armaan Randhawa and Shivan Gaur
-//This class makes a transition panel that is used in-between levels
+// TransitionPanel.java
+// Armaan Randhawa and Shivan Gaur
+// Class makes a transition panel that is used in-between levels
 import javax.swing.*;
 import java.awt.*;
 
@@ -17,8 +17,9 @@ public class TransitionPanel extends JPanel {
         fade.start(FadeEffect.FADEIN, 5);
     }
     // Main methods
+    // Method that draws the panel
     public void paintComponent(Graphics g){
-        //Draws everything
+        // Drawing the text
         g.setColor(Color.BLACK);
         g.fillRect(0,0, 960, 590);
         g.setFont(game.getGameFont());
@@ -28,8 +29,8 @@ public class TransitionPanel extends JPanel {
         fade.draw(g);
     }
 
+    // Method that updates the fade on the panel
     public void update(){
-        //Updates the fading object
         fade.update();
         if(fade.isDoneFadeIn()){
             fade.start(FadeEffect.FADEOUT, 5);

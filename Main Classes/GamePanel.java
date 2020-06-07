@@ -1,3 +1,7 @@
+// GamePanel.java
+// Armaan Randhawa and Shivan Gaur
+// Class that runs all of logic for the game and paints it on screen
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -69,7 +73,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
-        // Initalizing the game Classes
+        // Initializing the game Classes
         Enemy.init();
         Slime.init();
         Skeleton.init();
@@ -77,7 +81,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         Wizard.init();
         Fire.init();
         Crystal.init();
-        //Blob.init();
         Boss.init();
         Projectile.init();
         Chest.init();
@@ -169,7 +172,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
        // player.resetPos(0 ,366);
         // Resetting music
         levelMusic.play();
-        if(Sound.isMuted()){
+        if(Sound.isMuted()){ // Forcing mute if the game is already muted
             levelMusic.forceMute();
         }
         fade.start(FadeEffect.FADEIN, 3);
@@ -562,7 +565,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         items.removeIf(item -> (item.isUsed() || item.getHitbox().y > this.getHeight()));
         platforms.removeIf(LevelProp::isDoneDisappearing);
         indicatorText.removeIf(IndicatorText::isDone);
-        System.out.println(player.getX());
         // Using for loops for Arrays that need to keep track of removals
         for(int i = enemies.size() - 1; i >= 0; i--){
             Enemy enemy = enemies.get(i);

@@ -1,6 +1,6 @@
-//Skeleton.java
-//Armaan Randhawa and Shivan Gaur
-//This program is a subclass of the Enemy class and it creates skeleton enemies that walk back and forth on a platform
+// Skeleton.java
+// Armaan Randhawa and Shivan Gaur
+// Subclass of the Enemy class and it creates skeleton enemies that walk back and forth on a platform
 import java.awt.*;
 
 public class Skeleton extends Enemy {
@@ -10,6 +10,7 @@ public class Skeleton extends Enemy {
     private static Image[] hurtSprites = new Image[3];
     private static Image[] idleSprites = new Image[11];
     private static Image[] deathSprites = new Image[14];
+
     // Class initialization
     public static void init(){
         idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Skeleton/idle");
@@ -18,6 +19,7 @@ public class Skeleton extends Enemy {
         deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Skeleton/death");
         attackSprites = Utilities.spriteArrayLoad(attackSprites, "Enemies/Skeleton/attack");
     }
+
     // Constructor
     public Skeleton(String data){
         super(data);
@@ -25,10 +27,10 @@ public class Skeleton extends Enemy {
         maxHealth = health;
         damage = 20*difficulty;
     }
+
     // General methods
     @Override
     public void updateMotion(Player player){
-        //Method that updates motion of the skeleton
         // Skeleton custom movement
         int playerX = player.getHitbox().x;
         int skeletonX = getHitbox().x;
@@ -46,11 +48,13 @@ public class Skeleton extends Enemy {
             }
             else if(direction==RIGHT){
                 if(platformAhead){
+                    // Keeping the skeleton moving forward
                     velocityX = 0.75;
                 }
                 else{
+                    // Changing the direction of the skeleton
                     direction=LEFT;
-                    velocityX = -0.75; // Making the skeleton stay in place
+                    velocityX = -0.75;
                 }
             }
             else if(direction==LEFT){ // Same as above but for left facing
@@ -63,29 +67,30 @@ public class Skeleton extends Enemy {
                 }
             }
         }
-        super.updateMotion(player);
+        super.updateMotion(player); // Using the updateMotion from enemy class
     }
 
     @Override
     public void updateAttack(Player player) {
-        //Method that determines when to inflict damage on the player
+        // Method that determines when to inflict damage on the player
         super.updateAttack(player);
-        // Checking if the player should be dealt damage
+        // Checking if the player should be dealt damage (rounding off spriteCount due to double inaccuracy)
         if(isAttacking && Utilities.roundOff(spriteCount,2) == attackSprites.length/2.5){
-            player.enemyHit(this);
+            player.enemyHit(this); // Inflicting damage on player
         }
     }
+
     @Override
     public void updateSprite() {
         //Method restarting sprite cycles
         if(isHurt){
-            if(health <= 0){
+            if(health <= 0){ // Dying sprites
                 spriteCount += 0.1;
                 if(spriteCount > deathSprites.length){
                     isActive = false;
                 }
             }
-            else{
+            else{ // Hurt sprites
                 spriteCount += 0.08;
                 if(spriteCount > hurtSprites.length){
                     spriteCount = 0;
@@ -93,13 +98,13 @@ public class Skeleton extends Enemy {
                 }
             }
         }
-        else if(isAttacking){
+        else if(isAttacking){ // Attacking sprites
             spriteCount += 0.1;
             if(spriteCount > attackSprites.length){
                 spriteCount = 0;
             }
         }
-        else{
+        else{ // Normal walking sprites
             spriteCount += 0.1;
             if(spriteCount > movingSprites.length){
                 spriteCount = 0;
@@ -155,6 +160,7 @@ public class Skeleton extends Enemy {
         }
         return x;
     }
+
     @Override
     public double getY(){
         // The attacking sprite is different from the rest, so an offset is applied

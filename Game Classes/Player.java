@@ -1,13 +1,13 @@
-//Player.java
-//Armaan Randhawa and Shivan Gaur
-//This class creates the player object of the game
+// Player.java
+// Armaan Randhawa and Shivan Gaur
+// Class creates the player object of the game with physics, attacks, and abilities
 import java.awt.*;
 import java.util.ArrayList;
 
 public class Player {
     // Constants
     public static final int RIGHT = 0, LEFT = 1;
-    public static final int INITIAL = 0, NORMAL = 1, DEMO = 2;
+    public static final int INITIAL = 0, NORMAL = 1;
     private static final double GRAVITY = 0.25;
     ////Fields
     // Player's movement-related fields
@@ -15,15 +15,15 @@ public class Player {
     private double velocityX, velocityY;
     private double acceleration, maxSpeed;
     private int direction;
-    private boolean onGround, onMovingPlat, holdingJump, sprinting, isCrouching;
+    private boolean onGround, onMovingPlat, holdingJump, sprinting, isCrouching; // Physics flags
     private double spriteCount = 0;
     private int jumpCount = 1;
     // Players' gameplay-related fields
     private int health, maxHealth, points;
     private double stamina, maxStamina;
     private int swordDamage, castDamage;
-    private boolean isAttacking, isCasting, isHurt, isDying;
-    private int healthTimer, energyTimer;
+    private boolean isAttacking, isCasting, isHurt, isDying; // Action flags
+    private int healthTimer, energyTimer; // Timers for power ups
     private int groundAttackNum, airAttackNum;
     // Player's Upgrade-Related Fields
     private boolean hasCastScope, hasInstantCast, hasDoubleJump, hasHyperspeed;
@@ -43,9 +43,9 @@ public class Player {
     private Image[] castSprites = new Image[4];
     // Sound effects for the player
     private Sound jumpSound = new Sound("Assets/Sounds/Effects/jump.wav", 80);
-
     // Other fields
     private ArrayList<IndicatorText> textQueue = new ArrayList<>();
+
     // Constructor methods
     public Player(){
         // Setting up movement fields
@@ -86,7 +86,9 @@ public class Player {
         airAttackSprites = new Image[][]{airAttack1, airAttack2};
 
     }
+
     // General methods
+    // Method to move the player left and right (using the constants as the inputs)
     public void move(int type){
         // If the player is doing an action, don't let them move (ignore this call for move())
         if(isCasting || isAttacking || isDying || isCrouching){
@@ -126,58 +128,75 @@ public class Player {
             }
         }
     }
+
+    // Method to the player allow the player to move faster if they have enabled hyperspeed
     public void sprint(){
-        //Allows player to move faster if they have enabled hyperspeed
         if(hasHyperspeed && velocityX != 0){
+            // Making sure that the player has enough stamina for hyperSpeed
             if(stamina - 1 > 0){
                 sprinting = true;
                 stamina -= 0.1;
             }
         }
     }
+
+    // Method allows the player to crouch
     public void crouch(){
-        //Allows the player to crouch
+        // If the player is doing an action, don't let them crouch
         if(isCasting || isAttacking || !onGround || isDying){
             return;
         }
         isCrouching = true;
     }
+
+    // Method that resets the crouch flag
     public void unCrouch(){
         isCrouching = false;
     }
+
+    // Method to allow the player to jump with input type specifiec
     public void jump(int type){
         // If the player is doing an action, don't let them jump
         if(isCasting || isAttacking || isCrouching || isDying){
             return;
         }
+        // Checking if the player can do a jump
         if(type == INITIAL && (onGround || ( hasDoubleJump && jumpCount < 2))){
+            // Preparing all of the fields and flags for jumping
             spriteCount = 0;
             onGround = false;
             isHurt = false;
             velocityY = -6;
             airAttackNum = 1;
+            // Play jumping sounds
             jumpSound.play();
             jumpCount++;
         }
+        // If the type of input was NORMAL, set the holdingDown flag to true
         else if(type == NORMAL){
             holdingJump = true;
 
         }
     }
+
+    //Method that allows the player to perform a sword attack
     public void attack(){
-        //Method that allows the player to attack
+        // If the player is performing some other action, don't let them attack
         if(isAttacking || isCasting || isDying) {
             return;
         }
-        if((stamina - 5) > 0){
+        if((stamina - 5) > 0){ // Checking if they have enough stamina
             if(onGround){
+                // Ground attack
                 isAttacking = true;
                 groundAttackNum++;
+                // Looping through attacks
                 if(groundAttackNum >= groundAttackSprites.length){
                     groundAttackNum = 0;
                 }
             }
             else{
+                // Air attack
                 isAttacking = true;
                 airAttackNum++;
                 if(airAttackNum >= airAttackSprites.length){
@@ -192,9 +211,12 @@ public class Player {
             spriteCount = 0;
         }
         else{
+            // Displaying an indicator text showing the rejection
             textQueue.add(new IndicatorText(getHitbox().x, getHitbox().y, "Stamina Low!", Color.RED));
         }
     }
+
+    // Overloaded that allows the player to cast magic towards a target
     public void castMagic(int targetX, int targetY){
         Rectangle hitbox = getHitbox();
         // Getting the correct attackBox
@@ -222,14 +244,20 @@ public class Player {
                 return;
             }
         }
+        // Loading the target into memory
         castTargetX = targetX; castTargetY = targetY;
-        castMagic();
+        castMagic(); // Calling the actual castMagic()
     }
+
+    // Method to allow player to cast magic
     public void castMagic(){
+        // If the player is performing an action, don't let them cast magic
         if(isAttacking || isCasting || !onGround){
             return;
         }
+        // Making sure that the player has enough stamina
         if((stamina - 10) > 0){
+            // Setting flags and fields for casting
             if(!hasEnergyPower()){
                 stamina -= 10;
             }
@@ -238,9 +266,11 @@ public class Player {
             spriteCount = 0;
         }
         else{
+            // Notifying of rejected input
             textQueue.add(new IndicatorText(getHitbox().x, getHitbox().y, "Stamina Low!", Color.RED));
         }
     }
+
     // Method to update the Player Object each frame
     public void update(boolean isSpecialLevel){
         updateMotion();
@@ -249,6 +279,7 @@ public class Player {
         updateSprite();
         //checkHealth();
     }
+
     // Method to calculate and apply the physics of the Player
     public void updateMotion(){
         // Updating position from velocities
@@ -294,6 +325,7 @@ public class Player {
         // Resetting movement booleans so they can be set next frame
         onMovingPlat = false; sprinting = false;
     }
+
     public void updateStamina(){
         if(isCasting || isAttacking || hasEnergyPower()){
             return; // No regeneration during casting/attacks
@@ -309,6 +341,7 @@ public class Player {
             stamina = maxStamina;
         }
     }
+
     // Method to keep the Player within the confines of the game
     public void checkOutOfBounds(boolean isSpecialLevel){
         // Using the hitbox for true X coordinate values since the sprite pictures are larger than the actual player
@@ -325,16 +358,18 @@ public class Player {
             }
         }
     }
+
     // Method to smoothly update the sprite counter and produce realistic animation of the Player
     public void updateSprite(){
-        if(isDying){
+        // Adding to counter and checking limits depending on current action
+        if(isDying){ // Dying sprites
             if(spriteCount < dyingSprites.length - 0.05){
                 spriteCount += 0.05;
             }
         }
-        else if(isCasting){
-            if(hasInstantCast){
-                spriteCount+=0.30;
+        else if(isCasting){ // Casting sprites
+            if(hasInstantCast){ // Speedy animation for instant cast
+                spriteCount += 0.30;
             }
             else{
                 spriteCount += 0.06;
@@ -344,14 +379,15 @@ public class Player {
                 spriteCount = 0;
             }
         }
-        else if(isAttacking){
+        else if(isAttacking){ // Sword attack sprites
             spriteCount += 0.1;
+            // Checking limits based on current attack type (Ground/Air)
             if((onGround && spriteCount > groundAttackSprites[groundAttackNum].length) || (!onGround && spriteCount > airAttackSprites[airAttackNum].length) ){
                 isAttacking = false;
                 spriteCount = 0;
             }
         }
-        else if(isHurt){
+        else if(isHurt){ // Hurt sprites
             spriteCount += 0.07;
             if(spriteCount > hurtSprites.length){
                 spriteCount = 0;
@@ -364,14 +400,14 @@ public class Player {
             }
         }
         else if(velocityY > 0 && !onGround){ // Falling sprites
-            spriteCount += 0.05 + (Math.pow(velocityY,1.5)/100);
+            spriteCount += 0.05 + (Math.pow(velocityY,1.5)/100); // Scaling sprite speed with player velocity
             if(spriteCount > fallingSprites.length){
                 spriteCount = 0;
             }
         }
         else if(velocityX != 0){ // Running sprites
             spriteCount += 0.05 + (Math.abs(velocityX)/90); // Scaling sprite speed with player velocity
-            if(isCrouching){
+            if(isCrouching){ // Special sliding sprites
                 if(spriteCount > slidingSprites.length){
                     spriteCount = 0;
                 }
@@ -385,7 +421,7 @@ public class Player {
         }
         else{ // Idling sprites
             spriteCount += 0.05;
-            if(isCrouching){
+            if(isCrouching){ // Special crouch idle sprites
                 if(spriteCount > crouchSprites.length){
                     spriteCount = 0;
                 }
@@ -398,13 +434,16 @@ public class Player {
 
         }
     }
+
     public void checkCollision(LevelProp prop){
-        //This method checks the collision between the platforms and the player
+        // This method checks the collision between the platforms and the player
         Rectangle rect = prop.getRect();
         Rectangle hitbox = getHitbox();
+        // Checking if the player should be on top of the prop
         if(hitbox.intersects(rect)){
             if((int)((hitbox.y + hitbox.height) - velocityY) <= rect.y){
-                y = (rect.y - hitbox.height) - (hitbox.y - y); //
+                y = (rect.y - hitbox.height) - (hitbox.y - y); // Placing player on top of prop
+                // Setting flags and fields
                 velocityY = 0;
                 onGround = true;
                 jumpCount = 0;
@@ -412,15 +451,18 @@ public class Player {
         }
         if(prop.isMoving() && !onMovingPlat && onGround){ // Moving player position for moving platforms
             if(rect.contains(hitbox.x+hitbox.width, hitbox.y+hitbox.height + 1) || rect.contains(hitbox.x, hitbox.y+hitbox.height + 1)){
+                // Moving player position at the same speed as the platform
                 x += prop.getXSpeed();
                 y += prop.getYSpeed();
                 onMovingPlat = true;
             }
         }
     }
+
+    // Method adds the benefits from an item that the player obtained
     public void gainItem(Item item){
-        //This method adds the benefits from an item that the player obtained
         int type = item.getType();
+        // Consumables (Adding to the health and points fields)
         if(type == Item.COIN){
             points += 100;
         }
@@ -435,6 +477,7 @@ public class Player {
                 health = 100;
             }
         }
+        // Powerups (Setting the powerup timers)
         else if(type == Item.HEALTHPWR){
             healthTimer=30;
         }
@@ -445,8 +488,9 @@ public class Player {
             }
         }
     }
+
+    // Method controls the timers for the energy and health power-ups
     public void iterateTime(){
-        //This method controls the timers for the energy and health power-ups
         if(energyTimer>0){
             energyTimer-=1;
         }
@@ -454,66 +498,77 @@ public class Player {
             healthTimer-=1;
         }
     }
+
+    // Method sets the position of the player with motion reset as well
     public void resetPos(int x, int y){
-        //This method resets the position of the player
         this.x = x;
         this.y = y;
         velocityX = 0;
         velocityY = 0;
         spriteCount = 0;
     }
+
+    // Method that sets the (X,Y) of the player to the given parameters
     public void setPos(int x, int y){
-        //Method that sets the (X,Y) of the player to the given parameters
         this.x = x;
         this.y = y;
     }
+
+    // Method that restores the health and stamina of the player to 100%
     public void restoreHealth(){
-        //Method that restores the health and stamina of the player to 100%
         health = maxHealth;
         stamina = maxStamina;
         isDying = false;
     }
+
+    // Method that calculates and applies the physical attacks inflicted by an enemy
     public void enemyHit(Enemy enemy){
-        //Method that calculates the physical attacks inflicted by an enemy
         if(isDying){
             return; // Don't register hits while the player is dying
         }
-        if(!hasHealthPower()){//damage is neglected if the player has the health power-up
+        if(!hasHealthPower()){ // Damage is neglected if the player has the health power-up
             health -= enemy.getDamage();
-            if(velocityX == 0 && !isAttacking && !isCasting){
+            if(velocityX == 0 && !isAttacking && !isCasting){ // If the player is stationary, play the hurt sprites
                 isHurt = true;
                 spriteCount = 0;
             }
+            // Show the damage through indicator texts
             textQueue.add(new IndicatorText(getHitbox().x, getHitbox().y, "-" + enemy.getDamage(), Color.RED));
         }
-        if(health <= 0){//Player death
+        if(health <= 0){ // Player death
             isDying = true;
             spriteCount = 0;
         }
     }
+
+    // Method that calculates and applies the damage done by the projectiles
     public void castHit(Projectile cast){
-        //Method that calculates the damage done by the projectiles
         if(isDying){
             return; // Don't register hits while the player is dying
         }
         if(!hasHealthPower()) {//Damage is neglected if health power-up is activated
-            health -= cast.getDamage();
+            health -= cast.getDamage(); // Taking off health
+            // Giving the player knockback
             velocityY = -3;
             if (cast.getSpeed() > 0) {
                 velocityX = 3;
             } else {
                 velocityX = -3;
             }
+            // Setting the fields and flags
             isHurt = true;
             isAttacking = false;
             spriteCount = 0;
-            jumpCount = 2;
-            if(health <= 0){
+            jumpCount = 2; // Not allowing the player to jump
+            if(health <= 0){ // Killing the player if health drops to zero
                 isDying = true;
             }
+            // Show damage through indicator texts
             textQueue.add(new IndicatorText(getHitbox().x, getHitbox().y, "-" + cast.getDamage(), Color.RED));
         }
     }
+
+    // Method to force the player to die
     public void kill(){
         /*
         health = 0;
@@ -522,11 +577,13 @@ public class Player {
          */
     }
 
+    // Returns and clears all of the indicator texts held by the player
     public ArrayList<IndicatorText> flushTextQueue(){
         ArrayList<IndicatorText> temp = textQueue;
         textQueue = new ArrayList<>();
         return temp;
     }
+
     // Getter methods
     // Method that returns the player's current sprite by looking at various fields
     public Image getSprite(){
@@ -578,6 +635,8 @@ public class Player {
         }
         return sprite;
     }
+
+    // Returns the player's hitbox as a Rectangle
     public Rectangle getHitbox(){
         // Since the sprite images are much larger than the actual Player, offsets must be applied
         if(isCrouching){
@@ -585,15 +644,19 @@ public class Player {
         }
         return new Rectangle((int)x + 58, (int)y + 15, 36, 93);
     }
+
+    // Returns the hitbox where sword attacks land
     public Rectangle getAttackBox(){
-        //Returns rectangle object for the attackbox of the player
         int xPos = (int)x + 100;
-        if(direction == LEFT){
+        if(direction == LEFT){ // Offset for left facing
             xPos = (int)x;
         }
         return new Rectangle(xPos, (int)y + 40, 50, 50);
     }
+
+    // Returns if the attack will deal damage this frame
     public boolean isAttackFrame(){
+        // Calculating the frame where attacks land
         double middleFrame;
         if(onGround){
             middleFrame = (double)groundAttackSprites[groundAttackNum].length/2;
@@ -601,12 +664,16 @@ public class Player {
         else{
             middleFrame = 1; // Air attacks are more responsive
         }
+        // Checking if the current frame is equal to the calculated one (Rounded off due to double inaccuracys)
         if(isAttacking && Utilities.roundOff(spriteCount,1) == middleFrame){
             return true;
         }
         return false;
     }
+
+    // Returns if a projectile is generated this frame
     public boolean isCastFrame(){
+        // Checking if the current frame is equal to the castFrame (Rounded off due to double inaccuracys)
         if(isCasting && Utilities.roundOff(spriteCount,2) == castSprites.length-1){
             return true;
         }
@@ -615,6 +682,8 @@ public class Player {
     public boolean hasAngledCast(){
         return hasCastScope && castTargetX != null && castTargetY != null;
     }
+
+    // Returns the cast target coordinates while resetting them
     public Integer getCastTargetX() {
         Integer temp = castTargetX;
         castTargetX = null;
@@ -669,7 +738,8 @@ public class Player {
         points += addition;
     }
 
-    //Upgrade Methods
+    // Upgrade Methods
+    // Upgrading abilities while taking away points
     public void upgradeSword(){
         swordUpgradeNum++;
         swordDamage *= 1.5;
