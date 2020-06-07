@@ -1,22 +1,24 @@
-//Ghost.java
-//Armaan Randhawa and Shivan Gaur
-//This program is a subclass of the enemy class that creates ghost enemies which fluctuate in transparency and fly towards the player
+// Ghost.java
+// Armaan Randhawa and Shivan Gaur
+// Subclass of the enemy class that creates ghost enemies which fluctuate in transparency and fly towards the player
 import java.awt.*;
 
 public class Ghost extends Enemy {
-    //Arrays
+    // Arrays
     private static Image[] movingSprites = new Image[5];
     private static Image[] idleSprites= new Image[10];
     private static Image[] attackSprites= new Image[8];
     private static Image[] deathSprites= new Image[7];
     private static Image[] hurtSprites= new Image[1];
     // Fields
-    private float alpha;//draw transparent
-    private float ghostAlpha = (float)0.005;//Value that the alpha will change by
+    private float alpha; // Ghost alpha value
+    private float ghostAlpha = (float)0.005; // Value that the alpha will change by
     private int speed;
+
     //Constructor
     public Ghost(String data){
         super(data);
+        // Setting up fields and flags
         health = 100 * difficulty;
         maxHealth = health;
         damage = 15*difficulty;
@@ -25,8 +27,10 @@ public class Ghost extends Enemy {
         alpha = (float) 0.1;
         outOfBoundsPoints = false;
     }
+
+    // Class initialization
     public static void init(){
-        //Class initialization
+        // Loading sprites
         movingSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Ghost/move");
         deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Ghost/death");
         idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Ghost/idle");
@@ -39,11 +43,11 @@ public class Ghost extends Enemy {
         // Checking the position of the Player and setting velocity towards them
         Rectangle playerHitbox = player.getHitbox();
         double angle = Math.atan(((playerHitbox.y - 10.0) - getHitbox().y)/((playerHitbox.x - 40.0)- getHitbox().x));
-        if(Double.isNaN(angle)){
+        if(Double.isNaN(angle)){ // Not moving if the angle is undefined
             return;
         }
         if(!isDying()){ // Only move the ghost while it's not dying
-            //Using trigonometry to change the position of the ghost
+            //Using trigonometry to change the position of the ghost towards the player
             if(playerHitbox.x - 40 >= getHitbox().x){
                 x += Math.cos(angle) * speed;
                 y += Math.sin(angle) * speed;
@@ -58,17 +62,16 @@ public class Ghost extends Enemy {
     }
     @Override
     public void updateAttack(Player player) {
-        //Updating attack of the ghost
-        super.updateAttack(player);
-        // Checking if the player should be dealt damage
-        if(isAttacking && Utilities.roundOff(spriteCount,2) == attackSprites.length/2.0){
-            player.enemyHit(this);
+        super.updateAttack(player); // Using the Enemy classes updateAttack method
+        // Checking if the player should be dealt damage based on the sprite count
+        if(isAttacking && Utilities.roundOff(spriteCount,2) == attackSprites.length/2.0){ // Rounding off spriteCount due to double inaccuracy
+            player.enemyHit(this); // Attacking the player
         }
     }
 
     @Override
     public void updateSprite() {
-        //Resetting the sprite cycles of the ghost
+        // Resetting the sprite cycles of the ghost
         if(isHurt){
             if(health <= 0){
                 spriteCount += 0.08;
@@ -97,15 +100,18 @@ public class Ghost extends Enemy {
             }
         }
         // Updating sprite transparency
-        alpha+=ghostAlpha;
+        alpha += ghostAlpha;
         if(Utilities.roundOff(alpha,2)==1.0 || Utilities.roundOff(alpha,2) == 0.05){
+            // Reversing direction of alpha
             ghostAlpha=-ghostAlpha;
         }
     }
+
     @Override
     public void checkCollision(LevelProp prop){
         // Doing nothing since Ghosts ignore platforms
     }
+
     // Getter methods
     @Override
     public Image getSprite() {
@@ -131,17 +137,17 @@ public class Ghost extends Enemy {
         }
         return sprite;
     }
+
     @Override
     public float getSpriteAlpha(){
         //This method returns the current alpha value of the ghost (0 to 1)
         if(isHurt){
-            return 1;
+            return 1; // The transparency goes away during hurt sprites
         }
-        return alpha ;
+        return alpha;
     }
 
     @Override
-    //Returns rectangle object with the hitbox of the ghost
     public Rectangle getHitbox() {
         return new Rectangle((int)x + 50, (int)y + 25, 75, 105);
     }

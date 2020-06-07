@@ -147,7 +147,7 @@ public class Player {
     }
     public void jump(int type){
         // If the player is doing an action, don't let them jump
-        if(isCasting || isAttacking || isDying){
+        if(isCasting || isAttacking || isCrouching || isDying){
             return;
         }
         if(type == INITIAL && (onGround || ( hasDoubleJump && jumpCount < 2))){
@@ -242,10 +242,10 @@ public class Player {
         }
     }
     // Method to update the Player Object each frame
-    public void update(){
+    public void update(boolean isSpecialLevel){
         updateMotion();
         updateStamina();
-        checkOutOfBounds();
+        checkOutOfBounds(isSpecialLevel);
         updateSprite();
         //checkHealth();
     }
@@ -310,12 +310,19 @@ public class Player {
         }
     }
     // Method to keep the Player within the confines of the game
-    public void checkOutOfBounds(){
+    public void checkOutOfBounds(boolean isSpecialLevel){
         // Using the hitbox for true X coordinate values since the sprite pictures are larger than the actual player
         Rectangle hitbox = getHitbox();
         if(hitbox.x < 0){ // Player moves offscreen (from the left side)
             int extraMovement = hitbox.x;
             x -= extraMovement; // Shifting the player back into the correct position
+        }
+        if(isSpecialLevel){
+            // Not allowing the player to move offscreen from the right side
+            if(hitbox.getMaxX() > 960){
+                int extraMovement = (int)hitbox.getMaxX() - 960;
+                x -= extraMovement;
+            }
         }
     }
     // Method to smoothly update the sprite counter and produce realistic animation of the Player
@@ -403,7 +410,7 @@ public class Player {
                 jumpCount = 0;
             }
         }
-        if(prop.isMoving() && !onMovingPlat && onGround){//Moving player position for moving platforms
+        if(prop.isMoving() && !onMovingPlat && onGround){ // Moving player position for moving platforms
             if(rect.contains(hitbox.x+hitbox.width, hitbox.y+hitbox.height + 1) || rect.contains(hitbox.x, hitbox.y+hitbox.height + 1)){
                 x += prop.getXSpeed();
                 y += prop.getYSpeed();
