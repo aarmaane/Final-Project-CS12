@@ -214,6 +214,7 @@ public abstract class Enemy {
     }
     public int getDirection(){ return direction;}
     public boolean hasOutOfBoundsPoints(){ return outOfBoundsPoints;}
-
+    public boolean hasLimitedTime(){ return hasTimeLimit;}
     public int getCastType(){ return 2;}
+    public int getDifficulty(){ return difficulty;}
 }

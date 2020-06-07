@@ -8,7 +8,7 @@ public class Spawner {
     private String enemyType;
     private int spawnX,spawnY;
     private int difficulty;
-    private int spawnDelay = 5;
+    private int spawnDelay,spawnDelayMax;
     private boolean queuedSpawn;
     public Spawner(String data){
         //Constructor
@@ -16,15 +16,17 @@ public class Spawner {
         spawnX = Integer.parseInt(dataSplit[0]);
         spawnY = Integer.parseInt(dataSplit[1]);
         timeLimit = Integer.parseInt(dataSplit[2]);
-        enemyType = dataSplit[3];
-        difficulty = Integer.parseInt(dataSplit[4]);
+        spawnDelayMax = Integer.parseInt(dataSplit[3]);
+        spawnDelay = spawnDelayMax;
+        enemyType = dataSplit[4];
+        difficulty = Integer.parseInt(dataSplit[5]);
 
     }
     public void iterateTime(){
         spawnDelay--;
         if(spawnDelay < 0){
             queuedSpawn = true;
-            spawnDelay = 5;
+            spawnDelay = spawnDelayMax;
         }
     }
     public Enemy spawnEnemy(){
@@ -44,6 +46,10 @@ public class Spawner {
         }
         else if(enemyType.equals("Wizard")) {
             enemy = new Wizard("" + spawnX + "," + spawnY + "," + difficulty);
+            enemy.setTimeLimit(timeLimit);
+        }
+        else if(enemyType.equals("Crystal")) {
+            enemy = new Crystal("" + spawnX + "," + spawnY + "," + difficulty);
             enemy.setTimeLimit(timeLimit);
         }
         return enemy;

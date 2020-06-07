@@ -1,5 +1,8 @@
 //This text file stores all of the information about the colliding platforms in level 3 in the format:
 //X,Y,Image
+//Shadow Pillars
+2670,-910,Set 3/backPillar1Padded.png
+10170,-910,Set 3/backPillar3Padded.png
 ////Crystal Ground
 0,400,Set 3/floor1.png
 64,400,Set 3/floor1.png
@@ -86,18 +89,6 @@
 7190,320,Set 3/floor3.png
 7254,320,Set 3/floor3.png
 7318,320,Set 3/floor3.png
-//7382,320,Set 3/floor3.png
-//7446,320,Set 3/floor3.png
-//7510,320,Set 3/floor3.png
-//7574,320,Set 3/floor3.png
-//7638,320,Set 3/floor3.png
-//7702,320,Set 3/floor3.png
-//7766,320,Set 3/floor3.png
-//7830,320,Set 3/floor3.png
-//7894,320,Set 3/floor3.png
-//7958,320,Set 3/floor3.png
-//8022,320,Set 3/floor3.png
-//8086,320,Set 3/floor3.png
 7462,500,Set 3/floor3.png
 7526,500,Set 3/floor3.png
 7558,500,Set 3/floor3.png
@@ -116,6 +107,127 @@
 8270,500,Set 3/floor3.png
 8334,500,Set 3/floor3.png
 8398,500,Set 3/floor3.png
+//
+9382,380,Set 3/floor3.png
+9446,380,Set 3/floor3.png
+9510,380,Set 3/floor3.png
+9574,380,Set 3/floor3.png
+9638,380,Set 3/floor3.png
+9702,380,Set 3/floor3.png
+9766,380,Set 3/floor3.png
+9830,380,Set 3/floor3.png
+9894,380,Set 3/floor3.png
+9958,380,Set 3/floor3.png
+10022,380,Set 3/floor3.png
+10086,380,Set 3/floor3.png
+10150,380,Set 3/floor3.png
+10214,380,Set 3/floor3.png
+10278,380,Set 3/floor3.png
+10342,380,Set 3/floor3.png
+//
+10382,380,Set 3/floor3.png
+10446,380,Set 3/floor3.png
+10510,380,Set 3/floor3.png
+10574,380,Set 3/floor3.png
+10638,380,Set 3/floor3.png
+10702,380,Set 3/floor3.png
+10766,380,Set 3/floor3.png
+10830,380,Set 3/floor3.png
+10894,380,Set 3/floor3.png
+10958,380,Set 3/floor3.png
+11022,380,Set 3/floor3.png
+11086,380,Set 3/floor3.png
+11150,380,Set 3/floor3.png
+11214,380,Set 3/floor3.png
+11278,380,Set 3/floor3.png
+11342,380,Set 3/floor3.png
+//
+11382,380,Set 3/floor3.png
+11446,380,Set 3/floor3.png
+//11510,380,Set 3/floor3.png
+//11574,380,Set 3/floor3.png
+//11638,380,Set 3/floor3.png
+//11702,380,Set 3/floor3.png
+//11766,380,Set 3/floor3.png
+//11830,380,Set 3/floor3.png
+//11894,380,Set 3/floor3.png
+//11958,380,Set 3/floor3.png
+//12022,380,Set 3/floor3.png
+//12086,380,Set 3/floor3.png
+12150,380,Set 3/floor3.png
+12214,380,Set 3/floor3.png
+12278,380,Set 3/floor3.png
+12342,380,Set 3/floor3.png
+//
+12382,380,Set 3/floor3.png
+12446,380,Set 3/floor3.png
+12510,380,Set 3/floor3.png
+12574,380,Set 3/floor3.png
+12638,380,Set 3/floor3.png
+12702,380,Set 3/floor3.png
+12766,380,Set 3/floor3.png
+12830,380,Set 3/floor3.png
+12894,380,Set 3/floor3.png
+12958,380,Set 3/floor3.png
+13022,380,Set 3/floor3.png
+13086,380,Set 3/floor3.png
+13150,380,Set 3/floor3.png
+13214,380,Set 3/floor3.png
+13278,380,Set 3/floor3.png
+13342,380,Set 3/floor3.png
+//
+13382,380,Set 3/floor3.png
+13446,380,Set 3/floor3.png
+13510,380,Set 3/floor3.png
+13574,380,Set 3/floor3.png
+13638,380,Set 3/floor3.png
+13702,380,Set 3/floor3.png
+13766,380,Set 3/floor3.png
+13830,380,Set 3/floor3.png
+13894,380,Set 3/floor3.png
+13958,380,Set 3/floor3.png
+14022,380,Set 3/floor3.png
+14086,380,Set 3/floor3.png
+14150,380,Set 3/floor3.png
+14214,380,Set 3/floor3.png
+14278,380,Set 3/floor3.png
+14342,380,Set 3/floor3.png
+//
+14382,380,Set 3/floor3.png
+14446,380,Set 3/floor3.png
+14510,380,Set 3/floor3.png
+14574,380,Set 3/floor3.png
+14638,380,Set 3/floor3.png
+14702,380,Set 3/floor3.png
+14766,380,Set 3/floor3.png
+14830,380,Set 3/floor3.png
+14894,380,Set 3/floor3.png
+14958,380,Set 3/floor3.png
+15022,380,Set 3/floor3.png
+15086,380,Set 3/floor3.png
+15150,380,Set 3/floor3.png
+15214,380,Set 3/floor3.png
+15278,380,Set 3/floor3.png
+15342,380,Set 3/floor3.png
+//
+15382,380,Set 3/floor3.png
+15446,380,Set 3/floor3.png
+15510,380,Set 3/floor3.png
+15574,380,Set 3/floor3.png
+15638,380,Set 3/floor3.png
+15702,380,Set 3/floor3.png
+15766,380,Set 3/floor3.png
+15830,380,Set 3/floor3.png
+15894,380,Set 3/floor3.png
+15958,380,Set 3/floor3.png
+16022,380,Set 3/floor3.png
+16086,380,Set 3/floor3.png
+16150,380,Set 3/floor3.png
+16214,380,Set 3/floor3.png
+16278,380,Set 3/floor3.png
+16342,380,Set 3/floor3.png
+
+
 //Cave Chest Bunker
 6038,500,Set 3/floor3.png
 6102,500,Set 3/floor3.png
@@ -159,6 +271,5 @@
 1356,110,Set 3/floor5.png
 1388,90,Set 3/floor5.png
 1420,70,Set 3/floor5.png
-//Shadow Pillars
-2670,-910,Set 3/backPillar1Padded.png
+
 

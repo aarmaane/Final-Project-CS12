@@ -1,4 +1,4 @@
 //This text file contains all of the data for the wizard enemies in level 3 in the format:
 //X,Y,difficulty,castType
 4120,-50,3,2
-8120,50,3,1
+//8120,50,3,1

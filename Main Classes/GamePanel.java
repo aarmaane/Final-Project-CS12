@@ -567,9 +567,17 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         // Using for loops for Arrays that need to keep track of removals
         for(int i = enemies.size() - 1; i >= 0; i--){
             Enemy enemy = enemies.get(i);
-            if(enemy.isDead() || enemy.getY() > this.getHeight()){
+            if(enemy.isDead()){
                 enemies.remove(i);
-                if(enemy.hasOutOfBoundsPoints()) {
+                if(!enemy.hasLimitedTime()) {
+                    player.addPoints(150 * enemy.getDifficulty());
+                    indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "+100", Color.YELLOW));
+                }
+
+            }
+            else if(enemy.getY() > this.getHeight()){
+                enemies.remove(i);
+                if(enemy.hasOutOfBoundsPoints()){
                     player.addPoints(100);
                     indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "+100", Color.YELLOW));
                 }
