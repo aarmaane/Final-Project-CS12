@@ -54,13 +54,13 @@ public class Player {
         maxSpeed = 6;
         onGround = true;
         // Setting gameplay fields
-        maxStamina = Integer.MAX_VALUE;
+        maxStamina = 50;
         stamina = maxStamina;
-        maxHealth=Integer.MAX_VALUE;
-        health=maxHealth;
-        points=100000;
-        swordDamage=10;
-        castDamage =15;
+        maxHealth = 100;
+        health = maxHealth;
+        points = 0;
+        swordDamage = 10;
+        castDamage = 15;
         // Loading Images
         fallingSprites = Utilities.spriteArrayLoad(fallingSprites, "Player/fall");
         jumpingSprites = Utilities.spriteArrayLoad(jumpingSprites, "Player/jump");
@@ -570,11 +570,9 @@ public class Player {
 
     // Method to force the player to die
     public void kill(){
-        /*
         health = 0;
         isDying = true;
         velocityX = 0;
-         */
     }
 
     // Returns and clears all of the indicator texts held by the player

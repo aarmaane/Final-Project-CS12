@@ -535,7 +535,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             fade.start(FadeEffect.FADEOUT, 1);
         }
         if(player.getHitbox().y > getHeight()){
-            //player.kill();
+            player.kill();
         }
     }
     public void checkEnemyCast(Enemy enemy){
@@ -552,7 +552,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                 castSound.play();
             }
             else if(enemy.getCastType() == Wizard.CAST1){
-                for(int i=0;i<20;i++){
+                for(int i = 0; i < 10; i++){
                     projectiles.add(new Projectile(Projectile.ENEMY, playerHitbox.x+Utilities.randint(-450,450), 0, playerHitbox.x+Utilities.randint(-150,150), 590, enemy.getDamage(), speed));
                     castSound.play();
                 }

@@ -48,15 +48,17 @@ public class Ghost extends Enemy {
         }
         if(!isDying()){ // Only move the ghost while it's not dying
             //Using trigonometry to change the position of the ghost towards the player
-            if(playerHitbox.x - 40 >= getHitbox().x){
-                x += Math.cos(angle) * speed;
-                y += Math.sin(angle) * speed;
-                direction = RIGHT;
-            }
-            else if(playerHitbox.x - 40 < getHitbox().x){
-                x -= Math.cos(angle) * speed;
-                y -= Math.sin(angle) * speed;
-                direction = LEFT;
+            if(!playerHitbox.intersects(getHitbox())) {
+                if (playerHitbox.x - 40 >= getHitbox().x) {
+                    x += Math.cos(angle) * speed;
+                    y += Math.sin(angle) * speed;
+                    direction = RIGHT;
+                }
+                else if (playerHitbox.x - 40 < getHitbox().x) {
+                    x -= Math.cos(angle) * speed;
+                    y -= Math.sin(angle) * speed;
+                    direction = LEFT;
+                }
             }
         }
     }
