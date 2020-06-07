@@ -21,7 +21,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     private boolean paused = false;
     // Game state related fields
     private int barFade = 0, barFadeAddition = 5;
-    private boolean specialEnding, levelEnding, pointsGiven;
+    private boolean specialEnding, levelEnding, pointsGiven, bossSpawned;
     private int endScreenFrames, bonusPoints;
     // Game Images
     private Image staminaBar;
@@ -97,7 +97,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         projectiles.clear();
         items.clear();
         spawners.clear();
-        levelEnding = false; pointsGiven = false; endScreenFrames = 0; paused = false; bonusPoints = 0;
+        levelEnding = false; pointsGiven = false; bossSpawned = false; endScreenFrames = 0; paused = false; bonusPoints = 0;
         try{
             // Setting up level fields
             ArrayList<String> levelData = Utilities.loadFile("LevelData.txt", levelNum);
@@ -236,7 +236,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                     g.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
                 }
                 enemy.drawHealth(g, levelOffset);
-                g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
+                //g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
             }
         }
         // Drawing Projectiles
@@ -650,8 +650,16 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             }
         }
         // Checking if the player has reached the end of the level
-        if(specialEnding && enemies.size() == 0){
-            levelEnding = true;
+        if(specialEnding && enemies.size() == 0){ // Checking if a special ending level is finished
+             if(!bossSpawned){
+                 // Spawning the boss
+                 enemies.add(new Boss("500,-300,20"));
+                 bossSpawned = true;
+             }
+             else{
+                 // Finishing the level
+                 levelEnding = true;
+             }
         }
         else if(!levelEnding && playerHitbox.x > levelEndX){
             levelEnding = true;

@@ -8,7 +8,7 @@ public class Blob extends Enemy  {
     private Image[] movingSprites = new Image[8];
     private Image[] idleSprites= new Image[6];
     private Image[] attackSprites= new Image[8];
-    private Image[] deathSprites= new Image[7];
+    private Image[] deathSprites= new Image[8];
     //Fields
     private double growth = 1;
     public Blob(String data) {
@@ -19,7 +19,7 @@ public class Blob extends Enemy  {
         damage = 15 * difficulty;
         //Initialing sprite arrays
         movingSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Blob/walk");
-        //deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Ghost/death");
+        deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Blob/death");
         idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Blob/idle");
         attackSprites = Utilities.spriteArrayLoad(attackSprites, "Enemies/Blob/attack");
 
@@ -33,11 +33,20 @@ public class Blob extends Enemy  {
     }
     public void updateSize(Player player){
         int originalHeight = getHitbox().height;
+        int originalWidth = getHitbox().width;
         // Calculating the growth depending on health lost
         double healthLeft = (double)health / maxHealth;
-        growth = 1 + (5 * (1 - healthLeft));
+        if(isDying()){         // Deflating the blob in it's dying
+            if(growth > 1){
+                growth -= 0.02;
+            }
+        }
+        else{
+            growth = 1 + (5 * (1 - healthLeft));
+        }
         // Adjusting y position based on new growth
         y -= (getHitbox().height - originalHeight)*2;
+        x -= getHitbox().width - originalWidth;
 
     }
     @Override
@@ -82,7 +91,7 @@ public class Blob extends Enemy  {
         if(isHurt){
             //If the blob is hurt we need to check for whether the attack was fatal enough for death
             if(health <= 0){
-                spriteCount += 0.05;
+                spriteCount += 0.04;
                 if(spriteCount > deathSprites.length){//deactivating the blob
                     isActive = false;
                 }
@@ -117,7 +126,7 @@ public class Blob extends Enemy  {
         int spriteIndex = (int)Math.floor(spriteCount);
         if(isHurt){
             if(health <= 0){
-                sprite = idleSprites[spriteIndex];
+                sprite = deathSprites[spriteIndex];
             }
             else{
                 sprite = idleSprites[0];
@@ -149,5 +158,23 @@ public class Blob extends Enemy  {
             return new Rectangle((int)(x + (29 * growth)), (int)(y + (45 * growth)), (int)(27 * growth), (int)(35 * growth));
         }
         return new Rectangle((int)(x + (25 * growth)), (int)(y + (45 * growth)), (int)(27 * growth), (int)(35 * growth));
+    }
+
+    @Override
+    public double getX(){
+        // Offset for the dying sprite
+        if(isDying()){
+            return x - 5*growth;
+        }
+        return x;
+    }
+
+    @Override
+    public double getY(){
+        // Offset for the dying sprites
+        if(isDying()){
+            return y + 6*growth;
+        }
+        return y;
     }
 }
