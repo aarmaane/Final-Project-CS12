@@ -169,7 +169,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         if(player.isDead()){
             player.restoreHealth();
         }
-        player.resetPos(0 ,366);
+        player.resetPos(0 ,-111);
         // Resetting music
         levelMusic.play();
         if(Sound.isMuted()){ // Forcing mute if the game is already muted
