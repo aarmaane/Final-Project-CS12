@@ -1,0 +1,4 @@
+1530,400,Set 4/icePlatLong.png,600,300,1,-1
+3420,300,Set 3/floor1.png,550,275,1,-1
+3484,300,Set 3/floor2.png,550,275,1,-1
+5540,300,Set 4/icePlatLong.png,700,0,1,0

@@ -1,0 +1,84 @@
+//This text file stores all of the information about the non-colliding platforms in level 4 in the format:
+//X,Y,Image
+-192,464,Set 4/bluePlatDecorFlip.png
+-128,464,Set 4/bluePlatDecorFlip.png
+-64,464,Set 4/bluePlatDecorFlip.png
+84,464,Set 4/bluePlatDecorFlip.png
+0,464,Set 4/iceicles.png
+64,464,Set 4/iceicles.png
+128,464,Set 4/iceicles.png
+192,464,Set 4/iceicles.png
+256,464,Set 4/iceicles.png
+0,464,Set 4/bluePlatDecorFlip.png
+//
+0,264,Set 4/iceicles.png
+64,264,Set 4/iceicles.png
+128,264,Set 4/iceicles.png
+192,264,Set 4/iceicles.png
+256,264,Set 4/iceicles.png
+//
+192,464,Set 4/bluePlatDecorFlip.png
+256,464,Set 4/bluePlatDecorFlip.png
+320,464,Set 4/bluePlatDecorFlip.png
+384,464,Set 4/iceicles.png
+448,464,Set 4/iceicles.png
+512,464,Set 4/iceicles.png
+576,464,Set 4/iceicles.png
+640,464,Set 4/iceicles.png
+384,464,Set 4/bluePlatDecorFlip.png
+//
+592,464,Set 4/bluePlatDecorFlip.png
+628,464,Set 4/bluePlatDecorFlip.png
+700,464,Set 4/bluePlatDecorFlip.png
+784,464,Set 4/bluePlatDecorFlip.png
+500,464,Set 4/iceicles.png
+564,464,Set 4/iceicles.png
+700,464,Set 4/iceicles.png
+892,464,Set 4/iceicles.png
+956,464,Set 4/iceicles.png
+0,464,Set 4/bluePlatDecorFlip.png
+//
+1092,464,Set 4/bluePlatDecorFlip.png
+256,464,Set 4/bluePlatDecorFlip.png
+320,464,Set 4/bluePlatDecorFlip.png
+1384,464,Set 4/iceicles.png
+1448,464,Set 4/iceicles.png
+1112,464,Set 4/iceicles.png
+1176,464,Set 4/iceicles.png
+1240,464,Set 4/iceicles.png
+384,464,Set 4/bluePlatDecorFlip.png
+//
+-192,464,Set 4/bluePlatDecorFlip.png
+-128,464,Set 4/bluePlatDecorFlip.png
+-64,464,Set 4/bluePlatDecorFlip.png
+0,464,Set 4/iceicles.png
+64,464,Set 4/iceicles.png
+128,464,Set 4/iceicles.png
+192,464,Set 4/iceicles.png
+256,464,Set 4/iceicles.png
+0,464,Set 4/bluePlatDecorFlip.png
+//
+2600,464,Set 4/iceicles.png
+2664,464,Set 4/iceicles.png
+2728,464,Set 4/iceicles.png
+2756,464,Set 4/iceicles.png
+2792,464,Set 4/iceicles.png
+2856,464,Set 4/iceicles.png
+2920,464,Set 4/iceicles.png
+2984,464,Set 4/iceicles.png
+3048,464,Set 4/iceicles.png
+3112,464,Set 4/iceicles.png
+3176,464,Set 4/iceicles.png
+3240,464,Set 4/iceicles.png
+3304,464,Set 4/iceicles.png
+3368,464,Set 4/iceicles.png
+4400,364,Set 4/bluePlatDecorFlip.png
+4500,364,Set 4/bluePlatDecorFlip.png
+4600,364,Set 4/bluePlatDecorFlip.png
+4800,364,Set 4/bluePlatDecorFlip.png
+4700,364,Set 4/bluePlatDecorFlip.png
+4900,364,Set 4/bluePlatDecorFlip.png
+5000,364,Set 4/bluePlatDecorFlip.png
+5168,364,Set 4/bluePlatDecorFlip.png
+5100,364,Set 4/bluePlatDecorFlip.png
+5368,184,Set 4/iceicles.png
