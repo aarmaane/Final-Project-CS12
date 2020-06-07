@@ -1,6 +1,6 @@
 //Item.java
 //Armaan Randhawa and Shivan Gaur
-//This class creates item object that benefits the player in some way by giving the player power-ups
+// Item objects that benefit the player in some way by giving the player power-ups
 import java.awt.*;
 
 public class Item {
@@ -23,14 +23,17 @@ public class Item {
     private static Sound coinSound = new Sound("Assets/Sounds/Effects/coin.wav", 80);
     private static Sound healthSound = new Sound("Assets/Sounds/Effects/health.wav", 80);
     private static Sound powerSound = new Sound("Assets/Sounds/Effects/powerUp.wav", 80);
+
     // Initialize class
     public static void init(){
+        // Loading the sprites using the Utilities spriteLoad method
         healthSprites = Utilities.spriteArrayLoad(healthSprites, "Items/Health/health");
         coinSprites = Utilities.spriteArrayLoad(coinSprites, "Items/Coins/coin");
         diamondSprites = Utilities.spriteArrayLoad(diamondSprites, "Items/Coins/diamond");
         healthPwrSprites = Utilities.spriteArrayLoad(healthPwrSprites, "Items/Health/healthpwr");
         energySprites = Utilities.spriteArrayLoad(energySprites, "Items/Energy/energy");
     }
+
     // Constructor
     public Item(Chest sourceChest){
         x = sourceChest.getHitbox().x;
@@ -40,13 +43,17 @@ public class Item {
         bounceX = velocityX/2; bounceY = velocityY/2;
         type = sourceChest.getContent();
     }
+
     // General methods
+    // Method that checks the items collision with LevelProps
     public void checkCollision(LevelProp prop){
         Rectangle rect = prop.getRect();
         Rectangle hitbox = getHitbox();
+        // Checking if the item collided with the top
         if(hitbox.intersects(rect)){
             if((int)((hitbox.y + hitbox.height) - velocityY) <= rect.y){
                 y = (rect.y - hitbox.height) - (hitbox.y - y); // Placing the item on top of the platform
+                // Making the item bounce
                 velocityY = bounceY;
                 velocityX = bounceX;
                 bounceX /= 2; bounceY /= 2;
@@ -54,20 +61,24 @@ public class Item {
         }
     }
 
+    // Method that updates item properties
     public void update(){
-        //Method that updates item properties
         updateMotion();
         updateSprite();
     }
+
+    // Method that updates the item's physics
     public void updateMotion(){
         x += velocityX;
         y += velocityY;
         // Adding gravity
         velocityY += GRAVITY;
     }
+
+    // Method that updates the sprite cycles
     public void updateSprite(){
-        //Method that resets sprite cycles
-        spriteCount += 0.1;
+        spriteCount += 0.1; // Progressing the item
+        // Checking the point where the current item resets its cycle
         if(     (type == HEALTH && spriteCount >= healthSprites.length) ||
                 (type == COIN && spriteCount >= coinSprites.length) ||
                 (type == DIAMOND && spriteCount >= diamondSprites.length) ||
@@ -77,8 +88,9 @@ public class Item {
         }
 
     }
+
+    // Method that plays the appropriate sound for the current item type
     public void playSound(){
-        //Method that plays the appropriate sound for each item type
         if(type == COIN || type == DIAMOND){
             coinSound.stop();
             coinSound.play();
@@ -92,10 +104,14 @@ public class Item {
             powerSound.play();
         }
     }
+
+    // Setter methods
     public void use(){
         used = true;
     }
+
     // Getter methods
+    // Method that returns the items current sprite for drawing
     public Image getSprite(){
         Image sprite = null;
         int spriteIndex = (int)Math.floor(spriteCount);
@@ -127,6 +143,7 @@ public class Item {
         return used;
     }
     public boolean isSettled(){
+        // Returning true if the bounce values are 0 in X and Y
         return (int) bounceY == 0 && (int) bounceX == 0;
     }
 }

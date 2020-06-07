@@ -12,10 +12,10 @@ public abstract class Enemy {
     public static final int RIGHT = 0, LEFT = 1;
     protected static final double GRAVITY = 0.25;
     //Fields
-    //All fields are protected, which prevents other users from altering the field values but also allows subclasses to inherit the fields.
+    // All fields are protected, which allows subclasses to inherit the fields.
     protected double x, y, velocityX, velocityY;
     protected double spriteCount;
-    protected int timeAlive;//Variable for enemies who have a timer on them
+    protected int timeAlive; //Variable for enemies who have a timer on them
     protected int direction;
     protected int health, maxHealth, damage, difficulty;
     protected boolean isActive, isHurt, isAttacking, knockedBack, onMovingPlat;
@@ -28,6 +28,7 @@ public abstract class Enemy {
 
     // Class initialization
     public static void init() throws IOException {
+        // Loading genric health bar for all enemies
         try {
             healthBar = ImageIO.read(new File("Assets/Images/Enemies/healthBar.png"));
         }
@@ -35,6 +36,7 @@ public abstract class Enemy {
             e.printStackTrace();
         }
     }
+
     // Constructor
     public Enemy(String data){
         String[] dataSplit = data.split(",");
@@ -43,53 +45,28 @@ public abstract class Enemy {
         difficulty = Integer.parseInt(dataSplit[2]);
         outOfBoundsPoints = true;
     }
+
     // General methods
     public void activate(){
         isActive = true;
     }
+
+    // Method that draws the enemy's health above them
     public void drawHealth(Graphics g, int levelOffset){
-        //This method draws the health bar of the Enemy object
         if(health != maxHealth){ // Only drawing if they have lost health
             Rectangle hitBox = getHitbox();
             int healthBarOffset = ((100-hitBox.width)/8);
             g.setColor(Color.RED);
-            g.fillRect(hitBox.x-levelOffset-healthBarOffset,hitBox.y-10,(int)(((double)health/maxHealth)*88),13);//Filled bar
-            g.drawImage(healthBar,hitBox.x-levelOffset-13-healthBarOffset,hitBox.y-15,null);//Health bar image
+            g.fillRect(hitBox.x-levelOffset-healthBarOffset,hitBox.y-10,(int)(((double)health/maxHealth)*88),13); // Filled bar
+            g.drawImage(healthBar,hitBox.x-levelOffset-13-healthBarOffset,hitBox.y-15,null); // Health bar image
         }
     }
-    public void checkCollision(LevelProp prop){
-        //This method checks the collision between the platforms and the enemy so that the enemies don't fall of the screen.
-        //Rect variables
-        Rectangle rect = prop.getRect();
-        Rectangle hitbox = getHitbox();
-        if(hitbox.intersects(rect)){
-            if((int)((hitbox.y + hitbox.height) - velocityY) <= rect.y){
-                y = (rect.y - hitbox.height) - (hitbox.y - y); // Putting the Enemy on top of the platform
-                velocityY = 0;
-                knockedBack = false;
-            }
-        }
-        // Checking if they are on a moving platform
-        if(prop.isMoving() && !onMovingPlat && !knockedBack){
-            if(rect.contains(hitbox.x+hitbox.width, hitbox.y+hitbox.height + 1) || rect.contains(hitbox.x, hitbox.y+hitbox.height + 1)){
-                x += prop.getXSpeed();
-                y += prop.getYSpeed();
-                onMovingPlat = true;
-            }
-        }
-        // Checking if there are any platforms behind or infront of the Enemy
-        if(rect.contains((hitbox.x + hitbox.width + 1),(hitbox.y + hitbox.height + 1))){
-            platformAhead = true;
-        }
-        if(rect.contains((hitbox.x - 1), (hitbox.y + hitbox.height + 1))){
-            platformBehind = true;
-        }
-    }
-    public double castHit(Projectile cast){
-        //This method delivers and returns the damage done to the enemy by a player projectile
 
+    // Method delivers and returns the damage done to the enemy by a player projectile
+    public double castHit(Projectile cast){
         //The damage done is also based on the transparency of the enemy which is why damage can vary with ghosts as their transparency changes
         double damageDone = (Utilities.randint(80,100)/100.0)*cast.getDamage()*getSpriteAlpha();
+        // Reducing health and adding knockback
         health -= damageDone;
         velocityY = -3;
         if(cast.getSpeed() > 0){
@@ -98,15 +75,16 @@ public abstract class Enemy {
         else{
             velocityX = -3;
         }
+        // Setting flags
         isHurt = true;
         knockedBack = true;
         isAttacking = false;
         spriteCount = 0;
         return damageDone;
     }
-    public double swordHit(Player player){
-        //This method delivers and returns the damage done to the enemy by a sword hit
 
+    // Method delivers and returns the damage done to the enemy by a sword hit
+    public double swordHit(Player player){
         //Same as the casthit
         double damageDone = (Utilities.randint(80,100)/100.0)*player.getSwordDamage()*getSpriteAlpha();
         health -= damageDone;
@@ -123,17 +101,73 @@ public abstract class Enemy {
         spriteCount = 0;
         return damageDone;
     }
+    /* Below methods are commonly overridden by subclasses with different properties */
+
+    //This method checks the collision between the LevelProps and the enemy
+    public void checkCollision(LevelProp prop){
+        // Declaring rects
+        Rectangle rect = prop.getRect();
+        Rectangle hitbox = getHitbox();
+        // Checking if the enemy should be placed on top of the LevelProp
+        if(hitbox.intersects(rect)){
+            if((int)((hitbox.y + hitbox.height) - velocityY) <= rect.y){
+                y = (rect.y - hitbox.height) - (hitbox.y - y); // Putting the Enemy on top of the platform
+                velocityY = 0;
+                knockedBack = false;
+            }
+        }
+        // Checking if they are on a moving platform
+        if(prop.isMoving() && !onMovingPlat && !knockedBack){
+            if(rect.contains(hitbox.x+hitbox.width, hitbox.y+hitbox.height + 1) || rect.contains(hitbox.x, hitbox.y+hitbox.height + 1)){
+                // Moving the enemy along with the platform
+                x += prop.getXSpeed();
+                y += prop.getYSpeed();
+                onMovingPlat = true;
+            }
+        }
+        // Checking if there are any platforms behind or infront of the Enemy
+        if(rect.contains((hitbox.x + hitbox.width + 1),(hitbox.y + hitbox.height + 1))){
+            platformAhead = true;
+        }
+        if(rect.contains((hitbox.x - 1), (hitbox.y + hitbox.height + 1))){
+            platformBehind = true;
+        }
+    }
+
+    // Method updates all the changing properties of the enemy
     public void update(Player player){
-        //This method updates all the changing properties of the enemy
         updateMotion(player);
-        if(!isHurt){
+        if(!isHurt){ // Enemy can't attack while being hurt
             updateAttack(player);
         }
         updateSprite();
 
     }
+
+    // Method updates the physics of the enemy
+    public void updateMotion(Player player){
+        // Applying velocity values to position
+        x += velocityX;
+        y += velocityY;
+        // Adding gravity value
+        velocityY += GRAVITY;
+        // Resetting boolean values so they can be rechecked for the new position
+        platformAhead = false;
+        platformBehind = false;
+        onMovingPlat = false;
+    }
+
+    // Method updates the attacking status of the enemy
+    public void updateAttack(Player player){
+        boolean originalState = isAttacking;
+        isAttacking = getHitbox().intersects(player.getHitbox()); // Setting it to true if there is hitbox collision
+        if(originalState != isAttacking){ // If there's a change in state, reset the sprite counter
+            spriteCount = 0;
+        }
+    }
+
+    // Method is used to count down the number of seconds remaining for enemies with timers on them
     public void iterateTime(){
-        //This method is used to count down the number of seconds remaining for enemies with timers on them
         if(hasTimeLimit){
             if(timeAlive>0) {
                 timeAlive -= 1;
@@ -145,35 +179,16 @@ public abstract class Enemy {
             }
         }
     }
-    public void updateMotion(Player player){
-        //This method updates the motion of the enemy
-        // Applying velocity values to position
-        x += velocityX;
-        y += velocityY;
-        // Adding gravity value
-        velocityY += GRAVITY;
-        // Resetting boolean values so they can be rechecked for the new position
-        platformAhead = false;
-        platformBehind = false;
-        onMovingPlat = false;
-    }
-    public void updateAttack(Player player){
-        // Updating the attacking status
-        boolean originalState = isAttacking;
-        isAttacking = getHitbox().intersects(player.getHitbox()); // Setting it to true if there is hitbox collision
-        if(originalState != isAttacking){ // If there's a change in state, reset the sprite counter
-            spriteCount = 0;
-        }
-    }
+
+    // Method sets the time limit for how long timed enemies are alive for when they are created by spawners
     public void setTimeLimit(int timeLimit){
-        //This method sets the time limit for how long timed enemies are alive for when they are created by spawners
         hasTimeLimit = true;
         timeAlive = timeLimit;
     }
     // Declaring methods that subclasses need to implement
-    public abstract void updateSprite();
-    public abstract Image getSprite();
-    public abstract Rectangle getHitbox();
+    public abstract void updateSprite(); // Method that updates spriteCounters based on enemy's status
+    public abstract Image getSprite(); // Method that returns the enemy's current sprite for drawing
+    public abstract Rectangle getHitbox(); // Method that returns the hitbox of the enemy as a Rectangle
 
     // Getter methods
     public float getSpriteAlpha(){
@@ -212,7 +227,7 @@ public abstract class Enemy {
     public boolean hasAlphaSprites(){
         return hasAlphaSprites;
     }
-    public int getDirection(){ return direction;}
+    public int getDirection(){return direction;}
     public boolean hasOutOfBoundsPoints(){ return outOfBoundsPoints;}
     public boolean hasLimitedTime(){ return hasTimeLimit;}
     public int getCastType(){ return 2;}

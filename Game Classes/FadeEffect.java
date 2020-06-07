@@ -1,6 +1,6 @@
-//FadeEffect.java
-//Armaan Randhawa and Shivan Gaur
-//This class creates a fade effect that is very useful in screen transitions
+// FadeEffect.java
+// Armaan Randhawa and Shivan Gaur
+// Class creates a fade effect using transparent black rectangles
 import java.awt.*;
 
 public class FadeEffect {
@@ -9,9 +9,9 @@ public class FadeEffect {
     // Fields
     private int fadeInt = 0, fadeSpeed = 5, activeType;
     private boolean active;
-    // Main methods
+
+    // Method begins the fade by preparing the fields for the update method
     public void start(int type, int speed){
-        //This method begins the fade
         active = true;
         activeType = type;
         if(type == FADEIN){
@@ -24,18 +24,19 @@ public class FadeEffect {
         }
     }
 
+    // Method continues the fade by updating the alpha value
     public void update(){
-        //Updates the fading screen
         if(active){
             fadeInt += fadeSpeed;
+            // Checking if the fade is done
             if((activeType == FADEOUT && fadeInt > 255) || (activeType == FADEIN && fadeInt < 0)) {
                 active = false;
             }
         }
     }
 
+    // Method draws the transparent rectangle
     public void draw(Graphics g){
-        //Draws the fading screen
         g.setColor(new Color(0, 0, 0, fadeInt));
         g.fillRect(0, 0,960,590);
     }

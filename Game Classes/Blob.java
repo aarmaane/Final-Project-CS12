@@ -9,7 +9,6 @@ public class Blob extends Enemy  {
     private Image[] idleSprites= new Image[6];
     private Image[] attackSprites= new Image[8];
     private Image[] deathSprites= new Image[7];
-    private Image[] hurtSprites= new Image[1];
     //Fields
     private double growth = 1;
     public Blob(String data) {
@@ -23,7 +22,7 @@ public class Blob extends Enemy  {
         //deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Ghost/death");
         idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Blob/idle");
         attackSprites = Utilities.spriteArrayLoad(attackSprites, "Enemies/Blob/attack");
-        //hurtSprites = Utilities.spriteArrayLoad(hurtSprites, "Enemies/Ghost/hurt");
+
     }
     @Override
     public void update(Player player){
@@ -38,38 +37,36 @@ public class Blob extends Enemy  {
         double healthLeft = (double)health / maxHealth;
         growth = 1 + (5 * (1 - healthLeft));
         // Adjusting y position based on new growth
-        y -= getHitbox().height - originalHeight;
+        y -= (getHitbox().height - originalHeight)*2;
 
     }
     @Override
     public void updateMotion(Player player){
         // Checking the position of the Player and setting velocity towards them
         int playerX = player.getHitbox().x;
-        int blobX = getHitbox().x;
-        if(!knockedBack){ // Not touching blob's velocity values if there's knockback
-            if(playerX == blobX || isHurt){
-                velocityX = 0; // Stopping movement while maintaining direction
+        int blobX = (int)(x + (29 * growth)); // Using the x from the right facing hitbox
+        if(playerX == blobX || isHurt){
+            velocityX = 0; // Stopping movement while maintaining direction
+        }
+        else if(playerX > blobX){
+            direction = RIGHT;
+            if(platformAhead && !isAttacking){
+                velocityX = 0.5;
             }
-            else if(playerX > blobX){
-                direction = RIGHT;
-                if(platformAhead && !isAttacking){
-                    velocityX = 0.5;
-                }
-                else{
-                    velocityX = 0; // Making the blob stay in place
-                }
-            }
-            else{ // Same as above but for left facing
-                direction = LEFT;
-                if(platformBehind && !isAttacking){
-                    velocityX = -0.5;
-                }
-                else{
-                    velocityX = 0;
-                }
+            else{
+                velocityX = 0; // Making the blob stay in place
             }
         }
-        super.updateMotion(player);//calling enemy class method
+        else{ // Same as above but for left facing
+            direction = LEFT;
+            if(platformBehind && !isAttacking){
+                velocityX = -0.5;
+            }
+            else{
+                velocityX = 0;
+            }
+        }
+        super.updateMotion(player); //calling enemy class method
     }
     @Override
     public void updateAttack(Player player){
@@ -90,15 +87,15 @@ public class Blob extends Enemy  {
                     isActive = false;
                 }
             }
-            else{//If the blob was not killed then it was simply hurt so the hurt sprite count is reset once it is cycled through
+            else{ //If the blob is hurt, the spriteCount acts as a timer to deactivate the flag
                 spriteCount += 0.08;
-                if(spriteCount > idleSprites.length){
+                if(spriteCount > 1){ // Hard-coded value to decrease stun time
                     spriteCount = 0;
                     isHurt = false;
                 }
             }
         }
-        else if(isAttacking){//If the blob is attacking then restart the animation once it cycles through
+        else if(isAttacking){ //If the blob is attacking then restart the animation once it cycles through
             spriteCount += 0.1;
             if(spriteCount > attackSprites.length){
                 spriteCount = 0;
@@ -123,7 +120,7 @@ public class Blob extends Enemy  {
                 sprite = idleSprites[spriteIndex];
             }
             else{
-                sprite = movingSprites[0];
+                sprite = idleSprites[0];
             }
         }
         else if(isAttacking){
@@ -148,7 +145,7 @@ public class Blob extends Enemy  {
     public Rectangle getHitbox() {
         // Getting the hitbox of the blob with the growth scaling applied to the dimensions
         if(direction == RIGHT){
-            // Offset for right-facing sprites is applied in x dimensions
+            // Offset for right-facing sprites is applied in x dimension
             return new Rectangle((int)(x + (29 * growth)), (int)(y + (45 * growth)), (int)(27 * growth), (int)(35 * growth));
         }
         return new Rectangle((int)(x + (25 * growth)), (int)(y + (45 * growth)), (int)(27 * growth), (int)(35 * growth));

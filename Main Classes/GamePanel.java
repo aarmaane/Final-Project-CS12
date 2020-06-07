@@ -428,7 +428,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     // Game related methods
     public void update(){
         // Updating all Objects
-        player.update();
+        player.update(specialEnding);
         indicatorText.addAll(player.flushTextQueue());
         for(Enemy enemy: enemies){
             if(enemy.isActive()){
@@ -439,7 +439,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                 checkActivation(enemy);
             }
         }
-        //System.out.println(click);
         for(Projectile projectile: projectiles){
             projectile.update();
         }
@@ -687,7 +686,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     }
     public void calculateOffset(){
         Rectangle hitbox = player.getHitbox();
-        if(hitbox.x + hitbox.width > 480){
+        if(hitbox.x + hitbox.width > 480 && !specialEnding){
             levelOffset = (hitbox.x + hitbox.width) - 480;
         }
         else{

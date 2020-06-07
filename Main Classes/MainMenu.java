@@ -112,7 +112,7 @@ public class MainMenu extends JPanel {
         // Updating the dummy player
         dummy.move(Player.RIGHT);
         dummy.checkCollision(new LevelProp(scrollOffset+",800,invisibleRect.png", false, false));
-        dummy.update();
+        dummy.update(false);
         background.update(scrollOffset);
         // Updating the platforms to make them look continuous
         if(dummy.getHitbox().x > 300){
