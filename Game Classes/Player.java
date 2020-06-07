@@ -19,7 +19,7 @@ public class Player {
     private double spriteCount = 0;
     private int jumpCount = 1;
     // Players' gameplay-related fields
-    private int health, maxHealth, points;
+    private int health, maxHealth, points, deaths;
     private double stamina, maxStamina;
     private int swordDamage, castDamage;
     private boolean isAttacking, isCasting, isHurt, isDying; // Action flags
@@ -273,6 +273,7 @@ public class Player {
 
     // Method to update the Player Object each frame
     public void update(boolean isSpecialLevel){
+        System.out.println(deaths);
         updateMotion();
         updateStamina();
         checkOutOfBounds(isSpecialLevel);
@@ -536,6 +537,7 @@ public class Player {
             textQueue.add(new IndicatorText(getHitbox().x, getHitbox().y, "-" + enemy.getDamage(), Color.RED));
         }
         if(health <= 0){ // Player death
+            deaths++;
             isDying = true;
             spriteCount = 0;
         }
@@ -562,6 +564,7 @@ public class Player {
             jumpCount = 2; // Not allowing the player to jump
             if(health <= 0){ // Killing the player if health drops to zero
                 isDying = true;
+                deaths++;
             }
             // Show damage through indicator texts
             textQueue.add(new IndicatorText(getHitbox().x, getHitbox().y, "-" + cast.getDamage(), Color.RED));
@@ -570,6 +573,7 @@ public class Player {
 
     // Method to force the player to die
     public void kill(){
+        deaths++;
         health = 0;
         isDying = true;
         velocityX = 0;
