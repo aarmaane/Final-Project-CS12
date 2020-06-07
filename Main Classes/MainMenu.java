@@ -1,6 +1,6 @@
-//MainMenu.java
-//Armaan Randhawa and Shivan Gaur
-//This class is the main menu for the game. Once the player selects the play button this panel closes and the main game starts.
+// MainMenu.java
+// Armaan Randhawa and Shivan Gaur
+// JPanel that holds the main menu. Shows instructions and allows the user to start the game
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -21,10 +21,10 @@ public class MainMenu extends JPanel {
     private LevelProp platform = new LevelProp("0,0,grassMiddle.png", false, false);
     private int scrollOffset = 0;
     private int screenWidth, platformsX1, platformsX2;
-    // Other fields
+    // Instructions page fields
     private boolean inInstructions;
-    private Image[] instructPages = new Image[3];
-    private int currentPage = 0;
+    private Image[] instructPages = new Image[3]; // Instructions images
+    private int currentPage = 0; // Current instructions page open
 
     // Constructor
     public MainMenu(MainGame game){
@@ -63,10 +63,11 @@ public class MainMenu extends JPanel {
         instructPages = Utilities.spriteArrayLoad(instructPages, "Main Menu/test");
     }
     // Window related methods
+    // Method that draws everything
     public void paintComponent(Graphics g){
-        //Method that draws everything
-        background.draw(g);
-        g.drawImage(dummy.getSprite(),(int) dummy.getX()- 170 - scrollOffset,367 ,this);
+        background.draw(g); // Drawing the background
+        g.drawImage(dummy.getSprite(),(int) dummy.getX()- 170 - scrollOffset,367 ,this); // Drawing the dummy player
+        // Drawing the repeating platforms
         for(int i = 0; i < 10; i++){
             g.drawImage(platform.getPropImage(), platformsX1 + i*144 - scrollOffset,475, this);
             g.drawImage(platform.getPropImage(), platformsX2 + i*144 - scrollOffset,475, this);
@@ -81,22 +82,26 @@ public class MainMenu extends JPanel {
                 button.draw(g);
             }
         }
-        g.setColor(Color.WHITE);
-        g.drawLine(getWidth()/2 ,0, getWidth()/2, 960);
+        // Drawing the fade (when the player clicks play)
         fade.draw(g);
     }
+
+    // Method that draws the instructions page
     public void drawInstructions(Graphics g){
-        //Method that draws the instructions of the game
+        // Drawing instructions buttons
         for(Button button: instructButtons){
             button.draw(g);
         }
+        // Drawing the current instructions image
         g.drawImage(instructPages[currentPage], getWidth()/2 - 425, 50, this);
+        // Drawing page number (centered on the screen)
         g.setColor(Color.BLACK);
-        // Drawing page number
         String drawnString = "Page " + (currentPage + 1) + "/3";
         int stringLength = g.getFontMetrics().stringWidth(drawnString);
         g.drawString(drawnString, getWidth()/2 - stringLength/2, 25);
     }
+
+    // Method that updates all elements of the main menu
     public void update(){
         // Making sure that the music is always looping
         if(!menuMusic.isPlaying()){
@@ -104,7 +109,7 @@ public class MainMenu extends JPanel {
         }
         // Updating the fade effect
         fade.update();
-        if(fade.isDoneFadeOut()){
+        if(fade.isDoneFadeOut()){ // Once the fade out is done, switch to the game
             menuMusic.stop();
             menuMusic.closeSound();
             gameFrame.switchPanel(MainGame.SHOPPANEL);
@@ -113,6 +118,7 @@ public class MainMenu extends JPanel {
         dummy.move(Player.RIGHT);
         dummy.checkCollision(new LevelProp(scrollOffset+",800,invisibleRect.png", false, false));
         dummy.update(false);
+        // Updating the background
         background.update(scrollOffset);
         // Updating the platforms to make them look continuous
         if(dummy.getHitbox().x > 300){
@@ -125,6 +131,8 @@ public class MainMenu extends JPanel {
             platformsX1 = platformsX2 + 1440;
         }
     }
+
+    // Method to update the button colors
     public void checkButtons(){
         if(fade.isActive()){
             return; // Don't update buttons during the fade
@@ -132,11 +140,13 @@ public class MainMenu extends JPanel {
         Point mouse = getMousePosition();
         if(mouse != null){
             if(!inInstructions){
+                // Updating main menu buttons
                 for(Button button: buttons){
                     button.updateHover(mouse);
                 }
             }
             else{
+                // Updating instructions buttons
                 for(Button button: instructButtons){
                     button.updateHover(mouse);
                 }
@@ -151,14 +161,17 @@ public class MainMenu extends JPanel {
             String buttonString = e.getActionCommand();
             switch(buttonString) {
                 case "Play":
+                    // Starting the fade-out
                     if(!fade.isActive()){
                         fade.start(FadeEffect.FADEOUT, 1);
                     }
                     break;
                 case "Quit":
+                    // Closing the game
                     System.exit(0);
                     break;
                 case "Instructions":
+                    // Removing main menu elements and adding instructions
                     inInstructions = true;
                     for(Button button: buttons){
                         remove(button);
@@ -169,6 +182,7 @@ public class MainMenu extends JPanel {
                     currentPage = 0;
                     break;
                 case "Back":
+                    // Re-adding main menu elements and removing instructions
                     inInstructions = false;
                     for(Button button: buttons){
                         add(button);

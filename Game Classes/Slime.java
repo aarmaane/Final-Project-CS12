@@ -1,6 +1,6 @@
-//Slime.java
-//Armaan Randhawa and Shivan Gaur
-//This program is a subclass of the Enemy class that creates Slime enemies that follow the player around.
+// Slime.java
+// Armaan Randhawa and Shivan Gaur
+// Subclass of the Enemy class that creates Slime enemies that follow the player around.
 import java.awt.*;
 
 public class Slime extends Enemy {
@@ -10,6 +10,7 @@ public class Slime extends Enemy {
     private static Image[] hurtSprites = new Image[4];
     private static Image[] idleSprites = new Image[4];
     private static Image[] deathSprites = new Image[4];
+
     // Method to initialize the Class by loading sprites
     public static void init(){
         movingSprites = Utilities.spriteArrayLoad(movingSprites, "Enemies/Slime/move");
@@ -18,6 +19,7 @@ public class Slime extends Enemy {
         idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Slime/idle");
         deathSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Slime/death");
     }
+
     //Constructor
     public Slime(String data){
         super(data);
@@ -25,6 +27,7 @@ public class Slime extends Enemy {
         maxHealth=health;
         damage = 5*difficulty;
     }
+
     // General methods
     @Override
     public void updateMotion(Player player){
@@ -38,7 +41,7 @@ public class Slime extends Enemy {
             else if(playerX > slimeX){
                 direction = RIGHT;
                 if(platformAhead && !isAttacking){
-                    velocityX = 0.5;
+                    velocityX = 0.5; // Keep moving towards the player
                 }
                 else{
                     velocityX = 0; // Making the slime stay in place
@@ -54,28 +57,30 @@ public class Slime extends Enemy {
                 }
             }
         }
-        super.updateMotion(player);
+        super.updateMotion(player); // Using enemy class updateMotion
     }
+
     @Override
     public void updateAttack(Player player){
         //This method determines when the slime inflicts damage on the player
         super.updateAttack(player);
-        // Checking if the player should be dealt damage
+        // Checking if the player should be dealt damage (rounding off spriteCount due to double inaccuracy)
         if(isAttacking && Utilities.roundOff(spriteCount,2) == attackSprites.length/2.0){
             player.enemyHit(this);
         }
     }
+
     @Override
     public void updateSprite(){
         //Restarting the sprite cycles
         if(isHurt){
-            if(health <= 0){
+            if(health <= 0){ // Dying sprites
                 spriteCount += 0.05;
                 if(spriteCount > deathSprites.length){
                     isActive = false;
                 }
             }
-            else{
+            else{ // Hurt sprites
                 spriteCount += 0.08;
                 if(spriteCount > hurtSprites.length){
                     spriteCount = 0;
@@ -83,19 +88,20 @@ public class Slime extends Enemy {
                 }
             }
         }
-        else if(isAttacking){
+        else if(isAttacking){ // Attacking sprites
             spriteCount += 0.05;
             if(spriteCount > attackSprites.length){
                 spriteCount = 0;
             }
         }
-        else{
+        else{ // Moving sprites
             spriteCount += 0.05;
             if(spriteCount > movingSprites.length){
                 spriteCount = 0;
             }
         }
     }
+
     // Getter methods
     @Override
     public Image getSprite() {

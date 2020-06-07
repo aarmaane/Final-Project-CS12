@@ -1,6 +1,6 @@
-//MainGame.java
-//Armaan Randhawa and Shivan Gaur
-//This class is the Main game class and is the class that creates the game panel.
+// MainGame.java
+// Armaan Randhawa and Shivan Gaur
+// Class that creates the JFrame and sets up all Main Classes/Panels
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -57,6 +57,8 @@ public class MainGame extends JFrame {
         shop.init();
         Sound.toggleVolume(); // AUTO MUTE
     }
+
+    // Method to switch the current panel on screen
     public void switchPanel(String targetPanel){
         CardLayout cardLayout = (CardLayout) panelManager.getLayout();
         cardLayout.show(panelManager, targetPanel);
@@ -66,6 +68,7 @@ public class MainGame extends JFrame {
     // TickListener Class
     class TickListener implements ActionListener {
         public void actionPerformed(ActionEvent evt){
+            // Switch case to run the proper game loop
             switch(activePanel){
                 case GAMEPANEL:
                     if(!game.isPaused()){

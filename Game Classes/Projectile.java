@@ -1,6 +1,6 @@
-//Projectile.java
-//Armaan Randhawa and Shivan Gaur
-//This class creates projectile objects that are used when the player or certain enemies use their casting abilities
+// Projectile.java
+// Armaan Randhawa and Shivan Gaur
+// Class creates projectile objects that are used when the player or certain enemies use their casting abilities
 import java.awt.*;
 
 public class Projectile {
@@ -28,8 +28,8 @@ public class Projectile {
         iceSprites = Utilities.spriteArrayLoad(iceSprites, "Projectiles/Iceball/iceball");
         darkSprites = Utilities.spriteArrayLoad(darkSprites, "Projectiles/DarkCast/darkCast");
         explosionSprites = Utilities.spriteArrayLoad(explosionSprites, "Projectiles/Explosion/explosion");
-
     }
+
     //First Constructor ---> 1D projectile
     public Projectile(int type, double x, double y, double damage, double speed){
         this.x = x;
@@ -46,11 +46,13 @@ public class Projectile {
         assignArray();
 
     }
+
     //Second Constructor---> 2D projectile
     public Projectile(int type, double startX, double startY,double targX,double targY ,double damage, double speed){
         this.type= type;
         this.damage = damage;
         isAngled = true;
+        // Setting speed and direction depending on target
         if(targX > startX){
             this.speed = speed;
             this.direction = RIGHT;
@@ -61,13 +63,14 @@ public class Projectile {
         }
         this.angle = Math.atan((targY - startY)/(targX - startX));
         assignArray();
-        angledRect = Utilities.rectFinder(getSprite());
+        angledRect = Utilities.rectFinder(getSprite()); // Using the rectFinder method to calculate the hitbox
         // Assigning x and y with proper offset
         x = startX - angledRect.x;
         y = startY - angledRect.y;
     }
+
+    // Method assigns the proper array of sprites to the projectile object based on the type
     public void assignArray(){
-        //This method assigns the proper array of sprites to the projectile object based on if the projectile came from an enemy or the player
         if(type == PLAYER){
             projectileSprites = iceSprites;
         }
@@ -75,19 +78,24 @@ public class Projectile {
             projectileSprites = darkSprites;
         }
     }
+
+    // Method updates the projectile properties
     public void update(){
         updateSprite();
         updatePos();
     }
+
+    //Updates the motion and (x,y) position of the projectile
     public void updatePos(){
-        //Updates the motion and (x,y) position of the projectile
         if(!exploding){
             // Updating X and Y coordinate
             if(isAngled){
+                // Angled update
                 x += Math.cos(angle) * speed;
                 y += Math.sin(angle) * speed;
             }
             else{
+                // 1D update (only moving in X)
                 x += speed;
             }
             // Updating the time counter and forcing the projectile to explode after a while
@@ -97,21 +105,28 @@ public class Projectile {
             }
         }
     }
+
+    // Method to update the sprite counter of the projectile
     public void updateSprite(){
-        spriteCount += 0.5;
+        spriteCount += 0.5; // Adding to the counter
+        // Checking if the explosion is finished
         if(exploding && spriteCount >= explosionSprites.length){
             doneExploding = true;
         }
+        // Looping through the projectile sprites once limit is hit
         if(spriteCount >= projectileSprites.length){
             spriteCount = 0;
         }
     }
+
+    // Makes the projectile explode and prepares it to be swept up by the garbage collector
     public void explode(){
-        //Makes the projectile explode and prepares it to be swept up by the garbage collector
         exploding = true;
         spriteCount = 0;
     }
+
     // Getter methods
+    // Gets projectile's current sprite
     public Image getSprite(){
         Image sprite;
         int spriteIndex = (int)Math.floor(spriteCount);
@@ -123,9 +138,11 @@ public class Projectile {
             if(direction == RIGHT){
                 sprite = Utilities.flipSprite(sprite);
             }
-            if(isAngled){//Rotating the projectile sprites at the proper coordinate
+            if(isAngled){ //Rotating the projectile sprites at the proper coordinate
+                // Getting width and height of projectile before rotation
                 int noRotHeight = projectileSprites[0].getHeight(null);
                 int noRotWidth = projectileSprites[0].getWidth(null);
+                // Calculating the proper rotation point of the image
                 if(Math.sin(angle) * speed < 0){
                     if(Math.cos(angle) * speed < 0){
                         sprite = Utilities.rotateSprite(sprite,angle,0, noRotHeight);
@@ -142,8 +159,11 @@ public class Projectile {
         }
         return sprite;
     }
+
+    // Method to get the hitbox where the projectile hits entites
     public Rectangle getHitbox(){
         if(isAngled){
+            // Using the calculated hitbox by assignRect
             return new Rectangle(angledRect.x + (int)x, angledRect.y + (int)y, angledRect.width, angledRect.height);
         }
         // Since the area where the projectile applies damage is on the end of the image, offsets must be applied depending on direction
@@ -154,6 +174,7 @@ public class Projectile {
             return new Rectangle((int) x, (int) y, 58, 18);
         }
     }
+
     public double getX(){
         // When exploding, the picture size changes, so the coordinate must change to accommodate
         if(exploding){
@@ -170,6 +191,7 @@ public class Projectile {
         // Returning normal value otherwise
         return x;
     }
+
     public double getY(){
         // When exploding, the picture size changes, so the coordinate must change to accommodate
         if(exploding){
@@ -181,6 +203,7 @@ public class Projectile {
         // Returning normal value otherwise
         return y;
     }
+
     public double getDamage(){return damage;}
     public double getSpeed(){return speed;}
     public boolean isExploding() {return exploding;}

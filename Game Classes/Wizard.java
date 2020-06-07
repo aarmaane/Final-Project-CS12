@@ -1,6 +1,6 @@
-//Wizard.java
-//Armaan Randhawa and Shivan Gaur
-//This program is a subclass of the Enemy class that creates 2 different types of wizard objects
+// Wizard.java
+// Armaan Randhawa and Shivan Gaur
+// Subclass of the Enemy class that creates wizards that shoot projectiles towards the player
 import java.awt.*;
 
 public class Wizard extends Enemy {
@@ -8,19 +8,21 @@ public class Wizard extends Enemy {
     public static final int CAST1 = 1, CAST2 = 2;
     // Fields
     private double attackDelay;
-    private int castType;
+    private int castType; // Type of casting the wizard performs
     // Image Arrays for Sprites
     private static Image[] hurtSprites = new Image[4];
     private static Image[] idleSprites = new Image[6];
     private static Image[] deathSprites = new Image[7];
     private Image[] castSprites = new Image[8];
+
     // Class Initialization
     public static void init(){
         hurtSprites = Utilities.spriteArrayLoad(hurtSprites, "Enemies/Wizard/hurt");
         idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Wizard/idle");
         deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Wizard/death");
     }
-    //Constructor
+
+    // Constructor
     public Wizard(String data){
         super(data);
         String[] dataSplit = data.split(",");
@@ -28,10 +30,10 @@ public class Wizard extends Enemy {
         health = 300 * difficulty;
         maxHealth = health;
         damage = 35*difficulty;
-        castSprites = Utilities.spriteArrayLoad(castSprites, "Enemies/Wizard/cast"+castType+"-");//Not static since it will differ
+        castSprites = Utilities.spriteArrayLoad(castSprites, "Enemies/Wizard/cast"+castType+"-"); // Not static since it will differ
     }
     // General methods
-   @Override
+    @Override
     public void updateMotion(Player player){
         //This method updates the motion of the wizard. The wizard does not move, but he does change direction
        Rectangle playerBox = player.getHitbox();
@@ -67,13 +69,13 @@ public class Wizard extends Enemy {
     public void updateSprite() {
         //Restarting sprite cycles
         if(isHurt){
-            if(health <= 0){
+            if(health <= 0){ // Dying sprites
                 spriteCount += 0.05;
                 if(spriteCount > deathSprites.length){
                     isActive = false;
                 }
             }
-            else{
+            else{ // Hurt sprites
                 spriteCount += 0.08;
                 if(spriteCount > hurtSprites.length){
                     spriteCount = 0;
@@ -81,7 +83,7 @@ public class Wizard extends Enemy {
                 }
             }
         }
-        else if(isAttacking){
+        else if(isAttacking){ // Attacking sprites
             spriteCount += 0.1;
             if(spriteCount > castSprites.length){
                 spriteCount = 0;
@@ -89,13 +91,14 @@ public class Wizard extends Enemy {
                 isAttacking = false;
             }
         }
-        else{
+        else{ // Idle sprites
             spriteCount += 0.07;
             if(spriteCount > idleSprites.length){
                 spriteCount = 0;
             }
         }
     }
+
     @Override
     public boolean isCastFrame(){
         //This method checks whether the wizard is in the cast frame or not and returns a boolean
@@ -137,6 +140,7 @@ public class Wizard extends Enemy {
     public Rectangle getHitbox() {
         return new Rectangle((int)x+90, (int)y+50, 65, 91);
     }
+
     @Override
     //Returns the cast type of the wizard
     public int getCastType(){return castType;}
