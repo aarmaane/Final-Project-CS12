@@ -563,7 +563,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         items.removeIf(item -> (item.isUsed() || item.getHitbox().y > this.getHeight()));
         platforms.removeIf(LevelProp::isDoneDisappearing);
         indicatorText.removeIf(IndicatorText::isDone);
-
+        System.out.println(player.getX());
         // Using for loops for Arrays that need to keep track of removals
         for(int i = enemies.size() - 1; i >= 0; i--){
             Enemy enemy = enemies.get(i);
