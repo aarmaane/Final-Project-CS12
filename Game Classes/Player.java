@@ -273,7 +273,6 @@ public class Player {
 
     // Method to update the Player Object each frame
     public void update(boolean isSpecialLevel){
-        System.out.println(deaths);
         updateMotion();
         updateStamina();
         checkOutOfBounds(isSpecialLevel);
