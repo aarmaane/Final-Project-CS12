@@ -59,7 +59,6 @@ public class MainGame extends JFrame {
         // Running panel setups
         menu.init();
         shop.init();
-        Sound.toggleVolume(); // AUTO MUTE
     }
 
     // Method to switch the current panel on screen
