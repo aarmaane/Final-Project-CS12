@@ -517,8 +517,12 @@ public class Player {
     // Method that restores the health and stamina of the player to 100%
     public void restoreHealth(){
         health = maxHealth;
-        stamina = maxStamina;
         isDying = false;
+    }
+
+    // Method that restores stamina of the player to 100%
+    public void restoreStamina(){
+        stamina = maxStamina;
     }
 
     // Method that calculates and applies the physical attacks inflicted by an enemy

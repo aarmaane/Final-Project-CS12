@@ -16,12 +16,12 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     // Game related fields
     private Player player = new Player();
     private int levelNum, timeLeft;
-    private int levelEndX, levelEndResetX;
-    private int levelOffset = 0;
+    private int levelEndX, levelEndResetX; // Positions of end game loop
+    private int levelOffset = 0; // Offset for level scrolling
     private boolean paused = false;
     // Game state related fields
-    private int barFade = 0, barFadeAddition = 5;
-    private boolean specialEnding, levelEnding, pointsGiven, bossSpawned;
+    private int barFade = 0, barFadeAddition = 5; // Stat bar flashing fields
+    private boolean specialEnding, levelEnding, pointsGiven, bossSpawned; // Level ending flags
     private int endScreenFrames, bonusPoints;
     // Game Images
     private Image staminaBar;
@@ -52,6 +52,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     // Graphics related fields
     private Composite comp;
     private FadeEffect fade = new FadeEffect();
+
     // Constructor for GamePanel
     public GamePanel(MainGame game) throws IOException {
         // Setting up the GamePanel
@@ -78,7 +79,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         Slime.init();
         Skeleton.init();
         Ghost.init();
-        //Wizard.init();
         Fire.init();
         Crystal.init();
         Boss.init();
@@ -149,7 +149,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             for(String data: Utilities.loadFile("Blobs.txt", levelNum)){
                 enemies.add(new Blob(data));
             }
-            //Loading spawners
             for(String data: Utilities.loadFile("Spawners.txt", levelNum)){
                 spawners.add(new Spawner(data));
             }
@@ -163,6 +162,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             e.printStackTrace();
         }
         // Resetting the Player
+        player.restoreStamina();
         if(player.isDead()){
             player.restoreHealth();
         }
@@ -172,7 +172,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         if(Sound.isMuted()){ // Forcing mute if the game is already muted
             levelMusic.forceMute();
         }
-        fade.start(FadeEffect.FADEIN, 3);
+        fade.start(FadeEffect.FADEIN, 3); // Starting fade in
     }
 
     // All window related methods
@@ -198,20 +198,21 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         background.draw(g);
         // Drawing the level
         for(LevelProp platform: platforms){
+            // Only drawing items that are visible on screen
             if(platform.getRect().x + platform.getRect().width - levelOffset > 0 && platform.getRect().x - levelOffset < 960){
                 Rectangle platformRect = platform.getRect();
-                if(platform.isTemporary()){
+                if(platform.isTemporary()){ // Drawing transparency of temporary platforms
                     g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, platform.getSpriteAlpha()));
                     g2d.drawImage(platform.getPropImage(), platformRect.x - levelOffset, platformRect.y, this);
                     g2d.setComposite(comp);
                 }
-                else{
+                else{ // Drawing normal platform image
                     g.drawImage(platform.getPropImage(), platformRect.x - levelOffset, platformRect.y, this);
 
                 }
             }
         }
-        for(LevelProp prop: noCollideProps){
+        for(LevelProp prop: noCollideProps){ // Drawing the props with no collision
             Rectangle propRect = prop.getRect();
             g.drawImage(prop.getPropImage(), propRect.x - levelOffset, propRect.y, this);
         }
@@ -221,20 +222,22 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         }
         // Drawing enemies
         for(Enemy enemy: enemies){
+            // Only drawing items that are visible on screen
             if(enemy.getHitbox().x + enemy.getHitbox().width - levelOffset > 0 && enemy.getHitbox().x - levelOffset < 960){
-                if(enemy.hasAlphaSprites() && !enemy.isDying()){
+                if(enemy.hasAlphaSprites() && !enemy.isDying()){ // Drawing enemies with transparency
                     g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, enemy.getSpriteAlpha()));
                     g2d.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
                     g2d.setComposite(comp);
                 }
-                else{
+                else{ // Drawing normal enemies
                     g.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
                 }
-                enemy.drawHealth(g, levelOffset);
+                enemy.drawHealth(g, levelOffset); // Drawing health bar of enemy
             }
         }
         // Drawing Projectiles
         for(Projectile projectile: projectiles){
+            // Only drawing items that are visible on screen
             if(projectile.getHitbox().x + projectile.getHitbox().width - levelOffset > 0 && projectile.getHitbox().x - levelOffset < 960){
                 g.drawImage(projectile.getSprite(),(int)projectile.getX()-levelOffset, (int)projectile.getY(),this);
             }
@@ -272,6 +275,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                 g.fillRect(59 + i, 83, (int) ((player.getStamina() / player.getMaxStamina()) * 198) - i, 14);
             }
         }
+        // Drawing time left for powerups
         if(player.getHealthTimer() > 0){
             g.setColor(new Color(255,20,200));
             g.drawString(""+player.getHealthTimer(),267,41);
@@ -301,6 +305,8 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             fade.draw(g);
         }
     }
+
+    // Drawing the transparent pause menu on top of the game
     public void drawPause(Graphics g){
         g.setColor(new Color(0,0,0, 100));
         g.fillRect(0, 0, getWidth(), getHeight());
@@ -310,11 +316,14 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         g.setFont(gameFontBig);
         g.drawString("Paused", 400, 300);
     }
+
+    // Drawing the end of level text
     public void drawEnding(Graphics g){
+        // Level complete text
         g.setFont(gameFontBig);
         g.setColor(Color.BLACK);
         g.drawString("Level Complete!", getWidth()/2 - 173, 180);
-        if(endScreenFrames > 200){
+        if(endScreenFrames > 200){ // Once enough time passes, draw the bonus points text
             g.setFont(gameFont);
             String displayString = "Time bonus: " + bonusPoints;
             int stringSize = g.getFontMetrics().stringWidth(displayString);
@@ -331,28 +340,28 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         }
         // Running code for initially clicked keys
         if(!keysPressed[keyCode]){
-            if(keyCode == KeyEvent.VK_M){
+            if(keyCode == KeyEvent.VK_M){ // Mute/Unmute
                 Sound.toggleVolume();
             }
-            else if(keyCode == KeyEvent.VK_ESCAPE){
+            else if(keyCode == KeyEvent.VK_ESCAPE){ // Pause
                 paused = !paused;
                 if(paused){
-                    Sound.pauseAll();
+                    Sound.pauseAll(); // Stopping sound
                     pauseSound.stop(); pauseSound.play();
                 }
                 else{
-                    Sound.resumeAll();
+                    Sound.resumeAll(); // Resuming previously stopped sounds
                 }
                 repaint();
             }
-            else if(!paused && (!levelEnding || specialEnding)){
-                if(keyCode == KeyEvent.VK_SPACE || keyCode == KeyEvent.VK_W){
+            else if(!paused && (!levelEnding || specialEnding)){ // Making sure player can send inputs
+                if(keyCode == KeyEvent.VK_SPACE || keyCode == KeyEvent.VK_W){ // Initial jumping
                     player.jump(Player.INITIAL);
                 }
-                else if(keyCode == KeyEvent.VK_O){
+                else if(keyCode == KeyEvent.VK_O){ // Attacking
                     player.attack();
                 }
-                else if(keyCode == KeyEvent.VK_P){
+                else if(keyCode == KeyEvent.VK_P){ // Magic casting
                     player.castMagic();
                 }
             }
@@ -365,6 +374,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         if(e.getKeyCode() > keysPressed.length){
             return; // If the key entered is unrecognized, ignore this call of keyReleased
         }
+        // Keeping track of whether or not the key is pressed down
         keysPressed[e.getKeyCode()] = false;
     }
     @Override
@@ -373,7 +383,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     public void mouseClicked(MouseEvent e) {}
     @Override
     public void mousePressed(MouseEvent e) {
-        if(!paused && (!levelEnding || specialEnding)){
+        if(!paused && (!levelEnding || specialEnding)){ // Making sure player can send inputs
             // Declaring important variables
             Point mousePos = getMousePosition();
             Rectangle playerHitbox = player.getHitbox();
@@ -404,12 +414,13 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     public void mouseExited(MouseEvent e) { }
 
     // Game related methods
+    // Method that updates all game objects
     public void update(){
-        // Updating all Objects
-        player.update(specialEnding);
-        indicatorText.addAll(player.flushTextQueue());
+        player.update(specialEnding); // Updating player
+        indicatorText.addAll(player.flushTextQueue()); // Taking indicator texts out from the player
+        // Updating enemies
         for(Enemy enemy: enemies){
-            if(enemy.isActive()){
+            if(enemy.isActive()){ // Only update active enemies
                 enemy.update(player);
                 checkEnemyCast(enemy);
             }
@@ -437,15 +448,19 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                 spawnEnemy(spawner);
             }
         }
-        // Updating objects
+        // Updating general game status
         checkPlayerAction();
         collectGarbage();
     }
+
+    // Method that spawns an enemy from a spawner object
     public void spawnEnemy(Spawner spawner){
         if(Math.abs(player.getX()-spawner.getSpawnX()) <= 700){
             enemies.add(spawner.spawnEnemy());
         }
     }
+
+    // Method that updates special level props
     public void updateProp(LevelProp prop){
         // Checking if it's temporary and needs to disappear
         if(prop.isTemporary() && player.getX() > prop.getDisappearX() && player.getY() > prop.getDisappearY()){
@@ -456,11 +471,15 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             prop.updateMovement();
         }
     }
+
+    // Method that activates enemies that are close to the player
     public void checkActivation(Enemy enemy){
         if(!enemy.isDying() && Math.abs(enemy.getHitbox().x - player.getHitbox().x) < 1000){
             enemy.activate();
         }
     }
+
+    // Method that checks for any actions that the player will perform
     public void checkPlayerAction(){
         // Checking if the Player has used their sword attack
         if(player.isAttackFrame()){ // Checking if this is the frame where attacks land
@@ -470,6 +489,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             // Going through each enemy and checking for collisions
             for(Enemy enemy:enemies){
                 if(player.getAttackBox().intersects(enemy.getHitbox()) && !enemy.isDying()){
+                    // Dealing damage and making a indicator text to display damage dealt
                     double damageDone = enemy.swordHit(player);
                     damageDone = Utilities.roundOff(damageDone, 1);
                     player.addPoints(player.getSwordDamage());
@@ -488,13 +508,13 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             int speed = 5;
             int xPos = attackBox.x;
             // Creating the projectile
-            if(player.hasAngledCast()){
+            if(player.hasAngledCast()){ // Angled projectile
                 if(player.getDirection() == Player.LEFT){
                     xPos = (int)attackBox.getMaxX() - 20;
                 }
                 projectiles.add(new Projectile(Projectile.PLAYER, xPos ,hitBox.y + hitBox.height / 2.0 - 5 ,player.getCastTargetX(),player.getCastTargetY(),player.getCastDamage(),speed));
             }
-            else {
+            else { // Straight projectile
                 if(player.getDirection() == Player.RIGHT){
                     xPos -= 120;
                 }
@@ -503,20 +523,25 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                 }
                 projectiles.add(new Projectile(Projectile.PLAYER, xPos, hitBox.y + hitBox.height / 2.0 - 5, player.getCastDamage(), speed));
             }
-            castSound.play();
+            castSound.play(); // Playing cast sound
         }
         // Check if the player is dead
-        if(player.isDead() && !fade.isActive()){
+        if(player.isDead() && !fade.isActive()){ // Fade out death
             fade.start(FadeEffect.FADEOUT, 1);
         }
-        if(player.getHitbox().y > getHeight() && player.getHealth() > 0){
+        if(player.getHitbox().y > getHeight() && player.getHealth() > 0){ // Player falls off screen
             player.kill();
         }
     }
+
+    // Method to check if an enemy has produced a cast
     public void checkEnemyCast(Enemy enemy){
+        // Only certain enemies can cast
         if(enemy.isCastFrame()){
+            // Declaring hitboxes
             Rectangle wizardHitBox = enemy.getHitbox();
             Rectangle playerHitbox = player.getHitbox();
+            // Setting up projectile fields
             int startX = wizardHitBox.x - 10;
             int speed = 2;
             String spriteType  = enemy.getSpriteType();
@@ -530,12 +555,13 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             if(enemy.getDirection() == Enemy.RIGHT){
                 startX = wizardHitBox.x + wizardHitBox.width + 10;
             }
+            // Creating the appropriate cast
             if(enemy.getCastType() == Wizard.CAST2){
                 projectiles.add(new Projectile(projectileType, startX, wizardHitBox.y, playerHitbox.x, playerHitbox.y, enemy.getDamage(), speed));
                 castSound.play();
             }
             else if(enemy.getCastType() == Wizard.CAST1){
-
+                // Making ten random casts towards the player
                 for(int i = 0; i < 10; i++){
                     projectiles.add(new Projectile(projectileType, playerHitbox.x+Utilities.randint(-450,450), 0, playerHitbox.x+Utilities.randint(-150,150), 590, enemy.getDamage(), speed));
                     castSound.play();
@@ -543,6 +569,8 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             }
         }
     }
+
+    // Method that removes objects that are no longer in use
     public void collectGarbage(){
         // Using removeIf for Arrays that only need removal of items
         projectiles.removeIf(Projectile::isDoneExploding);
@@ -552,39 +580,43 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         // Using for loops for Arrays that need to keep track of removals
         for(int i = enemies.size() - 1; i >= 0; i--){
             Enemy enemy = enemies.get(i);
-            if(enemy.isDead()){
-                enemies.remove(i);
+            if(enemy.isDead()){ // If player kills the enemy
+                enemies.remove(i); // Deleting enemy
                 if(!enemy.hasLimitedTime()) {
+                    // Giving points
                     player.addPoints(150 * enemy.getDifficulty());
                     indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "+100", Color.YELLOW));
                 }
-
             }
-            else if(enemy.getY() > this.getHeight()){
-                enemies.remove(i);
+            else if(enemy.getY() > this.getHeight()){ // If the enemy falls off screen
+                enemies.remove(i); // Deleting enemy
                 if(enemy.hasOutOfBoundsPoints()){
+                    // Giving points
                     player.addPoints(100);
                     indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "+100", Color.YELLOW));
                 }
             }
         }
     }
+
+    // Method to check collisions between game objects
     public void checkCollision(){
         // Checking collision with Level platforms
         for(LevelProp platform: platforms){
-            player.checkCollision(platform);
-            for(Enemy enemy: enemies){
+            player.checkCollision(platform); // Player collision
+            for(Enemy enemy: enemies){ // Enemy collision
                 enemy.checkCollision(platform);
             }
-            for(Item item: items){
+            for(Item item: items){ // Item collision
                 item.checkCollision(platform);
             }
         }
         // Checking projectile collision
         for(Projectile projectile:projectiles){
             for(Enemy enemy:enemies) {
-                if(projectile.getType() == Projectile.PLAYER) {
+                if(projectile.getType() == Projectile.PLAYER) { // Checking if player casts are hitting enemies
                     if (!enemy.isDying() && !projectile.isExploding() && enemy.getHitbox().intersects(projectile.getHitbox())) {
+                        // Dealing damage, creating indicator text, playing sound
                         double damageDone = enemy.castHit(projectile);
                         damageDone = Utilities.roundOff(damageDone, 1);
                         player.addPoints((int) projectile.getDamage());
@@ -595,8 +627,9 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
 
                     }
                 }
-                else{
+                else{ // Checking if enemy casts are hitting the player
                     if (!projectile.isExploding() && player.getHitbox().intersects(projectile.getHitbox())) {
+                        // Dealing damage, creating indicator text, playing sound
                         player.castHit(projectile);
                         projectile.explode();
                         castHitSound.stop();
@@ -608,10 +641,13 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         //Checking item collision
         Rectangle playerHitbox = player.getHitbox();
         for(Item item: items){
+            // Checking if the player is picking up an item
             if(item.getHitbox().intersects(playerHitbox) && item.isSettled()) {
+                // Running item routines
                 player.gainItem(item);
                 item.use();
                 item.playSound();
+                // Creating appropriate indicator text
                 if(item.getType() == Item.HEALTH){
                     indicatorText.add(new IndicatorText(playerHitbox.x, playerHitbox.y, "+10", Color.GREEN));
                 }
@@ -626,8 +662,10 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         // Checking chest collision
         for(Chest chest: chests){
             Rectangle chestHitbox = chest.getHitbox();
+            // Checking if player' s feet are on the chest and the chest is still closed
             if(chest.isClosed() && playerHitbox.intersects(chestHitbox) && (playerHitbox.y + playerHitbox.height) == (chestHitbox.y + chestHitbox.height)){
                 chest.open();
+                // Generating items
                 for(int i = 0; i < chest.getQuantity(); i++){
                     items.add(new Item(chest));
                 }
@@ -635,28 +673,31 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         }
         // Checking if the player has reached the end of the level
         if(specialEnding){ // Checking if a special ending level is finished
-             if(!bossSpawned && enemies.size() == 1){
+             if(!bossSpawned && enemies.size() == 1){ // When only the special wizard is left
                  // Spawning the boss
                  enemies.clear();
                  enemies.add(new Boss("500,-300,20"));
                  bossSpawned = true;
              }
-             else if(bossSpawned && enemies.size() == 0){
+             else if(bossSpawned && enemies.size() == 0){ // When the boss is killed
                  // Finishing the level
                  levelEnding = true;
              }
         }
-        else if(!levelEnding && playerHitbox.x > levelEndX){
+        else if(!levelEnding && playerHitbox.x > levelEndX){ // Checking if the player has reached the level ending start point
+            // Starting level end routines
             levelEnding = true;
             background.ignoreNegative();
             enemies.clear();
         }
-        else if(playerHitbox.x > levelEndResetX){
+        else if(playerHitbox.x > levelEndResetX){ // Resetting the player in the level ending loop so it plays smoothly
             int overshoot = levelEndResetX - playerHitbox.x;
             player.setPos(levelEndX + overshoot, (int)player.getY());
-            calculateOffset();
+            calculateOffset(); // Recalculating offset due to sudden movement
         }
     }
+
+    // Method that updates the graphics related objects
     public void updateGraphics(){
         changeFade();
         calculateOffset();
@@ -665,59 +706,68 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             updateLevelEnd();
         }
     }
+
+    // Updating and checking the level fade
     public void changeFade(){
         if(fade.isActive()){
-            fade.update();
+            fade.update(); // Updating the fade object
             if(fade.isDoneFadeOut()){
                 levelMusic.stop();
-                if(levelNum < 5 || player.isDead()){
+                // Sending the player to another panel
+                if(levelNum < 5 || player.isDead()){ // Sending the user to the shop for next level prep
                     gameFrame.switchPanel(MainGame.SHOPPANEL);
                 }
-                else{
+                else{ // Sending the player to the endpanel since it's the last level
                     gameFrame.switchPanel(MainGame.ENDPANEL);
                 }
             }
         }
         // Allowing the powerup fade to continue
         barFade += barFadeAddition;
-        if(barFade == 0 || barFade == 255){
+        if(barFade == 0 || barFade == 255){ // Reversing fade direction
             barFadeAddition *= -1;
         }
     }
+
+    // Method that calculates the scrolling offset
     public void calculateOffset(){
         Rectangle hitbox = player.getHitbox();
-        if(hitbox.x + hitbox.width > 480 && !specialEnding){
+        if(hitbox.x + hitbox.width > 480 && !specialEnding){ // No scrolling during first part of level and special level
             levelOffset = (hitbox.x + hitbox.width) - 480;
         }
         else{
             levelOffset = 0;
         }
     }
+
+    // Method that updates the level end routines
     public void updateLevelEnd(){
-        endScreenFrames++;
+        endScreenFrames++; // Updating counter
         if(endScreenFrames > 200){
-            if(timeLeft > 0){
+            if(timeLeft > 0){ // Updating the bonus points field
                 timeLeft--;
                 bonusPoints += 10;
             }
-            else if(!pointsGiven){
+            else if(!pointsGiven){ // Giving the bonus points to the player
                 pointsGiven = true;
                 player.addPoints(bonusPoints);
                 indicatorText.add(new IndicatorText((int)player.getX(),(int)player.getY(), "+"+bonusPoints, Color.YELLOW));
             }
         }
-        if(endScreenFrames == 600){
+        if(endScreenFrames == 600){ // Starting the fade out so the level ends
             fade.start(FadeEffect.FADEOUT, 1);
         }
     }
+
+    // Method that checks for user keyboard input
     public void checkInputs(){
-        if(levelEnding && !specialEnding){
+        if(levelEnding && !specialEnding){ // Forcing inputs during level end (not for special level)
             player.unCrouch(); // Undoing any crouch applied before the level end
             player.move(Player.RIGHT);
             return;
         }
         // Side-to-side movement inputs
-        if(!(keysPressed[KeyEvent.VK_D] && keysPressed[KeyEvent.VK_A])){
+        if(!(keysPressed[KeyEvent.VK_D] && keysPressed[KeyEvent.VK_A])){ // Not allowing both inputs at once
             if(keysPressed[KeyEvent.VK_D]){
                 player.move(Player.RIGHT);
             }
@@ -729,7 +779,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         if(keysPressed[KeyEvent.VK_S]){
             player.crouch();
         }
-        else{
+        else{ // Undoing crouching flags
             player.unCrouch();
         }
         // Jumping input
@@ -741,10 +791,13 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             player.sprint();
         }
     }
+
+    // Method that keeps track of time for game objects (should be called every second)
     public void iterateTime(){
-        if(!levelEnding){
+        if(!levelEnding){ // Updating game timer
             timeLeft-=1;
         }
+        // Updating game entity timers
         player.iterateTime();
         for(Enemy enemy: enemies){
             enemy.iterateTime();
