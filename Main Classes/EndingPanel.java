@@ -1,9 +1,14 @@
+// EndingPanel.java
+// Armaan Randhawa and Shivan Gaur
+// Panel that displays the players stats to them and acts as the gateway back to the main menu
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class EndingPanel extends JPanel {
+    // Panel-related fields
     private MainGame gameFrame;
     private GamePanel game;
     private Player player;
@@ -15,7 +20,7 @@ public class EndingPanel extends JPanel {
     private int scrollOffset = 0;
     private int screenWidth, platformsX1, platformsX2;
     // Stats related fields
-    private Font gameFont, gameFontBig, gameFontGiant, gameFontMark;
+    private Font gameFont, gameFontBig, gameFontGiant, gameFontMark; // Fonts
     private int frameNum, pointsCounter;
     private double deathCounter;
     private Color markColor;
@@ -25,6 +30,7 @@ public class EndingPanel extends JPanel {
     private Button exitButton;
     // Music
     private Sound endingMusic = new Sound("Assets/Sounds/Music/gameEnd.wav", 85);
+
     // Constructor
     public EndingPanel(MainGame frame){
         gameFrame = frame;
@@ -33,7 +39,7 @@ public class EndingPanel extends JPanel {
         gameFontBig = gameFont.deriveFont(60f);
         gameFontGiant = gameFont.deriveFont(70f);
         gameFontMark = gameFont.deriveFont(150f);
-        player = game.getPlayer();
+        player = game.getPlayer(); // Getting the player from gamepanel
         setSize(960,590);
         setLayout(null);
         // Setting up background animation
@@ -53,13 +59,15 @@ public class EndingPanel extends JPanel {
         // Drawing exit button
         if(exitButton != null){
             exitButton.draw(g);
-            g.drawRect(getWidth()/2 - 100, getHeight() - 100, 200, 50);
         }
+        // Drawing the stats and fade
         drawStats(g);
         fade.draw(g);
     }
 
+    // Method that displays the players stats according to the frameNum counter
     public void drawStats(Graphics g){
+        // Displaying level complete text
         g.setFont(gameFontBig);
         if(frameNum % 100 < 50){
             g.setColor(Color.CYAN);
@@ -69,12 +77,14 @@ public class EndingPanel extends JPanel {
         }
         g.drawString("Quest Complete!", getWidth()/2 - 207, 40);
         g.setFont(gameFont);
+        // Displaying final points
         if(frameNum > 200){
             g.setColor(Color.GREEN);
             String drawnString = "Final Points: " + pointsCounter;
             int stringWidth = g.getFontMetrics().stringWidth(drawnString);
             g.drawString(drawnString, getWidth()/2 - stringWidth/2, 80);
         }
+        // Displaying deaths and mark
         if(frameNum > 400){
             // Deaths
             g.setColor(Color.RED);
@@ -91,6 +101,7 @@ public class EndingPanel extends JPanel {
             g.drawString(mark, getWidth()/2 - 37, 380);
         }
     }
+
     // Method to update the general graphics and sound of the panel
     public void update(){
         // Making sure that the music is always looping
@@ -103,9 +114,10 @@ public class EndingPanel extends JPanel {
         // Checking if the fade is done and updating it
         fade.update();
         if(fade.isDoneFadeOut()){
+            // Sending the user to the main menu when fade's done
             gameFrame.switchPanel(MainGame.MENUPANEL);
             endingMusic.stop();
-            game.resetGame();
+            game.resetGame(); // Resetting the game
             fade = new FadeEffect(); // Resetting fade for next time
         }
         // Updating the dummy player
@@ -136,9 +148,10 @@ public class EndingPanel extends JPanel {
     // Method to update the stats display
     public void updateStats() {
         frameNum++;
+        // Incrementing the final points variable
         if (frameNum > 200) {
             if (pointsCounter < player.getPoints()) {
-                for(int i = 0; i < player.getPoints()/1000.0; i++){
+                for(int i = 0; i < player.getPoints()/1000.0; i++){ // Scaling the addition to force a time of 1000 frames
                     pointsCounter++;
                 }
             }
@@ -146,14 +159,16 @@ public class EndingPanel extends JPanel {
                 pointsCounter = player.getPoints();
             }
         }
+        // Incrementing the deaths variable
         if (frameNum > 400) {
             if(deathCounter < player.getDeaths()){
-                deathCounter += player.getDeaths()/600.0;
+                deathCounter += player.getDeaths()/600.0; // Scaling the addition to force a time of 600 frames
             }
             else {
                 deathCounter = player.getDeaths();
             }
         }
+        // Calculating the mark
         if(frameNum > 400){
             double pointsPerDeath = pointsCounter/(deathCounter + 1);
             if(pointsPerDeath >= 10000){
@@ -181,6 +196,7 @@ public class EndingPanel extends JPanel {
                 markColor = Color.RED;
             }
         }
+        // Showing the exit button when the increments are done
         if(pointsCounter == player.getPoints() && Math.floor(deathCounter) == player.getDeaths() && !buttonAdded){
             buttonAdded = true;
             exitButton = new Button(new Rectangle(getWidth()/2 - 100, getHeight() - 100, 200, 50), "Return to Menu", 35);
@@ -189,10 +205,12 @@ public class EndingPanel extends JPanel {
             exitButton.addActionListener(new ButtonListener());
         }
     }
+
+    // Button listener class
     public class ButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getActionCommand().equals("Exit")){
+            if(e.getActionCommand().equals("Exit")){ // Starting the fade so the player can be sent to the main menu
                 fade.start(FadeEffect.FADEOUT, 1);
             }
         }
