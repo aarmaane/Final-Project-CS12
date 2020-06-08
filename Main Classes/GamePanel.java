@@ -16,6 +16,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     // Game related fields
     private Player player = new Player();
     private int levelNum, timeLeft;
+    private int levelPoints;
     private int levelEndX, levelEndResetX; // Positions of end game loop
     private int levelOffset = 0; // Offset for level scrolling
     private boolean paused = false;
@@ -165,7 +166,10 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         player.restoreStamina();
         if(player.isDead()){
             player.restoreHealth();
+            player.removeLevelPoints(levelPoints);
+            player.pointPenalty();
         }
+        levelPoints = 0;
         player.resetPos(0 ,-112);
         // Resetting music
         levelMusic.play();
@@ -493,6 +497,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                     double damageDone = enemy.swordHit(player);
                     damageDone = Utilities.roundOff(damageDone, 1);
                     player.addPoints(player.getSwordDamage());
+                    levelPoints+=player.getSwordDamage();
                     indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "-" + damageDone, Color.ORANGE));
                     int randomHitIndex = Utilities.randint(0,2);
                     hitSounds[randomHitIndex].stop();
@@ -585,6 +590,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                 if(!enemy.hasLimitedTime()) {
                     // Giving points
                     player.addPoints(150 * enemy.getDifficulty());
+                    levelPoints+=150*enemy.getDifficulty();
                     indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "+100", Color.YELLOW));
                 }
             }
@@ -593,6 +599,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                 if(enemy.hasOutOfBoundsPoints()){
                     // Giving points
                     player.addPoints(100);
+                    levelPoints+=100;
                     indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "+100", Color.YELLOW));
                 }
             }
@@ -620,6 +627,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                         double damageDone = enemy.castHit(projectile);
                         damageDone = Utilities.roundOff(damageDone, 1);
                         player.addPoints((int) projectile.getDamage());
+                        levelPoints+=projectile.getDamage();
                         projectile.explode();
                         castHitSound.stop();
                         castHitSound.play();
@@ -751,6 +759,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             else if(!pointsGiven){ // Giving the bonus points to the player
                 pointsGiven = true;
                 player.addPoints(bonusPoints);
+                levelPoints+=bonusPoints;
                 indicatorText.add(new IndicatorText((int)player.getX(),(int)player.getY(), "+"+bonusPoints, Color.YELLOW));
             }
         }
@@ -794,6 +803,9 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
 
     // Method that keeps track of time for game objects (should be called every second)
     public void iterateTime(){
+        if(timeLeft==0){
+            player.kill();
+        }
         if(!levelEnding){ // Updating game timer
             timeLeft-=1;
         }

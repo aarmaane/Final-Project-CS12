@@ -63,8 +63,8 @@ public class ShopPanel extends JPanel {
         Button enableDoubleJump = new Button(new Rectangle(getWidth() - 300, 100, 300, 50), "Double Jump", 35);
         Button enableHyperSpeed = new Button(new Rectangle(getWidth() - 300, 200, 300, 50), "Hyperspeed", 35);
         // REMOVE LATER
-        Button freePoints = new Button(new Rectangle(0, 0, 200, 100), "Give 100", 35);
-        buttons.add(freePoints);
+        //Button freePoints = new Button(new Rectangle(0, 0, 200, 100), "Give 100", 35);
+        //buttons.add(freePoints);
         // Setting up Button Array
         buttons.add(continueButton);
         buttons.add(swordUpgrade);
@@ -212,47 +212,47 @@ public class ShopPanel extends JPanel {
                     shopMusic.stop();
                     break;
                 case "Upgrade Sword":
-                    if (player.getSwordUpgradeNum() < 8 && canBuy(100)) {
+                    if (player.getSwordUpgradeNum() < 8 && canBuy(1000)) {
                         dummy.attack();
                         player.upgradeSword();
                     }
                     break;
                 case "Upgrade Cast":
-                    if (player.getCastUpgradeNum() < 8 && canBuy(100)) {
+                    if (player.getCastUpgradeNum() < 8 && canBuy(1000)) {
                         dummy.castMagic();
                         player.upgradeCast();
                     }
                     break;
                 case "Upgrade Health":
-                    if (player.getHealthUpgradeNum() < 8 && canBuy(100)) {
+                    if (player.getHealthUpgradeNum() < 8 && canBuy(1000)) {
                         player.upgradeHealth();
                     }
                     break;
                 case "Upgrade Stamina":
-                    if (player.getStaminaUpgradeNum() < 8 && canBuy(100)) {
+                    if (player.getStaminaUpgradeNum() < 8 && canBuy(1000)) {
                         player.upgradeStamina();
                     }
                     break;
                 case "Double Jump":
-                    if (!player.hasDoubleJump() && canBuy(100)) {
+                    if (!player.hasDoubleJump() && canBuy(7500)) {
                         player.enableDoubleJump();
                         checks[0] = true;
                     }
                     break;
                 case "Hyperspeed":
-                    if (!player.hasHyperspeed() && canBuy(100)) {
+                    if (!player.hasHyperspeed() && canBuy(7500)) {
                         player.enableHyperspeed();
                         checks[1] = true;
                     }
                     break;
                 case "Instant Cast":
-                    if (!player.hasInstantCast() && canBuy(100)) {
+                    if (!player.hasInstantCast() && canBuy(7500)) {
                         player.enableInstantCast();
                         checks[2] = true;
                     }
                     break;
                 case "Cast Scope":
-                    if (!player.hasCastScope() && canBuy(100)) {
+                    if (!player.hasCastScope() && canBuy(7500)) {
                         player.enableCastScope();
                         checks[3] = true;
                     }

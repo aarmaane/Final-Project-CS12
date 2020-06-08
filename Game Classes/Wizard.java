@@ -57,7 +57,7 @@ public class Wizard extends Enemy {
         if(Math.abs(player.getX()-x)<1000) {
             if (!isAttacking){
                 if(castType == CAST1) {// Cast1 is much more difficult so the delay is longer
-                    attackDelay += 0.005 * difficulty;
+                    attackDelay += 0.01 * difficulty;
                 }
                 else if(castType == CAST2) {//Delay is 10x shorter for cast2
                     attackDelay += 0.05 * difficulty;

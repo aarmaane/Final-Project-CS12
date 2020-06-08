@@ -581,6 +581,12 @@ public class Player {
         isDying = true;
         velocityX = 0;
     }
+    public void pointPenalty(){
+        points = (int)0.75*points;
+    }
+    public void removeLevelPoints(int levelPoints){
+        points-= levelPoints;
+    }
 
     // Returns and clears all of the indicator texts held by the player
     public ArrayList<IndicatorText> flushTextQueue(){
@@ -749,37 +755,37 @@ public class Player {
     public void upgradeSword(){
         swordUpgradeNum++;
         swordDamage *= 1.5;
-        points -= 100;
+        points -= 1000;
     }
     public void upgradeCast(){
         castUpgradeNum++;
         castDamage *= 1.5;
-        points -= 100;
+        points -= 1000;
     }
     public void upgradeHealth(){
         healthUpgradeNum++;
         maxHealth *= 1.25;
-        points -= 100;
+        points -= 1000;
     }
     public void upgradeStamina(){
         staminaUpgradeNum++;
         maxStamina *= 1.25;
-        points -= 100;
+        points -= 1000;
     }
     public void enableCastScope(){
         hasCastScope = true;
-        points -= 100;
+        points -= 7500;
     }
     public void enableInstantCast(){
         hasInstantCast = true;
-        points -= 100;
+        points -= 7500;
     }
     public void enableDoubleJump(){
         hasDoubleJump = true;
-        points -= 100;
+        points -= 7500;
     }
     public void enableHyperspeed(){
         hasHyperspeed = true;
-        points -= 100;
+        points -= 7500;
     }
 }
