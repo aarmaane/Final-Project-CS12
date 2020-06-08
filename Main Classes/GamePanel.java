@@ -183,12 +183,10 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     public void addNotify() {
         super.addNotify();
         requestFocus();
-        System.out.println("add notfiy");
     }
     public void removeNotify(){
         super.removeNotify();
         paused = true;
-        System.out.println("remove notify");
     }
     public void paintComponent(Graphics g){
         // Setting up Graphics2D

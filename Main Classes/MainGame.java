@@ -27,7 +27,7 @@ public class MainGame extends JFrame {
     private Timer myTimer; // Timer to call the game functions each frame
     private int runTime; // Variable to keep track of the milliseconds that have passed since the start of the game
     public MainGame() throws IOException {
-        super("Game"); // Setting the title
+        super("Quest of Embers"); // Setting the title
         // Initalizing Main Classes
         Button.init();
         // Creating the JPanels for the game

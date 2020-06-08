@@ -1,10 +1,13 @@
 // MainMenu.java
 // Armaan Randhawa and Shivan Gaur
 // JPanel that holds the main menu. Shows instructions and allows the user to start the game
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainMenu extends JPanel {
@@ -13,6 +16,7 @@ public class MainMenu extends JPanel {
     private GamePanel game;
     private Sound menuMusic = new Sound("Assets/Sounds/Music/menu.wav", 80);
     private FadeEffect fade = new FadeEffect();
+    private Image title;
     // Buttons
     private ArrayList<Button> buttons = new ArrayList<>();
     private ArrayList<Button> instructButtons = new ArrayList<>();
@@ -37,6 +41,13 @@ public class MainMenu extends JPanel {
         // Setting up background animation
         screenWidth = 960;
         dummy.resetPos(0,366);
+        // Loading title
+        try{
+            title = ImageIO.read(new File("Assets/Images/Main Menu/title.png"));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //Initialization
@@ -84,6 +95,7 @@ public class MainMenu extends JPanel {
             for(Button button: buttons){
                 button.draw(g);
             }
+            g.drawImage(title, getWidth()/2 - 360, 100, this);
         }
         // Drawing the fade (when the player clicks play)
         fade.draw(g);
