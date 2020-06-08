@@ -581,9 +581,7 @@ public class Player {
         isDying = true;
         velocityX = 0;
     }
-    public void pointPenalty(){
-        points = (int)0.75*points;
-    }
+
     public void removeLevelPoints(int levelPoints){
         points-= levelPoints;
     }
