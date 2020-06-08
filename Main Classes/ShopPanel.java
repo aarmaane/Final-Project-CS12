@@ -211,47 +211,47 @@ public class ShopPanel extends JPanel {
                     shopMusic.stop();
                     break;
                 case "Upgrade Sword":
-                    if (player.getSwordUpgradeNum() < 8 && canBuy(1000)) {
+                    if (player.getSwordUpgradeNum() < 8 && canBuy(500)) {
                         dummy.attack();
                         player.upgradeSword();
                     }
                     break;
                 case "Upgrade Cast":
-                    if (player.getCastUpgradeNum() < 8 && canBuy(1000)) {
+                    if (player.getCastUpgradeNum() < 8 && canBuy(500)) {
                         dummy.castMagic();
                         player.upgradeCast();
                     }
                     break;
                 case "Upgrade Health":
-                    if (player.getHealthUpgradeNum() < 8 && canBuy(1000)) {
+                    if (player.getHealthUpgradeNum() < 8 && canBuy(500)) {
                         player.upgradeHealth();
                     }
                     break;
                 case "Upgrade Stamina":
-                    if (player.getStaminaUpgradeNum() < 8 && canBuy(1000)) {
+                    if (player.getStaminaUpgradeNum() < 8 && canBuy(500)) {
                         player.upgradeStamina();
                     }
                     break;
                 case "Double Jump":
-                    if (!player.hasDoubleJump() && canBuy(7500)) {
+                    if (!player.hasDoubleJump() && canBuy(1500)) {
                         player.enableDoubleJump();
                         checks[0] = true;
                     }
                     break;
                 case "Hyperspeed":
-                    if (!player.hasHyperspeed() && canBuy(7500)) {
+                    if (!player.hasHyperspeed() && canBuy(1500)) {
                         player.enableHyperspeed();
                         checks[1] = true;
                     }
                     break;
                 case "Instant Cast":
-                    if (!player.hasInstantCast() && canBuy(7500)) {
+                    if (!player.hasInstantCast() && canBuy(1500)) {
                         player.enableInstantCast();
                         checks[2] = true;
                     }
                     break;
                 case "Cast Scope":
-                    if (!player.hasCastScope() && canBuy(7500)) {
+                    if (!player.hasCastScope() && canBuy(1500)) {
                         player.enableCastScope();
                         checks[3] = true;
                     }

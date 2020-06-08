@@ -755,37 +755,37 @@ public class Player {
     public void upgradeSword(){
         swordUpgradeNum++;
         swordDamage *= 1.5;
-        points -= 1000;
+        points -= 500;
     }
     public void upgradeCast(){
         castUpgradeNum++;
         castDamage *= 1.5;
-        points -= 1000;
+        points -= 500;
     }
     public void upgradeHealth(){
         healthUpgradeNum++;
         maxHealth *= 1.25;
-        points -= 1000;
+        points -= 500;
     }
     public void upgradeStamina(){
         staminaUpgradeNum++;
         maxStamina *= 1.25;
-        points -= 1000;
+        points -= 500;
     }
     public void enableCastScope(){
         hasCastScope = true;
-        points -= 7500;
+        points -= 2500;
     }
     public void enableInstantCast(){
         hasInstantCast = true;
-        points -= 7500;
+        points -= 2500;
     }
     public void enableDoubleJump(){
         hasDoubleJump = true;
-        points -= 7500;
+        points -= 2500;
     }
     public void enableHyperspeed(){
         hasHyperspeed = true;
-        points -= 7500;
+        points -= 2500;
     }
 }

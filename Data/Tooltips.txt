@@ -1,8 +1,8 @@
-1000,Increase the amount of damage your sword deals
-1000,Increase your maximum health
-1000,Increase the maximum amount of stamina you have
-1000,Increase the amount of damage each cast deals
-1000,Casts will go in the direction of your mouse when you left-click
-1000,Reduce casting time to a fraction of a second
-1000,Gain an extra midair jump that can help you access higher platforms
-1000,Hold down shift to use your stamina and enter hyperspeed
+500,Increase the amount of damage your sword deals
+500,Increase your maximum health
+500,Increase the maximum amount of stamina you have
+500,Increase the amount of damage each cast deals
+1500,Casts will go in the direction of your mouse when you left-click
+1500,Reduce casting time to a fraction of a second
+1500,Gain an extra midair jump that can help you access higher platforms
+1500,Hold down shift to use your stamina and enter hyperspeed

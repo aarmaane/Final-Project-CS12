@@ -167,7 +167,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         if(player.isDead()){
             player.restoreHealth();
             player.removeLevelPoints(levelPoints);
-            player.pointPenalty();
+            //player.pointPenalty();
         }
         levelPoints = 0;
         player.resetPos(0 ,-112);
