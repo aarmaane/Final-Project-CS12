@@ -772,18 +772,18 @@ public class Player {
     }
     public void enableCastScope(){
         hasCastScope = true;
-        points -= 2500;
+        points -= 1500;
     }
     public void enableInstantCast(){
         hasInstantCast = true;
-        points -= 2500;
+        points -= 1500;
     }
     public void enableDoubleJump(){
         hasDoubleJump = true;
-        points -= 2500;
+        points -= 1500;
     }
     public void enableHyperspeed(){
         hasHyperspeed = true;
-        points -= 2500;
+        points -= 1500;
     }
 }
