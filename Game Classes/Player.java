@@ -725,6 +725,7 @@ public class Player {
     public boolean hasInstantCast() {return hasInstantCast;}
     public boolean hasDoubleJump() {return hasDoubleJump;}
     public boolean hasHyperspeed() {return hasHyperspeed;}
+    public int getDeaths() {return deaths;}
 
 
     public boolean isDead(){

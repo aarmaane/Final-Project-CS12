@@ -32,7 +32,6 @@ public class Wizard extends Enemy {
         }
         maxHealth = health;
         damage = 35*difficulty;
-        System.out.println(dataSplit);
         hurtSprites = Utilities.spriteArrayLoad(hurtSprites, "Enemies/Wizard/"+spriteType+"hurt");
         idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Wizard/"+spriteType+"idle");
         deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Wizard/"+spriteType+"death");

@@ -149,9 +149,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             for(String data: Utilities.loadFile("Blobs.txt", levelNum)){
                 enemies.add(new Blob(data));
             }
-            for(String data: Utilities.loadFile("Boss.txt", levelNum)){
-                enemies.add(new Boss(data));
-            }
             //Loading spawners
             for(String data: Utilities.loadFile("Spawners.txt", levelNum)){
                 spawners.add(new Spawner(data));
@@ -349,7 +346,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                 repaint();
             }
             else if(!paused && (!levelEnding || specialEnding)){
-                if(keyCode == KeyEvent.VK_SPACE){
+                if(keyCode == KeyEvent.VK_SPACE || keyCode == KeyEvent.VK_W){
                     player.jump(Player.INITIAL);
                 }
                 else if(keyCode == KeyEvent.VK_O){
@@ -637,13 +634,14 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             }
         }
         // Checking if the player has reached the end of the level
-        if(specialEnding && enemies.size() == 0){ // Checking if a special ending level is finished
-             if(!bossSpawned){
+        if(specialEnding){ // Checking if a special ending level is finished
+             if(!bossSpawned && enemies.size() == 1){
                  // Spawning the boss
+                 enemies.clear();
                  enemies.add(new Boss("500,-300,20"));
                  bossSpawned = true;
              }
-             else{
+             else if(bossSpawned && enemies.size() == 0){
                  // Finishing the level
                  levelEnding = true;
              }
@@ -672,7 +670,12 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             fade.update();
             if(fade.isDoneFadeOut()){
                 levelMusic.stop();
-                gameFrame.switchPanel(MainGame.SHOPPANEL);
+                if(levelNum < 5 || player.isDead()){
+                    gameFrame.switchPanel(MainGame.SHOPPANEL);
+                }
+                else{
+                    gameFrame.switchPanel(MainGame.ENDPANEL);
+                }
             }
         }
         // Allowing the powerup fade to continue
@@ -730,7 +733,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             player.unCrouch();
         }
         // Jumping input
-        if(keysPressed[KeyEvent.VK_SPACE]){
+        if(keysPressed[KeyEvent.VK_SPACE] || keysPressed[KeyEvent.VK_W]){
             player.jump(Player.NORMAL);
         }
         // Hyperspeed input
@@ -753,6 +756,10 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
     // Setter methods
     public void setLevelNum(int level){
         levelNum = level;
+    }
+    public void resetGame(){
+        player = new Player();
+        levelNum = 0;
     }
     // Getter methods
     public Player getPlayer(){

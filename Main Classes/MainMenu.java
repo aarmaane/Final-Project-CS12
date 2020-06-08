@@ -36,6 +36,7 @@ public class MainMenu extends JPanel {
         screenWidth = 960;
         dummy.resetPos(0,366);
     }
+
     //Initialization
     public void init(){
         // Declaring buttons
@@ -113,6 +114,7 @@ public class MainMenu extends JPanel {
             menuMusic.stop();
             menuMusic.closeSound();
             gameFrame.switchPanel(MainGame.SHOPPANEL);
+            fade = new FadeEffect(); // Resetting fade for next time
         }
         // Updating the dummy player
         dummy.move(Player.RIGHT);

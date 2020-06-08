@@ -44,7 +44,7 @@ public class Boss extends Enemy{
         super(data);
         health = 5000;
         maxHealth = health;
-        damage = 250;
+        damage = 150;
     }
     // General methods
     @Override
@@ -133,18 +133,18 @@ public class Boss extends Enemy{
             if(spinNum == 3){ // On the 6th spin, activate the charge
                 spinTimer = 0;
                 spinNum = 0;
-                damage = 1000;
+                damage = 500;
                 isPrepCharging = true;
                 dealtChargeDamage = false;
                 spriteCount = 0;
             }
             else{
-                damage = 500;
+                damage = 300;
                 isSpinning = true;
             }
         }
         else if(isSpinning && spinTimer == 0){
-            damage = 250;
+            damage = 150;
             isSpinning = false;
         }
     }

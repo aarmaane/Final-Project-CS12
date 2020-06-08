@@ -15,11 +15,13 @@ public class MainGame extends JFrame {
     public static final String MENUPANEL = "menu";
     public static final String SHOPPANEL = "shop";
     public static final String TRANSITIONPANEL = "transition";
+    public static final String ENDPANEL = "ending";
     // Declaring fields
     private GamePanel game;
     private MainMenu menu;
     private ShopPanel shop;
     private TransitionPanel transition;
+    private EndingPanel ending;
     private JPanel panelManager;
     private String activePanel;
     private Timer myTimer; // Timer to call the game functions each frame
@@ -33,12 +35,14 @@ public class MainGame extends JFrame {
         menu = new MainMenu(this);
         shop = new ShopPanel(this);
         transition = new TransitionPanel(this);
+        ending = new EndingPanel(this);
         panelManager = new JPanel(new CardLayout());
         // Setting up the CardLayout in panelManager
         panelManager.add(game, GAMEPANEL);
         panelManager.add(menu, MENUPANEL);
         panelManager.add(shop, SHOPPANEL);
         panelManager.add(transition, TRANSITIONPANEL);
+        panelManager.add(ending, ENDPANEL);
         switchPanel(MENUPANEL);
         // Creating the JFrame and JPanels
         setSize(960,590);
@@ -100,6 +104,11 @@ public class MainGame extends JFrame {
                     transition.update();
                     transition.repaint();
                     break;
+                case ENDPANEL:
+                    ending.update();
+                    ending.updateStats();
+                    ending.repaint();
+                    break;
             }
         }
     }
@@ -107,8 +116,7 @@ public class MainGame extends JFrame {
         return game;
     }
     public static void main(String[] args) throws IOException{
-        System.setProperty("sun.java2d.opengl", "True");
-        System.out.println(System.getProperty("sun.java2d.opengl"));
+        System.setProperty("sun.java2d.opengl", "true");
         MainGame game = new MainGame();
     }
 }

@@ -12,7 +12,7 @@ public class Blob extends Enemy  {
     //Fields
     private double growth = 1;
     public Blob(String data) {
-        //Constructor
+        // Constructor
         super(data);
         health = 500 * difficulty;
         maxHealth = health;
