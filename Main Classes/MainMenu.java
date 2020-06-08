@@ -60,7 +60,7 @@ public class MainMenu extends JPanel {
             button.addActionListener(new ButtonListener());
         }
         // Loading instructions pages
-        instructPages = Utilities.spriteArrayLoad(instructPages, "Main Menu/test");
+        instructPages = Utilities.spriteArrayLoad(instructPages, "Main Menu/page");
     }
     // Window related methods
     // Method that draws everything
