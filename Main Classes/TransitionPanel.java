@@ -33,12 +33,12 @@ public class TransitionPanel extends JPanel {
     public void update(){
         fade.update();
         if(fade.isDoneFadeIn()){
-            fade.start(FadeEffect.FADEOUT, 5);
+            fade.start(FadeEffect.FADEOUT, 3);
         }
-        else if(fade.isDoneFadeOut()){
+        else if(fade.isDoneFadeOut()){ // When fade out is done, start the level
             game.loadLevel();
             gameFrame.switchPanel(MainGame.GAMEPANEL);
-            fade.start(FadeEffect.FADEIN, 5);
+            fade.start(FadeEffect.FADEIN, 3);
         }
     }
 }

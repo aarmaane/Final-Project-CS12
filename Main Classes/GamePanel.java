@@ -455,6 +455,10 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         // Updating general game status
         checkPlayerAction();
         collectGarbage();
+        // Keep the level music playing
+        if(!levelMusic.isPlaying() && !paused){
+            levelMusic.play();
+        }
     }
 
     // Method that spawns an enemy from a spawner object
@@ -722,7 +726,10 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
             if(fade.isDoneFadeOut()){
                 levelMusic.stop();
                 // Sending the player to another panel
-                if(levelNum < 5 || player.isDead()){ // Sending the user to the shop for next level prep
+                if(player.isDead()){ // Sending player back to transition panel to redo the level
+                    gameFrame.switchPanel(MainGame.TRANSITIONPANEL);
+                }
+                else if(levelNum < 5){ // Sending the user to the shop for next level prep
                     gameFrame.switchPanel(MainGame.SHOPPANEL);
                 }
                 else{ // Sending the player to the endpanel since it's the last level
@@ -803,11 +810,11 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
 
     // Method that keeps track of time for game objects (should be called every second)
     public void iterateTime(){
-        if(timeLeft==0){
-            player.kill();
-        }
         if(!levelEnding){ // Updating game timer
             timeLeft-=1;
+            if(timeLeft == 0){ // Killing when time runs out
+                player.kill();
+            }
         }
         // Updating game entity timers
         player.iterateTime();

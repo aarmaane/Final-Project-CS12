@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class MainMenu extends JPanel {
     // Window related Objects
     private MainGame gameFrame;
+    private GamePanel game;
     private Sound menuMusic = new Sound("Assets/Sounds/Music/menu.wav", 80);
     private FadeEffect fade = new FadeEffect();
     // Buttons
@@ -29,7 +30,8 @@ public class MainMenu extends JPanel {
     // Constructor
     public MainMenu(MainGame game){
         // Setting up frame
-        gameFrame = game;
+        this.gameFrame = game;
+        this.game =  gameFrame.getGame();
         setSize(960,590);
         setLayout(null);
         // Setting up background animation
@@ -113,7 +115,8 @@ public class MainMenu extends JPanel {
         if(fade.isDoneFadeOut()){ // Once the fade out is done, switch to the game
             menuMusic.stop();
             menuMusic.closeSound();
-            gameFrame.switchPanel(MainGame.SHOPPANEL);
+            game.setLevelNum(1);
+            gameFrame.switchPanel(MainGame.TRANSITIONPANEL);
             fade = new FadeEffect(); // Resetting fade for next time
         }
         // Updating the dummy player

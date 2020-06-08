@@ -206,8 +206,7 @@ public class ShopPanel extends JPanel {
                     break;
                 case "Continue":
                     // Starting the fade-out
-                    String input = JOptionPane.showInputDialog("Enter level number");
-                    game.setLevelNum(Integer.parseInt(input));
+                    game.setLevelNum(game.getLevelNum() + 1);
                     gameFrame.switchPanel(MainGame.TRANSITIONPANEL);
                     shopMusic.stop();
                     break;
