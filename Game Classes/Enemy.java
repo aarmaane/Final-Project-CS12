@@ -55,10 +55,10 @@ public abstract class Enemy {
     public void drawHealth(Graphics g, int levelOffset){
         if(health != maxHealth){ // Only drawing if they have lost health
             Rectangle hitBox = getHitbox();
-            int healthBarOffset = ((100-hitBox.width)/8);
+            int healthBarOffset = ((hitBox.width-100)/2);
             g.setColor(Color.RED);
-            g.fillRect(hitBox.x-levelOffset-healthBarOffset,hitBox.y-10,(int)(((double)health/maxHealth)*88),13); // Filled bar
-            g.drawImage(healthBar,hitBox.x-levelOffset-13-healthBarOffset,hitBox.y-15,null); // Health bar image
+            g.fillRect(hitBox.x-levelOffset+10+healthBarOffset,hitBox.y-10,(int)(((double)health/maxHealth)*88),13); // Filled bar
+            g.drawImage(healthBar,hitBox.x-levelOffset+healthBarOffset,hitBox.y-15,null); // Health bar image
         }
     }
 

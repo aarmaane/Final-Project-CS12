@@ -200,7 +200,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         g.fillRect(0, 0, 960, 590);
         background.draw(g);
         // Drawing the level
-        //g.setColor(Color.WHITE);
         for(LevelProp platform: platforms){
             if(platform.getRect().x + platform.getRect().width - levelOffset > 0 && platform.getRect().x - levelOffset < 960){
                 Rectangle platformRect = platform.getRect();
@@ -213,7 +212,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                     g.drawImage(platform.getPropImage(), platformRect.x - levelOffset, platformRect.y, this);
 
                 }
-                //g.drawRect(platformRect.x -levelOffset,platformRect.y,(int)platformRect.getWidth(),(int)platformRect.getHeight());
             }
         }
         for(LevelProp prop: noCollideProps){
@@ -236,14 +234,12 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                     g.drawImage(enemy.getSprite(), (int)enemy.getX() - levelOffset, (int)enemy.getY(), this);
                 }
                 enemy.drawHealth(g, levelOffset);
-                //g.drawRect(enemy.getHitbox().x - levelOffset, enemy.getHitbox().y, enemy.getHitbox().width, enemy.getHitbox().height);
             }
         }
         // Drawing Projectiles
         for(Projectile projectile: projectiles){
             if(projectile.getHitbox().x + projectile.getHitbox().width - levelOffset > 0 && projectile.getHitbox().x - levelOffset < 960){
                 g.drawImage(projectile.getSprite(),(int)projectile.getX()-levelOffset, (int)projectile.getY(),this);
-                //g.drawRect(projectile.getHitbox().x-levelOffset,projectile.getHitbox().y,projectile.getHitbox().width,projectile.getHitbox().height);
             }
         }
         // Drawing items
@@ -260,8 +256,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         }
         // Drawing the Player
         g.drawImage(player.getSprite(), (int)player.getX() - levelOffset, (int)player.getY(), this);
-        g.drawRect(player.getHitbox().x - levelOffset, player.getHitbox().y, player.getHitbox().width, player.getHitbox().height);
-        g.drawRect(player.getAttackBox().x - levelOffset, player.getAttackBox().y, player.getAttackBox().width, player.getAttackBox().height);
         // Drawing game stats
         /*Fills in both of the stat bars from darker shades to lighter shades by increasing the respective rgb value by 1 while shifting the
         rectangle over each time. */
@@ -368,22 +362,6 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
         }
         // Keeping track of whether or not the key is pressed down
         keysPressed[keyCode] = true;
-        // DEBUG KEYS (REMOVE THESE AFTER)
-        if(keyCode == KeyEvent.VK_BACK_SLASH){
-            if(getMousePosition() != null){
-                System.out.println(getMousePosition() + " True x = " + (getMousePosition().x + levelOffset));
-            }
-        }
-        else if(keyCode == KeyEvent.VK_CLOSE_BRACKET){
-            player.resetPos(0,366);
-        }
-        else if(keyCode == KeyEvent.VK_OPEN_BRACKET){
-            player.resetPos(getMousePosition().x + levelOffset - 50, getMousePosition().y);
-        }
-        else if(keyCode == KeyEvent.VK_SEMICOLON){
-            loadLevel();
-            System.out.println("Level reloaded");
-        }
     }
     @Override
     public void keyReleased(KeyEvent e) {

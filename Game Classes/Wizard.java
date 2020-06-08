@@ -23,9 +23,16 @@ public class Wizard extends Enemy {
         String[] dataSplit = data.split(",");
         castType = Integer.parseInt(dataSplit[3]);
         spriteType = dataSplit[4];
-        health = 300 * difficulty;
+        if(!spriteType.equals(" ")){
+            health = Integer.MAX_VALUE;
+        }
+        else{
+            health = 300 * difficulty;
+            spriteType ="";
+        }
         maxHealth = health;
         damage = 35*difficulty;
+        System.out.println(dataSplit);
         hurtSprites = Utilities.spriteArrayLoad(hurtSprites, "Enemies/Wizard/"+spriteType+"hurt");
         idleSprites = Utilities.spriteArrayLoad(idleSprites, "Enemies/Wizard/"+spriteType+"idle");
         deathSprites = Utilities.spriteArrayLoad(deathSprites, "Enemies/Wizard/"+spriteType+"death");
