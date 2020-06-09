@@ -592,7 +592,7 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                     // Giving points
                     player.addPoints(150 * enemy.getDifficulty());
                     levelPoints+=150*enemy.getDifficulty();
-                    indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "+100", Color.YELLOW));
+                    indicatorText.add(new IndicatorText(enemy.getHitbox().x, enemy.getHitbox().y, "+" + Utilities.roundOff(150 * enemy.getDifficulty(), 1), Color.YELLOW));
                 }
             }
             else if(enemy.getY() > this.getHeight()){ // If the enemy falls off screen
@@ -661,9 +661,11 @@ class GamePanel extends JPanel implements KeyListener, MouseListener {
                     indicatorText.add(new IndicatorText(playerHitbox.x, playerHitbox.y, "+10", Color.GREEN));
                 }
                 else if(item.getType() == Item.COIN){
+                    levelPoints += 100;
                     indicatorText.add(new IndicatorText(playerHitbox.x, playerHitbox.y, "+100", Color.YELLOW));
                 }
                 else if(item.getType() == Item.DIAMOND){
+                    levelPoints += 1000;
                     indicatorText.add(new IndicatorText(playerHitbox.x, playerHitbox.y, "+1000", Color.YELLOW));
                 }
             }
